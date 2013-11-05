@@ -1,0 +1,381 @@
+<?xml version="1.0"?>
+<book>
+    <page>
+        <text>
+            <data>The Camping Guide</data>
+            <pos>28/25/150/1.3</pos>
+        </text>
+        <text>
+            <data>The best guide for starting campers</data>
+            <pos>32/90/120/0.8</pos>
+        </text>
+        <text>
+            <data>by RikMuld</data>
+            <pos>92/110/120/0.7</pos>
+        </text>
+    </page>
+    <page>
+        <text>
+            <data>Table of Contents</data>
+            <pos>28/25/150/1.3</pos>
+        </text>
+        <text>
+            <data>Camping Inventory</data>
+            <pos>28/45/150/1</pos>
+        </text>
+        <text>
+            <data>Player Inventory</data>
+            <pos>28/57/150/0.7</pos>
+        </text>
+        <text>
+            <data>Backpack Inventory</data>
+            <pos>28/65/150/0.7</pos>
+        </text>
+        <text>
+            <data>Tool Inventory</data>
+            <pos>28/73/150/0.7</pos>
+        </text>
+        <text>
+            <data>Equipment</data>
+            <pos>28/85/150/1</pos>
+        </text>
+        <text>
+            <data>Backpacks</data>
+            <pos>28/97/150/0.7</pos>
+        </text>
+        <text>
+            <data>Pocket Knife</data>
+            <pos>28/105/150/0.7</pos>
+        </text>
+        <text>
+            <data>Lanterns</data>
+            <pos>28/113/150/0.7</pos>
+        </text>
+        <text>
+            <data>Maps</data>
+            <pos>28/121/150/0.7</pos>
+        </text>
+        <text>
+            <data>Campfires</data>
+            <pos>28/133/150/1</pos>
+        </text>
+        <text>
+            <data>Decoration Campfire</data>
+            <pos>28/145/150/0.7</pos>
+        </text>
+    </page>
+    <page>
+        <text>
+            <data>Table of Contents</data>
+            <pos>28/25/150/1.3</pos>
+        </text>
+        <text>
+            <data>Campfires</data>
+            <pos>28/45/150/1</pos>
+        </text>
+        <text>
+            <data>Cooking Campfire Basics</data>
+            <pos>28/57/150/0.7</pos>
+        </text>
+        <text>
+            <data>Campfire Kits</data>
+            <pos>28/65/150/0.7</pos>
+        </text>
+        <text>
+            <data>Spit Cooking</data>
+            <pos>28/73/150/0.7</pos>
+        </text>
+        <text>
+            <data>Grill Cooking</data>
+            <pos>28/81/150/0.7</pos>
+        </text>
+        <text>
+            <data>Pan Cooking</data>
+            <pos>28/89/150/0.7</pos>
+        </text>
+        <text>
+            <data>Materials</data>
+            <pos>28/101/150/1</pos>
+        </text>
+        <text>
+            <data>Iron Sticks</data>
+            <pos>28/113/150/0.7</pos>
+        </text>
+        <text>
+            <data>Canvas</data>
+            <pos>28/121/150/0.7</pos>
+        </text>
+        <text>
+            <data>Pan</data>
+            <pos>28/129/150/0.7</pos>
+        </text>
+        <text>
+            <data>Ash</data>
+            <pos>28/137/150/0.7</pos>
+        </text>
+    </page>
+    <page>
+        <text>
+            <data>Table of Contends</data>
+            <pos>28/25/150/1.3</pos>
+        </text>
+        <text>
+            <data>Plants</data>
+            <pos>28/45/150/1</pos>
+        </text>
+        <text>
+            <data>Hemp</data>
+            <pos>28/57/150/0.7</pos>
+        </text>
+    </page>
+    <page>
+         <text>
+            <data>Camping Inventory</data>
+            <pos>28/25/150/1.3</pos>
+        </text>
+        <text>
+            <data>The Camping Inventory is completely replacing the player inventory. 
+            
+This renewed inventory contains 3 smaller inventories. The first one is called the player inventory, this one will always open when you open your inventory. The second one is the backpack inventory and the last one is the tool inventory. 
+
+To cycle through the inventories you can use the 2 big buttons below the inventory.</data>
+            <pos>28/45/124/0.7</pos>
+        </text>
+    </page>
+    <page>
+        <text>
+            <data>Camping Inventory</data>
+            <pos>28/25/150/1.3</pos>
+        </text>
+        <text>
+            <data>Player Inventory</data>
+            <pos>28/45/150/1</pos>
+        </text>
+        <text>
+            <data>Player Inventory</data>
+            <pos>28/45/150/1</pos>
+        </text>
+        <text>
+            <data>The player inventory is part of the Camping Inventory. This inventory is almost equal to the normal vanilla minecraft inventory. 
+            
+The only difference is that it has a button at the top right to open the Camping Guide, and it has 2 big buttons to go to the other parts of the Camping Inventory.</data>
+            <pos>28/57/124/0.7</pos>
+        </text>
+    </page>
+    <page>
+        <text>
+            <data>Camping Inventory</data>
+            <pos>28/25/150/1.3</pos>
+        </text>
+        <text>
+            <data>Backpack Inventory</data>
+            <pos>28/45/150/1</pos>
+        </text>
+        <text>
+            <data>The backpack inventory is just like the player inventory meant for item storage. The difference however is, that in this inventory you need to place an backpack to store the items in. 
+            
+When you remove the backpack from the backpack inventory the storage slots will be disabled and your items are in the backpack. To access the items again you can just place the backpack back in the backpack slot, or you can right click the backpack in your hand to manage it's contends</data>
+            <pos>28/57/124/0.7</pos>
+        </text>
+    </page>
+    <page>
+        <text>
+            <data>Camping Inventory</data>
+            <pos>28/25/150/1.3</pos>
+        </text>
+        <text>
+            <data>Tool Inventory</data>
+            <pos>28/45/150/1</pos>
+        </text>
+        <text>
+            <data>The tool inventory is the place were you can put all of your newest camping gadgets to get special "bonuses".
+            
+The 3 items that can go into the tool inventory are: the pocket knife, the lantern and a map.
+
+The Campers tool will allows you to craft with a full 3*3 crafting matrix right from your inventory.
+
+When a lantern is placed in the tool inventory the array around you will be light.</data>
+            <pos>28/57/124/0.7</pos>
+        </text>
+    </page>
+    <page>
+        <text>
+            <data>Camping Inventory</data>
+            <pos>28/25/150/1.3</pos>
+        </text>
+        <text>
+            <data>Tool Inventory</data>
+            <pos>28/45/150/1</pos>
+        </text>
+        <text>
+            <data>When a map is placed in the tool inventory it will become a minimap that is visible in the most right corner of your screen.
+            
+On this map you will be displayed as an red dot and even when you are outside the borders of the map, the dot will still be visible. Other players will be displayed as a blue dot and they are also always visible on the map.</data>
+            <pos>28/57/124/0.7</pos>
+        </text>
+    </page>
+    <page>
+        <text>
+            <data>Backpacks</data>
+            <pos>28/25/150/1.3</pos>
+        </text>
+        <item>
+            <stack>backpack/0</stack>
+            <pos>120/21</pos>
+        </item>
+        <text>
+            <data>The backpacks are perfect to store some extra items. 1 backpack can hold 27 items, so 1 backpack is already dubbeling you invertory size.</data>
+            <pos>28/45/124/0.7</pos>
+        </text>
+        <text>
+            <data>There are 2 ways to use your backpacks. You can right click with to backpack, or you can use them in your camping inventory.</data>
+            <pos>28/85/65/0.7</pos>
+        </text>
+        <craft>
+            <pos>97/78</pos>
+            <shapeless>false</shapeless>
+            <stacks>
+                <stack>parts/0</stack>
+                <stack>parts/0</stack>
+                <stack>parts/0</stack>
+                <stack>parts/0</stack>
+                <stack></stack>
+                <stack>parts/0</stack>
+                <stack>parts/0</stack>
+                <stack>parts/0</stack> 
+                <stack>parts/0</stack>                
+            </stacks>
+        </craft>
+    </page>
+    <page>
+        <text>
+            <data>Pocket Knife</data>
+            <pos>28/25/150/1.3</pos>
+        </text>
+        <item>
+            <stack>knife/0</stack>
+            <pos>120/21</pos>
+        </item>
+        <text>
+            <data>The pocket knife has many uses, it is a miust have for every camper.</data>
+            <pos>28/45/124/0.7</pos>
+        </text>
+        <text>
+            <data>If the pocket knife is used it will</data>
+            <pos>28/67/124/0.7</pos>
+        </text>
+        <text>
+            <data>take damage, the total durability of the knife is 250.</data>
+            <pos>28/73/65/0.7</pos>     
+        </text>
+        <text>
+            <data>The uses are: Removing campfires, rotating any rotatable block in he game, crafting in the camping</data>
+            <pos>28/99/65/0.7</pos>     
+        </text>
+        <text>
+            <data>inventory and the knife is used in some crafting recipes</data>
+            <pos>28/144/124/0.7</pos>     
+        </text>
+        <craft>
+            <pos>97/78</pos>
+            <shapeless>false</shapeless>
+            <stacks>
+                <stack>351/1</stack>
+                <stack>265/0</stack>
+                <stack>351/1</stack>
+                <stack>351/1</stack>
+                <stack>265/0</stack>
+                <stack>351/1</stack>
+                <stack>351/1</stack>
+                <stack>265/0</stack> 
+                <stack>351/1</stack>                
+            </stacks>
+        </craft>
+        </page>
+        <page>
+        <text>
+            <data>Lanterns</data>
+            <pos>28/25/150/1.3</pos>
+        </text>
+        <text>
+            <data>The lantern is used to light the array arround you if it is placed inside the tool inventory, so you never need to get into the dark.
+
+However a lantern does not burn forever, after 300 seconds you need to refuel the empty lantern with glowstone.</data>
+            <pos>28/45/124/0.7</pos>
+        </text>
+        <text>
+            <data>Empty lantern</data>
+            <pos>28/106/150/1</pos>
+        </text>
+        <item>
+            <stack>parts/4</stack>
+            <pos>120/102</pos>           
+        </item>
+        <text>
+            <data>You will get an empty lantern when your lantern is burbned up, to refuel it put it in a crafting bench with a glowstone dust</data>
+            <pos>28/124/124/0.7</pos>
+        </text>
+    </page>
+    <page>
+        <text>
+            <data>Lanterns</data>
+            <pos>28/25/150/1.3</pos>
+        </text>
+        <text>
+            <data>Empty</data>
+            <pos>33/45/150/1</pos>
+        </text>
+        <item>
+            <stack>parts/4</stack>
+            <pos>62/41</pos>           
+        </item>
+         <craft>
+            <pos>30/64</pos>
+            <shapeless>false</shapeless>
+            <stacks>
+                <stack>102/0</stack>
+                <stack>102/0</stack>
+                <stack>102/0</stack>
+                <stack>102/0</stack>
+                <stack></stack>
+                <stack>102/0</stack>
+                <stack>266/0</stack>
+                <stack>266/0</stack> 
+                <stack>266/0</stack>                
+            </stacks>
+        </craft>
+        <text>
+            <data>Full</data>
+            <pos>110/45/150/1</pos>
+        </text>
+        <item>
+            <stack>lantern/0</stack>
+            <pos>129/41</pos>           
+        </item>
+         <craft>
+            <pos>100/64</pos>
+            <shapeless>true</shapeless>
+            <stacks>
+                <stack>parts/4</stack>
+                <stack>348/0</stack>
+                <stack></stack>
+                <stack></stack>
+                <stack></stack>
+                <stack></stack>
+                <stack></stack>
+                <stack></stack> 
+                <stack></stack>                
+            </stacks>
+        </craft>
+    </page>
+    <page>
+         <text>
+            <data>Drawn Maps</data>
+            <pos>28/25/150/1.3</pos>
+        </text>
+        <item>
+            <stack>358/0</stack>
+            <pos>120/21</pos>
+        </item>
+    </page>
+</book>
