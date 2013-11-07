@@ -30,10 +30,11 @@ public class GuiScreenMapHUD extends GuiScreen {
 		GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 		GL11.glDisable(GL11.GL_LIGHTING);
 
+		GL11.glScalef(0.5F,0.5F,0.5F);
 		mc.renderEngine.bindTexture(new ResourceLocation(TextureInfo.GUI_UTILS));
-		GL11.glScalef(0.5F, 0.5F, 0.5F);
 		drawTexturedModalRect(width*2-133, 5, 0, 42, 128, 128);
-		
+		GL11.glScalef(2F, 2F, 2F);
+
 		if(mc.thePlayer.worldObj.isRemote&&colorData!=null&&posData!=null&&colorData.get(mc.thePlayer)!=null&&posData.get(mc.thePlayer)!=null)
 		{
 			for(int i = 0; i<colorData.get(mc.thePlayer).length; ++i)
@@ -82,18 +83,18 @@ public class GuiScreenMapHUD extends GuiScreen {
 
 			GL11.glBegin(GL11.GL_QUADS);
 			GL11.glTexCoord2f(0f, 0f);
-			GL11.glVertex2f(width*2-126f, 12f);
+			GL11.glVertex2f(width-126f/2, 12f/2);
 
 			GL11.glTexCoord2f(0f, 1f);
-			GL11.glVertex2f(width*2-126f, 126f);
+			GL11.glVertex2f(width-126f/2, 126f/2);
 
 			GL11.glTexCoord2f(1f, 1f);
-			GL11.glVertex2f(width*2-12, 126f);
+			GL11.glVertex2f(width-12/2, 126f/2);
 
 			GL11.glTexCoord2f(1f, 0f);
-			GL11.glVertex2f(width*2-12f, 12f);
+			GL11.glVertex2f(width-12f/2, 12f/2);
 			GL11.glEnd();
-		
+	
 			for(int i = 0; i<mc.theWorld.playerEntities.size(); i++)
 			{
 				EntityPlayer player = (EntityPlayer) mc.theWorld.playerEntities.get(i);
@@ -109,12 +110,25 @@ public class GuiScreenMapHUD extends GuiScreen {
 				if(zDivision>57)zDivision = 57;
 				if(zDivision<-57)zDivision = -57;
 				
-				mc.renderEngine.bindTexture(new ResourceLocation(TextureInfo.GUI_UTILS));
-				drawTexturedModalRect(width*2-69+xDivision-3, 69+zDivision-3, player==mc.thePlayer? 20:27, 22, 7, 7);				
+				if(mc.thePlayer==player)mc.renderEngine.bindTexture(new ResourceLocation(TextureInfo.RED_DOT));
+				else mc.renderEngine.bindTexture(new ResourceLocation(TextureInfo.BLUE_DOT));
+				
+				GL11.glBegin(GL11.GL_QUADS);
+				GL11.glTexCoord2f(0f, 0f);
+				GL11.glVertex2f(width-69/2+xDivision/2-3, 69/2+zDivision/2-3);
+
+				GL11.glTexCoord2f(0f, 1f);
+				GL11.glVertex2f(width-69/2+xDivision/2-3, 69/2+zDivision/2+3);
+
+				GL11.glTexCoord2f(1f, 1f);
+				GL11.glVertex2f(width-69/2+xDivision/2+3, 69/2+zDivision/2+3);
+
+				GL11.glTexCoord2f(1f, 0f);
+				GL11.glVertex2f(width-69/2+xDivision/2+3, 69/2+zDivision/2-3);
+				GL11.glEnd();
 			}
 		}
 
-		GL11.glScalef(2F, 2F, 2F);
 		GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 		GL11.glPopMatrix();
 	}

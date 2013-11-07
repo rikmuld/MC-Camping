@@ -7,12 +7,42 @@
         </text>
         <text>
             <data>The best guide for starting campers</data>
-            <pos>32/90/120/0.8</pos>
+            <pos>30/45/120/0.8</pos>
         </text>
         <text>
             <data>by RikMuld</data>
-            <pos>92/110/120/0.7</pos>
+            <pos>92/65/120/0.7</pos>
         </text>
+        <img>
+            <source>camper.png</source>
+            <pos>24/66/370/520/0.2</pos>        
+        </img>
+    </page>
+    <page>
+        <text>
+            <data>Introduction</data>
+            <pos>28/25/150/1.3</pos>
+        </text>
+        <text>
+            <data>About The Mod</data>
+            <pos>28/45/150/1</pos>
+        </text>
+         <text>
+            <data>The Camping Mod allows you to finally experience the full outdoor experience in Minecraft. Set camp, build your own tent, fry some marshmallows over your warming campfire. The Camping mod is simply a must for every self-declared Minecaft adventurer/explorer.</data>
+            <pos>28/57/124/0.7</pos>
+        </text>
+        <text>
+            <data>Mod Author: RikMuld</data>
+            <pos>28/117/150/0.8</pos>
+        </text>
+        <text>
+            <data>Current Version: CAMP_VERSION</data>
+            <pos>28/132/150/0.8</pos>
+        </text>
+        <version>
+            <data>New Version: </data>
+            <pos>28/142/150/0.8</pos>
+        </version>
     </page>
     <page>
         <text>
@@ -63,6 +93,10 @@
             <data>Decoration Campfire</data>
             <pos>28/145/150/0.7</pos>
         </text>
+        <img>
+            <source>tools.png</source>
+            <pos>84/74/340/349/0.2</pos>
+        </img>
     </page>
     <page>
         <text>
@@ -113,6 +147,10 @@
             <data>Ash</data>
             <pos>28/137/150/0.7</pos>
         </text>
+        <img>
+            <source>campfireSpit.png</source>
+            <pos>70/86/340/349/0.25</pos>
+        </img>
     </page>
     <page>
         <text>
@@ -377,5 +415,199 @@ However a lantern does not burn forever, after 300 seconds you need to refuel th
             <stack>358/0</stack>
             <pos>120/21</pos>
         </item>
+        <img>
+            <source>map.png</source>
+            <pos>102/43/192/192/0.25/0.25</pos>
+        </img>
+        <text>
+            <data>The map isn't a item added by this mod, but it has given a new use. Namely When a map is placed inside the tool inventory you will see the map</data>
+            <pos>28/45/73/0.7</pos>
+        </text>
+        <text>
+            <data>renderd in the top right corner of your screen. You will be renderd as an red dot and other players as an blue one. And even when you or other players are far outside the borders of the map, they will still be renderd. Note that the map will not update inside the tool inventory.</data>
+            <pos>28/95/124/0.7</pos>
+        </text>
+    </page>    
+    <page>
+        <text>
+            <data>Campfires</data>
+            <pos>28/25/150/1.3</pos>
+        </text>
+        <text>
+            <data>Decoration Campfire</data>
+            <pos>28/45/150/1</pos>
+        </text>
+        <text>
+            <data>The decoration campfire is only for decoration, so it is impossible to cook anything with it.</data>            
+            <pos>28/57/124/0.7</pos>
+        </text>
+        <text>
+            <data>As an decorational plus you can change the color of the flame by putting a dye or any other minecraft color in the campfire, and the color will change for 5</data>            
+            <pos>28/83/70/0.7</pos>
+        </text>
+        <text>
+            <data>minutes. But Beware: The dyes will cause strange effects!</data>
+            <pos>28/146/124/0.7</pos>
+        </text>
+        <item>
+            <stack>campfireDeco/0</stack>
+            <pos>133/41</pos>           
+        </item>
+        <craft>
+            <pos>97/78</pos>
+            <shapeless>false</shapeless>
+            <stacks>
+                <stack></stack>
+                <stack>280/0</stack>
+                <stack></stack>
+                <stack>280/0</stack>
+                <stack>318/0</stack>
+                <stack>280/0</stack>
+                <stack>280/0</stack>
+                <stack>campfireBase/0</stack> 
+                <stack>280/0</stack>                
+            </stacks>
+        </craft>
+    </page>
+    <page>
+        <text>
+            <data>Campfires</data>
+            <pos>28/25/150/1.3</pos>
+        </text>
+        <item>
+            <stack>campfireDeco/0</stack>
+            <pos>133/41</pos>           
+        </item>
+        <text>
+            <data>Decoration Campfire</data>
+            <pos>28/45/150/1</pos>
+        </text>
+        <text>
+            <data>The decoration campfire can't be removed by hand, you will need to use the pocket knife or else you will only get the campfire base back.</data>            
+            <pos>28/57/124/0.7</pos>
+        </text>
+    </page>
+    <page>
+        <text>
+            <data>Materials</data>
+            <pos>28/25/150/1.3</pos>
+        </text>
+        <text>
+            <data>Of cource this mod also ads some items not doing anything by itself, but are needed in crafting recipes. A list of those items with crafting recipes will folow:</data>
+            <pos>28/45/124/0.7</pos>
+        </text>
+        <text>
+            <data>Iron Stick</data>
+            <pos>24/85/150/1</pos>
+        </text>
+        <item>
+            <stack>parts/1</stack>
+            <pos>74/81</pos>           
+        </item>
+         <craft>
+            <pos>30/100</pos>
+            <shapeless>false</shapeless>
+            <stacks>
+                <stack>265/0</stack>
+                <stack></stack>
+                <stack></stack>
+                <stack>265/0</stack>
+                <stack></stack>
+                <stack></stack>
+                <stack></stack>
+                <stack></stack> 
+                <stack></stack>                
+            </stacks>
+        </craft>
+        <text>
+            <data>Canvas</data>
+            <pos>96/85/150/1</pos>
+        </text>
+        <item>
+            <stack>parts/0</stack>
+            <pos>134/81</pos>           
+        </item>
+         <craft>
+            <pos>100/100</pos>
+            <shapeless>true</shapeless>
+            <stacks>
+                <stack>hemp/0</stack>
+                <stack>knife/0</stack>
+                <stack></stack>
+                <stack></stack>
+                <stack></stack>
+                <stack></stack>
+                <stack></stack>
+                <stack></stack> 
+                <stack></stack>                
+            </stacks>
+        </craft>
+    </page>
+    <page>
+        <text>
+            <data>Materials</data>
+            <pos>28/25/150/1.3</pos>
+        </text>
+         <text>
+            <data>Of cource this mod also ads some items not doing anything by itself, but are needed in crafting recipes. A list of those items with crafting recipes will folow:</data>
+            <pos>28/45/124/0.7</pos>
+        </text>
+        <text>
+            <data>Pan</data>
+            <pos>35/85/150/1</pos>
+        </text>
+        <item>
+            <stack>parts/2</stack>
+            <pos>60/81</pos>           
+        </item>
+         <craft>
+            <pos>30/100</pos>
+            <shapeless>false</shapeless>
+            <stacks>
+                <stack></stack>
+                <stack>351/1</stack>
+                <stack></stack>
+                <stack>265/0</stack>
+                <stack>281/0</stack>
+                <stack>265/0</stack>
+                <stack></stack>
+                <stack>265/0</stack> 
+                <stack></stack>                
+            </stacks>
+        </craft>
+        <text>
+            <data>Ash</data>
+            <pos>101/85/150/1</pos>
+        </text>
+        <item>
+            <stack>parts/3</stack>
+            <pos>126/81</pos>           
+        </item>
+        <text>
+            <data>Ashes are not craftable, you will get ash when you burn food in a campfire. They seem useless, but they still contain many minerals.</data>
+            <pos>94/100/55/0.7</pos>
+        </text>
+    </page>
+    <page>
+        <text>
+            <data>Hemp</data>
+            <pos>28/25/150/1.3</pos>
+        </text>
+        <item>
+            <stack>hemp/0</stack>
+            <pos>120/21</pos>
+        </item>
+        <img>
+            <source>hemp.png</source>
+            <pos>32/122/446/150/0.25</pos>
+        </img>
+        <text>
+            <data>Hemp is an new type of plant in minecraft, but is differs a bit from any other plant types. It grows just like potatos and wheet as an crop, but is also grown in the height.</data>
+            <pos>28/45/124/0.7</pos>
+        </text>
+        <text>
+            <data>Hemp can be found in any of it's grow stages in the world, and only full grown hemp plants will give you a hemp (last 2 of the picture).</data>
+            <pos>28/91/124/0.7</pos>
+        </text>
     </page>
 </book>

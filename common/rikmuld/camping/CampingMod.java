@@ -54,6 +54,7 @@ public class CampingMod {
 	{
 		proxy.registerRenderers();
 		proxy.registerTickHandler();
+		proxy.checkVersion();
 		
 		NetworkRegistry.instance().registerGuiHandler(this, CampingMod.proxy);
 		GameRegistry.registerPlayerTracker(new PlayerHandler());

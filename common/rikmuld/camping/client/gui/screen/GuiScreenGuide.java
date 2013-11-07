@@ -4,6 +4,7 @@ import java.net.URISyntaxException;
 
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -19,6 +20,7 @@ import rikmuld.camping.core.register.ModLogger;
 import rikmuld.camping.misc.guide.Book;
 import rikmuld.camping.misc.guide.Page;
 import rikmuld.camping.misc.guide.PageCraftData;
+import rikmuld.camping.misc.guide.PageImgData;
 import rikmuld.camping.misc.guide.PageItemImgData;
 import rikmuld.camping.misc.guide.PageTextData;
 
@@ -34,7 +36,7 @@ public class GuiScreenGuide extends GuiScreen{
 	
 	Book book;
 	Page page;
-	
+
 	private boolean clickReady;
 	private int clicker;
 	
@@ -95,6 +97,7 @@ public class GuiScreenGuide extends GuiScreen{
     private void drawBackground(int mouseX, int mouseY)
     {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        
 		mc.renderEngine.bindTexture(new ResourceLocation(TextureInfo.GUI_GUIDE));
 		this.drawTexturedModalRect(guiLeft, guiTop, 0, 0, guiWidth, guiHeight);
 		
@@ -120,6 +123,25 @@ public class GuiScreenGuide extends GuiScreen{
 		}
 		else this.drawTexturedModalRect(this.guiLeft+this.guiWidth-22-17, this.guiTop+168, 181, 0, 17, 9);
 		
+		for(PageImgData img:page.image)
+		{
+			mc.renderEngine.bindTexture(new ResourceLocation(TextureInfo.GUI_GUIDE_LOCATION+img.source));
+						
+			GL11.glBegin(GL11.GL_QUADS);
+			GL11.glTexCoord2f(0f, 0f);
+			GL11.glVertex2f(guiLeft+img.x, guiTop+img.y);
+
+			GL11.glTexCoord2f(0f, 1f);
+			GL11.glVertex2f(guiLeft+img.x, guiTop+img.y+img.height/(1/img.scale));
+
+			GL11.glTexCoord2f(1f, 1f);
+			GL11.glVertex2f(guiLeft+img.x+img.width/(1/img.scale), guiTop+img.y+img.height/(1/img.scale));
+
+			GL11.glTexCoord2f(1f, 0f);
+			GL11.glVertex2f(guiLeft+img.x+img.width/(1/img.scale), guiTop+img.y);
+			GL11.glEnd();
+		}
+		
 		this.drawCenteredString(fontRenderer, String.valueOf(this.currPage+1)+"/"+this.maxPages, this.guiLeft+this.guiWidth/2, this.guiTop+this.guiHeight-20);
     }
     
@@ -132,6 +154,9 @@ public class GuiScreenGuide extends GuiScreen{
 			this.fontRenderer.drawSplitString(text.text, (int)((this.guiLeft+text.x)*(1/text.size)), (int)((this.guiTop+text.y)*(1/text.size)), (int)(text.width*(1/text.size)), 0);
 			GL11.glPopMatrix();
 		}
+		
+		RenderHelper.enableGUIStandardItemLighting();
+
 		for(PageCraftData craft:page.crafting)
 		{
 			mc.renderEngine.bindTexture(new ResourceLocation(TextureInfo.GUI_GUIDE));
@@ -148,7 +173,8 @@ public class GuiScreenGuide extends GuiScreen{
 			
 			this.drawCenteredString(fontRenderer, (craft.shapeless? "shapeless":"shaped"), guiLeft+craft.x+25, guiTop+craft.y+53);
 		}
-		
+
+		RenderHelper.enableGUIStandardItemLighting();
 		for(PageItemImgData item:page.item)itemRender.renderItemAndEffectIntoGUI(fontRenderer, mc.renderEngine, item.stack, this.guiLeft+item.x, this.guiTop+item.y);
         GL11.glDisable(GL11.GL_LIGHTING);
 	}

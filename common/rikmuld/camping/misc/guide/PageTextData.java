@@ -21,7 +21,7 @@ public class PageTextData {
 		this.setData();
 	}
 
-	private void setData()
+	public void setData()
 	{
 		Element data = (Element) this.data;
 		

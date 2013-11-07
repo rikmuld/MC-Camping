@@ -18,12 +18,12 @@ public class ItemInfo {
 
 	public static void putAll()
 	{
-		devIDs.put(KNIFE, 4000);
-		devIDs.put(BACKPACK, 4001);
-		devIDs.put(LANTERN, 4002);
-		devIDs.put(KIT, 4003);
-		devIDs.put(HEMP, 4004);
-		devIDs.put(PARTS, 4005);
+		devIDs.put(KNIFE, 5000);
+		devIDs.put(BACKPACK, 5001);
+		devIDs.put(LANTERN, 5002);
+		devIDs.put(KIT, 5003);
+		devIDs.put(HEMP, 5004);
+		devIDs.put(PARTS, 5005);
 
 		names.put(KNIFE, "Pocket Knife");
 		names.put(BACKPACK, "Hiking Bag");
@@ -35,7 +35,7 @@ public class ItemInfo {
 
 	public static int id(String name)
 	{
-		return IDs.get(name);
+		return IDs.get(name)!=null? IDs.get(name):-1;
 	}
 	
 	public static String name(String name)

@@ -276,4 +276,10 @@ public class BlockFlowerHemp extends BlockFlowerMain {
 			setBlockBounds(0.3F, 0.0F, 0.3F, 0.7F, 0.2F, 0.7F);
 		}
 	}
+	
+	@Override
+	public int idPicked(World world, int x, int y, int z)
+    {
+        return ModItems.hemp.itemID;
+    }
 }

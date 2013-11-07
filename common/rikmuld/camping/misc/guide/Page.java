@@ -74,5 +74,11 @@ public class Page {
 		{
 			this.text.add(new PageTextData(text.item(i)));
 		}
+		
+		NodeList version = ((Element)page).getElementsByTagName("version");
+		for(int i = 0; i<version.getLength(); i++)
+		{
+			this.text.add(new PageVersionData(version.item(i)));
+		}
 	}
 }

@@ -50,36 +50,3 @@ public class Book {
 		}
 	}
 }
-
-/*
-
-XML structure:
-
-Book -> Pages
-
-Page 	->	Text Elements (text)
-		->	Link Elements (link)
-		->	Image Elements (img)
-		->	Crafting Elements (craft)
-		->  Item Image Elements (item)
-
-Text Element 		-> Text Data (data)
-					-> Position (pos) (A String x/y/width/size)
-				
-Link Element 		-> Link num to page	(page)
-					-> position (pos) (A String x/y/width/height)
-		
-Image Element 		-> Image source (source)
-					-> Position (pos) (A String x/y/width/height)
-					-> OPTIONAL: A Link num to page (link)
-				
-Crafting Element	-> position (pos) (A String x/y)
-					-> Shapless or not (shapeless) (true or false)
-					-> ItemData Elements (stacks)
-							
-Item Image Element 	-> ItemStack source (stack)(A String id/meta)
-					-> Position (pos) (A String x/y)
-					
-					ItemData Element 	-> Item Data (stack) (id/meta)
-					
-*/

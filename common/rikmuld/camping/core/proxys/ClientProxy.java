@@ -12,6 +12,7 @@ import rikmuld.camping.client.render.item.RendererCampfireItem;
 import rikmuld.camping.core.handler.TickHandler;
 import rikmuld.camping.core.register.ModBlocks;
 import rikmuld.camping.misc.guide.Book;
+import rikmuld.camping.misc.version.VersionData;
 import rikmuld.camping.tileentity.TileEntityCampfireDeco;
 import rikmuld.camping.tileentity.TileEntityCampfireCook;
 import cpw.mods.fml.client.FMLClientHandler;
@@ -38,7 +39,7 @@ public class ClientProxy extends CommonProxy {
 		FMLClientHandler.instance().getClient().effectRenderer.addEffect(new FXColoredFlame(world, x, y, z, motionX, motionY, motionZ, color));
 	}
 	
-
+	@Override
 	public void registerTickHandler()
 	{
 		TickRegistry.registerTickHandler(new TickHandler(), Side.SERVER);
@@ -55,5 +56,12 @@ public class ClientProxy extends CommonProxy {
 		{
 			e.printStackTrace();
 		}
+	}
+	
+	@Override
+	public void checkVersion()
+	{
+		VersionData data = new VersionData();
+		data.execute();
 	}
 }

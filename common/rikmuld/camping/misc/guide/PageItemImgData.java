@@ -5,6 +5,7 @@ import net.minecraft.item.ItemStack;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
+import rikmuld.camping.core.lib.BlockInfo;
 import rikmuld.camping.core.lib.ItemInfo;
 import rikmuld.camping.core.register.ModLogger;
 
@@ -37,7 +38,8 @@ public class PageItemImgData {
 		}
 		catch (NumberFormatException e)
 		{
-			id = ItemInfo.id(stackData.split("/")[0]) + 256;
+			if(ItemInfo.id(stackData.split("/")[0])!=-1)id = ItemInfo.id(stackData.split("/")[0]) + 256;
+			else if(BlockInfo.id(stackData.split("/")[0])!=-1)id = BlockInfo.id(stackData.split("/")[0]);
 		}
 		
 		stack = new ItemStack(id, 1, Integer.parseInt(stackData.split("/")[1]));

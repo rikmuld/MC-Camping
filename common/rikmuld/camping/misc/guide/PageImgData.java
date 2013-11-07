@@ -12,8 +12,7 @@ public class PageImgData {
 	public int y;
 	public int width;
 	public int height;
-	public boolean hasLink;
-	public int link;
+	public float scale;
 	
 	public PageImgData(Node dataNode)
 	{
@@ -34,13 +33,6 @@ public class PageImgData {
 		this.y = Integer.parseInt(pos.split("/")[1]);
 		this.width = Integer.parseInt(pos.split("/")[2]);
 		this.height = Integer.parseInt(pos.split("/")[3]);
-		
-		this.hasLink = data.getElementsByTagName("link").getLength()>0;
-		
-		if(hasLink)
-		{
-			Element linkData = (Element) data.getElementsByTagName("link").item(0);
-			this.link = Integer.parseInt(linkData.getTextContent());
-		}
+		this.scale = Float.parseFloat(pos.split("/")[4]);
 	}
 }

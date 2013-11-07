@@ -8,6 +8,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import rikmuld.camping.core.lib.BlockInfo;
 import rikmuld.camping.core.lib.ItemInfo;
 
 public class PageCraftData {
@@ -47,7 +48,8 @@ public class PageCraftData {
 				}
 				catch (NumberFormatException e)
 				{
-					id = ItemInfo.id(list.item(i).getTextContent().split("/")[0]) + 256;
+					if(ItemInfo.id(list.item(i).getTextContent().split("/")[0])!=-1)id = ItemInfo.id(list.item(i).getTextContent().split("/")[0]) + 256;
+					else if(BlockInfo.id(list.item(i).getTextContent().split("/")[0])!=-1)id = BlockInfo.id(list.item(i).getTextContent().split("/")[0]);
 				}
 				stacks.add(new ItemStack(id, 1, Integer.parseInt(list.item(i).getTextContent().split("/")[1])));
 			}

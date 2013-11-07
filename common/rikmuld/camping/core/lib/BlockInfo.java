@@ -29,7 +29,7 @@ public class BlockInfo {
 	
 	public static int id(String name)
 	{
-		return IDs.get(name);
+		return IDs.get(name)!=null? IDs.get(name):-1;
 	}
 	
 	public static String name(String name)

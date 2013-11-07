@@ -24,4 +24,6 @@ public class TextureInfo {
 	public static final String MODEL_GRILL = MODEL_LOCATION+"ModelGrill.png";
 	public static final String MODEL_PAN = MODEL_LOCATION+"ModelPan.png";
 	public static final String GUI_GUIDE = GUI_LOCATION+"GuiGuideBook.png";
+	public static final String RED_DOT = GUI_LOCATION+"GuiMapRed.png";;
+	public static final String BLUE_DOT = GUI_LOCATION+"GuiMapBlue.png";;
 }
