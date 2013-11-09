@@ -33,10 +33,14 @@ public class VersionData  implements Runnable {
 		try
 		{
 			URL url = new URL("http://rikmuld.com/assets/files/version.xml");
-			URLConnection conn = url.openConnection();
+			
+			URLConnection connection = url.openConnection();
 			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder builder = factory.newDocumentBuilder();
-			doc = builder.parse(conn.getInputStream());
+			
+			connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.4; en-US; rv:1.9.2.2) Gecko/20100316 Firefox/3.6.2");
+
+			doc = builder.parse(connection.getInputStream());
 		}
 		catch(IOException | ParserConfigurationException | SAXException e)
 		{

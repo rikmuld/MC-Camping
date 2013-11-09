@@ -9,9 +9,9 @@ import org.lwjgl.opengl.GL11;
 
 import rikmuld.camping.core.lib.TextureInfo;
 import rikmuld.camping.core.register.ModLogger;
+import rikmuld.camping.entity.tileentity.TileEntityCampfireCook;
 import rikmuld.camping.inventory.container.ContainerCampfireCook;
 import rikmuld.camping.inventory.container.ContainerCampfireDeco;
-import rikmuld.camping.tileentity.TileEntityCampfireCook;
 
 public class GuiContainerCampfireCook extends GuiContainer {
 

@@ -8,8 +8,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import rikmuld.camping.core.util.ContainerUtil;
+import rikmuld.camping.entity.tileentity.TileEntityCampfireDeco;
 import rikmuld.camping.inventory.slot.SlotItemsOnly;
-import rikmuld.camping.tileentity.TileEntityCampfireDeco;
 
 public class ContainerCampfireDeco extends ContainerMain{
 

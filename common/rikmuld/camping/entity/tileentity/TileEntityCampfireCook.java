@@ -1,4 +1,4 @@
-package rikmuld.camping.tileentity;
+package rikmuld.camping.entity.tileentity;
 
 import java.nio.ByteBuffer;
 import java.util.ArrayList;

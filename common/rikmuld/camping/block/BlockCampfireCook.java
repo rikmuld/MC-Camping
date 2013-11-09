@@ -22,8 +22,8 @@ import rikmuld.camping.core.register.ModItems;
 import rikmuld.camping.core.register.ModLogger;
 import rikmuld.camping.core.util.BlockUtil;
 import rikmuld.camping.core.util.ItemStackUtil;
-import rikmuld.camping.tileentity.TileEntityCampfireDeco;
-import rikmuld.camping.tileentity.TileEntityCampfireCook;
+import rikmuld.camping.entity.tileentity.TileEntityCampfireCook;
+import rikmuld.camping.entity.tileentity.TileEntityCampfireDeco;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -34,7 +34,7 @@ public class BlockCampfireCook extends BlockMain {
 		super(name, Material.fire);
 		setHardness(2.0F);
 		setLightValue(1.0F);
-		setStepSound(soundWoodFootstep);
+		setStepSound(soundStoneFootstep);
 		setBlockBounds(0.125F, 0.0F, 0.125F, 0.875F, 0.125F, 0.875F);
 	}
 	

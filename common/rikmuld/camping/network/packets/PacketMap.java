@@ -11,8 +11,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.INetworkManager;
 import rikmuld.camping.core.handler.EventsHandler;
 import rikmuld.camping.core.register.ModLogger;
+import rikmuld.camping.entity.tileentity.TileEntityMain;
 import rikmuld.camping.network.PacketTypeHandler;
-import rikmuld.camping.tileentity.TileEntityMain;
 import cpw.mods.fml.common.network.Player;
 
 public class PacketMap extends PacketMain {

@@ -24,8 +24,8 @@ import rikmuld.camping.core.register.ModItems;
 import rikmuld.camping.core.register.ModLogger;
 import rikmuld.camping.core.util.BlockUtil;
 import rikmuld.camping.core.util.ItemStackUtil;
-import rikmuld.camping.tileentity.TileEntityCampfireDeco;
-import rikmuld.camping.tileentity.TileEntityLight;
+import rikmuld.camping.entity.tileentity.TileEntityCampfireDeco;
+import rikmuld.camping.entity.tileentity.TileEntityLight;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 

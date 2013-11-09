@@ -4,6 +4,7 @@ import net.minecraft.block.Block;
 import rikmuld.camping.block.BlockCampfireCook;
 import rikmuld.camping.block.BlockCampfireDeco;
 import rikmuld.camping.block.BlockLight;
+import rikmuld.camping.block.BlockLog;
 import rikmuld.camping.block.plant.BlockFlowerHemp;
 import rikmuld.camping.core.lib.BlockInfo;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -15,13 +16,15 @@ public class ModBlocks {
 	public static Block campfireDeco;
 	public static Block light;
 	public static Block hemp;
+	public static Block log;
 
 	public static void init()
 	{		
 		campfireBase = new BlockCampfireCook(BlockInfo.CAMPFIRE_BASE);	
 		campfireDeco = new BlockCampfireDeco(BlockInfo.CAMPFIRE_DECO_NAME);	
 		light = new BlockLight(BlockInfo.LIGHT);
-		hemp = new BlockFlowerHemp(BlockInfo.HEMP);	
+		hemp = new BlockFlowerHemp(BlockInfo.HEMP);
+		log = new BlockLog(BlockInfo.LOG);	
 	}
 	
 	public static void register(Block block, String name)

@@ -1,4 +1,4 @@
-package rikmuld.camping.tileentity;
+package rikmuld.camping.entity.tileentity;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.INetworkManager;

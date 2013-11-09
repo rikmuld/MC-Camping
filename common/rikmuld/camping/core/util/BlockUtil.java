@@ -45,4 +45,25 @@ public class BlockUtil {
 			}
 		}
 	}
+
+	public static int[][] getBlocks(World world, int x, int y, int z)
+	{
+		int[][] ids = new int[6][2];
+		
+		ids[0][0] = world.getBlockId(x, y-1, z);
+		ids[1][0] = world.getBlockId(x, y+1, z);
+		ids[2][0] = world.getBlockId(x, y, z-1);
+		ids[3][0] = world.getBlockId(x, y, z+1);
+		ids[4][0] = world.getBlockId(x-1, y, z);
+		ids[5][0] = world.getBlockId(x+1, y, z);
+		
+		ids[0][1] = world.getBlockMetadata(x, y-1, z);
+		ids[1][1] = world.getBlockMetadata(x, y+1, z);
+		ids[2][1] = world.getBlockMetadata(x, y, z-1);
+		ids[3][1] = world.getBlockMetadata(x, y, z+1);
+		ids[4][1] = world.getBlockMetadata(x-1, y, z);
+		ids[5][1] = world.getBlockMetadata(x+1, y, z);
+		
+		return ids;
+	}
 }

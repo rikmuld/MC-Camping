@@ -1,4 +1,4 @@
-package rikmuld.camping.tileentity;
+package rikmuld.camping.entity.tileentity;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;

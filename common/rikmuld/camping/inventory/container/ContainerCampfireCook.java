@@ -12,10 +12,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import rikmuld.camping.core.register.ModItems;
 import rikmuld.camping.core.util.ContainerUtil;
+import rikmuld.camping.entity.tileentity.TileEntityCampfireCook;
 import rikmuld.camping.inventory.slot.SlotCooking;
 import rikmuld.camping.inventory.slot.SlotItemsOnly;
 import rikmuld.camping.misc.cooking.CookingEquipmentList;
-import rikmuld.camping.tileentity.TileEntityCampfireCook;
 
 public class ContainerCampfireCook extends ContainerMain{
 

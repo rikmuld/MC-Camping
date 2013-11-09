@@ -8,8 +8,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.INetworkManager;
 import rikmuld.camping.CampingMod;
 import rikmuld.camping.core.lib.GuiInfo;
+import rikmuld.camping.entity.tileentity.TileEntityMain;
 import rikmuld.camping.network.PacketTypeHandler;
-import rikmuld.camping.tileentity.TileEntityMain;
 import cpw.mods.fml.common.network.Player;
 
 public class PacketOpenGui extends PacketMain {

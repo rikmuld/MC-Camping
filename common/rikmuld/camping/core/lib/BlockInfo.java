@@ -13,6 +13,7 @@ public class BlockInfo {
 	public static final String CAMPFIRE_DECO_NAME = "campfireDeco";
 	public static final String LIGHT = "lightBlock";
 	public static final String HEMP = "plantHemp";
+	public static final String LOG = "logSeat";
 
 	public static void putAll()
 	{
@@ -20,11 +21,13 @@ public class BlockInfo {
 		devIDs.put(CAMPFIRE_DECO_NAME, 2001);
 		devIDs.put(LIGHT, 2002);
 		devIDs.put(HEMP, 2003);
+		devIDs.put(LOG, 2004);
 
 		names.put(CAMPFIRE_BASE, "Campfire Base");
 		names.put(CAMPFIRE_DECO_NAME, "Decoration Campfire");
 		names.put(LIGHT, "Light Block");
 		names.put(HEMP, "Hemp");
+		names.put(LOG, "Log Seat");
 	}
 	
 	public static int id(String name)

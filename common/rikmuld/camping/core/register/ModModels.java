@@ -13,7 +13,7 @@ import net.minecraftforge.client.model.techne.TechneModelLoader;
 public class ModModels {
 
 	public static TechneModel campfire;
-	public static TechneModel widthBase;
+	public static TechneModel log;
 
 	static TechneModelLoader loader = new TechneModelLoader();
 
@@ -22,7 +22,7 @@ public class ModModels {
 		try
 		{
 			campfire = (TechneModel) loader.loadInstance("campfireDeco", ModModels.class.getResource(ModelInfo.CAMPFIRE_DECO));
-			widthBase = (TechneModel) loader.loadInstance("widthBase", ModModels.class.getResource(ModelInfo.WIDTH_BASE));
+			log = (TechneModel) loader.loadInstance("log", ModModels.class.getResource(ModelInfo.LOG));
 		}
 		catch(ModelFormatException e)
 		{
