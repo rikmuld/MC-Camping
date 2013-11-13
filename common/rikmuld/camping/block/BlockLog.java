@@ -4,8 +4,11 @@ import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Icon;
@@ -84,10 +87,10 @@ public class BlockLog extends BlockRotationMain{
     @Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float par7, float par8, float par9)
 	{   	
-    	if(world.isRemote&&!player.isRiding()&&Vec3.createVectorHelper(x+0.5F, y+0.5F, z+0.5F).distanceTo(Vec3.createVectorHelper(player.posX, player.posY, player.posZ))<=2.5F)((TileEntityLog)world.getBlockTileEntity(x, y, z)).mountable.interactFirst(player);
+    	if(!player.isRiding()&&Vec3.createVectorHelper(x+0.5F, y+0.5F, z+0.5F).distanceTo(Vec3.createVectorHelper(player.posX, player.posY, player.posZ))<=2.5F)((TileEntityLog)world.getBlockTileEntity(x, y, z)).mountable.interactFirst(player);
     	return true;
 	}
-
+    
 	@Override
 	public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z)
 	{

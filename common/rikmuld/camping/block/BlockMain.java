@@ -3,6 +3,7 @@ package rikmuld.camping.block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
 import net.minecraft.world.World;
@@ -10,6 +11,7 @@ import rikmuld.camping.core.lib.BlockInfo;
 import rikmuld.camping.core.lib.ModInfo;
 import rikmuld.camping.core.register.ModBlocks;
 import rikmuld.camping.core.register.ModTabs;
+import rikmuld.camping.item.itemblock.ItemBlockLantern;
 
 public class BlockMain extends BlockContainer {
 
@@ -17,10 +19,13 @@ public class BlockMain extends BlockContainer {
 	public String[] metadata;
 	public boolean useSides;
 
-	public BlockMain(String name, Material material, String[] meta, boolean side)
+	public BlockMain(String name, Material material, String[] meta, Class<? extends ItemBlock> itemBlock, boolean side)
 	{
-		this(name, material, side);
+		super(BlockInfo.id(name), material);
 		metadata = meta;
+		this.useSides = side;
+		this.setCreativeTab(ModTabs.campingTab);
+		ModBlocks.registerWithMeta(this, name, itemBlock);
 	}
 
 	public BlockMain(String name, Material material, boolean side)

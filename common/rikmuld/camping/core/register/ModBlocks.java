@@ -1,8 +1,10 @@
 package rikmuld.camping.core.register;
 
 import net.minecraft.block.Block;
+import net.minecraft.item.ItemBlock;
 import rikmuld.camping.block.BlockCampfireCook;
 import rikmuld.camping.block.BlockCampfireDeco;
+import rikmuld.camping.block.BlockLantern;
 import rikmuld.camping.block.BlockLight;
 import rikmuld.camping.block.BlockLog;
 import rikmuld.camping.block.plant.BlockFlowerHemp;
@@ -17,6 +19,7 @@ public class ModBlocks {
 	public static Block light;
 	public static Block hemp;
 	public static Block log;
+	public static Block lantern;
 
 	public static void init()
 	{		
@@ -25,11 +28,17 @@ public class ModBlocks {
 		light = new BlockLight(BlockInfo.LIGHT);
 		hemp = new BlockFlowerHemp(BlockInfo.HEMP);
 		log = new BlockLog(BlockInfo.LOG);	
+		lantern = new BlockLantern(BlockInfo.LANTERN);	
 	}
 	
 	public static void register(Block block, String name)
 	{
 		GameRegistry.registerBlock(block, name);
 		LanguageRegistry.addName(block, BlockInfo.name(name));
+	}
+
+	public static void registerWithMeta(Block block, String name, Class<? extends ItemBlock> itemBlock)
+	{
+		GameRegistry.registerBlock(block, itemBlock, name);
 	}
 }

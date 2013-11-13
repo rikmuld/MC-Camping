@@ -15,6 +15,7 @@ public class ItemInfo {
 	public static final String HEMP = "hemp";
 	public static final String KIT = "kit";
 	public static final String PARTS = "parts";
+	public static final String MARSHSTICK_COOKED = "marshmallowStickCooked";
 
 	public static void putAll()
 	{
@@ -24,6 +25,7 @@ public class ItemInfo {
 		devIDs.put(KIT, 5003);
 		devIDs.put(HEMP, 5004);
 		devIDs.put(PARTS, 5005);
+		devIDs.put(MARSHSTICK_COOKED, 5006);
 
 		names.put(KNIFE, "Pocket Knife");
 		names.put(BACKPACK, "Hiking Bag");
@@ -31,6 +33,7 @@ public class ItemInfo {
 		names.put(KIT, "Campfire Kit");
 		names.put(HEMP, "Hemp");
 		names.put(PARTS, "Miscellaneous Items");
+		names.put(MARSHSTICK_COOKED, "Cooked Marshmallow on a Stick");
 	}
 
 	public static int id(String name)

@@ -8,6 +8,7 @@ import net.minecraft.world.World;
 import rikmuld.camping.core.lib.ItemInfo;
 import rikmuld.camping.core.register.ModItems;
 import rikmuld.camping.core.util.ItemStackUtil;
+import rikmuld.camping.entity.tileentity.TileEntityRotation;
 
 public class ItemKnife extends ItemMain implements IKnife {
 
@@ -91,11 +92,26 @@ public class ItemKnife extends ItemMain implements IKnife {
 					{
 						world.setBlockMetadataWithNotify(x, y, z, world.getBlockMetadata(x, y, z)+1, 2);
 					}
-
+					
 					if(!player.capabilities.isCreativeMode)
 					{
 						stack = ItemStackUtil.addDamage(stack, 1);
 					}
+					
+					return stack;
+				}
+				
+				if(world.getBlockTileEntity(x, y, z) instanceof TileEntityRotation)
+				{
+					((TileEntityRotation)world.getBlockTileEntity(x, y, z)).cycleRotation();
+					world.markBlockForRenderUpdate(x, y, z);
+					world.markBlockForUpdate(x, y, z);
+					
+					if(!player.capabilities.isCreativeMode)
+					{
+						stack = ItemStackUtil.addDamage(stack, 1);
+					}
+					
 					return stack;
 				}
 			}

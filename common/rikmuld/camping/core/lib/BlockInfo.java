@@ -14,6 +14,7 @@ public class BlockInfo {
 	public static final String LIGHT = "lightBlock";
 	public static final String HEMP = "plantHemp";
 	public static final String LOG = "logSeat";
+	public static final String LANTERN = "lantern1";
 
 	public static void putAll()
 	{
@@ -22,12 +23,14 @@ public class BlockInfo {
 		devIDs.put(LIGHT, 2002);
 		devIDs.put(HEMP, 2003);
 		devIDs.put(LOG, 2004);
+		devIDs.put(LANTERN, 2005);
 
 		names.put(CAMPFIRE_BASE, "Campfire Base");
 		names.put(CAMPFIRE_DECO_NAME, "Decoration Campfire");
 		names.put(LIGHT, "Light Block");
 		names.put(HEMP, "Hemp");
 		names.put(LOG, "Log Seat");
+		names.put(LANTERN, "Lantern");
 	}
 	
 	public static int id(String name)

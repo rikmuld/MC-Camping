@@ -14,6 +14,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.world.World;
+import rikmuld.camping.core.register.ModBlocks;
 import rikmuld.camping.core.register.ModItems;
 import rikmuld.camping.core.util.ContainerUtil;
 import rikmuld.camping.core.util.CampingInvUtil;
@@ -59,7 +60,7 @@ public class ContainerCampinvTool extends ContainerMain {
 		{
 			for(int collom = 0; collom<1; ++collom)
 			{
-				addSlot(new SlotItemsOnly(inv, collom+row*1, 143+collom*18, 17+row*18, ModItems.knife.itemID, ModItems.lantern.itemID, Item.map.itemID));
+				addSlot(new SlotItemsOnly(inv, collom+row*1, 143+collom*18, 17+row*18, ModItems.knife.itemID, ModBlocks.lantern.blockID, Item.map.itemID));
 			}
 		}
 
@@ -120,7 +121,7 @@ public class ContainerCampinvTool extends ContainerMain {
 			}
             else
             {
-            	if(itemstack1.itemID==ModItems.knife.itemID||itemstack1.itemID==ModItems.lantern.itemID||itemstack1.itemID==Item.map.itemID)
+            	if(itemstack1.itemID==ModItems.knife.itemID||itemstack1.itemID==ModBlocks.lantern.blockID||itemstack1.itemID==Item.map.itemID)
             	{
             		if(!mergeItemStack(itemstack1, 10, 13, false))
     				{

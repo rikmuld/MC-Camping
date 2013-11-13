@@ -1,18 +1,21 @@
 package rikmuld.camping.entity;
 
-import org.lwjgl.input.Keyboard;
-
-import rikmuld.camping.core.register.ModBlocks;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
+
+import org.lwjgl.input.Keyboard;
+
+import rikmuld.camping.core.register.ModBlocks;
 
 public class EntityMountableBlock extends Entity{
 
 	int xFlag;
 	int yFlag;
 	int zFlag;
+	EntityPlayer player;
+	int update = -1;
 	
 	@Override
 	public void onUpdate()
@@ -26,6 +29,16 @@ public class EntityMountableBlock extends Entity{
 			{
 				((EntityPlayer)this.riddenByEntity).mountEntity(null);
 				this.riddenByEntity = null;
+			}
+		}
+		
+		if(worldObj.isRemote)
+		{
+			if(update>0)update--;
+			if(update == 0)
+			{
+				this.player.mountEntity(this);
+				update = -1;
 			}
 		}
 	}
@@ -57,15 +70,16 @@ public class EntityMountableBlock extends Entity{
 	
 	@Override
 	public boolean interactFirst(EntityPlayer player)
-    {
-        if (this.riddenByEntity != null)
-        {
-            return false;
-        }
-        else
-        {
-        	player.mountEntity(this);
-            return true;
-        }
+	{
+		if(this.riddenByEntity == null&&update == -1)
+		{
+			if(!worldObj.isRemote)player.mountEntity(this);	
+			if(worldObj.isRemote)
+			{
+				this.player = player;
+				this.update = 5;
+			}
+		}
+		return true;
     }
 }

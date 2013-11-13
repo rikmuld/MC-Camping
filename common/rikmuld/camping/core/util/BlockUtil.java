@@ -2,12 +2,14 @@ package rikmuld.camping.core.util;
 
 import java.util.Random;
 
+import net.minecraft.block.Block;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ForgeDirection;
 
 public class BlockUtil {
 
@@ -65,5 +67,27 @@ public class BlockUtil {
 		ids[5][1] = world.getBlockMetadata(x+1, y, z);
 		
 		return ids;
+	}
+	
+	public static boolean isTouchableBlockPartitionalSolidOrIsFullCubeOrHasCorrectBounds(World world, int x, int y, int z)
+	{
+		int[][] coords = new int[][]{{0, 0, 0, 0, -1, 1}, {-1, 1, 0, 0, 0, 0}, {0, 0, -1, 1, 0, 0}};
+	
+		for(int i = 0; i<6; i++)if(world.isBlockFullCube(x+coords[0][i], y+coords[1][i], z+coords[2][i]))return true;
+		for(int i = 0; i<6; i++)if(world.isBlockNormalCube(x+coords[0][i], y+coords[1][i], z+coords[2][i]))return true;		
+		for(int i = 0; i<6; i++)if(world.isBlockOpaqueCube(x+coords[0][i], y+coords[1][i], z+coords[2][i]))return true;		
+		for(int i = 0; i<6; i++)if(world.isBlockSolidOnSide(x+coords[0][i], y+coords[1][i], z+coords[2][i], ForgeDirection.getOrientation(ForgeDirection.OPPOSITES[ForgeDirection.getOrientation(i).ordinal()])))return true;
+		
+		for(int i = 0; i<6; i++)
+		{						
+			Block block = Block.blocksList[world.getBlockId(x+coords[0][i], y+coords[1][i], z+coords[2][i])];
+			if(block!=null)
+			{
+				ForgeDirection checkSide = ForgeDirection.getOrientation(ForgeDirection.OPPOSITES[ForgeDirection.getOrientation(i).ordinal()]);			
+				double[] bounds = new double[]{block.getBlockBoundsMinY(), block.getBlockBoundsMaxY(), block.getBlockBoundsMinZ(), block.getBlockBoundsMaxZ(), block.getBlockBoundsMinX(), block.getBlockBoundsMaxX()};
+				if(checkSide.ordinal()%2==0?bounds[checkSide.ordinal()]==0.0F:bounds[checkSide.ordinal()]==1.0F)return true;
+			}
+		}
+		return false;
 	}
 }

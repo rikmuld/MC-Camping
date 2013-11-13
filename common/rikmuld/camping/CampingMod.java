@@ -78,6 +78,20 @@ public class CampingMod {
 	
 	/*
 	
+	BUGS
+	{
+		NO KNOWN BUGS!!!!!!!!!!!!!!!!!!
+	}
+	UNFINISHED
+	{
+		CAMPINGGUIDE (MANY THINGS ALSO UPDATE THE LANTERN PART)
+	}
+	NEXT UP
+	{
+		SLEEPING BAG
+		TENTS
+	}
+	
 	More food
 	{
 

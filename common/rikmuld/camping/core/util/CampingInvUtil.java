@@ -8,18 +8,15 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.world.storage.MapData;
+import rikmuld.camping.core.register.ModBlocks;
 import rikmuld.camping.core.register.ModItems;
-import rikmuld.camping.item.ItemParts;
-import rikmuld.camping.network.PacketTypeHandler;
-import rikmuld.camping.network.packets.PacketPlayerData;
-import cpw.mods.fml.common.network.PacketDispatcher;
-import cpw.mods.fml.common.network.Player;
+import rikmuld.camping.item.itemblock.ItemBlockLantern;
 
 public class CampingInvUtil {
 
 	public static boolean hasLantarn(EntityPlayer player)
 	{
-		return loadItemsFromNBT(player.getEntityData().getCompoundTag("campInv").getCompoundTag("tool")).contains(ModItems.lantern.itemID);
+		return loadItemsFromNBT(player.getEntityData().getCompoundTag("campInv").getCompoundTag("tool")).contains(ModBlocks.lantern.blockID);
 	}
 	
 	public static boolean hasMap(EntityPlayer player)
@@ -77,13 +74,19 @@ public class CampingInvUtil {
 		ArrayList<ItemStack> stacks2 = new ArrayList<ItemStack>();
 		for(ItemStack stack: stacks)
 		{
-			if(stack.itemID==ModItems.lantern.itemID)
+			if(stack.itemID==ModBlocks.lantern.blockID&&stack.getItemDamage()==ItemBlockLantern.LANTERN_ON)
 			{
-				if(stack.getItemDamage()<stack.getMaxDamage()-1)
+				if(!stack.hasTagCompound())
 				{
-					stack=ItemStackUtil.addDamage(stack, 1);
+					stack.setTagCompound(new NBTTagCompound());
+					stack.getTagCompound().setInteger("time", 1500);
 				}
-				else stack = new ItemStack(ModItems.parts, 1, ItemParts.LANTERN_OFF);
+				
+				if(stack.getTagCompound().getInteger("time")-1>0)
+				{
+					stack.getTagCompound().setInteger("time", stack.getTagCompound().getInteger("time")-1);
+				}
+				else stack = new ItemStack(ModBlocks.lantern, 1, ItemBlockLantern.LANTERN_OFF);
 			}
 			stacks2.add(stack);
 		}
@@ -111,9 +114,15 @@ public class CampingInvUtil {
 		ArrayList<ItemStack> stacks = loadItemsStacksFromNBT(player.getEntityData().getCompoundTag("campInv").getCompoundTag("tool"));
 		for(ItemStack stack: stacks)
 		{
-			if(stack.itemID==ModItems.lantern.itemID)
+			if(stack.itemID==ModBlocks.lantern.blockID&&stack.getItemDamage()==ItemBlockLantern.LANTERN_ON)
 			{
-				return stack.getItemDamage();
+				if(!stack.hasTagCompound())
+				{
+					stack.setTagCompound(new NBTTagCompound());
+					stack.getTagCompound().setInteger("time", 1500);
+				}
+				
+				return stack.getTagCompound().getInteger("time");
 			}
 		}
 		return -1;
