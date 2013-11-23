@@ -77,11 +77,7 @@ public class BlockCampfireCook extends BlockMain {
 	{
 		if(!world.doesBlockHaveSolidTopSurface(x, y-1, z))
 		{
-			for(ItemStack item: this.getBlockDropped(world, x, y, z, 0, 1))
-			{
-				this.dropBlockAsItem_do(world, x, y, z, item);
-			}
-			this.breakBlock(world, x, y, z, blockID, 0);
+			for(ItemStack item: this.getBlockDropped(world, x, y, z, 0, 1))this.dropBlockAsItem_do(world, x, y, z, item);
 			world.setBlock(x, y, z, 0);
 		}
 	}

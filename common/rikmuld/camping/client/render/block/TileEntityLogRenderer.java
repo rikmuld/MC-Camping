@@ -22,10 +22,6 @@ import rikmuld.camping.entity.tileentity.TileEntityLog;
 
 public class TileEntityLogRenderer extends TileEntitySpecialRenderer{
 	
-    private static FloatBuffer colorBuffer = GLAllocation.createDirectFloatBuffer(16);
-    private static final Vec3 field_82884_b = Vec3.createVectorHelper(0.20000000298023224D, 1.0D, -0.699999988079071D).normalize();
-    private static final Vec3 field_82885_c = Vec3.createVectorHelper(-0.20000000298023224D, 1.0D, 0.699999988079071D).normalize();
-
 	@Override
 	public void renderTileEntityAt(TileEntity tileentity, double x, double y, double z, float fl)
 	{
@@ -75,17 +71,4 @@ public class TileEntityLogRenderer extends TileEntitySpecialRenderer{
 		
 		GL11.glPopMatrix();
 	}
-	
-    private static FloatBuffer setColorBuffer(float par0, float par1, float par2, float par3)
-    {
-        colorBuffer.clear();
-        colorBuffer.put(par0).put(par1).put(par2).put(par3);
-        colorBuffer.flip();
-        return colorBuffer;
-    }
-    
-    private static FloatBuffer setColorBuffer(double par0, double par2, double par4, double par6)
-    {
-        return setColorBuffer((float)par0, (float)par2, (float)par4, (float)par6);
-    }
 }

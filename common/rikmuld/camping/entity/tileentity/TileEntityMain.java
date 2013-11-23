@@ -22,15 +22,15 @@ public class TileEntityMain extends TileEntity {
 	{}
 
 	@Override
-	public void readFromNBT(NBTTagCompound NBTTagCompound)
+	public void readFromNBT(NBTTagCompound tag)
 	{
-		super.readFromNBT(NBTTagCompound);
+		super.readFromNBT(tag);
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound NBTTagCompound)
+	public void writeToNBT(NBTTagCompound tag)
 	{
-		super.writeToNBT(NBTTagCompound);
+		super.writeToNBT(tag);
 	}
 
 	@Override

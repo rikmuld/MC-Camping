@@ -6,6 +6,7 @@ import net.minecraft.item.ItemStack;
 import rikmuld.camping.core.lib.BlockInfo;
 import rikmuld.camping.core.lib.ItemInfo;
 import rikmuld.camping.item.ItemBackpack;
+import rikmuld.camping.item.ItemFoodBerry;
 import rikmuld.camping.item.ItemFoodMarshmallow;
 import rikmuld.camping.item.ItemHemp;
 import rikmuld.camping.item.ItemKit;
@@ -22,6 +23,7 @@ public class ModItems {
 	public static Item parts;
 	public static Item hemp;
 	public static Item marshmallowCooked;
+	public static Item berries;
 
 	public static void init()
 	{
@@ -31,6 +33,7 @@ public class ModItems {
 		hemp = new ItemHemp(ItemInfo.HEMP);
 		parts = new ItemParts(ItemInfo.PARTS);
 		marshmallowCooked = new ItemFoodMarshmallow(ItemInfo.MARSHSTICK_COOKED);
+		berries = new ItemFoodBerry(ItemInfo.BERRIES);
 	}
 	
 	public static void register(Item item, String name)

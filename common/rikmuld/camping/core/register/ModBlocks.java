@@ -2,11 +2,15 @@ package rikmuld.camping.core.register;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;
+import rikmuld.camping.block.BlockBerryLeaves;
+import rikmuld.camping.block.BlockBoundsHelper;
 import rikmuld.camping.block.BlockCampfireCook;
 import rikmuld.camping.block.BlockCampfireDeco;
 import rikmuld.camping.block.BlockLantern;
 import rikmuld.camping.block.BlockLight;
 import rikmuld.camping.block.BlockLog;
+import rikmuld.camping.block.BlockSleepingBag;
+import rikmuld.camping.block.BlockTent;
 import rikmuld.camping.block.plant.BlockFlowerHemp;
 import rikmuld.camping.core.lib.BlockInfo;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -20,6 +24,10 @@ public class ModBlocks {
 	public static Block hemp;
 	public static Block log;
 	public static Block lantern;
+	public static Block sleepingbag;
+	public static Block leaves;
+	public static Block tent;
+	public static Block bounds;
 
 	public static void init()
 	{		
@@ -28,7 +36,11 @@ public class ModBlocks {
 		light = new BlockLight(BlockInfo.LIGHT);
 		hemp = new BlockFlowerHemp(BlockInfo.HEMP);
 		log = new BlockLog(BlockInfo.LOG);	
-		lantern = new BlockLantern(BlockInfo.LANTERN);	
+		lantern = new BlockLantern(BlockInfo.LANTERN);
+		sleepingbag = new BlockSleepingBag(BlockInfo.SLEEPING);
+		leaves = new BlockBerryLeaves(BlockInfo.BERRY);
+		tent = new BlockTent(BlockInfo.TENT);	
+		bounds = new BlockBoundsHelper(BlockInfo.BOUNDS);
 	}
 	
 	public static void register(Block block, String name)

@@ -39,7 +39,9 @@ public class CampingMod {
 	public static CampingMod instance;
 	@SidedProxy(clientSide = ModInfo.MOD_CLIENT_PROXY, serverSide = ModInfo.MOD_SERVER_PROXY)
 	public static CommonProxy proxy;
-
+	
+	 
+	
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event)
 	{
@@ -84,12 +86,21 @@ public class CampingMod {
 	}
 	UNFINISHED
 	{
+		BERRY TREES -- SAPLINGS
 		CAMPINGGUIDE (MANY THINGS ALSO UPDATE THE LANTERN PART)
 	}
 	NEXT UP
 	{
-		SLEEPING BAG
+		MOB TRAPS
+		MORE MODS
+		
+		MORE FOOD
+		
 		TENTS
+		
+		FINISH UNFINISHED
+		
+		CAMPING ARMOR
 	}
 	
 	More food
@@ -100,7 +111,7 @@ public class CampingMod {
 			-corn (mais plant -harvest> corn -campers tool> mais -pan> popcorn)
 			-radish -pan> baked radish
 		}
-	- berrys
+	- berries
 	- more flesh
 		{
 		- more animals
@@ -124,10 +135,6 @@ public class CampingMod {
 		- sleeping tents
 		- master tent with many uses
 		}
-	- a log were steve can sit
-	- make the lanten also a block to place for light
-	- sleeping bags for in tents to make sleeping bag but also to put on ground and sleep 
-
 	}
 	
 	

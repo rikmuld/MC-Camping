@@ -4,18 +4,25 @@ import java.net.URISyntaxException;
 
 import net.minecraft.world.World;
 import net.minecraftforge.client.MinecraftForgeClient;
-import rikmuld.camping.client.render.block.TileEntityCampfireDecoRenderer;
+import rikmuld.camping.client.render.block.TileEntityBerryRenderer;
 import rikmuld.camping.client.render.block.TileEntityCampfireCookRenderer;
+import rikmuld.camping.client.render.block.TileEntityCampfireDecoRenderer;
 import rikmuld.camping.client.render.block.TileEntityLogRenderer;
+import rikmuld.camping.client.render.block.TileEntitySleepingBagRenderer;
+import rikmuld.camping.client.render.block.TileEntityTentRenderer;
 import rikmuld.camping.client.render.fx.FXColoredFlame;
+import rikmuld.camping.client.render.item.RendererBerryItem;
 import rikmuld.camping.client.render.item.RendererCampfireBaseItem;
 import rikmuld.camping.client.render.item.RendererCampfireItem;
 import rikmuld.camping.client.render.item.RendererLogItem;
 import rikmuld.camping.core.handler.TickHandler;
 import rikmuld.camping.core.register.ModBlocks;
+import rikmuld.camping.entity.tileentity.TileEntityBerry;
 import rikmuld.camping.entity.tileentity.TileEntityCampfireCook;
 import rikmuld.camping.entity.tileentity.TileEntityCampfireDeco;
 import rikmuld.camping.entity.tileentity.TileEntityLog;
+import rikmuld.camping.entity.tileentity.TileEntitySleepingBag;
+import rikmuld.camping.entity.tileentity.TileEntityTent;
 import rikmuld.camping.misc.guide.Book;
 import rikmuld.camping.misc.version.VersionData;
 import cpw.mods.fml.client.FMLClientHandler;
@@ -36,6 +43,10 @@ public class ClientProxy extends CommonProxy {
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCampfireCook.class, new TileEntityCampfireCookRenderer());
 		MinecraftForgeClient.registerItemRenderer(ModBlocks.log.blockID, new RendererLogItem());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityLog.class, new TileEntityLogRenderer());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySleepingBag.class, new TileEntitySleepingBagRenderer());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBerry.class, new TileEntityBerryRenderer());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTent.class, new TileEntityTentRenderer());
+		MinecraftForgeClient.registerItemRenderer(ModBlocks.leaves.blockID, new RendererBerryItem());
 	}
 	
 	@Override

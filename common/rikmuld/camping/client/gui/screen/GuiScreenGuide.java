@@ -41,9 +41,7 @@ public class GuiScreenGuide extends GuiScreen{
 	private int clicker;
 	
 	RenderItem itemRender;
-	
-	private int update;
-	
+		
 	public GuiScreenGuide()
 	{
 		this.book = ClientProxy.guide;
@@ -64,22 +62,6 @@ public class GuiScreenGuide extends GuiScreen{
     public void drawScreen(int mouseX, int mouseY, float par3)
     {
         super.drawScreen(mouseX, mouseY, par3);
-
-        update++;
-        this.maxPages = book.pages.size();
-        
-        if(update>50)
-        {
-		    try
-			{
-				this.book = new Book(Book.class.getResource(Book.MAIN_GUIDE_PATH+"book.xml").toURI());
-			}
-			catch(URISyntaxException e)
-			{
-				e.printStackTrace();
-			}
-		    update = 0;
-        }
         
         this.page = book.pages.get(currPage);
         

@@ -27,5 +27,11 @@ public class TextureInfo {
 	public static final String RED_DOT = GUI_LOCATION+"GuiMapRed.png";
 	public static final String BLUE_DOT = GUI_LOCATION+"GuiMapBlue.png";
 	public static final String MODEL_LOG = MODEL_LOCATION+"ModelLog.png";
-	public static final String MODEL_LOG2 = MODEL_LOCATION+"ModelLog2.png";;
+	public static final String MODEL_LOG2 = MODEL_LOCATION+"ModelLog2.png";
+	public static final String MODEL_SLEEPING_TOP = MODEL_LOCATION+"ModelSleepingBagTop.png";
+	public static final String MODEL_SLEEPING_DOWN = MODEL_LOCATION+"ModelSleepingBagDown.png";
+	public static final String MODEL_BERRY_EMPTY = MODEL_LOCATION+"ModelLeavesBerryEmpty.png";
+	public static final String MODEL_BERRY_BLACK = MODEL_LOCATION+"ModelLeavesBerryBlack.png";
+	public static final String MODEL_BERRY_RED = MODEL_LOCATION+"ModelLeavesBerryRed.png";
+	public static final String MODEL_TENT = MODEL_LOCATION+"ModelTent.png";
 }

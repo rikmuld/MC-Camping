@@ -9,8 +9,7 @@ public class ItemFoodMarshmallow extends ItemFoodMain{
 
 	public ItemFoodMarshmallow(String name)
 	{
-		super(name, 4, 0.1F, false);
-		this.setAlwaysEdible();
+		super(name, 4, 0.2F, false);
 	}
 	
 	@Override

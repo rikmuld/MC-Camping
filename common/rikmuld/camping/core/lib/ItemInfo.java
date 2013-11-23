@@ -10,30 +10,30 @@ public class ItemInfo {
 	public static Map<String, String> names = new HashMap<String, String>();
 	
 	public static final String KNIFE = "knife";
-	public static final String LANTERN = "lantern";
 	public static final String BACKPACK = "backpack";
 	public static final String HEMP = "hemp";
 	public static final String KIT = "kit";
 	public static final String PARTS = "parts";
 	public static final String MARSHSTICK_COOKED = "marshmallowStickCooked";
+	public static final String BERRIES = "berries";
 
 	public static void putAll()
 	{
 		devIDs.put(KNIFE, 5000);
 		devIDs.put(BACKPACK, 5001);
-		devIDs.put(LANTERN, 5002);
-		devIDs.put(KIT, 5003);
-		devIDs.put(HEMP, 5004);
-		devIDs.put(PARTS, 5005);
-		devIDs.put(MARSHSTICK_COOKED, 5006);
+		devIDs.put(KIT, 5002);
+		devIDs.put(HEMP, 5003);
+		devIDs.put(PARTS, 5004);
+		devIDs.put(MARSHSTICK_COOKED, 5005);
+		devIDs.put(BERRIES, 5006);
 
 		names.put(KNIFE, "Pocket Knife");
 		names.put(BACKPACK, "Hiking Bag");
-		names.put(LANTERN, "Lantern");
 		names.put(KIT, "Campfire Kit");
 		names.put(HEMP, "Hemp");
 		names.put(PARTS, "Miscellaneous Items");
 		names.put(MARSHSTICK_COOKED, "Cooked Marshmallow on a Stick");
+		names.put(BERRIES, "Berries");
 	}
 
 	public static int id(String name)
