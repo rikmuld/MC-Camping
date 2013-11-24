@@ -23,6 +23,7 @@ import rikmuld.camping.misc.guide.PageCraftData;
 import rikmuld.camping.misc.guide.PageImgData;
 import rikmuld.camping.misc.guide.PageItemImgData;
 import rikmuld.camping.misc.guide.PageTextData;
+import rikmuld.camping.misc.version.VersionData;
 
 public class GuiScreenGuide extends GuiScreen{
 
@@ -33,6 +34,9 @@ public class GuiScreenGuide extends GuiScreen{
 	
 	int currPage = 0;
 	int maxPages;
+	int update = 0;
+	
+	static boolean updateGuide = true;
 	
 	Book book;
 	Page page;
@@ -62,6 +66,23 @@ public class GuiScreenGuide extends GuiScreen{
     public void drawScreen(int mouseX, int mouseY, float par3)
     {
         super.drawScreen(mouseX, mouseY, par3);
+        
+        update++;
+        
+        if(update>50&&updateGuide)
+        {
+            try
+            {
+            	ModLogger.logMulti("BOE!");
+            	this.book = new Book(Book.class.getResource(Book.MAIN_GUIDE_PATH+"book.xml").toURI());
+            	if(VersionData.doneChecking)this.updateGuide = false;
+            }
+            catch(URISyntaxException e)
+            {
+            	e.printStackTrace();
+            }
+            update = 0;
+        }
         
         this.page = book.pages.get(currPage);
         

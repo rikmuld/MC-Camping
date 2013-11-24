@@ -2,6 +2,8 @@ package rikmuld.camping.misc.bounds;
 
 import java.util.ArrayList;
 
+import rikmuld.camping.core.register.ModLogger;
+
 public class BoundsTracker {
 
 	Bounds bounds;
@@ -18,12 +20,8 @@ public class BoundsTracker {
 		this.baseZ = z;
 	}
 	
-	public Bounds getBoundsOnPoistion(int x, int y, int z)
-	{		
-		int xDiv = baseX-x;
-		int yDiv = baseY-y;
-		int zDiv = baseZ-z;
-		
-		return new Bounds(bounds.xMin-=xDiv, bounds.yMin-=yDiv, bounds.zMin-=zDiv, bounds.xMax-=xDiv, bounds.yMax-=yDiv, bounds.zMax-=zDiv);
+	public Bounds getBoundsOnRelativePoistion(int xDiv, int yDiv, int zDiv)
+	{				
+		return new Bounds(bounds.xMin-xDiv, bounds.yMin-yDiv, bounds.zMin-zDiv, bounds.xMax-xDiv, bounds.yMax-yDiv, bounds.zMax-zDiv);
 	}
 }

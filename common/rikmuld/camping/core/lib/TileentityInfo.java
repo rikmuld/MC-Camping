@@ -11,4 +11,5 @@ public class TileentityInfo {
 	public static final String SLEEPING = "sleepingBag";
 	public static final String BERRY = "berry";
 	public static final String TENT = "tent";
+	public static final String BOUNDS = "bounds";
 }

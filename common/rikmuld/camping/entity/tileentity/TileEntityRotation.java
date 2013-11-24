@@ -18,11 +18,7 @@ public class TileEntityRotation extends TileEntityMain{
 	
 	public void cycleRotation()
 	{
-		if(!worldObj.isRemote)
-		{
-			this.setRotation(this.rotation<3? this.rotation+1:0);
-			ModLogger.logMulti(rotation);
-		}
+		if(!worldObj.isRemote)this.setRotation(this.rotation<3? this.rotation+1:0);
 	}
 	
 	@Override

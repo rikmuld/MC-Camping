@@ -24,6 +24,8 @@ public class VersionData  implements Runnable {
 	Document doc;
 	
 	boolean checked = false;
+	public static boolean doneChecking = false;
+	
 	int check = 0;
 
 	public static String NEW_VERSION = "Not Found";
@@ -52,13 +54,13 @@ public class VersionData  implements Runnable {
 	{
 		GetXmlFile();
 		if(doc!=null)
-		{
+		{			
 			NodeList Version = doc.getElementsByTagName("Version");
 
 			Node NewestVersion = Version.item(0);
 
 			String NewVersion = NewestVersion.getTextContent();
-
+			
 			if(!NewVersion.equals(ModInfo.MOD_VERSION))
 			{
 				this.NEW_VERSION = NewVersion;
@@ -91,6 +93,8 @@ public class VersionData  implements Runnable {
 				break;
 			}
 		}
+		
+		this.doneChecking = true;
 	}
 
 	public void execute()

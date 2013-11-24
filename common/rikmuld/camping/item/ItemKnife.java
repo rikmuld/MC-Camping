@@ -9,6 +9,7 @@ import rikmuld.camping.core.lib.ItemInfo;
 import rikmuld.camping.core.register.ModItems;
 import rikmuld.camping.core.util.ItemStackUtil;
 import rikmuld.camping.entity.tileentity.TileEntityRotation;
+import rikmuld.camping.entity.tileentity.TileEntityTent;
 
 public class ItemKnife extends ItemMain implements IKnife {
 
@@ -101,7 +102,7 @@ public class ItemKnife extends ItemMain implements IKnife {
 					return stack;
 				}
 				
-				if(world.getBlockTileEntity(x, y, z) instanceof TileEntityRotation)
+				if(world.getBlockTileEntity(x, y, z) instanceof TileEntityRotation&&!(world.getBlockTileEntity(x, y, z) instanceof TileEntityTent))
 				{
 					((TileEntityRotation)world.getBlockTileEntity(x, y, z)).cycleRotation();
 					world.markBlockForRenderUpdate(x, y, z);

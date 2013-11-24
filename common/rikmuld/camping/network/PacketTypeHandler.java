@@ -6,6 +6,7 @@ import java.io.DataInputStream;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import rikmuld.camping.core.lib.ModInfo;
+import rikmuld.camping.network.packets.PacketBounds;
 import rikmuld.camping.network.packets.PacketItems;
 import rikmuld.camping.network.packets.PacketMain;
 import rikmuld.camping.network.packets.PacketMap;
@@ -15,7 +16,7 @@ import rikmuld.camping.network.packets.PacketTileData;
 
 public enum PacketTypeHandler
 {
-	TILEDATA(PacketTileData.class), OPENGUI(PacketOpenGui.class), DATA(PacketPlayerData.class), MAP(PacketMap.class), ITEMS(PacketItems.class);
+	TILEDATA(PacketTileData.class), OPENGUI(PacketOpenGui.class), DATA(PacketPlayerData.class), MAP(PacketMap.class), ITEMS(PacketItems.class), BOUNDS(PacketBounds.class);
 
 	private Class<? extends PacketMain> clazz;
 

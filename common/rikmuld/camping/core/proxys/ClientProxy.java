@@ -15,6 +15,7 @@ import rikmuld.camping.client.render.item.RendererBerryItem;
 import rikmuld.camping.client.render.item.RendererCampfireBaseItem;
 import rikmuld.camping.client.render.item.RendererCampfireItem;
 import rikmuld.camping.client.render.item.RendererLogItem;
+import rikmuld.camping.client.render.item.RendererTentItem;
 import rikmuld.camping.core.handler.TickHandler;
 import rikmuld.camping.core.register.ModBlocks;
 import rikmuld.camping.entity.tileentity.TileEntityBerry;
@@ -46,6 +47,7 @@ public class ClientProxy extends CommonProxy {
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySleepingBag.class, new TileEntitySleepingBagRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBerry.class, new TileEntityBerryRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTent.class, new TileEntityTentRenderer());
+		MinecraftForgeClient.registerItemRenderer(ModBlocks.tent.blockID, new RendererTentItem());
 		MinecraftForgeClient.registerItemRenderer(ModBlocks.leaves.blockID, new RendererBerryItem());
 	}
 	
