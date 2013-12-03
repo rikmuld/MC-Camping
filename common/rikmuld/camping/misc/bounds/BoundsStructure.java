@@ -1,25 +1,23 @@
 package rikmuld.camping.misc.bounds;
 
+import java.util.ArrayList;
+
 import rikmuld.camping.core.register.ModBlocks;
 import rikmuld.camping.entity.tileentity.TileEntityBounds;
 import net.minecraft.block.Block;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ForgeDirection;
 
 public class BoundsStructure {
-	
-	BoundsTracker tracker;
-	World world;
-	
+		
 	int[][] blocks;
 	
-	public BoundsStructure(BoundsTracker tracker, World world, int[][] structure)
+	public BoundsStructure(int[][] structure)
 	{
-		this.tracker = tracker;
-		this.world = world;
 		this.blocks = structure;
 	}
 	
-	public void createStructure()
+	public void createStructure(World world, BoundsTracker tracker)
 	{
 		for(int i = 0; i<blocks[0].length; i++)
 		{
@@ -29,8 +27,27 @@ public class BoundsStructure {
 		}
 	}
 	
-	public void destroyStructure()
+	public void destroyStructure(World world, BoundsTracker tracker)
 	{
 		for(int i = 0; i<blocks[0].length; i++)world.setBlock(tracker.baseX+blocks[0][i], tracker.baseY+blocks[1][i], tracker.baseZ+blocks[2][i], 0);
+	}
+	
+	public boolean canBePlaced(World world, BoundsTracker tracker)
+	{
+		for(int i = 0; i<blocks[0].length; i++)
+		{
+			int blockID = world.getBlockId(tracker.baseX+blocks[0][i], tracker.baseY+blocks[1][i], tracker.baseZ+blocks[2][i]);
+			if(blockID!=0&&!(Block.blocksList[blockID].isBlockReplaceable(world, tracker.baseX+blocks[0][i], tracker.baseY+blocks[1][i], tracker.baseZ+blocks[2][i])))return false;
+		}
+		return this.hadSolitUnderGround(world, tracker)? true:false;
+	}
+	
+	public boolean hadSolitUnderGround(World world, BoundsTracker tracker)
+	{
+		for(int i = 0; i<blocks[0].length; i++)
+		{
+			if(!world.doesBlockHaveSolidTopSurface(tracker.baseX+blocks[0][i], tracker.baseY-1, tracker.baseZ+blocks[2][i]))return false;
+		}
+		return true;
 	}
 }

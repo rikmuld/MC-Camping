@@ -1,5 +1,6 @@
 package rikmuld.camping.core.util;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 import net.minecraft.block.Block;
@@ -57,23 +58,43 @@ public class ItemStackUtil {
 			for(int i = 0; i<stacks.length; i++)
 			{
 				ItemStack itemStack = stacks[i];
-				if(itemStack!=null&&itemStack.stackSize>0)
-				{
-					float dX = rand.nextFloat()*0.8F+0.1F;
-					float dY = rand.nextFloat()*0.8F+0.1F;
-					float dZ = rand.nextFloat()*0.8F+0.1F;
-					EntityItem entityItem = new EntityItem(world, x+dX, y+dY, z+dZ, new ItemStack(itemStack.itemID, itemStack.stackSize, itemStack.getItemDamage()));
-					if(itemStack.hasTagCompound())
-					{ 
-						entityItem.getEntityItem().setTagCompound((NBTTagCompound) itemStack.getTagCompound().copy());
-					}
-					float factor = 0.05F;
-					entityItem.motionX = rand.nextGaussian()*factor;
-					entityItem.motionY = rand.nextGaussian()*factor+0.2F;
-					entityItem.motionZ = rand.nextGaussian()*factor;
-					world.spawnEntityInWorld(entityItem);
-					itemStack.stackSize = 0;
+				dropItemInWorld(itemStack, world, x, y, z);
+			}
+		}
+	}
+	
+	public static void dropItemsInWorld(ArrayList<ItemStack> stacks, World world, int x, int y, int z)
+	{
+		if(!world.isRemote)
+		{
+			for(int i = 0; i<stacks.size(); i++)
+			{
+				ItemStack itemStack = stacks.get(i);
+				dropItemInWorld(itemStack, world, x, y, z);
+			}
+		}
+	}
+	
+	public static void dropItemInWorld(ItemStack itemStack, World world, int x, int y, int z)
+	{
+		if(!world.isRemote)
+		{
+			if(itemStack!=null&&itemStack.stackSize>0)
+			{
+				float dX = rand.nextFloat()*0.8F+0.1F;
+				float dY = rand.nextFloat()*0.8F+0.1F;
+				float dZ = rand.nextFloat()*0.8F+0.1F;
+				EntityItem entityItem = new EntityItem(world, x+dX, y+dY, z+dZ, new ItemStack(itemStack.itemID, itemStack.stackSize, itemStack.getItemDamage()));
+				if(itemStack.hasTagCompound())
+				{ 
+					entityItem.getEntityItem().setTagCompound((NBTTagCompound) itemStack.getTagCompound().copy());
 				}
+				float factor = 0.05F;
+				entityItem.motionX = rand.nextGaussian()*factor;
+				entityItem.motionY = rand.nextGaussian()*factor+0.2F;
+				entityItem.motionZ = rand.nextGaussian()*factor;
+				world.spawnEntityInWorld(entityItem);
+				itemStack.stackSize = 0;
 			}
 		}
 	}

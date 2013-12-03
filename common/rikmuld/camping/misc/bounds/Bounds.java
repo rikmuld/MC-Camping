@@ -1,10 +1,7 @@
 package rikmuld.camping.misc.bounds;
 
-import java.util.List;
-
 import net.minecraft.block.Block;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.world.World;
+import net.minecraft.nbt.NBTTagCompound;
 
 public class Bounds {
 
@@ -35,8 +32,18 @@ public class Bounds {
 		block.setBlockBounds(Math.max(xMin, 0), Math.max(yMin, 0), Math.max(zMin, 0), Math.min(xMax, 1), Math.min(yMax, 1), Math.min(zMax, 1));
 	}
 
-	public String getLog()
+	public void writeBoundsToNBT(NBTTagCompound tag)
 	{
-		return "Bounds: "+xMin+" "+yMin+" "+zMin+" "+xMax+" "+yMax+" "+zMax+" ";
+		tag.setFloat("xMin", xMin);
+		tag.setFloat("yMin", yMin);
+		tag.setFloat("zMin", zMin);
+		tag.setFloat("xMax", xMax);
+		tag.setFloat("yMax", yMax);
+		tag.setFloat("zMax", zMax);
+	}
+	
+	public static Bounds readBoundsToNBT(NBTTagCompound tag)
+	{
+		return new Bounds(tag.getFloat("xMin"), tag.getFloat("yMin"), tag.getFloat("zMin"), tag.getFloat("xMax"), tag.getFloat("yMax"), tag.getFloat("zMax"));
 	}
 }

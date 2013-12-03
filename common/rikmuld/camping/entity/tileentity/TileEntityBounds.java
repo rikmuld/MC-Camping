@@ -1,5 +1,6 @@
 package rikmuld.camping.entity.tileentity;
 
+import net.minecraft.nbt.NBTTagCompound;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import rikmuld.camping.core.register.ModLogger;
 import rikmuld.camping.misc.bounds.Bounds;
@@ -49,5 +50,27 @@ public class TileEntityBounds extends TileEntityMain {
 			this.baseY = data[1];
 			this.baseZ = data[2];
 		}
+	}
+	
+	@Override
+	public void readFromNBT(NBTTagCompound tag)
+	{
+		super.readFromNBT(tag);
+		
+		this.baseX = tag.getInteger("baseX");
+		this.baseY = tag.getInteger("baseY");
+		this.baseZ = tag.getInteger("baseZ");
+		if(tag.hasKey("xMin"))this.setBounds(Bounds.readBoundsToNBT(tag));
+	}
+
+	@Override
+	public void writeToNBT(NBTTagCompound tag)
+	{	
+		super.writeToNBT(tag);
+		
+		tag.setInteger("baseX", baseX);
+		tag.setInteger("baseY", baseY);
+		tag.setInteger("baseZ", baseZ);
+		if(this.bounds!=null)this.bounds.writeBoundsToNBT(tag);
 	}
 }

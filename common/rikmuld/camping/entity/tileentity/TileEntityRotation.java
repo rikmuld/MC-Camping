@@ -3,7 +3,7 @@ package rikmuld.camping.entity.tileentity;
 import rikmuld.camping.core.register.ModLogger;
 import net.minecraft.nbt.NBTTagCompound;
 
-public class TileEntityRotation extends TileEntityMain{
+public class TileEntityRotation extends TileEntityInventory{
 
 	public int rotation;
 	
@@ -38,11 +38,20 @@ public class TileEntityRotation extends TileEntityMain{
 	@Override
 	public void setTileData(int id, int[] data)
 	{
-		this.rotation = data[0];
-		
-		worldObj.notifyBlockOfNeighborChange(xCoord, yCoord, zCoord, 0);
-		worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, 0);
-		worldObj.markBlockForRenderUpdate(xCoord, yCoord, zCoord);
-		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+		if(id==0)
+		{
+			this.rotation = data[0];
+			
+			worldObj.notifyBlockOfNeighborChange(xCoord, yCoord, zCoord, 0);
+			worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, 0);
+			worldObj.markBlockForRenderUpdate(xCoord, yCoord, zCoord);
+			worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+		}
+	}
+
+	@Override
+	public int getSizeInventory()
+	{
+		return 0;
 	}
 }

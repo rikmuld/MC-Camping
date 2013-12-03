@@ -10,4 +10,5 @@ public class GuiInfo {
 	public static final int GUI_BACKPACK = 5;
 	public static final int GUI_COOK = 6;
 	public static final int GUI_KIT = 7;
+	public static final int GUI_TENT = 8;
 }

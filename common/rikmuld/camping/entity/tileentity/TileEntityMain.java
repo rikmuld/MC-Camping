@@ -15,7 +15,6 @@ public class TileEntityMain extends TileEntity {
 	{
 		if(!client&&this.worldObj.isRemote)PacketDispatcher.sendPacketToServer(PacketTypeHandler.populatePacket(new PacketTileData(id, this.xCoord, this.yCoord, this.zCoord, data)));	
 		if(client&&!this.worldObj.isRemote)PacketDispatcher.sendPacketToAllPlayers(PacketTypeHandler.populatePacket(new PacketTileData(id, this.xCoord, this.yCoord, this.zCoord, data)));
-		else this.setTileData(id, data);
 	}
 
 	public void setTileData(int id, int[] data)

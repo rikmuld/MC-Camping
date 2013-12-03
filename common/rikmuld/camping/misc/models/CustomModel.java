@@ -22,6 +22,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import rikmuld.camping.core.register.ModLogger;
 import cpw.mods.fml.common.FMLLog;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
@@ -231,44 +232,6 @@ public class CustomModel extends ModelBase implements IModelCustom{
         }
     }
     
-    private void bindTexture()
-    {
-        /* TODO: Update to 1.6
-        if (texture != null)
-        {
-            if (!textureNameSet)
-            {
-                try
-                {
-                    byte[] textureEntry = zipContents.get(texture);
-                    if (textureEntry == null)
-                    {
-                        throw new ModelFormatException("Model " + fileName + " has no such texture " + texture);
-                    }
-                    
-                    BufferedImage image = ImageIO.read(new ByteArrayInputStream(textureEntry));
-                    textureName = Minecraft.getMinecraft().renderEngine.allocateAndSetupTexture(image);
-                    textureNameSet = true;
-                }
-                catch (ZipException e)
-                {
-                    throw new ModelFormatException("Model " + fileName + " is not a valid zip file");
-                }
-                catch (IOException e)
-                {
-                    throw new ModelFormatException("Texture for model " + fileName + " could not be read", e);
-                }
-            }
-            
-            if (textureNameSet)
-            {
-                GL11.glBindTexture(GL11.GL_TEXTURE_2D, textureName);
-                Minecraft.getMinecraft().renderEngine.resetBoundTexture();
-            }
-        }
-        */
-    }
-    
     @Override
     public String getType()
     {
@@ -277,9 +240,7 @@ public class CustomModel extends ModelBase implements IModelCustom{
 
     @Override
     public void renderAll()
-    {
-        bindTexture();
-        
+    {        
         for (ModelRenderer part : parts.values())
         {
             part.renderWithRotation(1.0F);
@@ -291,9 +252,7 @@ public class CustomModel extends ModelBase implements IModelCustom{
     {        
         ModelRenderer part = parts.get(partName);
         if (part != null)
-        {
-            bindTexture();
-            
+        {            
             part.renderWithRotation(1.0F);
         }
     }
@@ -301,28 +260,34 @@ public class CustomModel extends ModelBase implements IModelCustom{
     @Override
     public void renderOnly(String... groupNames)
     {
-        bindTexture();
+    	int i = 0;
         for (ModelRenderer part : parts.values())
         {
+        	String name = (String) parts.keySet().toArray()[i];
+        	
             for (String groupName : groupNames)
             {
-                if (groupName.equalsIgnoreCase(part.boxName))
+                if (groupName.equalsIgnoreCase(name))
                 {
                     part.render(1.0f);
                 }
             }
+        	i++;
         }
     }
 
     @Override
     public void renderAllExcept(String... excludedGroupNames)
     {
+    	int i = 0;
         for (ModelRenderer part : parts.values())
         {
+        	String name = (String) parts.keySet().toArray()[i];
             boolean skipPart=false;
+            
             for (String excludedGroupName : excludedGroupNames)
-            {
-                if (excludedGroupName.equalsIgnoreCase(part.boxName))
+            {            	
+                if (excludedGroupName.equalsIgnoreCase(name))
                 {
                     skipPart=true;
                 }
@@ -331,6 +296,7 @@ public class CustomModel extends ModelBase implements IModelCustom{
             {
                 part.render(1.0f);
             }
+        	i++;
         }
     }
 }

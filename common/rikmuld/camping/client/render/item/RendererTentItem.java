@@ -43,7 +43,7 @@ public class RendererTentItem implements IItemRenderer {
 		}
 		GL11.glScalef(0.02625F, -0.02625F, -0.02625F);
 		Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation(TextureInfo.MODEL_TENT));	
-		ModModels.tent.renderAll();		
+		ModModels.tent.renderAllExcept("bed1", "bed2", "chest1", "chest2", "chest3", "chest4", "chest5", "chest6", "chest7");
 		GL11.glPopMatrix();
 	}
 }

@@ -128,11 +128,15 @@ public class BlockSleepingBag extends BlockRotationMain {
 			int zPos = rotation==0? z-1: rotation==2? z+1:z;
 			
 			if(world.getBlockMetadata(x, y, z)==1)return this.onBlockActivated(world, xPos, y, zPos, player, side, par7, par8, par9);
-			else
+			else if(((TileEntitySleepingBag)world.getBlockTileEntity(x, y, z)).sleepingPlayer==null)
 			{			
 				EnumStatus state = player.sleepInBedAt(x, y, z);
 				
-				if(state==EnumStatus.OK)return true;
+				if(state==EnumStatus.OK)
+				{
+					((TileEntitySleepingBag)world.getBlockTileEntity(x, y, z)).sleepingPlayer = player;
+					return true;
+				}
 				else
 				{
 					if(state==EnumStatus.NOT_POSSIBLE_NOW)player.addChatMessage("tile.bed.noSleep");
@@ -140,8 +144,9 @@ public class BlockSleepingBag extends BlockRotationMain {
 					return true;
 				}
 			}
+			else player.addChatMessage("This sleeping bag is occupied!");
 		}
-		else return true;
+		return true;
 	}
 	
 	public int getBedDirection(IBlockAccess world, int x, int y, int z)

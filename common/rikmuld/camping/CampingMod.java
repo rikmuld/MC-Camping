@@ -16,6 +16,7 @@ import rikmuld.camping.core.register.ModItems;
 import rikmuld.camping.core.register.ModLogger;
 import rikmuld.camping.core.register.ModModels;
 import rikmuld.camping.core.register.ModRecipes;
+import rikmuld.camping.core.register.ModStructures;
 import rikmuld.camping.core.register.ModTabs;
 import rikmuld.camping.core.register.ModTileentitys;
 import rikmuld.camping.network.PacketHandler;
@@ -39,8 +40,6 @@ public class CampingMod {
 	public static CampingMod instance;
 	@SidedProxy(clientSide = ModInfo.MOD_CLIENT_PROXY, serverSide = ModInfo.MOD_SERVER_PROXY)
 	public static CommonProxy proxy;
-	
-	 
 	
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event)
@@ -69,6 +68,7 @@ public class CampingMod {
 		ModRecipes.init();
 		ModModels.init();
 		ModCookingEquipment.init();
+		ModStructures.init();
 	}
 
 	@EventHandler
@@ -82,12 +82,13 @@ public class CampingMod {
 	
 	BUGS
 	{
-		NO KNOWN BUGS!!!!!!!!!!!!!!!!!!
+		ON SERVER SIDE YOU SLEEP ABOVE BEDS BAG
+		LANTERN RENDER IN TENTS IS WIRED
 	}
 	UNFINISHED
 	{
-		BERRY TREES -- SAPLINGS, LEAF DISAPPEARING ETC.
-		TENTS -- WHEN PLACEBLE, WHEN DROP, DIFFRENT TYPES, COLLORABLE
+		BERRY TREES -- SAPLINGS
+		TENTS -- TUPES, COLORABLE
 		CAMPINGGUIDE (MANY THINGS ALSO UPDATE THE LANTERN PART)
 	}
 	NEXT UP
@@ -134,10 +135,6 @@ public class CampingMod {
 	}
 	
 	
-	marshmallow
-	marshmallowstick
-	cooked marshmallows
-	
 	radish
 	backed radish
 	backed carots
@@ -152,14 +149,6 @@ public class CampingMod {
 	vos fur for fur armor
 	
 	trap
-	
-	sitable log
-	sleeping bag
-	tent
-	
-	berry 1
-	berry 2
-	berry 3
 	
 	camping armor 1
 	camping armor 2
