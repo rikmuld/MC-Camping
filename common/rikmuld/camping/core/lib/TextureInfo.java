@@ -34,4 +34,5 @@ public class TextureInfo {
 	public static final String MODEL_BERRY_BLACK = MODEL_LOCATION+"ModelLeavesBerryBlack.png";
 	public static final String MODEL_BERRY_RED = MODEL_LOCATION+"ModelLeavesBerryRed.png";
 	public static final String MODEL_TENT = MODEL_LOCATION+"ModelTent.png";
+	public static final String GUI_TENT = GUI_LOCATION+"GuiTent.png";
 }

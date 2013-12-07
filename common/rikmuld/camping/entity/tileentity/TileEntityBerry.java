@@ -24,6 +24,8 @@ public class TileEntityBerry extends TileEntityMain {
 			{
 				berries = true;
 				this.sendTileData(0, true, 1);
+				worldObj.markBlockForRenderUpdate(xCoord, yCoord, zCoord);
+				worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 			}
 			
 			update++;

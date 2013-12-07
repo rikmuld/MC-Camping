@@ -92,7 +92,7 @@ public class BlockLantern extends BlockMain{
 	@Override
     public void breakBlock(World world, int x, int y, int z, int par5, int par6)
     {
-    	this.burnTime = ((TileEntityLantern)world.getBlockTileEntity(x, y, z)).burnTime;
+    	this.burnTime = world.getBlockTileEntity(x, y, z)!=null? ((TileEntityLantern)world.getBlockTileEntity(x, y, z)).burnTime:0;
 		super.breakBlock(world, x, y, z, par5, par6);
     }
 	
@@ -116,7 +116,7 @@ public class BlockLantern extends BlockMain{
 	
 	public void dropIfCantStay(World world, int x, int y, int z)
 	{
-		if(!BlockUtil.isTouchableBlockPartitionalSolidOrIsFullCubeOrHasCorrectBounds(world, x, y, z))
+		if(!BlockUtil.isTouchableBlockPartitionalSolidForSideAndHasCorrectBounds(world, x, y, z, 0, 1))
 		{
 			for(ItemStack item: this.getBlockDropped(world, x, y, z, 0, 1))
 			{
@@ -150,6 +150,6 @@ public class BlockLantern extends BlockMain{
     {
         int l = world.getBlockId(x, y, z);
         Block block = Block.blocksList[l];
-        return (block == null || block.isBlockReplaceable(world, x, y, z))&&BlockUtil.isTouchableBlockPartitionalSolidOrIsFullCubeOrHasCorrectBounds(world, x, y, z);
+        return (block == null || block.isBlockReplaceable(world, x, y, z))&&BlockUtil.isTouchableBlockPartitionalSolidForSideAndHasCorrectBounds(world, x, y, z, 0, 1);
     }
 }

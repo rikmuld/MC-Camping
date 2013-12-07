@@ -69,18 +69,18 @@ public class BlockTent extends BlockRotationMain {
 	
 	@Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float par7, float par8, float par9)
-	{
-		if(!world.isRemote)
+	{	
+		if(player.getCurrentEquippedItem()!=null&&((TileEntityTent) world.getBlockTileEntity(x, y, z)).addContends(player.getCurrentEquippedItem()))
 		{
-			if(player.getCurrentEquippedItem()!=null&&((TileEntityTent) world.getBlockTileEntity(x, y, z)).addContends(player.getCurrentEquippedItem()))
+			if(!world.isRemote)
 			{
 				player.getCurrentEquippedItem().stackSize--;
 				if(player.getCurrentEquippedItem().stackSize<0)ItemStackUtil.setCurrentPlayerItem(player, null);
-			}	
-			else
-			{
-				player.openGui(CampingMod.instance, GuiInfo.GUI_TENT, world, x, y, z);
 			}
+		}	
+		else
+		{
+			player.openGui(CampingMod.instance, GuiInfo.GUI_TENT, world, x, y, z);
 		}
 		return true;
 	}
@@ -110,7 +110,7 @@ public class BlockTent extends BlockRotationMain {
 	        
 	        if(!tile.dropped)
 			{
-	        	ArrayList<ItemStack> stacks = getBlockDropped(world, x, y, z, world.getBlockMetadata(x, y, z), 1);
+	        	ArrayList<ItemStack> stacks = getDroppes(world, x, y, z, world.getBlockMetadata(x, y, z), 1);
 	        	stacks.addAll(tile.getContends());
 	        	
 		    	for(ItemStack stack:stacks)
@@ -181,4 +181,26 @@ public class BlockTent extends BlockRotationMain {
 		TileEntityTent tile = (TileEntityTent) world.getBlockTileEntity(x, y, z);
 		return tile.lanternDamage==0&&tile.lanterns>0? 15:0;
 	}
+	
+	@Override
+	public int quantityDropped(Random random)
+	{
+		return 0;
+	}
+	
+    public ArrayList<ItemStack> getDroppes(World world, int x, int y, int z, int metadata, int fortune)
+    {
+        ArrayList<ItemStack> ret = new ArrayList<ItemStack>();
+
+        int count = 1;
+        for(int i = 0; i < count; i++)
+        {
+            int id = idDropped(metadata, world.rand, fortune);
+            if (id > 0)
+            {
+                ret.add(new ItemStack(id, 1, damageDropped(metadata)));
+            }
+        }
+        return ret;
+    }
 }

@@ -84,12 +84,15 @@ public class CampingMod {
 	{
 		ON SERVER SIDE YOU SLEEP ABOVE BEDS BAG
 		LANTERN RENDER IN TENTS IS WIRED
+		BERRY BUSH RENDER AFTER RE_LOGGIN NOT STATE VISABLE
 	}
 	UNFINISHED
 	{
 		BERRY TREES -- SAPLINGS
-		TENTS -- TUPES, COLORABLE
+		TENTS -- ASSECABLE CONTENDS, COLORABLE
 		CAMPINGGUIDE (MANY THINGS ALSO UPDATE THE LANTERN PART)
+		
+		FIX BUGS
 	}
 	NEXT UP
 	{
@@ -97,62 +100,22 @@ public class CampingMod {
 		
 		TRAPS
 		MORE FOOD
+		MOBS
 		CAMPING ARMOR
-	}
-	
-	More food
-	{
-
-	- more vegtreables to cook in pan
-		{
-			-corn (mais plant -harvest> corn -campers tool> mais -pan> popcorn)
-			-radish -pan> baked radish
-		}
-	- berries
-	- more flesh
-		{
-		- more animals
-					denk aan: herten, konijnen, beeren, vossen
-		- traps to catch animals
-			{
-			zouden traps leuk zijn, je stopt er wat food in en als er geen player in een reach van 40 blockjes is heeft de trap elke 25 seconden 10% kan voor een random animal of er in vast te komen. 
-			en de trap gaat dicht als er een entity op staat
-			}
-		}
-	- marshmallows
-
-	}
-
-	Camp
-	{
-
-	-Tents 
-		{
-		- storage tents
-		- sleeping tents
-		- master tent with many uses
-		}
+		ACHIEVEMENTS
+		MORE OPTIONS IN THE CONFIG
 	}
 	
 	
-	radish
-	backed radish
-	backed carots
-	backed pumpkin
+	new vegtrables
 	
-	Beer meat
-	deer meet
-	vos meet
-	rabit meet
+	new mobs (beer, deer, rabit)
 	
-	rabits food -> for luck
-	vos fur for fur armor
+	fur from new mobs for fur armor
 	
-	trap
+	traps to cash mobs
 	
-	camping armor 1
-	camping armor 2
-	camping armor 3
-	camping armor 4
+	fur armor 
+
 	 */
 }

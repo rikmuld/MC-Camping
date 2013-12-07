@@ -18,12 +18,12 @@ import rikmuld.camping.inventory.slot.SlotCooking;
 import rikmuld.camping.inventory.slot.SlotItemsOnly;
 import rikmuld.camping.misc.cooking.CookingEquipmentList;
 
-public class ContainerTent extends ContainerMain{
+public class ContainerTentChests extends ContainerMain{
 
 	private TileEntityTent tent;
 	private World worldObj;
 	
-	public ContainerTent(InventoryPlayer playerInv, IInventory tile)
+	public ContainerTentChests(InventoryPlayer playerInv, IInventory tile)
 	{		
 		this.tent = (TileEntityTent) tile;
 		this.worldObj = tent.worldObj;
