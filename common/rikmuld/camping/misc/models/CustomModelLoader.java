@@ -5,7 +5,6 @@ import java.net.URL;
 import net.minecraftforge.client.model.IModelCustom;
 import net.minecraftforge.client.model.IModelCustomLoader;
 import net.minecraftforge.client.model.ModelFormatException;
-import net.minecraftforge.client.model.techne.TechneModel;
 
 public class CustomModelLoader implements IModelCustomLoader {
     

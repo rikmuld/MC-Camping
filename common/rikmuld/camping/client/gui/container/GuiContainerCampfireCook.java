@@ -8,10 +8,8 @@ import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
 import rikmuld.camping.core.lib.TextureInfo;
-import rikmuld.camping.core.register.ModLogger;
 import rikmuld.camping.entity.tileentity.TileEntityCampfireCook;
 import rikmuld.camping.inventory.container.ContainerCampfireCook;
-import rikmuld.camping.inventory.container.ContainerCampfireDeco;
 
 public class GuiContainerCampfireCook extends GuiContainer {
 
@@ -43,7 +41,7 @@ public class GuiContainerCampfireCook extends GuiContainer {
 			for(int i = 0; i<fire.equipment.maxFood; i++)
 			{
 				int scale2 = (int) fire.getScaledcookProgress(10, i);
-				boolean isNotCooked = fire.getStackInSlot(i+2)!=null?fire.equipment.canCook(fire.getStackInSlot(i+2).itemID):false;
+				boolean isNotCooked = fire.getStackInSlot(i+2)!=null?fire.equipment.canCook(fire.getStackInSlot(i+2).itemID, fire.getStackInSlot(i+2).getItemDamage()):false;
 				this.drawTexturedModalRect(guiLeft+fire.equipment.slots[0][i]+16, guiTop+fire.equipment.slots[1][i]+2, 223, 0, 3, 12);
 				this.drawTexturedModalRect(guiLeft+fire.equipment.slots[0][i]+17, guiTop+fire.equipment.slots[1][i]+13-scale2, isNotCooked? 226:227, 11-scale2, 1, scale2);
 			}

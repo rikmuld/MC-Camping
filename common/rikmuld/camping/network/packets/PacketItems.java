@@ -6,7 +6,6 @@ import java.io.IOException;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.INetworkManager;
 import rikmuld.camping.entity.tileentity.TileEntityInventory;
 import rikmuld.camping.network.PacketTypeHandler;

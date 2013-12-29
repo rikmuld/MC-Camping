@@ -8,7 +8,6 @@ import net.minecraft.block.material.MapColor;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.storage.MapData;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;

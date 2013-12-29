@@ -2,12 +2,12 @@ package rikmuld.camping.item.itemblock;
 
 import java.util.List;
 
-import rikmuld.camping.entity.tileentity.TileEntityLantern;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
+import rikmuld.camping.entity.tileentity.TileEntityLantern;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 

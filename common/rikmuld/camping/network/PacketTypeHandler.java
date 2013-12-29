@@ -12,11 +12,12 @@ import rikmuld.camping.network.packets.PacketMain;
 import rikmuld.camping.network.packets.PacketMap;
 import rikmuld.camping.network.packets.PacketOpenGui;
 import rikmuld.camping.network.packets.PacketPlayerData;
+import rikmuld.camping.network.packets.PacketPlayerSleepIntent;
 import rikmuld.camping.network.packets.PacketTileData;
 
 public enum PacketTypeHandler
 {
-	TILEDATA(PacketTileData.class), OPENGUI(PacketOpenGui.class), DATA(PacketPlayerData.class), MAP(PacketMap.class), ITEMS(PacketItems.class), BOUNDS(PacketBounds.class);
+	TILEDATA(PacketTileData.class), OPENGUI(PacketOpenGui.class), DATA(PacketPlayerData.class), MAP(PacketMap.class), ITEMS(PacketItems.class), BOUNDS(PacketBounds.class), SLEEP(PacketPlayerSleepIntent.class);
 
 	private Class<? extends PacketMain> clazz;
 

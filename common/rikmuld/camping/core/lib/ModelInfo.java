@@ -6,4 +6,5 @@ public class ModelInfo {
 	public static String CAMPFIRE = MODEL_LOC + "ModelCampfireDeco.tcn";
 	public static String TENT = MODEL_LOC + "ModelTent.tcn";
 	public static String LOG = MODEL_LOC + "ModelLog.tcn";
+	public static String BEAR = MODEL_LOC + "ModelBear.tcn";
 }

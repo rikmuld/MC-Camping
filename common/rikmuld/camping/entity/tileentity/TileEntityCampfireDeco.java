@@ -3,18 +3,12 @@ package rikmuld.camping.entity.tileentity;
 import java.util.ArrayList;
 import java.util.Random;
 
-import org.lwjgl.opengl.GL11;
-
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.AxisAlignedBB;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import rikmuld.camping.core.register.ModLogger;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.potion.PotionEffect;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
 
 public class TileEntityCampfireDeco extends TileEntityInventory{
 

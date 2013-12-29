@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Set;
 
 import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
 public class SlotItemsOnly extends SlotDisable {

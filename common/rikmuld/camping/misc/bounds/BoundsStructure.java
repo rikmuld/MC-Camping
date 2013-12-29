@@ -1,12 +1,9 @@
 package rikmuld.camping.misc.bounds;
 
-import java.util.ArrayList;
-
-import rikmuld.camping.core.register.ModBlocks;
-import rikmuld.camping.entity.tileentity.TileEntityBounds;
 import net.minecraft.block.Block;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeDirection;
+import rikmuld.camping.core.register.ModBlocks;
+import rikmuld.camping.entity.tileentity.TileEntityBounds;
 
 public class BoundsStructure {
 		

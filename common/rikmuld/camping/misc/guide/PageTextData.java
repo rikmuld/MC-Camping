@@ -3,8 +3,6 @@ package rikmuld.camping.misc.guide;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
-import rikmuld.camping.core.register.ModLogger;
-
 public class PageTextData {
 
 	Node data;

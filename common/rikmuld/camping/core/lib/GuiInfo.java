@@ -11,4 +11,7 @@ public class GuiInfo {
 	public static final int GUI_COOK = 6;
 	public static final int GUI_KIT = 7;
 	public static final int GUI_TENT = 8;
+	public static final int GUI_TENT_SLEEP = 9;
+	public static final int GUI_TENT_LANTERN = 10;
+	public static final int GUI_TENT_CHESTS = 11;
 }

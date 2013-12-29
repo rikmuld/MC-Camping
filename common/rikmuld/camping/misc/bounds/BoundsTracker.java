@@ -1,8 +1,5 @@
 package rikmuld.camping.misc.bounds;
 
-import java.util.ArrayList;
-
-import rikmuld.camping.core.register.ModLogger;
 
 public class BoundsTracker {
 

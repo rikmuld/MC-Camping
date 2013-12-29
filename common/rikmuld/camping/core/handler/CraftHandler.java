@@ -46,6 +46,14 @@ public class CraftHandler implements ICraftingHandler {
 					item.setTagCompound(new NBTTagCompound());
 					item.getTagCompound().setInteger("time", 1500);
 				}
+				if(item.itemID==ModBlocks.tent.blockID)
+				{
+					if(craftMatrix.getStackInSlot(slot).itemID==Item.dyePowder.itemID)
+					{
+						item.setTagCompound(new NBTTagCompound());
+						item.getTagCompound().setInteger("color", craftMatrix.getStackInSlot(slot).getItemDamage());
+					}
+				}
 			}
 		}
 	}

@@ -10,7 +10,6 @@ import org.lwjgl.opengl.GL11;
 
 import rikmuld.camping.client.render.model.AbstractBox;
 import rikmuld.camping.core.lib.TextureInfo;
-import rikmuld.camping.core.register.ModModels;
 
 public class RendererBerryItem implements IItemRenderer {
 

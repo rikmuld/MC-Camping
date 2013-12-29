@@ -1,30 +1,20 @@
 package rikmuld.camping.block;
 
-import java.util.List;
 import java.util.Random;
 
-import rikmuld.camping.CampingMod;
-import rikmuld.camping.core.lib.GuiInfo;
-import rikmuld.camping.core.register.ModItems;
-import rikmuld.camping.core.register.ModLogger;
-import rikmuld.camping.core.util.BlockUtil;
-import rikmuld.camping.entity.tileentity.TileEntityCampfireCook;
-import rikmuld.camping.entity.tileentity.TileEntityLantern;
-import rikmuld.camping.item.itemblock.ItemBlockLantern;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Icon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeDirection;
+import rikmuld.camping.core.util.BlockUtil;
+import rikmuld.camping.entity.tileentity.TileEntityLantern;
+import rikmuld.camping.item.itemblock.ItemBlockLantern;
 
 public class BlockLantern extends BlockMain{
 
@@ -118,11 +108,11 @@ public class BlockLantern extends BlockMain{
 	{
 		if(!BlockUtil.isTouchableBlockPartitionalSolidForSideAndHasCorrectBounds(world, x, y, z, 0, 1))
 		{
+			this.breakBlock(world, x, y, z, blockID, 0);
 			for(ItemStack item: this.getBlockDropped(world, x, y, z, 0, 1))
 			{
 				this.dropBlockAsItem_do(world, x, y, z, item);
 			}
-			this.breakBlock(world, x, y, z, blockID, 0);
 			world.setBlock(x, y, z, 0);
 		}
 	}

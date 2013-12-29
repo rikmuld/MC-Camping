@@ -5,6 +5,8 @@ import java.util.Map;
 
 public class BlockInfo {
 
+	static int startId = 2000;
+	
 	public static Map<String, Integer> devIDs = new HashMap<String, Integer>();
 	public static Map<String, Integer> IDs = new HashMap<String, Integer>();
 	public static Map<String, String> names = new HashMap<String, String>();
@@ -22,27 +24,22 @@ public class BlockInfo {
 
 	public static void putAll()
 	{
-		devIDs.put(BERRY, 1999);
-		devIDs.put(CAMPFIRE_BASE, 2000);
-		devIDs.put(CAMPFIRE_DECO_NAME, 2001);
-		devIDs.put(LIGHT, 2002);
-		devIDs.put(HEMP, 2003);
-		devIDs.put(LOG, 2004);
-		devIDs.put(LANTERN, 2005);
-		devIDs.put(SLEEPING, 2006);
-		devIDs.put(TENT, 2007);
-		devIDs.put(BOUNDS, 2008);
-
-		names.put(BERRY, "Berry Leaves");
-		names.put(CAMPFIRE_BASE, "Campfire Base");
-		names.put(CAMPFIRE_DECO_NAME, "Decoration Campfire");
-		names.put(LIGHT, "Light Block");
-		names.put(HEMP, "Hemp");
-		names.put(LOG, "Log Seat");
-		names.put(LANTERN, "Lantern");
-		names.put(SLEEPING, "Sleeping Bag");
-		names.put(TENT, "Tent");
-		names.put(BOUNDS, "Bounds Helper Block");
+		put(BERRY, "Berry Leaves");
+		put(CAMPFIRE_BASE, "Campfire Base");
+		put(CAMPFIRE_DECO_NAME, "Decoration Campfire");
+		put(LIGHT, "Light Block");
+		put(HEMP, "Hemp");
+		put(LOG, "Log Seat");
+		put(LANTERN, "Lantern");
+		put(SLEEPING, "Sleeping Bag");
+		put(TENT, "Tent");
+		put(BOUNDS, "Bounds Helper Block");
+	}
+	
+	public static void put(String id, String name)
+	{
+		devIDs.put(id, startId++);
+		names.put(id, name);
 	}
 	
 	public static int id(String name)

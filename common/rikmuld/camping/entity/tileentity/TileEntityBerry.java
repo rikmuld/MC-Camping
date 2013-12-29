@@ -2,7 +2,6 @@ package rikmuld.camping.entity.tileentity;
 
 import java.util.Random;
 
-import rikmuld.camping.core.register.ModLogger;
 import net.minecraft.nbt.NBTTagCompound;
 
 public class TileEntityBerry extends TileEntityMain {
@@ -59,6 +58,7 @@ public class TileEntityBerry extends TileEntityMain {
 	{
 		super.readFromNBT(tag);
 		time = tag.getInteger("time");
+		berries = tag.getBoolean("berries");
 	}
 
 	@Override
@@ -66,5 +66,6 @@ public class TileEntityBerry extends TileEntityMain {
 	{
 		super.writeToNBT(tag);	
 		tag.setInteger("time", time);
+		tag.setBoolean("berries", berries);
 	}
 }

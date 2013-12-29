@@ -1,10 +1,7 @@
 package rikmuld.camping.client.gui.screen;
 
-import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.renderer.ItemRenderer;
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -14,13 +11,13 @@ import net.minecraft.util.ResourceLocation;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
-import cpw.mods.fml.common.network.PacketDispatcher;
 import rikmuld.camping.CampingMod;
 import rikmuld.camping.core.lib.GuiInfo;
 import rikmuld.camping.core.lib.TextureInfo;
 import rikmuld.camping.core.register.ModItems;
 import rikmuld.camping.network.PacketTypeHandler;
 import rikmuld.camping.network.packets.PacketOpenGui;
+import cpw.mods.fml.common.network.PacketDispatcher;
 
 public class GuiScreenInvExtention extends GuiScreen {
 
@@ -40,6 +37,8 @@ public class GuiScreenInvExtention extends GuiScreen {
 	
 	private boolean clickReady;
 	private int clicker;
+	
+	boolean[] canClick = new boolean[]{false, false, false};
 	
 	EntityPlayer player;
 	RenderItem itemRender;
@@ -88,33 +87,50 @@ public class GuiScreenInvExtention extends GuiScreen {
 		if(id!=GuiInfo.GUI_CAMPINV_TOOL)itemRender.renderItemIntoGUI(fontRenderer, mc.renderEngine, new ItemStack(ModItems.knife.itemID, 1, 0), baseLeft+120+117/2-8, baseTop+3);
 		else itemRender.renderItemIntoGUI(fontRenderer, mc.renderEngine, new ItemStack(Item.skull, 1, 3), baseLeft+120+117/2-8, baseTop+3);
 		
-		if(this.isPointInRegion(0, 0, 117, 21, pointX, pointY, baseLeft, baseTop)&&Mouse.isButtonDown(0)&&clickReady)
+		if(this.isPointInRegion(0, 0, 117, 21, pointX, pointY, baseLeft, baseTop))
 		{
-			clickReady = false;
+			if(Mouse.isButtonDown(0)&&clickReady&&this.canClick[0])
+			{
+				clickReady = false;
+				
+				if(id!=GuiInfo.GUI_CAMPINV_BACK)PacketDispatcher.sendPacketToServer(PacketTypeHandler.populatePacket(new PacketOpenGui(GuiInfo.GUI_CAMPINV_BACK)));
+				else
+				{
+					player.closeScreen();
+					player.openGui(CampingMod.instance, GuiInfo.GUI_INV_PLAYER, player.worldObj, 0, 0, 0);
+				}
+			}
+			if(!Mouse.isButtonDown(0))this.canClick[0] = true;
+		}
+		else this.canClick[0] = false;
+		
+		if(this.isPointInRegion(120, 0, 117, 21, pointX, pointY, baseLeft, baseTop))
+		{
+			if(Mouse.isButtonDown(0)&&clickReady&&this.canClick[1])
+			{
+				clickReady = false;
 			
-			if(id!=GuiInfo.GUI_CAMPINV_BACK)PacketDispatcher.sendPacketToServer(PacketTypeHandler.populatePacket(new PacketOpenGui(GuiInfo.GUI_CAMPINV_BACK)));
-			else
-			{
-				player.closeScreen();
-				player.openGui(CampingMod.instance, GuiInfo.GUI_INV_PLAYER, player.worldObj, 0, 0, 0);
+				if(id!=GuiInfo.GUI_CAMPINV_TOOL)PacketDispatcher.sendPacketToServer(PacketTypeHandler.populatePacket(new PacketOpenGui(GuiInfo.GUI_CAMPINV_TOOL)));
+				else
+				{
+					player.closeScreen();
+					player.openGui(CampingMod.instance, GuiInfo.GUI_INV_PLAYER, player.worldObj, 0, 0, 0);
+				}
 			}
+			if(!Mouse.isButtonDown(0))this.canClick[1] = true;
 		}
-		if(this.isPointInRegion(120, 0, 117, 21, pointX, pointY, baseLeft, baseTop)&&Mouse.isButtonDown(0)&&clickReady)
+		else this.canClick[1] = false;
+		
+		if(this.isPointInRegion(mainGuiWidth-25, 5, 22, 22, pointX, pointY, mainGuiLeft, mainGuiTop))
 		{
-			clickReady = false;
-
-			if(id!=GuiInfo.GUI_CAMPINV_TOOL)PacketDispatcher.sendPacketToServer(PacketTypeHandler.populatePacket(new PacketOpenGui(GuiInfo.GUI_CAMPINV_TOOL)));
-			else
+			if(Mouse.isButtonDown(0)&&clickReady&&this.canClick[2])
 			{
-				player.closeScreen();
-				player.openGui(CampingMod.instance, GuiInfo.GUI_INV_PLAYER, player.worldObj, 0, 0, 0);
+				clickReady = false;
+				if(id==GuiInfo.GUI_INV_PLAYER)player.openGui(CampingMod.instance, GuiInfo.GUI_GUIDE, player.worldObj, 0, 0, 0);
 			}
+			if(!Mouse.isButtonDown(0))this.canClick[2] = true;
 		}
-		if(this.isPointInRegion(mainGuiWidth-25, 5, 22, 22, pointX, pointY, mainGuiLeft, mainGuiTop)&&Mouse.isButtonDown(0)&&clickReady)
-		{
-			clickReady = false;
-			if(id==GuiInfo.GUI_INV_PLAYER)player.openGui(CampingMod.instance, GuiInfo.GUI_GUIDE, player.worldObj, 0, 0, 0);
-		}
+		else this.canClick[2] = false;
 	}
 
 	private boolean isPointInRegion(int x, int y, int width, int height, int pointX, int pointY, int guiLeft, int guiTop)

@@ -1,6 +1,7 @@
 package rikmuld.camping.inventory.slot;
 
-import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Set;
 
 import net.minecraft.inventory.IInventory;
@@ -11,7 +12,7 @@ import net.minecraft.item.ItemStack;
 public class SlotCooking extends Slot {
 
 	public boolean active;
-	Set<Integer> stacks;
+	Set<List<Integer>> stacks;
 	
 	public SlotCooking(IInventory par1iInventory, int id, int x, int y)
 	{
@@ -19,7 +20,7 @@ public class SlotCooking extends Slot {
 		this.deActivate();
 	}
 	
-	public void activate(int x, int y, Set<Integer> stacks)
+	public void activate(int x, int y, Set<List<Integer>> stacks)
 	{
 		this.active = true;
 		this.stacks = stacks;
@@ -40,7 +41,7 @@ public class SlotCooking extends Slot {
 	@Override
     public boolean isItemValid(ItemStack stack)
     {
-        return stacks!=null? stacks.contains(stack.itemID):false;
+        return stacks!=null? stacks.contains(Arrays.asList(stack.itemID, stack.getItemDamage())):false;
     }
 	
 	@Override

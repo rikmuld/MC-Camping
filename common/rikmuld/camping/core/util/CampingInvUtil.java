@@ -9,7 +9,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.world.storage.MapData;
 import rikmuld.camping.core.register.ModBlocks;
-import rikmuld.camping.core.register.ModItems;
 import rikmuld.camping.item.itemblock.ItemBlockLantern;
 
 public class CampingInvUtil {

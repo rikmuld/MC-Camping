@@ -3,7 +3,6 @@ package rikmuld.camping.misc.cooking;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
@@ -12,7 +11,6 @@ import org.lwjgl.opengl.GL11;
 import rikmuld.camping.client.gui.container.GuiContainerCampfireCook;
 import rikmuld.camping.client.render.model.AbstractBox;
 import rikmuld.camping.core.lib.TextureInfo;
-import rikmuld.camping.core.register.ModModels;
 
 public class Pan extends CookingEquipment {
 	

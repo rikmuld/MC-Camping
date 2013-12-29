@@ -3,8 +3,6 @@ package rikmuld.camping.block;
 import java.util.ArrayList;
 import java.util.Random;
 
-import org.lwjgl.input.Keyboard;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
@@ -14,11 +12,9 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
 import net.minecraft.world.World;
 import rikmuld.camping.CampingMod;
-import rikmuld.camping.core.lib.BlockInfo;
 import rikmuld.camping.core.lib.GuiInfo;
 import rikmuld.camping.core.register.ModBlocks;
 import rikmuld.camping.core.register.ModItems;
-import rikmuld.camping.core.register.ModLogger;
 import rikmuld.camping.core.util.BlockUtil;
 import rikmuld.camping.core.util.ItemStackUtil;
 import rikmuld.camping.entity.tileentity.TileEntityCampfireDeco;

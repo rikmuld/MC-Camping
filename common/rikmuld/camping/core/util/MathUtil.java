@@ -13,4 +13,9 @@ public class MathUtil {
 		
 		return returnNumbers;
 	}
+	
+	public static float getScaledNumber(int currNumber, int maxNumber, int scaledNumber)
+	{
+		return ((float)currNumber/(float)maxNumber)*(float)scaledNumber;
+	}
 }

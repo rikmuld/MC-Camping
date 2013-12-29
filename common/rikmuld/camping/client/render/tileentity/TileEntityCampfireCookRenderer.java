@@ -1,10 +1,9 @@
-package rikmuld.camping.client.render.block;
+package rikmuld.camping.client.render.tileentity;
 
 import java.util.Random;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemRenderer;
-import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.Item;
@@ -18,7 +17,6 @@ import org.lwjgl.opengl.GL12;
 import rikmuld.camping.core.lib.TextureInfo;
 import rikmuld.camping.core.register.ModModels;
 import rikmuld.camping.entity.tileentity.TileEntityCampfireCook;
-import rikmuld.camping.entity.tileentity.TileEntityCampfireDeco;
 
 public class TileEntityCampfireCookRenderer extends TileEntitySpecialRenderer{
 

@@ -3,6 +3,8 @@ package rikmuld.camping.entity.tileentity;
 import java.util.ArrayList;
 
 import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EnumStatus;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
@@ -10,14 +12,21 @@ import rikmuld.camping.core.register.ModBlocks;
 import rikmuld.camping.core.register.ModLogger;
 import rikmuld.camping.core.register.ModStructures;
 import rikmuld.camping.core.util.ItemStackUtil;
+import rikmuld.camping.core.util.MathUtil;
+import rikmuld.camping.inventory.slot.SlotState;
 import rikmuld.camping.misc.bounds.Bounds;
 import rikmuld.camping.misc.bounds.BoundsStructure;
 import rikmuld.camping.misc.bounds.BoundsTracker;
+import rikmuld.camping.network.PacketTypeHandler;
+import rikmuld.camping.network.packets.PacketPlayerSleepIntent;
+import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public class TileEntityTent extends TileEntityRotation{
 
+	public SlotState[][] slots;
+	
 	public BoundsStructure[] structures;
 	
 	public BoundsTracker[] tracker = new BoundsTracker[4];
@@ -48,18 +57,57 @@ public class TileEntityTent extends TileEntityRotation{
 	public static int BEDS = 2;
 	
 	public int time = -1;
+	public int oldTime;
 	public int lanternDamage = 0;
 	
 	public int update;
-			
+	public EntityPlayer sleepingPlayer;
+	
+	public boolean needLightUpdate = true;
+	int lanternUpdateTick = 3;
+	
+	public int slide;
+	public int maxSlide = 144;
+	
+	public int chestTracker;
+	public int lanternTracker;
+
+	public int color = 15;
+	
 	@Override
 	public void updateEntity()
 	{
 		if(!worldObj.isRemote)
-		{
-			if(isNew)this.initalize();
-			update++;
+		{	
+			this.oldTime = time;
+
+			if(chestTracker!=this.chests)
+			{
+				this.chestTracker = this.chests;
+				ItemStackUtil.dropItemsInWorld(this.getExcesChestContends(), worldObj, xCoord, yCoord, zCoord);		
+			}
 			
+			if(lanternTracker!=this.lanterns)
+			{
+				this.lanternTracker = this.lanterns;
+				if(this.lanterns==0)
+				{
+					if(this.getStackInSlot(0)!=null)ItemStackUtil.dropItemInWorld(this.getStackInSlot(0), worldObj, xCoord, yCoord, zCoord);
+					this.setInventorySlotContents(0, null);
+				}
+			}
+			
+			if(needLightUpdate)
+			{
+				this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+				this.worldObj.markBlockForRenderUpdate(xCoord, yCoord, zCoord);
+				if(lanternUpdateTick==0)this.needLightUpdate = false;
+				if(lanternUpdateTick>0)lanternUpdateTick--;
+			}
+			
+			if(isNew)this.initalize();
+			
+			update++;
 			if(update>10&&time>0)
 			{
 				time--;
@@ -75,7 +123,28 @@ public class TileEntityTent extends TileEntityRotation{
 				this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 				this.worldObj.markBlockForRenderUpdate(xCoord, yCoord, zCoord);	
 			}
+			
+			if(sleepingPlayer!=null&&!sleepingPlayer.isPlayerSleeping())this.sleepingPlayer = null;
+			
+			if(this.time<=0&&this.getStackInSlot(0)!=null)
+			{
+				this.decrStackSize(0, 1);
+				this.time = 1500;
+				
+				this.lanternDamage = 0;
+				this.sendTileData(3, true, this.lanternDamage);
+
+				this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+				this.worldObj.markBlockForRenderUpdate(xCoord, yCoord, zCoord);	
+			}
+			if(time!=oldTime)this.sendTileData(5, true, time);
 		}
+	}
+
+	@Override
+	public int getSizeInventory()
+	{
+		return 151;
 	}
 	
 	public boolean addContends(ItemStack stack)
@@ -124,19 +193,33 @@ public class TileEntityTent extends TileEntityRotation{
 		if(this.chests>0)
 		{	
 			this.setContends(this.chests-1, CHEST, true, 1);
-			ItemStackUtil.dropItemInWorld(this.getContendsFor(Block.chest.blockID), worldObj, xCoord, yCoord, zCoord);			
+			ItemStackUtil.dropItemInWorld(this.getContendsFor(Block.chest.blockID), worldObj, xCoord, yCoord, zCoord);	
 			return true;
 		}
 		return false;
+	}
+	
+	private ArrayList<ItemStack> getExcesChestContends() 
+	{
+		ArrayList<ItemStack> list = new ArrayList<ItemStack>();
+		for(int i = this.chests*5*6; i<150; i++)
+		{
+			if(this.getStackInSlot(i+1)!=null)
+			{
+				list.add(this.getStackInSlot(i+1));
+				this.setInventorySlotContents(i+1, null);
+			}
+		}
+		return list;
 	}
 	
 	public boolean addLentern(ItemStack stack)
 	{
 		if(contends+lanternCost<=this.maxContends&&this.lanterns<this.maxLanterns)
 		{
-			this.time = stack.hasTagCompound()? stack.getTagCompound().getInteger("time"):-1;	
-			this.lanternDamage = this.time>0? 0:1;
+			this.time = stack.hasTagCompound()? stack.getTagCompound().getInteger("time"):-1;
 			
+			this.lanternDamage = this.time>0? 0:1;
 			this.sendTileData(3, true, this.lanternDamage);
 			
 			this.setContends(this.lanterns+1, LANTERN, true, 0);
@@ -149,9 +232,7 @@ public class TileEntityTent extends TileEntityRotation{
 	{
 		if(this.lanterns>0)
 		{	
-			this.setContends(this.lanterns-1, LANTERN, true, 1);
-			this.time = -1;
-			
+			this.setContends(this.lanterns-1, LANTERN, true, 1);			
 			ItemStackUtil.dropItemInWorld(this.getContendsFor(ModBlocks.lantern.blockID), worldObj, xCoord, yCoord, zCoord);			
 			return true;
 		}
@@ -183,9 +264,49 @@ public class TileEntityTent extends TileEntityRotation{
 		
 		if(id==1)this.setContends(data[0], data[1], false, data[2]);	
 		if(id==2)this.contends = data[0];
-		if(id==3)this.lanternDamage = data[0];
+		if(id==3)this.lanternDamage = data[0];	
+		if(id==4)
+		{
+			this.slide = data[0];
+			this.manageSlots();
+		}
+		if(id==5)this.time = data[0];
+		if(id==6)this.color = data[0];
 	}
 	
+	public void manageSlots()
+	{		
+		if(this.slots!=null)
+		{
+			if(chests>2)
+			{
+				int scaledSlide = (int) MathUtil.getScaledNumber(this.slide, 144, 5*this.chests-11);
+				
+				for(int i = 0; i<5*this.chests; i++)
+				{
+					for(int j = 0; j<6; j++)
+					{			
+						this.slots[i][j].setStateX(scaledSlide);			
+	
+						if(i<scaledSlide||i>=scaledSlide+11)this.slots[i][j].disable();
+						else this.slots[i][j].enable();
+					}
+				}
+			}
+			else
+			{
+				for(int i = 0; i<5*this.chests; i++)
+				{
+					for(int j = 0; j<6; j++)
+					{
+						this.slots[i][j].setStateX(0);
+						this.slots[i][j].enable();
+					}
+				}
+			}
+		}
+	}
+
 	public ArrayList<ItemStack> getContends()
 	{
 		ArrayList<ItemStack> stacks = new ArrayList<ItemStack>();
@@ -256,6 +377,15 @@ public class TileEntityTent extends TileEntityRotation{
 		}
 	}
 	
+	public void setColor(int color)
+	{				
+		if(!worldObj.isRemote)
+		{
+			this.color = color;
+			this.sendTileData(6, true, color);
+		}
+	}
+	
 	@SideOnly(Side.CLIENT)
     public AxisAlignedBB getRenderBoundingBox()
     {
@@ -276,6 +406,7 @@ public class TileEntityTent extends TileEntityRotation{
 		this.chests = tag.getInteger("chests");
 		this.lanternDamage = tag.getInteger("lanternDamage");
 		this.time = tag.getInteger("time");
+		this.color = tag.getInteger("color");
 	}
 
 	@Override
@@ -289,5 +420,43 @@ public class TileEntityTent extends TileEntityRotation{
 		tag.setInteger("chests", this.chests);
 		tag.setInteger("lanternDamage", lanternDamage);
 		tag.setInteger("time", time);
+		tag.setInteger("color", color);
+	}
+	
+	public void sleep(EntityPlayer player)
+	{		
+		if(!worldObj.isRemote)
+		{
+			if(this.sleepingPlayer==null)
+			{
+				EnumStatus state = null;
+				
+				if(this.rotation==0)state = player.sleepInBedAt(xCoord, yCoord, zCoord+1);
+				if(this.rotation==1)state = player.sleepInBedAt(xCoord-1, yCoord, zCoord);
+				if(this.rotation==2)state = player.sleepInBedAt(xCoord, yCoord, zCoord-1);
+				if(this.rotation==3)state = player.sleepInBedAt(xCoord+1, yCoord, zCoord);
+
+				if(state!=EnumStatus.OK)
+				{
+					if(state==EnumStatus.NOT_POSSIBLE_NOW)player.addChatMessage("tile.bed.noSleep");
+					else if(state==EnumStatus.NOT_SAFE)player.addChatMessage("tile.bed.notSafe");
+				}
+			}
+			else player.addChatMessage("This sleeping bag is occupied!");
+		}
+		else PacketDispatcher.sendPacketToServer(PacketTypeHandler.populatePacket(new PacketPlayerSleepIntent(xCoord, yCoord, zCoord)));
+	}
+
+	public void setSlideState(int slideState) 
+	{
+		this.slide = slideState;
+		this.manageSlots();
+		
+		this.sendTileData(4, false, slideState);
+	}
+	
+	public void setSlots(SlotState[][] slots)
+	{
+		this.slots = slots;
 	}
 }

@@ -9,8 +9,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import rikmuld.camping.core.register.ModItems;
 import rikmuld.camping.core.util.ItemStackUtil;
-import rikmuld.camping.inventory.container.ContainerCampinvTool;
-import rikmuld.camping.inventory.item.InventoryItemMain;
 import rikmuld.camping.inventory.slot.SlotDisable;
 
 public class InventoryCampingInvTool extends InventoryPlayerMain{

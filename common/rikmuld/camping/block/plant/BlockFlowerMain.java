@@ -7,7 +7,6 @@ import net.minecraft.util.Icon;
 import rikmuld.camping.core.lib.BlockInfo;
 import rikmuld.camping.core.lib.ModInfo;
 import rikmuld.camping.core.register.ModBlocks;
-import rikmuld.camping.core.register.ModTabs;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 

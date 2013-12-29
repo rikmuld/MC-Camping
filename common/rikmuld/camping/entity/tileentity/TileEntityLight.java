@@ -2,10 +2,9 @@ package rikmuld.camping.entity.tileentity;
 
 import java.util.ArrayList;
 
-import rikmuld.camping.core.register.ModLogger;
-import rikmuld.camping.core.util.CampingInvUtil;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.AxisAlignedBB;
+import rikmuld.camping.core.util.CampingInvUtil;
 
 public class TileEntityLight extends TileEntityMain {
 

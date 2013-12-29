@@ -4,20 +4,31 @@ import java.net.URISyntaxException;
 
 import net.minecraft.world.World;
 import net.minecraftforge.client.MinecraftForgeClient;
-import rikmuld.camping.client.render.block.TileEntityBerryRenderer;
-import rikmuld.camping.client.render.block.TileEntityCampfireCookRenderer;
-import rikmuld.camping.client.render.block.TileEntityCampfireDecoRenderer;
-import rikmuld.camping.client.render.block.TileEntityLogRenderer;
-import rikmuld.camping.client.render.block.TileEntitySleepingBagRenderer;
-import rikmuld.camping.client.render.block.TileEntityTentRenderer;
+import rikmuld.camping.client.render.entity.EntityBearRenderer;
+import rikmuld.camping.client.render.entity.EntityCamperRenderer;
+import rikmuld.camping.client.render.entity.EntityDeerRenderer;
+import rikmuld.camping.client.render.entity.EntityHareRenderer;
 import rikmuld.camping.client.render.fx.FXColoredFlame;
 import rikmuld.camping.client.render.item.RendererBerryItem;
 import rikmuld.camping.client.render.item.RendererCampfireBaseItem;
 import rikmuld.camping.client.render.item.RendererCampfireItem;
 import rikmuld.camping.client.render.item.RendererLogItem;
 import rikmuld.camping.client.render.item.RendererTentItem;
+import rikmuld.camping.client.render.model.ModelBear;
+import rikmuld.camping.client.render.model.ModelDeer;
+import rikmuld.camping.client.render.model.ModelHare;
+import rikmuld.camping.client.render.tileentity.TileEntityBerryRenderer;
+import rikmuld.camping.client.render.tileentity.TileEntityCampfireCookRenderer;
+import rikmuld.camping.client.render.tileentity.TileEntityCampfireDecoRenderer;
+import rikmuld.camping.client.render.tileentity.TileEntityLogRenderer;
+import rikmuld.camping.client.render.tileentity.TileEntitySleepingBagRenderer;
+import rikmuld.camping.client.render.tileentity.TileEntityTentRenderer;
 import rikmuld.camping.core.handler.TickHandler;
 import rikmuld.camping.core.register.ModBlocks;
+import rikmuld.camping.entity.EntityBear;
+import rikmuld.camping.entity.EntityCamper;
+import rikmuld.camping.entity.EntityDeer;
+import rikmuld.camping.entity.EntityHare;
 import rikmuld.camping.entity.tileentity.TileEntityBerry;
 import rikmuld.camping.entity.tileentity.TileEntityCampfireCook;
 import rikmuld.camping.entity.tileentity.TileEntityCampfireDeco;
@@ -28,6 +39,7 @@ import rikmuld.camping.misc.guide.Book;
 import rikmuld.camping.misc.version.VersionData;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.ClientRegistry;
+import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.registry.TickRegistry;
 import cpw.mods.fml.relauncher.Side;
 
@@ -49,6 +61,10 @@ public class ClientProxy extends CommonProxy {
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTent.class, new TileEntityTentRenderer());
 		MinecraftForgeClient.registerItemRenderer(ModBlocks.tent.blockID, new RendererTentItem());
 		MinecraftForgeClient.registerItemRenderer(ModBlocks.leaves.blockID, new RendererBerryItem());
+		RenderingRegistry.registerEntityRenderingHandler(EntityBear.class, new EntityBearRenderer(new ModelBear()));
+		RenderingRegistry.registerEntityRenderingHandler(EntityDeer.class, new EntityDeerRenderer(new ModelDeer()));
+		RenderingRegistry.registerEntityRenderingHandler(EntityHare.class, new EntityHareRenderer(new ModelHare()));
+		RenderingRegistry.registerEntityRenderingHandler(EntityCamper.class, new EntityCamperRenderer());
 	}
 	
 	@Override

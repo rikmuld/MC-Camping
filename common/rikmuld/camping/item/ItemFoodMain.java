@@ -1,12 +1,12 @@
 package rikmuld.camping.item;
 
+import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.item.ItemFood;
+import net.minecraft.util.Icon;
 import rikmuld.camping.core.lib.ItemInfo;
 import rikmuld.camping.core.lib.ModInfo;
 import rikmuld.camping.core.register.ModItems;
 import rikmuld.camping.core.register.ModTabs;
-import net.minecraft.client.renderer.texture.IconRegister;
-import net.minecraft.item.ItemFood;
-import net.minecraft.util.Icon;
 
 public class ItemFoodMain extends ItemFood{
 

@@ -3,24 +3,25 @@ package rikmuld.camping.client.gui.screen;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 
+import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
-import rikmuld.camping.core.lib.TextInfo;
+import rikmuld.camping.CampingMod;
+import rikmuld.camping.core.lib.GuiInfo;
 import rikmuld.camping.core.lib.TextureInfo;
-import rikmuld.camping.core.register.ModLogger;
 import rikmuld.camping.entity.tileentity.TileEntityTent;
-import rikmuld.camping.inventory.container.ContainerTentChests;
+import rikmuld.camping.network.PacketTypeHandler;
+import rikmuld.camping.network.packets.PacketOpenGui;
+import cpw.mods.fml.common.network.PacketDispatcher;
 
 public class GuiScreenTent extends GuiScreen {
 
 	TileEntityTent tent;
-	
+	boolean[] canClick = new boolean[]{false, false, false};
+
 	public GuiScreenTent(TileEntity tile)
 	{		
 		tent = (TileEntityTent) tile;
@@ -45,9 +46,7 @@ public class GuiScreenTent extends GuiScreen {
 	    
 		int guiLeft = (this.width - 255)/2;
 		int guiTop = (this.height - 160)/2;
-		
-		ModLogger.logMulti(guiLeft, guiTop, width, height);
-		
+				
 		this.buttonList.add(new GuiButton(0, this.width/2 + 4, guiTop+10-2, 85, 10, "Clear All"));
 		this.buttonList.add(new GuiButton(1, this.width/2 + 4, guiTop+30-2, 85, 10, "Remove Bed"));
 		this.buttonList.add(new GuiButton(2, this.width/2 + 4, guiTop+40-2, 85, 10, "Remove Lantern"));
@@ -57,6 +56,8 @@ public class GuiScreenTent extends GuiScreen {
 	@Override
     public void drawScreen(int mouseX, int mouseY, float partitialTicks)
 	{
+		this.drawDefaultBackground();
+		
 		int guiLeft = (this.width - 255)/2;
 		int guiTop = (this.height - 160)/2;
 		
@@ -80,6 +81,27 @@ public class GuiScreenTent extends GuiScreen {
 		this.drawCenteredString(fontRenderer, "Manage Sleeping", (int)(this.width/2*1.25F)+(int)(80*1.25F), (int)(guiTop*1.25F)+(int)(142*1.25F), 0);
 		GL11.glPopMatrix();
 		
+		if(this.isPointInRegion(172, 78, 51, 53, mouseX, mouseY, guiLeft, guiTop)&&tent.beds>0)
+		{
+			if(Mouse.isButtonDown(0)&&this.canClick[0]) mc.thePlayer.openGui(CampingMod.instance, GuiInfo.GUI_TENT_SLEEP, tent.worldObj, tent.xCoord, tent.yCoord, tent.zCoord);
+			if(!Mouse.isButtonDown(0))this.canClick[0] = true;
+		}
+		else this.canClick[0] = false;
+		
+		if(this.isPointInRegion(102, 78, 51, 53, mouseX, mouseY, guiLeft, guiTop)&&tent.chests>0)
+		{
+			if(Mouse.isButtonDown(0)&&this.canClick[1]) PacketDispatcher.sendPacketToServer(PacketTypeHandler.populatePacket(new PacketOpenGui(GuiInfo.GUI_TENT_CHESTS, tent.xCoord, tent.yCoord, tent.zCoord)));
+			if(!Mouse.isButtonDown(0))this.canClick[1] = true;
+		}
+		else this.canClick[1] = false;
+		
+		if(this.isPointInRegion(32, 78, 51, 53, mouseX, mouseY, guiLeft, guiTop)&&tent.lanterns>0)
+		{
+			if(Mouse.isButtonDown(0)&&this.canClick[2]) PacketDispatcher.sendPacketToServer(PacketTypeHandler.populatePacket(new PacketOpenGui(GuiInfo.GUI_TENT_LANTERN, tent.xCoord, tent.yCoord, tent.zCoord)));
+			if(!Mouse.isButtonDown(0))this.canClick[2] = true;
+		}
+		else this.canClick[2] = false;
+		
 		super.drawScreen(mouseX, mouseY, partitialTicks);
 	}
 	
@@ -102,4 +124,11 @@ public class GuiScreenTent extends GuiScreen {
             this.mc.thePlayer.closeScreen();
         }
     }
+    
+    private boolean isPointInRegion(int x, int y, int width, int height, int pointX, int pointY, int guiLeft, int guiTop)
+	{
+		pointX -= guiLeft;
+		pointY -= guiTop;
+		return pointX>=x-1&&pointX<x+width+1&&pointY>=y-1&&pointY<y+height+1;
+	}
 }

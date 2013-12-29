@@ -10,7 +10,6 @@ import org.lwjgl.opengl.GL11;
 
 import rikmuld.camping.core.lib.TextInfo;
 import rikmuld.camping.core.lib.TextureInfo;
-import rikmuld.camping.core.register.ModLogger;
 import rikmuld.camping.entity.tileentity.TileEntityCampfireDeco;
 import rikmuld.camping.inventory.container.ContainerCampfireDeco;
 

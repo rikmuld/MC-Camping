@@ -6,6 +6,7 @@ import java.util.Random;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -15,6 +16,7 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import rikmuld.camping.entity.tileentity.TileEntityBounds;
+import rikmuld.camping.entity.tileentity.TileEntityRotation;
 
 public class BlockBoundsHelper extends BlockMain{
 
@@ -113,4 +115,26 @@ public class BlockBoundsHelper extends BlockMain{
     	TileEntityBounds tile = (TileEntityBounds) world.getBlockTileEntity(x, y, z);
     	if(Block.blocksList[world.getBlockId(tile.baseX, tile.baseY, tile.baseZ)]!=null)Block.blocksList[world.getBlockId(tile.baseX, tile.baseY, tile.baseZ)].onNeighborBlockChange(world, tile.baseX, tile.baseY, tile.baseZ, id);
 	}
+    
+    public int getBedDirection(IBlockAccess world, int x, int y, int z)
+    {
+    	TileEntityBounds tile = (TileEntityBounds) world.getBlockTileEntity(x, y, z);
+		return ((TileEntityRotation)world.getBlockTileEntity(tile.baseX, tile.baseY, tile.baseZ)).rotation;
+    }
+	
+	public static boolean isBlockHeadOfBed(int meta)
+    {
+        return true;
+    }
+	
+	public boolean isBedFoot(IBlockAccess world, int x, int y, int z)
+    {
+        return false;
+    }
+	
+	public boolean isBed(World world, int x, int y, int z, EntityLivingBase player)
+    {
+		TileEntityBounds tile = (TileEntityBounds) world.getBlockTileEntity(x, y, z);
+    	return Block.blocksList[world.getBlockId(tile.baseX, tile.baseY, tile.baseZ)].isBed(world, tile.baseX, tile.baseY, tile.baseZ, player);
+    }
 }

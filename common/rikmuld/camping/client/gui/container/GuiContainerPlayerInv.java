@@ -1,10 +1,9 @@
 package rikmuld.camping.client.gui.container;
 
-import rikmuld.camping.client.gui.screen.GuiScreenInvExtention;
-import rikmuld.camping.core.lib.GuiInfo;
-import rikmuld.camping.core.register.ModLogger;
 import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.entity.player.EntityPlayer;
+import rikmuld.camping.client.gui.screen.GuiScreenInvExtention;
+import rikmuld.camping.core.lib.GuiInfo;
 
 public class GuiContainerPlayerInv extends GuiInventory{
 

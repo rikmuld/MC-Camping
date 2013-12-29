@@ -2,11 +2,7 @@ package rikmuld.camping.misc.bounds;
 
 import java.util.HashMap;
 
-import rikmuld.camping.core.register.ModBlocks;
 import rikmuld.camping.core.util.MathUtil;
-import rikmuld.camping.entity.tileentity.TileEntityBounds;
-import net.minecraft.block.Block;
-import net.minecraft.world.World;
 
 public class BoundsStructureRegister {
 

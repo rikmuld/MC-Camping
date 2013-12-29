@@ -12,9 +12,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.INetworkManager;
-import net.minecraft.util.Vec3;
 import rikmuld.camping.network.PacketTypeHandler;
-import cpw.mods.fml.common.network.Player;
 
 public class PacketMain {
 

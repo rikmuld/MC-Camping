@@ -1,20 +1,17 @@
 package rikmuld.camping.misc.cooking;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
-import rikmuld.camping.core.register.ModLogger;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 public class CookingEquipmentList {
 
-	public static HashMap<Integer, ItemStack> grillFood = new HashMap<Integer, ItemStack>();
-	public static HashMap<Integer, ItemStack> spitFood = new HashMap<Integer, ItemStack>();
-	public static HashMap<Integer, ItemStack> panFood = new HashMap<Integer, ItemStack>();
+	public static HashMap<List<Integer>, ItemStack> grillFood = new HashMap<List<Integer>, ItemStack>();
+	public static HashMap<List<Integer>, ItemStack> spitFood = new HashMap<List<Integer>, ItemStack>();
+	public static HashMap<List<Integer>, ItemStack> panFood = new HashMap<List<Integer>, ItemStack>();
 
 	public static HashMap<List<Integer>, CookingEquipment> equipment = new HashMap<List<Integer>, CookingEquipment>();
 	public static HashMap<ArrayList<List<Integer>>, CookingEquipment> equipmentRecipes = new HashMap<ArrayList<List<Integer>>, CookingEquipment>();
@@ -55,19 +52,19 @@ public class CookingEquipmentList {
 		else return null;
 	}
 	
-	public static void addGrillFood(int id, ItemStack item)
+	public static void addGrillFood(int id, int meta, ItemStack item)
 	{
-		grillFood.put(id, item);
+		grillFood.put(Arrays.asList(id, meta), item);
 	}
 	
-	public static void addSpitFood(int id, ItemStack item)
+	public static void addSpitFood(int id, int meta, ItemStack item)
 	{
-		spitFood.put(id, item);
+		spitFood.put(Arrays.asList(id, meta), item);
 	}
 	
-	public static void addPanFood(int id, ItemStack item)
+	public static void addPanFood(int id, int meta, ItemStack item)
 	{
-		panFood.put(id, item);
+		panFood.put(Arrays.asList(id, meta), item);
 	}
 	
 	public static void addEquipmentRecipe(CookingEquipment equipment, ItemStack... items)

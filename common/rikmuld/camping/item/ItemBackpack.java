@@ -5,7 +5,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import rikmuld.camping.CampingMod;
 import rikmuld.camping.core.lib.GuiInfo;
-import rikmuld.camping.core.lib.ItemInfo;
 
 public class ItemBackpack extends ItemMain {
 

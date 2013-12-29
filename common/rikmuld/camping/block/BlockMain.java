@@ -11,7 +11,6 @@ import rikmuld.camping.core.lib.BlockInfo;
 import rikmuld.camping.core.lib.ModInfo;
 import rikmuld.camping.core.register.ModBlocks;
 import rikmuld.camping.core.register.ModTabs;
-import rikmuld.camping.item.itemblock.ItemBlockLantern;
 
 public class BlockMain extends BlockContainer {
 

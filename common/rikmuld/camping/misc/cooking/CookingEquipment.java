@@ -1,12 +1,12 @@
 package rikmuld.camping.misc.cooking;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.model.ModelBox;
 import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import rikmuld.camping.client.gui.container.GuiContainerCampfireCook;
 import rikmuld.camping.core.register.ModCookingEquipment;
@@ -17,12 +17,12 @@ public abstract class CookingEquipment {
 
 	public int[][] slots;
 	public int cookTime;
-	public HashMap<Integer, ItemStack> cookableFoood;
+	public HashMap<List<Integer>, ItemStack> cookableFoood;
 	protected ItemRenderer renderer;
 	public int maxFood;
 	public ItemStack itemInfo;
 	
-	public CookingEquipment(int cookTime, HashMap<Integer, ItemStack> cookableFoood, int maxFood, ItemStack item)
+	public CookingEquipment(int cookTime, HashMap<List<Integer>, ItemStack> cookableFoood, int maxFood, ItemStack item)
 	{
 		this.cookTime = cookTime;
 		this.cookableFoood = cookableFoood;
@@ -44,19 +44,19 @@ public abstract class CookingEquipment {
 		return this.cookTime;
 	}
 	
-	public boolean canCook(int id)
+	public boolean canCook(int id, int meta)
 	{
-		return cookableFoood.containsKey(id);
+		return cookableFoood.containsKey(Arrays.asList(id, meta));
 	}
 	
-	public ItemStack getCookedFood(int id)
+	public ItemStack getCookedFood(int id, int meta)
 	{
-		return cookableFoood.get(id);
+		return cookableFoood.get(Arrays.asList(id, meta));
 	}
 	
 	public void renderFood(int foodIndex, ItemStack stack, EntityLivingBase entity)
 	{
-		if(foodIndex<maxFood&&stack.itemID!=ModItems.parts.itemID&&stack.getItemDamage()!=new ItemStack(ModItems.parts, 1, ItemParts.ASH).getItemDamage())
+		if(foodIndex<maxFood&&(stack.itemID!=ModItems.parts.itemID||stack.getItemDamage()!=ItemParts.ASH))
 		{
 			this.doRenderFood(foodIndex, stack, entity);
 		}

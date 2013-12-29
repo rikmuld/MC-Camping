@@ -2,7 +2,6 @@ package rikmuld.camping.core.util;
 
 import java.util.Random;
 
-import rikmuld.camping.core.register.ModLogger;
 import net.minecraft.block.Block;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.inventory.IInventory;

@@ -21,15 +21,18 @@ public class ModCookingEquipment {
 	static ItemStack ironStick = new ItemStack(ModItems.parts.itemID, 1, ItemParts.STICK);
 	public static void init()
 	{		
-		CookingEquipmentList.addGrillFood(Item.fishRaw.itemID, new ItemStack(Item.fishCooked.itemID, 1, 0));
-		CookingEquipmentList.addGrillFood(Item.beefRaw.itemID, new ItemStack(Item.beefCooked.itemID, 1, 0));
-		CookingEquipmentList.addGrillFood(Item.porkRaw.itemID, new ItemStack(Item.porkCooked.itemID, 1, 0));
-		
-		CookingEquipmentList.addPanFood(Item.potato.itemID, new ItemStack(Item.bakedPotato.itemID, 1, 0));
-		CookingEquipmentList.addPanFood(Item.rottenFlesh.itemID, new ItemStack(Item.leather.itemID, 1, 0));
+		CookingEquipmentList.addGrillFood(Item.fishRaw.itemID, 0, new ItemStack(Item.fishCooked.itemID, 1, 0));
+		CookingEquipmentList.addGrillFood(Item.beefRaw.itemID, 0, new ItemStack(Item.beefCooked.itemID, 1, 0));
+		CookingEquipmentList.addGrillFood(Item.porkRaw.itemID, 0, new ItemStack(Item.porkCooked.itemID, 1, 0));
+		CookingEquipmentList.addGrillFood(ModItems.vanisonRaw.itemID, 0, new ItemStack(ModItems.vanisonCooked.itemID, 1, 0));
 
-		CookingEquipmentList.addSpitFood(Item.chickenRaw.itemID, new ItemStack(Item.chickenCooked.itemID, 1, 0));
-		CookingEquipmentList.addSpitFood(Item.fishRaw.itemID, new ItemStack(Item.fishCooked.itemID, 1, 0));
+		CookingEquipmentList.addPanFood(Item.potato.itemID, 0, new ItemStack(Item.bakedPotato.itemID, 1, 0));
+		CookingEquipmentList.addPanFood(Item.rottenFlesh.itemID, 0, new ItemStack(Item.leather.itemID, 1, 0));
+
+		CookingEquipmentList.addSpitFood(ModItems.hareRaw.itemID, 0, new ItemStack(ModItems.hareCooked.itemID, 1, 0));
+		CookingEquipmentList.addSpitFood(Item.chickenRaw.itemID, 0, new ItemStack(Item.chickenCooked.itemID, 1, 0));
+		CookingEquipmentList.addSpitFood(Item.chickenRaw.itemID, 0, new ItemStack(Item.chickenCooked.itemID, 1, 0));
+		CookingEquipmentList.addSpitFood(Item.fishRaw.itemID, 0, new ItemStack(Item.fishCooked.itemID, 1, 0));
 		
 		spit = new Spit(new ItemStack(ModItems.kit.itemID, 1, ItemKit.KIT_SPIT));	
 		grill = new Grill(new ItemStack(ModItems.kit.itemID, 1, ItemKit.KIT_GRILL));	

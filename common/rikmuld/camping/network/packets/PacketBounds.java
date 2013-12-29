@@ -3,18 +3,12 @@ package rikmuld.camping.network.packets;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.nio.ByteBuffer;
-import java.util.ArrayList;
-import java.util.Collection;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.INetworkManager;
-import rikmuld.camping.core.register.ModLogger;
 import rikmuld.camping.entity.tileentity.TileEntityBounds;
-import rikmuld.camping.entity.tileentity.TileEntityMain;
 import rikmuld.camping.misc.bounds.Bounds;
 import rikmuld.camping.network.PacketTypeHandler;
-import cpw.mods.fml.common.network.Player;
 
 public class PacketBounds extends PacketMain {
 

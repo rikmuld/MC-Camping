@@ -1,4 +1,4 @@
-package rikmuld.camping.client.render.block;
+package rikmuld.camping.client.render.tileentity;
 
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;

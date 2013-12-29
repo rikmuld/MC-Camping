@@ -1,9 +1,9 @@
 package rikmuld.camping.item;
 
-import rikmuld.camping.core.register.ModItems;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+import rikmuld.camping.core.register.ModItems;
 
 public class ItemFoodMarshmallow extends ItemFoodMain{
 

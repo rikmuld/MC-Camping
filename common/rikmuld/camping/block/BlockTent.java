@@ -8,35 +8,33 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Icon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
-import net.minecraftforge.common.IShearable;
-import rikmuld.camping.CampingMod;
 import rikmuld.camping.core.lib.GuiInfo;
-import rikmuld.camping.core.lib.ModInfo;
-import rikmuld.camping.core.register.ModItems;
-import rikmuld.camping.core.register.ModLogger;
 import rikmuld.camping.core.register.ModStructures;
 import rikmuld.camping.core.util.BlockUtil;
 import rikmuld.camping.core.util.ItemStackUtil;
-import rikmuld.camping.entity.tileentity.TileEntityBerry;
-import rikmuld.camping.entity.tileentity.TileEntityBounds;
-import rikmuld.camping.entity.tileentity.TileEntityCampfireCook;
 import rikmuld.camping.entity.tileentity.TileEntityRotation;
 import rikmuld.camping.entity.tileentity.TileEntityTent;
-import rikmuld.camping.item.itemblock.ItemBlockBerryLeaves;
-import rikmuld.camping.misc.bounds.Bounds;
 import rikmuld.camping.misc.bounds.BoundsTracker;
+import rikmuld.camping.network.PacketTypeHandler;
+import rikmuld.camping.network.packets.PacketOpenGui;
+import cpw.mods.fml.common.network.PacketDispatcher;
+import cpw.mods.fml.common.network.Player;
 
 public class BlockTent extends BlockRotationMain {
 		
+	int color;
+	
 	public BlockTent(String name)
 	{
 		super(name, Material.sponge, false);
@@ -68,19 +66,30 @@ public class BlockTent extends BlockRotationMain {
 	}
 	
 	@Override
+    public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entityLiving, ItemStack itemStack) 
+    {
+	   super.onBlockPlacedBy(world, x, y, z, entityLiving, itemStack);
+	   ((TileEntityTent)world.getBlockTileEntity(x, y, z)).setColor(itemStack.hasTagCompound()? itemStack.getTagCompound().getInteger("color"):15);;
+    }
+	
+	@Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float par7, float par8, float par9)
 	{	
-		if(player.getCurrentEquippedItem()!=null&&((TileEntityTent) world.getBlockTileEntity(x, y, z)).addContends(player.getCurrentEquippedItem()))
+		if(!world.isRemote)
 		{
-			if(!world.isRemote)
+			if(player.getCurrentEquippedItem()!=null&&((TileEntityTent) world.getBlockTileEntity(x, y, z)).addContends(player.getCurrentEquippedItem()))
 			{
 				player.getCurrentEquippedItem().stackSize--;
 				if(player.getCurrentEquippedItem().stackSize<0)ItemStackUtil.setCurrentPlayerItem(player, null);
+			}	
+			if(player.getCurrentEquippedItem()!=null&&player.getCurrentEquippedItem().itemID==Item.dyePowder.itemID)
+			{
+				((TileEntityTent) world.getBlockTileEntity(x, y, z)).setColor(player.getCurrentEquippedItem().getItemDamage());
+			}	
+			else
+			{
+				PacketDispatcher.sendPacketToPlayer(PacketTypeHandler.populatePacket(new PacketOpenGui(GuiInfo.GUI_TENT, x, y, z)), (Player) player);
 			}
-		}	
-		else
-		{
-			player.openGui(CampingMod.instance, GuiInfo.GUI_TENT, world, x, y, z);
 		}
 		return true;
 	}
@@ -102,9 +111,13 @@ public class BlockTent extends BlockRotationMain {
     public void breakBlock(World world, int x, int y, int z, int par5, int par6)
     {
 		TileEntityTent tile = (TileEntityTent) world.getBlockTileEntity(x, y, z);   	
-	
+
 		if(tile!=null)
 		{
+			this.color = tile.color;
+
+			BlockUtil.dropItems(world, x, y, z);
+
 			tile.structures[tile.rotation].destroyStructure(world, tile.tracker[tile.rotation]);
 	        super.breakBlock(world, x, y, z, par5, par6);
 	        
@@ -122,6 +135,17 @@ public class BlockTent extends BlockRotationMain {
 		}
 	
         world.setBlock(x, y, z, 0);
+    }
+    
+    @Override
+    protected void dropBlockAsItem_do(World world, int x, int y, int z, ItemStack stack)
+    {
+    	if(stack!=null)
+    	{
+	    	stack.setTagCompound(new NBTTagCompound());
+	    	stack.getTagCompound().setInteger("color", color);
+    	}
+	    super.dropBlockAsItem_do(world, x, y, z, stack);
     }
     
     @Override
@@ -202,5 +226,25 @@ public class BlockTent extends BlockRotationMain {
             }
         }
         return ret;
+    }
+    
+	public int getBedDirection(IBlockAccess world, int x, int y, int z)
+    {
+		return ((TileEntityRotation)world.getBlockTileEntity(x, y, z)).rotation;
+    }
+	
+	public static boolean isBlockHeadOfBed(int meta)
+    {
+        return true;
+    }
+	
+	public boolean isBedFoot(IBlockAccess world, int x, int y, int z)
+    {
+        return !isBlockHeadOfBed(world.getBlockMetadata(x, y, z));
+    }
+	
+	public boolean isBed(World world, int x, int y, int z, EntityLivingBase player)
+    {
+        return true;
     }
 }

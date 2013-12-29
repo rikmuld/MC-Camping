@@ -6,8 +6,6 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.entity.RenderItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.input.Mouse;
@@ -15,7 +13,6 @@ import org.lwjgl.opengl.GL11;
 
 import rikmuld.camping.core.lib.TextureInfo;
 import rikmuld.camping.core.proxys.ClientProxy;
-import rikmuld.camping.core.register.ModItems;
 import rikmuld.camping.core.register.ModLogger;
 import rikmuld.camping.misc.guide.Book;
 import rikmuld.camping.misc.guide.Page;

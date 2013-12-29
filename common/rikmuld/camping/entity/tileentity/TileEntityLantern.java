@@ -13,7 +13,7 @@ public class TileEntityLantern extends TileEntityMain{
 		if(!worldObj.isRemote)
 		{
 			update++;
-			if(update>=50)
+			if(update>=10)
 			{
 				update = 0;
 				this.burnTime--;

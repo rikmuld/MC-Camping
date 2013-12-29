@@ -1,16 +1,12 @@
 package rikmuld.camping.network.packets;
 
-import java.io.DataInput;
 import java.io.DataInputStream;
-import java.io.DataOutput;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.INetworkManager;
-import rikmuld.camping.CampingMod;
 import rikmuld.camping.network.PacketTypeHandler;
 
 public class PacketPlayerData extends PacketMain {

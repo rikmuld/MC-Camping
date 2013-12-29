@@ -4,12 +4,12 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.IItemRenderer;
-import net.minecraftforge.client.IItemRenderer.ItemRenderType;
 
 import org.lwjgl.opengl.GL11;
 
 import rikmuld.camping.core.lib.TextureInfo;
 import rikmuld.camping.core.register.ModModels;
+import rikmuld.camping.core.util.TentUtil;
 
 public class RendererTentItem implements IItemRenderer {
 
@@ -42,7 +42,7 @@ public class RendererTentItem implements IItemRenderer {
 			GL11.glTranslatef(0.0F, 0.3F, 0.6F);
 		}
 		GL11.glScalef(0.02625F, -0.02625F, -0.02625F);
-		Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation(TextureInfo.MODEL_TENT));	
+		Minecraft.getMinecraft().renderEngine.bindTexture(TentUtil.getTentTexture(item.hasTagCompound()? item.getTagCompound().getInteger("color"):15));	
 		ModModels.tent.renderAllExcept("bed1", "bed2", "chest1", "chest2", "chest3", "chest4", "chest5", "chest6", "chest7");
 		GL11.glPopMatrix();
 	}

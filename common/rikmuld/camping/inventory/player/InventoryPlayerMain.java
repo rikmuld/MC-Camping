@@ -1,6 +1,5 @@
 package rikmuld.camping.inventory.player;
 
-import rikmuld.camping.core.util.ItemStackUtil;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;

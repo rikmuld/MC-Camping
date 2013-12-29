@@ -2,8 +2,6 @@ package rikmuld.camping.inventory.container;
 
 import java.util.ArrayList;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.IInventory;
@@ -16,8 +14,8 @@ import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.world.World;
 import rikmuld.camping.core.register.ModBlocks;
 import rikmuld.camping.core.register.ModItems;
-import rikmuld.camping.core.util.ContainerUtil;
 import rikmuld.camping.core.util.CampingInvUtil;
+import rikmuld.camping.core.util.ContainerUtil;
 import rikmuld.camping.inventory.player.InventoryCampingInvTool;
 import rikmuld.camping.inventory.slot.SlotCrafting;
 import rikmuld.camping.inventory.slot.SlotDisable;

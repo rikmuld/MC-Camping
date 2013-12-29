@@ -1,15 +1,11 @@
 package rikmuld.camping.entity.tileentity;
 
-import java.nio.ByteBuffer;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 
-import cpw.mods.fml.common.network.PacketDispatcher;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.packet.Packet;
 import net.minecraft.util.AxisAlignedBB;
 import rikmuld.camping.core.register.ModItems;
 import rikmuld.camping.core.register.ModLogger;
@@ -20,6 +16,9 @@ import rikmuld.camping.misc.cooking.CookingEquipment;
 import rikmuld.camping.misc.cooking.CookingEquipmentList;
 import rikmuld.camping.network.PacketTypeHandler;
 import rikmuld.camping.network.packets.PacketItems;
+import cpw.mods.fml.common.network.PacketDispatcher;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class TileEntityCampfireCook extends TileEntityInventory {
 	
@@ -82,7 +81,7 @@ public class TileEntityCampfireCook extends TileEntityInventory {
 			{
 				if(this.fuel>0)
 				{
-					if(this.getStackInSlot(i+2)!=null&&this.getStackInSlot(i+2).itemID!=ModItems.parts.itemID&&this.getStackInSlot(i+2).getItemDamage()!=ItemParts.ASH)this.cookProgress[i]++;
+					if(this.getStackInSlot(i+2)!=null&&(this.getStackInSlot(i+2).itemID!=ModItems.parts.itemID||this.getStackInSlot(i+2).getItemDamage()!=ItemParts.ASH))this.cookProgress[i]++;
 				}
 				else
 				{
@@ -92,9 +91,9 @@ public class TileEntityCampfireCook extends TileEntityInventory {
 				
 				if(this.cookProgress[i]>=this.equipment.cookTime)
 				{
-					if(this.equipment.canCook(this.getStackInSlot(i+2).itemID))
+					if(this.equipment.canCook(this.getStackInSlot(i+2).itemID, this.getStackInSlot(i+2).getItemDamage()))
 					{
-						this.setInventorySlotContents(i+2,  this.equipment.cookableFoood.get(getStackInSlot(i+2).itemID).copy());
+						this.setInventorySlotContents(i+2,  this.equipment.cookableFoood.get(Arrays.asList(getStackInSlot(i+2).itemID, getStackInSlot(i+2).getItemDamage())).copy());
 						PacketDispatcher.sendPacketToAllPlayers(PacketTypeHandler.populatePacket(new PacketItems(i+2, xCoord, yCoord, zCoord, this.getStackInSlot(i+2))));
 					}
 					else

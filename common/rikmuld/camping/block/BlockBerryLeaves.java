@@ -91,7 +91,7 @@ public class BlockBerryLeaves extends BlockMain implements IShearable{
     		TileEntityBerry tile = (TileEntityBerry) world.getBlockTileEntity(x, y, z);
     		if(tile.berries==true)
     		{
-    			ItemStackUtil.dropItemsInWorld(new ItemStack[]{new ItemStack(ModItems.berries.itemID, tile.rand.nextInt(3)+1, world.getBlockMetadata(x, y, z)-1)}, world, x, y, z);
+    			ItemStackUtil.dropItemsInWorld(new ItemStack[]{new ItemStack(ModItems.berries.itemID, tile.rand.nextInt(3)+1, world.getBlockMetadata(x, y, z)-1)}, world, x, y-1, z);
     			
     			tile.getBerries();
     			return true;

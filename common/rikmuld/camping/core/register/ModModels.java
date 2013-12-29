@@ -1,16 +1,11 @@
 package rikmuld.camping.core.register;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-
-import rikmuld.camping.CampingMod;
-import rikmuld.camping.core.lib.ModelInfo;
-import rikmuld.camping.misc.models.CustomModel;
-import rikmuld.camping.misc.models.CustomModelLoader;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.ModelFormatException;
 import net.minecraftforge.client.model.techne.TechneModel;
 import net.minecraftforge.client.model.techne.TechneModelLoader;
+import rikmuld.camping.core.lib.ModelInfo;
+import rikmuld.camping.misc.models.CustomModel;
+import rikmuld.camping.misc.models.CustomModelLoader;
 
 public class ModModels {
 

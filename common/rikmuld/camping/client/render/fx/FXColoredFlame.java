@@ -2,14 +2,15 @@ package rikmuld.camping.client.render.fx;
 
 import java.util.Random;
 
-import org.lwjgl.opengl.GL11;
-
-import rikmuld.camping.core.lib.TextureInfo;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+
+import org.lwjgl.opengl.GL11;
+
+import rikmuld.camping.core.lib.TextureInfo;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;

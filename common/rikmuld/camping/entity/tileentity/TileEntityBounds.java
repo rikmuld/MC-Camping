@@ -1,11 +1,10 @@
 package rikmuld.camping.entity.tileentity;
 
 import net.minecraft.nbt.NBTTagCompound;
-import cpw.mods.fml.common.network.PacketDispatcher;
-import rikmuld.camping.core.register.ModLogger;
 import rikmuld.camping.misc.bounds.Bounds;
 import rikmuld.camping.network.PacketTypeHandler;
 import rikmuld.camping.network.packets.PacketBounds;
+import cpw.mods.fml.common.network.PacketDispatcher;
 
 public class TileEntityBounds extends TileEntityMain {
 

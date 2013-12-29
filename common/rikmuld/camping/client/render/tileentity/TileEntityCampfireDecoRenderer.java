@@ -1,10 +1,9 @@
-package rikmuld.camping.client.render.block;
+package rikmuld.camping.client.render.tileentity;
 
 import java.util.Random;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemRenderer;
-import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;

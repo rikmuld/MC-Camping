@@ -1,8 +1,7 @@
 package rikmuld.camping.entity.tileentity;
 
-import rikmuld.camping.core.register.ModLogger;
-import rikmuld.camping.entity.EntityMountableBlock;
 import net.minecraft.util.AxisAlignedBB;
+import rikmuld.camping.entity.EntityMountableBlock;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 

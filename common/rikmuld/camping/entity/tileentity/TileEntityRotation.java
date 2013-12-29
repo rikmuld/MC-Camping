@@ -1,6 +1,5 @@
 package rikmuld.camping.entity.tileentity;
 
-import rikmuld.camping.core.register.ModLogger;
 import net.minecraft.nbt.NBTTagCompound;
 
 public class TileEntityRotation extends TileEntityInventory{

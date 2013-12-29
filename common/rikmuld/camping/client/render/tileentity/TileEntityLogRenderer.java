@@ -1,12 +1,8 @@
-package rikmuld.camping.client.render.block;
+package rikmuld.camping.client.render.tileentity;
 
-import java.nio.FloatBuffer;
-
-import net.minecraft.client.renderer.GLAllocation;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.techne.TechneModel;
 import net.minecraftforge.common.ForgeDirection;

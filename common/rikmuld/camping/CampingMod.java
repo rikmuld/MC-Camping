@@ -12,6 +12,7 @@ import rikmuld.camping.core.proxys.CommonProxy;
 import rikmuld.camping.core.register.ModBlocks;
 import rikmuld.camping.core.register.ModConfig;
 import rikmuld.camping.core.register.ModCookingEquipment;
+import rikmuld.camping.core.register.ModEntitys;
 import rikmuld.camping.core.register.ModItems;
 import rikmuld.camping.core.register.ModLogger;
 import rikmuld.camping.core.register.ModModels;
@@ -40,7 +41,6 @@ public class CampingMod {
 	public static CampingMod instance;
 	@SidedProxy(clientSide = ModInfo.MOD_CLIENT_PROXY, serverSide = ModInfo.MOD_SERVER_PROXY)
 	public static CommonProxy proxy;
-	
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event)
 	{
@@ -48,6 +48,7 @@ public class CampingMod {
 		ModConfig.init(new File(event.getModConfigurationDirectory().getAbsolutePath()+"/The Camping Mod/"+ModInfo.MOD_ID+".cfg"));
 		ModBlocks.init();
 		ModItems.init();
+		ModModels.init();
 	}
 
 	@EventHandler
@@ -63,10 +64,10 @@ public class CampingMod {
 		GameRegistry.registerCraftingHandler(new CraftHandler());
 		GameRegistry.registerWorldGenerator(new WorldGen());
 
+		ModEntitys.init();
 		ModTabs.init();
 		ModTileentitys.init();
 		ModRecipes.init();
-		ModModels.init();
 		ModCookingEquipment.init();
 		ModStructures.init();
 	}
@@ -82,40 +83,27 @@ public class CampingMod {
 	
 	BUGS
 	{
-		ON SERVER SIDE YOU SLEEP ABOVE BEDS BAG
-		LANTERN RENDER IN TENTS IS WIRED
+		ON SERVER SIDE YOU SLEEP ABOVE SLEEPINGBAG/TENT
 		BERRY BUSH RENDER AFTER RE_LOGGIN NOT STATE VISABLE
 	}
 	UNFINISHED
 	{
-		BERRY TREES -- SAPLINGS
-		TENTS -- ASSECABLE CONTENDS, COLORABLE
-		CAMPINGGUIDE (MANY THINGS ALSO UPDATE THE LANTERN PART)
-		
 		FIX BUGS
+
+		BERRY TREES -- SAPLINGS
+		CAMPINGGUIDE -- ADD NEW STUFF UPDATE LANTERNS
+		CAMPER -- INTELEGENCE	
+		ANIMAL STUFF -- TEXTURES
 	}
 	NEXT UP
 	{
 		FINISH UNFINISHED
 		
 		TRAPS
-		MORE FOOD
-		MOBS
-		CAMPING ARMOR
+		ANTLER THROPHY
 		ACHIEVEMENTS
 		MORE OPTIONS IN THE CONFIG
 	}
-	
-	
-	new vegtrables
-	
-	new mobs (beer, deer, rabit)
-	
-	fur from new mobs for fur armor
-	
-	traps to cash mobs
-	
-	fur armor 
-
+					
 	 */
 }

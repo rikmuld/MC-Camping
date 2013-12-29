@@ -9,7 +9,6 @@ import org.lwjgl.opengl.GL11;
 import rikmuld.camping.client.gui.screen.GuiScreenInvExtention;
 import rikmuld.camping.core.lib.GuiInfo;
 import rikmuld.camping.core.lib.TextureInfo;
-import rikmuld.camping.inventory.container.ContainerCampinvBack;
 import rikmuld.camping.inventory.container.ContainerCampinvTool;
 
 public class GuiContainerCampingInvTool extends GuiContainer {

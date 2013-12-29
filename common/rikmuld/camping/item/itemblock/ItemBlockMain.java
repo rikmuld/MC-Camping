@@ -3,8 +3,6 @@ package rikmuld.camping.item.itemblock;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.util.Icon;
-import rikmuld.camping.core.lib.BlockInfo;
-import rikmuld.camping.core.lib.ItemInfo;
 import rikmuld.camping.core.lib.ModInfo;
 import rikmuld.camping.core.register.ModItems;
 import rikmuld.camping.core.register.ModTabs;

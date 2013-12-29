@@ -2,12 +2,11 @@ package rikmuld.camping.world.structures;
 
 import java.util.Random;
 
-import rikmuld.camping.core.register.ModBlocks;
-import rikmuld.camping.core.register.ModLogger;
 import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenerator;
+import rikmuld.camping.core.register.ModBlocks;
+import rikmuld.camping.core.register.ModLogger;
 
 public class WorldGenBerryTree extends WorldGenerator {
 

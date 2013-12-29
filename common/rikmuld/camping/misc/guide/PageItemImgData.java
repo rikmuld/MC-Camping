@@ -7,7 +7,6 @@ import org.w3c.dom.Node;
 
 import rikmuld.camping.core.lib.BlockInfo;
 import rikmuld.camping.core.lib.ItemInfo;
-import rikmuld.camping.core.register.ModLogger;
 
 public class PageItemImgData {
 

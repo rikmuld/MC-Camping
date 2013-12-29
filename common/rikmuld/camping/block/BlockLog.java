@@ -4,26 +4,18 @@ import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Icon;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.MinecraftForge;
-import rikmuld.camping.CampingMod;
-import rikmuld.camping.core.lib.GuiInfo;
-import rikmuld.camping.core.lib.TextureInfo;
 import rikmuld.camping.core.register.ModBlocks;
 import rikmuld.camping.core.util.BlockUtil;
-import rikmuld.camping.entity.EntityMountableBlock;
 import rikmuld.camping.entity.tileentity.TileEntityLog;
 
 public class BlockLog extends BlockRotationMain{
