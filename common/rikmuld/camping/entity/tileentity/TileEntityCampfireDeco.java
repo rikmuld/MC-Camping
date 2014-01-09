@@ -15,6 +15,7 @@ public class TileEntityCampfireDeco extends TileEntityInventory{
 	public int color = 16;
 	public int oldTime;
 	public int time;
+	public int active = 4;
 	
 	Random rand = new Random();
 
@@ -66,6 +67,12 @@ public class TileEntityCampfireDeco extends TileEntityInventory{
 	{
 		if(!worldObj.isRemote)
 		{
+			if(active>0)
+			{
+				active--;
+				this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+				this.worldObj.markBlockForRenderUpdate(xCoord, yCoord, zCoord);	
+			}
 			this.oldTime = time;
 			if(this.getStackInSlot(0)!=null&&time==0)
 			{

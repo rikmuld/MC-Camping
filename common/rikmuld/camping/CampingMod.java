@@ -3,19 +3,23 @@ package rikmuld.camping;
 import java.io.File;
 import java.util.logging.Level;
 
+import net.minecraftforge.common.AchievementPage;
 import net.minecraftforge.common.MinecraftForge;
 import rikmuld.camping.core.handler.CraftHandler;
 import rikmuld.camping.core.handler.EventsHandler;
 import rikmuld.camping.core.handler.PlayerHandler;
 import rikmuld.camping.core.lib.ModInfo;
 import rikmuld.camping.core.proxys.CommonProxy;
+import rikmuld.camping.core.register.ModAchievements;
 import rikmuld.camping.core.register.ModBlocks;
 import rikmuld.camping.core.register.ModConfig;
 import rikmuld.camping.core.register.ModCookingEquipment;
+import rikmuld.camping.core.register.ModDamageSources;
 import rikmuld.camping.core.register.ModEntitys;
 import rikmuld.camping.core.register.ModItems;
 import rikmuld.camping.core.register.ModLogger;
 import rikmuld.camping.core.register.ModModels;
+import rikmuld.camping.core.register.ModPotions;
 import rikmuld.camping.core.register.ModRecipes;
 import rikmuld.camping.core.register.ModStructures;
 import rikmuld.camping.core.register.ModTabs;
@@ -32,6 +36,7 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
 
 @Mod(modid = ModInfo.MOD_ID, name = ModInfo.MOD_NAME, version = ModInfo.MOD_VERSION, dependencies = ModInfo.MOD_DEPENDENCIES)
 @NetworkMod(channels = {ModInfo.PACKET_CHANEL}, clientSideRequired = true, serverSideRequired = false, packetHandler = PacketHandler.class)
@@ -48,15 +53,18 @@ public class CampingMod {
 		ModConfig.init(new File(event.getModConfigurationDirectory().getAbsolutePath()+"/The Camping Mod/"+ModInfo.MOD_ID+".cfg"));
 		ModBlocks.init();
 		ModItems.init();
-		ModModels.init();
+		ModAchievements.init();
+		AchievementPage.registerAchievementPage(new AchievementPage("Camping Millestones", ModAchievements.getAll()));
 	}
 
 	@EventHandler
 	public void load(FMLInitializationEvent event)
-	{
+	{		
 		proxy.registerRenderers();
 		proxy.registerTickHandler();
 		proxy.checkVersion();
+		
+		if(event.getSide()==Side.CLIENT)ModModels.init();
 		
 		NetworkRegistry.instance().registerGuiHandler(this, CampingMod.proxy);
 		GameRegistry.registerPlayerTracker(new PlayerHandler());
@@ -70,6 +78,8 @@ public class CampingMod {
 		ModRecipes.init();
 		ModCookingEquipment.init();
 		ModStructures.init();
+		ModDamageSources.init();
+		ModPotions.init();
 	}
 
 	@EventHandler
@@ -83,27 +93,23 @@ public class CampingMod {
 	
 	BUGS
 	{
-		ON SERVER SIDE YOU SLEEP ABOVE SLEEPINGBAG/TENT
-		BERRY BUSH RENDER AFTER RE_LOGGIN NOT STATE VISABLE
+		ON SERVER SIDE YOU SLEEP ABOVE SLEEPINGBAG/TENT -- STANDARD BED HEIGHT, ON CLIENT YOU FALL TO THE GOUND N SERVER NOT
+		ON SERVER SIDE NO SPEED BONUS FUR ARMOR -- TICKHANDLER PROBLEM
+		BERRY TREE LEAF DECAY NOT RIGHT -- HALF OF THE LEAVS WONT DISAPPEAR
+		ENTITY NBT CRASH -- MAYBE?
 	}
 	UNFINISHED
-	{
-		FIX BUGS
-
-		BERRY TREES -- SAPLINGS
+	{		
 		CAMPINGGUIDE -- ADD NEW STUFF UPDATE LANTERNS
-		CAMPER -- INTELEGENCE	
-		ANIMAL STUFF -- TEXTURES
 	}
 	NEXT UP
-	{
-		FINISH UNFINISHED
-		
-		TRAPS
-		ANTLER THROPHY
-		ACHIEVEMENTS
-		MORE OPTIONS IN THE CONFIG
+	{		
+		BARBED WIRE
+		ANTLER THROPHY_ANTLER
 	}
-					
+	
+	CAMPER -- INTELEGENCE	
+	ANIMAL -- SOUNDS
+						
 	 */
 }

@@ -19,8 +19,8 @@ public class ItemInfo {
 	public static final String ANIMAL_STUFF = "animalStuff";
 	public static final String MARSHSTICK_COOKED = "marshmallowStickCooked";
 	public static final String BERRIES = "berries";
-	public static final String VANISON_RAW = "vanisonRaw";
-	public static final String VANISON_COOKED = "vanisonCooked";
+	public static final String VANISON_RAW = "venisonRaw";
+	public static final String VANISON_COOKED = "venisonCooked";
 	public static final String HARE_RAW = "rabbitRaw";
 	public static final String HARE_COOKED = "rabbitCooked";
 	public static final String ARMOR_FUR_HELM = "armorFurHelm";
@@ -41,8 +41,8 @@ public class ItemInfo {
 		put(ARMOR_FUR_BOOTS, "Fur Boots");
 		put(BERRIES, "Berries");
 		put(HEMP, "Hemp");
-		put(VANISON_RAW, "Raw Vanison");
-		put(VANISON_COOKED, "Cooked Vanison");
+		put(VANISON_RAW, "Raw Venison");
+		put(VANISON_COOKED, "Cooked Venison");
 		put(HARE_RAW, "Raw Hare");
 		put(HARE_COOKED, "Cooked Hare");
 		put(ANIMAL_STUFF, "Animal Stuff");

@@ -24,6 +24,6 @@ public class SlotItemsOnly extends SlotDisable {
 
 	public boolean isItemValid(ItemStack is)
 	{
-		return ID.contains(is.itemID);
+		return ID.contains(-1)? true:ID.contains(is.itemID);
 	}
 }

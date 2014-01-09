@@ -25,10 +25,12 @@ public class CustomModelLoader implements IModelCustomLoader {
         return types;
     }
     
-    public void setTextureSize(int width, int height)
+    public IModelCustom loadInstance(int width, int height, String resourceName, URL resource) throws ModelFormatException
     {
     	this.width = width;
     	this.height = height;
+    	
+    	return this.loadInstance(resourceName, resource);
     }
 
     @Override

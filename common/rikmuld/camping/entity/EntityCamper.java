@@ -47,6 +47,7 @@ import net.minecraft.util.Tuple;
 import net.minecraft.village.MerchantRecipe;
 import net.minecraft.village.MerchantRecipeList;
 import net.minecraft.world.World;
+import rikmuld.camping.core.register.ModAchievements;
 import rikmuld.camping.core.register.ModItems;
 import rikmuld.camping.entity.ai.EntityAILookAtTradePlayerCamper;
 import rikmuld.camping.entity.ai.EntityAITradePlayerCamper;
@@ -165,6 +166,8 @@ public class EntityCamper extends EntityAgeable implements IMerchant, INpc
 
     public boolean interact(EntityPlayer player)
     {
+		ModAchievements.encounterCamper.addStatToPlayer(player);
+
         ItemStack itemstack = player.inventory.getCurrentItem();
         boolean flag = itemstack != null && itemstack.itemID == Item.monsterPlacer.itemID;
 
@@ -373,7 +376,7 @@ public class EntityCamper extends EntityAgeable implements IMerchant, INpc
         }
         else
         {
-    		addBlacksmithItem(merchantrecipelist, ModItems.vanisonCooked.itemID, 0, this.rand, this.adjustProbability(0.6F));
+    		addBlacksmithItem(merchantrecipelist, ModItems.venisonCooked.itemID, 0, this.rand, this.adjustProbability(0.6F));
     		addBlacksmithItem(merchantrecipelist, ModItems.hareCooked.itemID, 0, this.rand, this.adjustProbability(0.6F));
     		addBlacksmithItem(merchantrecipelist, ModItems.parts.itemID, ItemParts.PAN, this.rand, this.adjustProbability(0.6F));
         	addMerchantItem(merchantrecipelist, ModItems.animalStuff.itemID, ItemAnimalStuff.ANTLER, this.rand, 0.25F);
@@ -578,7 +581,7 @@ public class EntityCamper extends EntityAgeable implements IMerchant, INpc
     	buyList.put(Integer.valueOf(ModItems.animalStuff.itemID), new Tuple(Integer.valueOf(-4), Integer.valueOf(1)));
     	
         sellList.put(Integer.valueOf(ModItems.hareCooked.itemID), new Tuple(Integer.valueOf(-4), Integer.valueOf(1)));
-        sellList.put(Integer.valueOf(ModItems.vanisonCooked.itemID), new Tuple(Integer.valueOf(-4), Integer.valueOf(1)));
+        sellList.put(Integer.valueOf(ModItems.venisonCooked.itemID), new Tuple(Integer.valueOf(-4), Integer.valueOf(1)));
         sellList.put(Integer.valueOf(ModItems.knife.itemID), new Tuple(Integer.valueOf(1), Integer.valueOf(2)));
 		sellList.put(Integer.valueOf(ModItems.backpack.itemID), new Tuple(Integer.valueOf(1), Integer.valueOf(2)));
 		sellList.put(Integer.valueOf(ModItems.armorFurLeg.itemID), new Tuple(Integer.valueOf(4), Integer.valueOf(6)));

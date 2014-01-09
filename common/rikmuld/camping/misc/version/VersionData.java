@@ -14,6 +14,8 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import rikmuld.camping.core.lib.ConfigInfo;
+import rikmuld.camping.core.lib.ConfigInfo.ConfigInfoBoolean;
 import rikmuld.camping.core.lib.ModInfo;
 import rikmuld.camping.core.register.ModLogger;
 
@@ -99,6 +101,6 @@ public class VersionData  implements Runnable {
 
 	public void execute()
 	{
-		new Thread(instance).start();
+		if(ConfigInfoBoolean.value(ConfigInfo.ENABLE_VERSION))new Thread(instance).start();
 	}
 }

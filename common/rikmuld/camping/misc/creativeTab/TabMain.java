@@ -14,7 +14,7 @@ import rikmuld.camping.core.register.ModBlocks;
 public class TabMain extends CreativeTabs {
 
 	public static ArrayList<Integer> eggIds = new ArrayList<Integer>();
-	
+
 	public TabMain(String label)
 	{
 		super(label);	
@@ -31,15 +31,15 @@ public class TabMain extends CreativeTabs {
     {
 		super.displayAllReleventItems(list);
 		
-		 Iterator iterator = EntityList.entityEggs.values().iterator();
+		Iterator iterator = EntityList.entityEggs.values().iterator();
 
-	        while (iterator.hasNext())
-	        {
-	            EntityEggInfo entityegginfo = (EntityEggInfo)iterator.next();
-	        	if(eggIds.contains(entityegginfo.spawnedID))
-	        	{
-		            list.add(new ItemStack(Item.monsterPlacer.itemID, 1, entityegginfo.spawnedID));
-	        	}
-	        }
-    }
+        while (iterator.hasNext())
+        {
+            EntityEggInfo entityegginfo = (EntityEggInfo)iterator.next();
+        	if(eggIds.contains(entityegginfo.spawnedID))
+        	{
+        		list.add(new ItemStack(Item.monsterPlacer.itemID, 1, entityegginfo.spawnedID));
+        	}
+        }
+	}
 }

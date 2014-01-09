@@ -17,7 +17,7 @@ import rikmuld.camping.entity.tileentity.TileEntityCampfireCook;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class BlockCampfireCook extends BlockMain {
+public class BlockCampfireCook extends BlockUnstableMain {
 	
 	public BlockCampfireCook(String name)
 	{
@@ -62,41 +62,6 @@ public class BlockCampfireCook extends BlockMain {
 	{
 		return Block.blocksList[Block.stone.blockID].getIcon(0, 0);
 	}
-	
-	public void dropIfCantStay(World world, int x, int y, int z)
-	{
-		if(!world.doesBlockHaveSolidTopSurface(x, y-1, z))
-		{
-			for(ItemStack item: this.getBlockDropped(world, x, y, z, 0, 1))this.dropBlockAsItem_do(world, x, y, z, item);
-			world.setBlock(x, y, z, 0);
-		}
-	}
-	
-	@Override
-	public void onBlockAdded(World world, int x, int y, int z)
-	{
-		world.scheduleBlockUpdate(x, y, z, this.blockID, 10);
-	}
-
-	@Override
-	public void onNeighborBlockChange(World world, int x, int y, int z, int id)
-	{
-		world.scheduleBlockUpdate(x, y, z, this.blockID, 10);
-	}
-
-	@Override
-	public void updateTick(World world, int x, int y, int z, Random random)
-	{
-		if(!world.isRemote)this.dropIfCantStay(world, x, y, z);
-	}
-	
-	@Override
-	public boolean canPlaceBlockAt(World world, int x, int y, int z)
-    {
-        int l = world.getBlockId(x, y, z);
-        Block block = Block.blocksList[l];
-        return (block == null || block.isBlockReplaceable(world, x, y, z))&&world.doesBlockHaveSolidTopSurface(x, y-1, z);
-    }
 	
 	@Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float par7, float par8, float par9)

@@ -46,7 +46,7 @@ public class CampingInvUtil {
 		{
 			NBTTagCompound Slots = (NBTTagCompound) inventory.tagAt(i);
 			byte slot = Slots.getByte("Slot");
-			stacks.add(ItemStack.loadItemStackFromNBT(Slots).itemID);
+			if(ItemStack.loadItemStackFromNBT(Slots)!=null)stacks.add(ItemStack.loadItemStackFromNBT(Slots).itemID);
 		}
 		
 		return stacks;

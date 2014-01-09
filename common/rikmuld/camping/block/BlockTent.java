@@ -20,6 +20,8 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import rikmuld.camping.core.lib.GuiInfo;
+import rikmuld.camping.core.register.ModAchievements;
+import rikmuld.camping.core.register.ModBlocks;
 import rikmuld.camping.core.register.ModStructures;
 import rikmuld.camping.core.util.BlockUtil;
 import rikmuld.camping.core.util.ItemStackUtil;
@@ -79,16 +81,24 @@ public class BlockTent extends BlockRotationMain {
 		{
 			if(player.getCurrentEquippedItem()!=null&&((TileEntityTent) world.getBlockTileEntity(x, y, z)).addContends(player.getCurrentEquippedItem()))
 			{
+				if(player.getCurrentEquippedItem().itemID==ModBlocks.lantern.blockID)ModAchievements.tentLight.addStatToPlayer(player);
+				if(player.getCurrentEquippedItem().itemID==ModBlocks.sleepingbag.blockID)ModAchievements.tentSleep.addStatToPlayer(player);
+				if(player.getCurrentEquippedItem().itemID==Block.chest.blockID)ModAchievements.tentStore.addStatToPlayer(player);
+
 				player.getCurrentEquippedItem().stackSize--;
 				if(player.getCurrentEquippedItem().stackSize<0)ItemStackUtil.setCurrentPlayerItem(player, null);
+				return true;
 			}	
-			if(player.getCurrentEquippedItem()!=null&&player.getCurrentEquippedItem().itemID==Item.dyePowder.itemID)
+			else if(player.getCurrentEquippedItem()!=null&&player.getCurrentEquippedItem().itemID==Item.dyePowder.itemID&&((TileEntityTent) world.getBlockTileEntity(x, y, z)).color!=player.getCurrentEquippedItem().getItemDamage())
 			{
 				((TileEntityTent) world.getBlockTileEntity(x, y, z)).setColor(player.getCurrentEquippedItem().getItemDamage());
+				player.getCurrentEquippedItem().stackSize--;
+				return true;
 			}	
 			else
 			{
 				PacketDispatcher.sendPacketToPlayer(PacketTypeHandler.populatePacket(new PacketOpenGui(GuiInfo.GUI_TENT, x, y, z)), (Player) player);
+				return true;
 			}
 		}
 		return true;
@@ -151,7 +161,7 @@ public class BlockTent extends BlockRotationMain {
     @Override
 	public Icon getIcon(int side, int metadata)
 	{
-		return Block.cloth.getIcon(side, metadata);
+		return Block.cloth.getIcon(0, 0);
 	}
     
 	@Override

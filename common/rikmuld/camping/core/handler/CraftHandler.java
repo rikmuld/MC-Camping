@@ -5,6 +5,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import rikmuld.camping.core.register.ModAchievements;
 import rikmuld.camping.core.register.ModBlocks;
 import rikmuld.camping.core.register.ModItems;
 import rikmuld.camping.core.util.ItemStackUtil;
@@ -54,6 +55,17 @@ public class CraftHandler implements ICraftingHandler {
 						item.getTagCompound().setInteger("color", craftMatrix.getStackInSlot(slot).getItemDamage());
 					}
 				}
+				if(item.itemID==ModItems.knife.itemID)ModAchievements.knife.addStatToPlayer(player);
+				else if(item.itemID==ModItems.kit.itemID)ModAchievements.kit.addStatToPlayer(player);
+				else if(item.itemID==ModItems.backpack.itemID)ModAchievements.bag.addStatToPlayer(player);
+				else if(item.isItemEqual(new ItemStack(ModItems.parts, 1, ItemParts.CANVAS)))ModAchievements.canvas.addStatToPlayer(player);
+				else if(item.itemID==ModBlocks.bearTrap.blockID)ModAchievements.trap.addStatToPlayer(player);
+				else if(item.itemID==ModBlocks.tent.blockID)ModAchievements.tent.addStatToPlayer(player);
+				else if(item.itemID==ModBlocks.log.blockID)ModAchievements.log.addStatToPlayer(player);
+				else if(item.itemID==ModBlocks.lantern.blockID)ModAchievements.lantern.addStatToPlayer(player);
+				else if(item.itemID==ModBlocks.campfireBase.blockID)ModAchievements.base.addStatToPlayer(player);
+				else if(item.itemID==ModBlocks.throphy.blockID)ModAchievements.throphy.addStatToPlayer(player);
+				else if(item.itemID==ModBlocks.campfireDeco.blockID)ModAchievements.campfireDeco.addStatToPlayer(player);
 			}
 		}
 	}

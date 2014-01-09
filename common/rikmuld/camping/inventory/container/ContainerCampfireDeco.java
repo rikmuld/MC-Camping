@@ -7,21 +7,21 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+import rikmuld.camping.core.register.ModAchievements;
 import rikmuld.camping.core.util.ContainerUtil;
 import rikmuld.camping.entity.tileentity.TileEntityCampfireDeco;
-import rikmuld.camping.inventory.slot.SlotItemsOnly;
+import rikmuld.camping.inventory.slot.SlotAchivementGet;
 
 public class ContainerCampfireDeco extends ContainerMain{
 
 	private TileEntityCampfireDeco fire;
 	private World worldObj;
-	private ItemStack item = null;
 
 	public ContainerCampfireDeco(InventoryPlayer playerInv, IInventory tile)
 	{
 		this.fire = (TileEntityCampfireDeco) tile;
 
-		this.addSlotToContainer(new SlotItemsOnly(tile, 0, 71, 12, Item.dyePowder.itemID));
+		this.addSlotToContainer(new SlotAchivementGet(tile, 0, 71, 12, playerInv.player, ModAchievements.effect, Item.dyePowder.itemID));
 		
 		ContainerUtil.addSlots(this, playerInv, 0, 1, 9, 8, 96);
 		ContainerUtil.addSlots(this, playerInv, 9, 3, 9, 8, 38);

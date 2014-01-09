@@ -26,7 +26,6 @@ public abstract class CookingEquipment {
 	{
 		this.cookTime = cookTime;
 		this.cookableFoood = cookableFoood;
-		renderer = new ItemRenderer(Minecraft.getMinecraft());
 		this.maxFood = maxFood;
 		slots = new int[2][maxFood];
 		this.setSlots();
@@ -56,6 +55,7 @@ public abstract class CookingEquipment {
 	
 	public void renderFood(int foodIndex, ItemStack stack, EntityLivingBase entity)
 	{
+		if(this.renderer==null)renderer = new ItemRenderer(Minecraft.getMinecraft());
 		if(foodIndex<maxFood&&(stack.itemID!=ModItems.parts.itemID||stack.getItemDamage()!=ItemParts.ASH))
 		{
 			this.doRenderFood(foodIndex, stack, entity);

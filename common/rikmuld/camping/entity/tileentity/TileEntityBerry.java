@@ -13,7 +13,11 @@ public class TileEntityBerry extends TileEntityMain {
 	int update = 0;
 	
 	public Random rand = new Random();
-	
+
+	public boolean noDecay;
+	private boolean startDecay;
+	private int decay;
+
 	@Override
 	public void updateEntity()
 	{
@@ -34,7 +38,23 @@ public class TileEntityBerry extends TileEntityMain {
 				if(berries==false&&rand.nextInt(10)==0)time++;
 				update = 0;
 			}
+			
+			if(startDecay&&rand.nextInt(decay)==0)worldObj.setBlock(xCoord, yCoord, zCoord, 0);
 		}
+	}
+	
+	public void startDecay()
+	{
+		if(!this.noDecay)
+		{
+			this.startDecay = true;
+			this.decay = rand.nextInt(600)+400;
+		}
+	}
+	
+	public boolean getIsPlacedByHand()
+	{
+		return this.noDecay;
 	}
 	
 	public void getBerries()
@@ -58,7 +78,10 @@ public class TileEntityBerry extends TileEntityMain {
 	{
 		super.readFromNBT(tag);
 		time = tag.getInteger("time");
+		decay = tag.getInteger("decay");
 		berries = tag.getBoolean("berries");
+		noDecay = tag.getBoolean("noDecay");
+		startDecay = tag.getBoolean("startDecay");
 	}
 
 	@Override
@@ -66,6 +89,21 @@ public class TileEntityBerry extends TileEntityMain {
 	{
 		super.writeToNBT(tag);	
 		tag.setInteger("time", time);
+		tag.setInteger("decay", decay);
 		tag.setBoolean("berries", berries);
+		tag.setBoolean("noDecay", noDecay);
+		tag.setBoolean("startDecay", startDecay);
+	}
+
+	public void spreadDecay() 
+	{
+		this.startDecay();
+		
+		if(worldObj.getBlockTileEntity(xCoord+1, yCoord, zCoord)instanceof TileEntityBerry&&!((TileEntityBerry)worldObj.getBlockTileEntity(xCoord+1, yCoord, zCoord)).startDecay&&!((TileEntityBerry)worldObj.getBlockTileEntity(xCoord+1, yCoord, zCoord)).getIsPlacedByHand())((TileEntityBerry)worldObj.getBlockTileEntity(xCoord+1, yCoord, zCoord)).spreadDecay();
+		if(worldObj.getBlockTileEntity(xCoord-1, yCoord, zCoord)instanceof TileEntityBerry&&!((TileEntityBerry)worldObj.getBlockTileEntity(xCoord-1, yCoord, zCoord)).startDecay&&!((TileEntityBerry)worldObj.getBlockTileEntity(xCoord-1, yCoord, zCoord)).getIsPlacedByHand())((TileEntityBerry)worldObj.getBlockTileEntity(xCoord-1, yCoord, zCoord)).spreadDecay();
+		if(worldObj.getBlockTileEntity(xCoord, yCoord, zCoord+1)instanceof TileEntityBerry&&!((TileEntityBerry)worldObj.getBlockTileEntity(xCoord, yCoord, zCoord+1)).startDecay&&!((TileEntityBerry)worldObj.getBlockTileEntity(xCoord, yCoord, zCoord+1)).getIsPlacedByHand())((TileEntityBerry)worldObj.getBlockTileEntity(xCoord, yCoord, zCoord+1)).spreadDecay();
+		if(worldObj.getBlockTileEntity(xCoord, yCoord, zCoord-1)instanceof TileEntityBerry&&!((TileEntityBerry)worldObj.getBlockTileEntity(xCoord, yCoord, zCoord-1)).startDecay&&!((TileEntityBerry)worldObj.getBlockTileEntity(xCoord, yCoord, zCoord-1)).getIsPlacedByHand())((TileEntityBerry)worldObj.getBlockTileEntity(xCoord, yCoord, zCoord-1)).spreadDecay();
+		if(worldObj.getBlockTileEntity(xCoord, yCoord+1, zCoord)instanceof TileEntityBerry&&!((TileEntityBerry)worldObj.getBlockTileEntity(xCoord, yCoord+1, zCoord)).startDecay&&!((TileEntityBerry)worldObj.getBlockTileEntity(xCoord, yCoord+1, zCoord)).getIsPlacedByHand())((TileEntityBerry)worldObj.getBlockTileEntity(xCoord, yCoord+1, zCoord)).spreadDecay();
+		if(worldObj.getBlockTileEntity(xCoord, yCoord-1, zCoord)instanceof TileEntityBerry&&!((TileEntityBerry)worldObj.getBlockTileEntity(xCoord, yCoord-1, zCoord)).startDecay&&!((TileEntityBerry)worldObj.getBlockTileEntity(xCoord, yCoord-1, zCoord)).getIsPlacedByHand())((TileEntityBerry)worldObj.getBlockTileEntity(xCoord, yCoord-1, zCoord)).spreadDecay();
 	}
 }

@@ -22,10 +22,13 @@ import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
+import rikmuld.camping.core.register.ModAchievements;
 import rikmuld.camping.core.register.ModItems;
+import rikmuld.camping.core.util.PlayerUtil;
 import rikmuld.camping.item.ItemAnimalStuff;
 
 public class EntityBear extends EntityAnimal{
@@ -55,8 +58,8 @@ public class EntityBear extends EntityAnimal{
     {
         super.applyEntityAttributes();
         this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setAttribute(0.25D);
-        this.getAttributeMap().func_111150_b(SharedMonsterAttributes.attackDamage).setAttribute(8.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setAttribute(25.0D);
+        this.getAttributeMap().func_111150_b(SharedMonsterAttributes.attackDamage).setAttribute(6.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setAttribute(20.0D);
     }
     
     public boolean getCanSpawnHere()
@@ -71,7 +74,7 @@ public class EntityBear extends EntityAnimal{
     
     public int getTotalArmorValue()
     {
-        return 15;
+        return 8;
     }
 
     public EnumCreatureAttribute getCreatureAttribute()
@@ -193,8 +196,8 @@ public class EntityBear extends EntityAnimal{
 
         for (drops = 0; drops < dropChance; ++drops)
         {
-            if(this.isBurning())this.entityDropItem(new ItemStack(ModItems.vanisonCooked.itemID, 1, 0), 0);
-            else this.entityDropItem(new ItemStack(ModItems.vanisonRaw.itemID, 1, 0), 0);
+            if(this.isBurning())this.entityDropItem(new ItemStack(ModItems.venisonCooked.itemID, 1, 0), 0);
+            else this.entityDropItem(new ItemStack(ModItems.venisonRaw.itemID, 1, 0), 0);
         }         
     }
 	
@@ -203,5 +206,15 @@ public class EntityBear extends EntityAnimal{
         return stack.itemID == Item.fishRaw.itemID;
     }
 	
+	 public void onDeath(DamageSource source)
+	 {
+		 if(source.getEntity() instanceof EntityPlayer)
+		 {
+			 NBTTagCompound tag = PlayerUtil.getPlayerDataTag((EntityPlayer) source.getEntity());			 
+			 tag.setInteger("killedBears", tag.getInteger("killedBears")+1);
+			 if(tag.getInteger("killedBears")>=5)ModAchievements.bear.addStatToPlayer((EntityPlayer) source.getEntity());
+		 }
+	 }
+	 
     //SOUNDS
 }

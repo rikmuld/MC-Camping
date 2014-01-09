@@ -8,7 +8,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import rikmuld.camping.core.register.ModItems;
-import rikmuld.camping.core.register.ModLogger;
 import rikmuld.camping.core.util.ItemStackUtil;
 import rikmuld.camping.inventory.slot.SlotCooking;
 import rikmuld.camping.item.ItemParts;
@@ -29,7 +28,7 @@ public class TileEntityCampfireCook extends TileEntityInventory {
 	Random rand = new Random();
 	
 	public int[] cookProgress = new int[10];
-	
+
 	public CookingEquipment equipment;
 	public ArrayList<SlotCooking> slots;
 	
@@ -148,7 +147,7 @@ public class TileEntityCampfireCook extends TileEntityInventory {
 			this.sendTileData(0, true, fuel);
 		}
 		if(fuel+fuelForCoal<=maxFeul&&this.getStackInSlot(0)!=null)
-		{
+		{			
 			this.decrStackSize(0, 1);
 			this.fuel+=fuelForCoal;
 		}

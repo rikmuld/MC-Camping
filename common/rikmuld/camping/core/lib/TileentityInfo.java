@@ -12,4 +12,6 @@ public class TileentityInfo {
 	public static final String BERRY = "berry";
 	public static final String TENT = "tent";
 	public static final String BOUNDS = "bounds";
+	public static final String BEARTRAP = "bearTrap";
+	public static final String THROPHY_ANTLER = "throphyAntler";
 }

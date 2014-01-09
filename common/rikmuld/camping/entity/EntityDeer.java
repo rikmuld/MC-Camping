@@ -15,8 +15,12 @@ import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
+import rikmuld.camping.core.register.ModAchievements;
 import rikmuld.camping.core.register.ModItems;
+import rikmuld.camping.core.util.PlayerUtil;
 import rikmuld.camping.item.ItemAnimalStuff;
 
 public class EntityDeer extends EntityAnimal{
@@ -78,8 +82,8 @@ public class EntityDeer extends EntityAnimal{
 
         for (drops = 0; drops < dropChance; ++drops)
         {
-            if(this.isBurning())this.entityDropItem(new ItemStack(ModItems.vanisonCooked.itemID, 1, 0), 0);
-            else this.entityDropItem(new ItemStack(ModItems.vanisonRaw.itemID, 1, 0), 0);
+            if(this.isBurning())this.entityDropItem(new ItemStack(ModItems.venisonCooked.itemID, 1, 0), 0);
+            else this.entityDropItem(new ItemStack(ModItems.venisonRaw.itemID, 1, 0), 0);
         }
         
         dropChance = this.rand.nextInt(20) - 18 + this.rand.nextInt(1 + par2);
@@ -88,5 +92,14 @@ public class EntityDeer extends EntityAnimal{
         for (drops = 0; drops < dropChance; ++drops)this.entityDropItem(new ItemStack(ModItems.animalStuff.itemID, 1, ItemAnimalStuff.ANTLER), 0);        
     }
 
+	 public void onDeath(DamageSource source)
+	 {
+		 if(source.getEntity() instanceof EntityPlayer)
+		 {
+			 NBTTagCompound tag = PlayerUtil.getPlayerDataTag((EntityPlayer) source.getEntity());			 
+			 tag.setInteger("killedDeers", tag.getInteger("killedDeers")+1);
+			 if(tag.getInteger("killedDeers")>=10)ModAchievements.bear.addStatToPlayer((EntityPlayer) source.getEntity());
+		 }
+	 }
     //SOUNDS
 }

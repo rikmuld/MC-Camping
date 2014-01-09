@@ -9,6 +9,7 @@ import rikmuld.camping.client.render.entity.EntityCamperRenderer;
 import rikmuld.camping.client.render.entity.EntityDeerRenderer;
 import rikmuld.camping.client.render.entity.EntityHareRenderer;
 import rikmuld.camping.client.render.fx.FXColoredFlame;
+import rikmuld.camping.client.render.item.RendererBearTrapItem;
 import rikmuld.camping.client.render.item.RendererBerryItem;
 import rikmuld.camping.client.render.item.RendererCampfireBaseItem;
 import rikmuld.camping.client.render.item.RendererCampfireItem;
@@ -17,6 +18,8 @@ import rikmuld.camping.client.render.item.RendererTentItem;
 import rikmuld.camping.client.render.model.ModelBear;
 import rikmuld.camping.client.render.model.ModelDeer;
 import rikmuld.camping.client.render.model.ModelHare;
+import rikmuld.camping.client.render.tileentity.TileEntityAntlerThrophyRenderer;
+import rikmuld.camping.client.render.tileentity.TileEntityBearTrapRenderer;
 import rikmuld.camping.client.render.tileentity.TileEntityBerryRenderer;
 import rikmuld.camping.client.render.tileentity.TileEntityCampfireCookRenderer;
 import rikmuld.camping.client.render.tileentity.TileEntityCampfireDecoRenderer;
@@ -29,6 +32,8 @@ import rikmuld.camping.entity.EntityBear;
 import rikmuld.camping.entity.EntityCamper;
 import rikmuld.camping.entity.EntityDeer;
 import rikmuld.camping.entity.EntityHare;
+import rikmuld.camping.entity.tileentity.TileEntityAntlerThrophy;
+import rikmuld.camping.entity.tileentity.TileEntityBearTrap;
 import rikmuld.camping.entity.tileentity.TileEntityBerry;
 import rikmuld.camping.entity.tileentity.TileEntityCampfireCook;
 import rikmuld.camping.entity.tileentity.TileEntityCampfireDeco;
@@ -49,18 +54,21 @@ public class ClientProxy extends CommonProxy {
 	
 	@Override
 	public void registerRenderers()
-	{
-		MinecraftForgeClient.registerItemRenderer(ModBlocks.campfireDeco.blockID, new RendererCampfireItem());
+	{		
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCampfireDeco.class, new TileEntityCampfireDecoRenderer());
-		MinecraftForgeClient.registerItemRenderer(ModBlocks.campfireBase.blockID, new RendererCampfireBaseItem());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCampfireCook.class, new TileEntityCampfireCookRenderer());
-		MinecraftForgeClient.registerItemRenderer(ModBlocks.log.blockID, new RendererLogItem());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityLog.class, new TileEntityLogRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySleepingBag.class, new TileEntitySleepingBagRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBerry.class, new TileEntityBerryRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTent.class, new TileEntityTentRenderer());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBearTrap.class, new TileEntityBearTrapRenderer());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityAntlerThrophy.class, new TileEntityAntlerThrophyRenderer());
+		MinecraftForgeClient.registerItemRenderer(ModBlocks.bearTrap.blockID, new RendererBearTrapItem());
 		MinecraftForgeClient.registerItemRenderer(ModBlocks.tent.blockID, new RendererTentItem());
 		MinecraftForgeClient.registerItemRenderer(ModBlocks.leaves.blockID, new RendererBerryItem());
+		MinecraftForgeClient.registerItemRenderer(ModBlocks.log.blockID, new RendererLogItem());
+		MinecraftForgeClient.registerItemRenderer(ModBlocks.campfireDeco.blockID, new RendererCampfireItem());
+		MinecraftForgeClient.registerItemRenderer(ModBlocks.campfireBase.blockID, new RendererCampfireBaseItem());
 		RenderingRegistry.registerEntityRenderingHandler(EntityBear.class, new EntityBearRenderer(new ModelBear()));
 		RenderingRegistry.registerEntityRenderingHandler(EntityDeer.class, new EntityDeerRenderer(new ModelDeer()));
 		RenderingRegistry.registerEntityRenderingHandler(EntityHare.class, new EntityHareRenderer(new ModelHare()));

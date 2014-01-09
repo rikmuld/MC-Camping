@@ -1,6 +1,8 @@
 package rikmuld.camping.core.register;
 
 import rikmuld.camping.core.lib.TileentityInfo;
+import rikmuld.camping.entity.tileentity.TileEntityAntlerThrophy;
+import rikmuld.camping.entity.tileentity.TileEntityBearTrap;
 import rikmuld.camping.entity.tileentity.TileEntityBerry;
 import rikmuld.camping.entity.tileentity.TileEntityBounds;
 import rikmuld.camping.entity.tileentity.TileEntityCampfireCook;
@@ -27,5 +29,7 @@ public class ModTileentitys {
 		GameRegistry.registerTileEntity(TileEntityBerry.class, TileentityInfo.BERRY);
 		GameRegistry.registerTileEntity(TileEntityTent.class, TileentityInfo.TENT);
 		GameRegistry.registerTileEntity(TileEntityBounds.class, TileentityInfo.BOUNDS);
+		GameRegistry.registerTileEntity(TileEntityBearTrap.class, TileentityInfo.BEARTRAP);
+		GameRegistry.registerTileEntity(TileEntityAntlerThrophy.class, TileentityInfo.THROPHY_ANTLER);
 	}
 }

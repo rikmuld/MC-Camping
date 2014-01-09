@@ -5,7 +5,7 @@ import java.util.Map;
 
 public class BlockInfo {
 
-	static int startId = 2000;
+	static int startId = 2120;
 	
 	public static Map<String, Integer> devIDs = new HashMap<String, Integer>();
 	public static Map<String, Integer> IDs = new HashMap<String, Integer>();
@@ -21,10 +21,15 @@ public class BlockInfo {
 	public static final String BERRY = "berry";
 	public static final String TENT = "tent";
 	public static final String BOUNDS = "bounds";
+	public static final String SAPLING = "berrySapling";
+	public static final String BEARTRAP = "trapBear";
+	public static final String WIRE = "wireBarbed";
+	public static final String THROPHY = "throphyAntler";
 
 	public static void putAll()
 	{
 		put(BERRY, "Berry Leaves");
+		put(SAPLING, "Berry Tree Sapling");
 		put(CAMPFIRE_BASE, "Campfire Base");
 		put(CAMPFIRE_DECO_NAME, "Decoration Campfire");
 		put(LIGHT, "Light Block");
@@ -34,6 +39,9 @@ public class BlockInfo {
 		put(SLEEPING, "Sleeping Bag");
 		put(TENT, "Tent");
 		put(BOUNDS, "Bounds Helper Block");
+		put(BEARTRAP, "Bear Trap");
+		put(WIRE, "Barbed Wire");
+		put(THROPHY, "Antler Throphy");
 	}
 	
 	public static void put(String id, String name)

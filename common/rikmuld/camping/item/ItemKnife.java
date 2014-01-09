@@ -5,6 +5,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
+import rikmuld.camping.core.lib.ConfigInfo;
+import rikmuld.camping.core.lib.ConfigInfo.ConfigInfoInteger;
 import rikmuld.camping.core.util.ItemStackUtil;
 import rikmuld.camping.entity.tileentity.TileEntityRotation;
 import rikmuld.camping.entity.tileentity.TileEntityTent;
@@ -15,7 +17,7 @@ public class ItemKnife extends ItemMain implements IKnife {
 	{
 		super(name);
 		this.setHasSubtypes(true);
-		this.setMaxDamage(250);
+		this.setMaxDamage(ConfigInfoInteger.value(ConfigInfo.TOOL_DAMAGE));
 		this.setMaxStackSize(1);
 	}
 

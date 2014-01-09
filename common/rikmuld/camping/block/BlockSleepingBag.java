@@ -12,6 +12,7 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Icon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import rikmuld.camping.core.register.ModAchievements;
 import rikmuld.camping.core.util.ItemStackUtil;
 import rikmuld.camping.entity.tileentity.TileEntityRotation;
 import rikmuld.camping.entity.tileentity.TileEntitySleepingBag;
@@ -123,6 +124,7 @@ public class BlockSleepingBag extends BlockRotationMain {
 				
 				if(state==EnumStatus.OK)
 				{
+					ModAchievements.bagSleeping.addStatToPlayer(player);
 					((TileEntitySleepingBag)world.getBlockTileEntity(x, y, z)).sleepingPlayer = player;
 					return true;
 				}

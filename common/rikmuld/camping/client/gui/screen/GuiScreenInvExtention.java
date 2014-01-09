@@ -14,6 +14,7 @@ import org.lwjgl.opengl.GL11;
 import rikmuld.camping.CampingMod;
 import rikmuld.camping.core.lib.GuiInfo;
 import rikmuld.camping.core.lib.TextureInfo;
+import rikmuld.camping.core.register.ModAchievements;
 import rikmuld.camping.core.register.ModItems;
 import rikmuld.camping.network.PacketTypeHandler;
 import rikmuld.camping.network.packets.PacketOpenGui;
@@ -125,8 +126,12 @@ public class GuiScreenInvExtention extends GuiScreen {
 		{
 			if(Mouse.isButtonDown(0)&&clickReady&&this.canClick[2])
 			{
-				clickReady = false;
-				if(id==GuiInfo.GUI_INV_PLAYER)player.openGui(CampingMod.instance, GuiInfo.GUI_GUIDE, player.worldObj, 0, 0, 0);
+				if(id==GuiInfo.GUI_INV_PLAYER)
+				{
+					ModAchievements.guide.addStatToPlayer(player);
+					clickReady = false;
+					player.openGui(CampingMod.instance, GuiInfo.GUI_GUIDE, player.worldObj, 0, 0, 0);
+				}
 			}
 			if(!Mouse.isButtonDown(0))this.canClick[2] = true;
 		}

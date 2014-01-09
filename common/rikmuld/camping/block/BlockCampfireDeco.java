@@ -21,7 +21,7 @@ import rikmuld.camping.entity.tileentity.TileEntityCampfireDeco;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class BlockCampfireDeco extends BlockMain {
+public class BlockCampfireDeco extends BlockUnstableMain {
 	
 	public BlockCampfireDeco(String name)
 	{
@@ -81,34 +81,7 @@ public class BlockCampfireDeco extends BlockMain {
 	public Icon getIcon(int side, int metadata)
 	{
 		return Block.blocksList[Block.planks.blockID].getIcon(0, 0);
-	}
-	
-	public void dropIfCantStay(World world, int x, int y, int z)
-	{
-		if(!world.doesBlockHaveSolidTopSurface(x, y-1, z))
-		{
-			for(ItemStack item: this.getBlockDropped(world, x, y, z, 0, 1))this.dropBlockAsItem_do(world, x, y, z, item);
-			world.setBlock(x, y, z, 0);
-		}
-	}
-	
-	@Override
-	public void onBlockAdded(World world, int x, int y, int z)
-	{
-		world.scheduleBlockUpdate(x, y, z, this.blockID, 10);
-	}
-
-	@Override
-	public void onNeighborBlockChange(World world, int x, int y, int z, int id)
-	{
-		world.scheduleBlockUpdate(x, y, z, this.blockID, 10);
-	}
-
-	@Override
-	public void updateTick(World world, int x, int y, int z, Random random)
-	{
-		if(!world.isRemote)this.dropIfCantStay(world, x, y, z);
-	}
+	}	
 	
 	@Override
 	public void breakBlock(World world, int x, int y, int z, int id, int meta)
@@ -116,14 +89,6 @@ public class BlockCampfireDeco extends BlockMain {
 		BlockUtil.dropItems(world, x, y, z);
 		super.breakBlock(world, x, y, z, id, meta);
 	}
-	
-	@Override
-	public boolean canPlaceBlockAt(World world, int x, int y, int z)
-    {
-        int l = world.getBlockId(x, y, z);
-        Block block = Block.blocksList[l];
-        return (block == null || block.isBlockReplaceable(world, x, y, z))&&world.doesBlockHaveSolidTopSurface(x, y-1, z);
-    }
 	
 	public ArrayList<ItemStack> getBlockDropped(World world, int x, int y, int z, int metadata, int fortune)
     {

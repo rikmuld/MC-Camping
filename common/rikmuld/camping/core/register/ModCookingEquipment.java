@@ -24,7 +24,7 @@ public class ModCookingEquipment {
 		CookingEquipmentList.addGrillFood(Item.fishRaw.itemID, 0, new ItemStack(Item.fishCooked.itemID, 1, 0));
 		CookingEquipmentList.addGrillFood(Item.beefRaw.itemID, 0, new ItemStack(Item.beefCooked.itemID, 1, 0));
 		CookingEquipmentList.addGrillFood(Item.porkRaw.itemID, 0, new ItemStack(Item.porkCooked.itemID, 1, 0));
-		CookingEquipmentList.addGrillFood(ModItems.vanisonRaw.itemID, 0, new ItemStack(ModItems.vanisonCooked.itemID, 1, 0));
+		CookingEquipmentList.addGrillFood(ModItems.venisonRaw.itemID, 0, new ItemStack(ModItems.venisonCooked.itemID, 1, 0));
 
 		CookingEquipmentList.addPanFood(Item.potato.itemID, 0, new ItemStack(Item.bakedPotato.itemID, 1, 0));
 		CookingEquipmentList.addPanFood(Item.rottenFlesh.itemID, 0, new ItemStack(Item.leather.itemID, 1, 0));

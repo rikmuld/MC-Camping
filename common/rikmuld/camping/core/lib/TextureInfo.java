@@ -35,6 +35,7 @@ public class TextureInfo {
 	public static final String MODEL_BERRY_RED = MODEL_LOCATION+"ModelLeavesBerryRed.png";
 	public static final String MODEL_BEAR = MODEL_LOCATION+"ModelBear.png";
 	public static final String GUI_TENT = GUI_LOCATION+"GuiTent.png";
+	public static final String GUI_TRAP = GUI_LOCATION+"GuiTrap.png";
 	public static final String GUI_TENT_CONTENDS_1 = GUI_LOCATION+"GuiTentContend1.png";
 	public static final String GUI_TENT_CONTENDS_2 = GUI_LOCATION+"GuiTentContend2.png";
 	public static final String MODEL_DEER = MODEL_LOCATION+"ModelDeer.png";
@@ -59,5 +60,7 @@ public class TextureInfo {
 	public static final String MODEL_TENT_CYAN = MODEL_LOCATION+"ModelTentCyan.png";
 	public static final String MODEL_TENT_BROWN = MODEL_LOCATION+"ModelTentBrown.png";
 	public static final String MODEL_TENT_BLUE = MODEL_LOCATION+"ModelTentBlue.png";
+	public static final String MODEL_ANTLER_THROPHY = MODEL_LOCATION+"ModelAntlerThrophy.png";
 	public static final String MODEL_TENT_BLACK = MODEL_LOCATION+"ModelTentBlack.png";
+	public static final String MODEL_BEARTROP_OPEN = MODEL_LOCATION+"ModelBearTrapOpen.png";
 }

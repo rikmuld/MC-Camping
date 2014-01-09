@@ -6,6 +6,8 @@ import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.world.biome.BiomeGenBase;
 import rikmuld.camping.CampingMod;
+import rikmuld.camping.core.lib.ConfigInfo;
+import rikmuld.camping.core.lib.ConfigInfo.ConfigInfoBoolean;
 import rikmuld.camping.core.lib.EntityInfo;
 import rikmuld.camping.core.lib.ModInfo;
 import rikmuld.camping.entity.EntityBear;
@@ -44,18 +46,24 @@ public class ModEntitys {
 
 	public static void init()
 	{
-		registerEntity(EntityBear.class, "Bear", EntityInfo.BEAR, true, 0x583B2D, 0xE2B572);
-		EntityRegistry.addSpawn(EntityBear.class, 3, 2, 4, EnumCreatureType.creature, BiomeGenBase.forest);
-		EntityRegistry.addSpawn(EntityBear.class, 3, 2, 4, EnumCreatureType.creature, BiomeGenBase.river);
-		
-		registerEntity(EntityDeer.class, "Deer", EntityInfo.DEER, true, 0xb57d41, 0xe8cfa0);
-		EntityRegistry.addSpawn(EntityDeer.class, 4, 3, 4, EnumCreatureType.creature, BiomeGenBase.forest);
-		EntityRegistry.addSpawn(EntityDeer.class, 6, 3, 4, EnumCreatureType.creature, BiomeGenBase.plains);
-		
-		registerEntity(EntityHare.class, "Hare", EntityInfo.HARE, true, 0xcccccc, 0xe882a0);
-		EntityRegistry.addSpawn(EntityHare.class, 4, 3, 4, EnumCreatureType.creature, BiomeGenBase.forest);
-		EntityRegistry.addSpawn(EntityHare.class, 6, 3, 4, EnumCreatureType.creature, BiomeGenBase.plains);
-		
-		registerEntity(EntityCamper.class, "Camper", EntityInfo.CAMPER, true, 0x747B51, 0x70471B);
+		if(ConfigInfoBoolean.value(ConfigInfo.USE_BEARS))
+		{
+			registerEntity(EntityBear.class, "Grizzly Bear", EntityInfo.BEAR, true, 0x583B2D, 0xE2B572);
+			EntityRegistry.addSpawn(EntityBear.class, 3, 2, 4, EnumCreatureType.creature, BiomeGenBase.forest);
+			EntityRegistry.addSpawn(EntityBear.class, 3, 2, 4, EnumCreatureType.creature, BiomeGenBase.river);
+		}
+		if(ConfigInfoBoolean.value(ConfigInfo.USE_DEERS))
+		{
+			registerEntity(EntityDeer.class, "Deer", EntityInfo.DEER, true, 0xb57d41, 0xe8cfa0);
+			EntityRegistry.addSpawn(EntityDeer.class, 4, 3, 4, EnumCreatureType.creature, BiomeGenBase.forest);
+			EntityRegistry.addSpawn(EntityDeer.class, 6, 3, 4, EnumCreatureType.creature, BiomeGenBase.plains);
+		}
+		if(ConfigInfoBoolean.value(ConfigInfo.USE_HARES))
+		{
+			registerEntity(EntityHare.class, "Hare", EntityInfo.HARE, true, 0xcccccc, 0xe882a0);
+			EntityRegistry.addSpawn(EntityHare.class, 4, 3, 4, EnumCreatureType.creature, BiomeGenBase.forest);
+			EntityRegistry.addSpawn(EntityHare.class, 6, 3, 4, EnumCreatureType.creature, BiomeGenBase.plains);
+		}
+		if(ConfigInfoBoolean.value(ConfigInfo.USE_CAMPERS)) registerEntity(EntityCamper.class, "Camper", EntityInfo.CAMPER, true, 0x747B51, 0x70471B);
 	}
 }

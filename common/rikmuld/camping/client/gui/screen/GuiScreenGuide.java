@@ -13,7 +13,6 @@ import org.lwjgl.opengl.GL11;
 
 import rikmuld.camping.core.lib.TextureInfo;
 import rikmuld.camping.core.proxys.ClientProxy;
-import rikmuld.camping.core.register.ModLogger;
 import rikmuld.camping.misc.guide.Book;
 import rikmuld.camping.misc.guide.Page;
 import rikmuld.camping.misc.guide.PageCraftData;
@@ -51,7 +50,7 @@ public class GuiScreenGuide extends GuiScreen{
 	
 	@Override
 	public void initGui()
-	{		
+	{				
 		this.guiWidth = 180;
 		this.guiHeight = 193;
 		this.guiLeft = (width-guiWidth)/2;
@@ -65,12 +64,12 @@ public class GuiScreenGuide extends GuiScreen{
         super.drawScreen(mouseX, mouseY, par3);
         
         update++;
+        updateGuide = true;
         
         if(update>50&&updateGuide)
         {
             try
             {
-            	ModLogger.logMulti("BOE!");
             	this.book = new Book(Book.class.getResource(Book.MAIN_GUIDE_PATH+"book.xml").toURI());
             	if(VersionData.doneChecking)this.updateGuide = false;
             }

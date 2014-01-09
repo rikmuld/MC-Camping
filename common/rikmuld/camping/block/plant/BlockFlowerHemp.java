@@ -25,6 +25,7 @@ public class BlockFlowerHemp extends BlockFlowerMain {
 		this.setGrowStates(5);
 		this.setHardness(0.0F);
 		this.disableStats();
+		this.setCreativeTab(null);
 	}
 
 	public void updateTick(World world, int x, int y, int z, Random random)

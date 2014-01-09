@@ -13,9 +13,11 @@ import rikmuld.camping.client.gui.container.GuiContainerKit;
 import rikmuld.camping.client.gui.container.GuiContainerPlayerInv;
 import rikmuld.camping.client.gui.container.GuiContainerTentChests;
 import rikmuld.camping.client.gui.container.GuiContainerTentLanterns;
+import rikmuld.camping.client.gui.container.GuiContainerTrap;
 import rikmuld.camping.client.gui.screen.GuiScreenGuide;
 import rikmuld.camping.client.gui.screen.GuiScreenTent;
 import rikmuld.camping.client.gui.screen.GuiScreenTentSleeping;
+import rikmuld.camping.core.handler.TickHandler;
 import rikmuld.camping.core.lib.GuiInfo;
 import rikmuld.camping.inventory.container.ContainerBackpack;
 import rikmuld.camping.inventory.container.ContainerCampfireCook;
@@ -25,7 +27,10 @@ import rikmuld.camping.inventory.container.ContainerCampinvTool;
 import rikmuld.camping.inventory.container.ContainerKit;
 import rikmuld.camping.inventory.container.ContainerTentChests;
 import rikmuld.camping.inventory.container.ContainerTentLanterns;
+import rikmuld.camping.inventory.container.ContainerTrap;
 import cpw.mods.fml.common.network.IGuiHandler;
+import cpw.mods.fml.common.registry.TickRegistry;
+import cpw.mods.fml.relauncher.Side;
 
 public class CommonProxy implements IGuiHandler {
 
@@ -37,7 +42,7 @@ public class CommonProxy implements IGuiHandler {
 	
 	public void registerTickHandler()
 	{}
-	
+
 	public void registerGuide()
 	{}
 
@@ -57,6 +62,7 @@ public class CommonProxy implements IGuiHandler {
 		if(ID == GuiInfo.GUI_KIT)return new ContainerKit(player.inventory, player.getCurrentEquippedItem());
 		if(ID == GuiInfo.GUI_TENT_LANTERN)return new ContainerTentLanterns(player.inventory, (IInventory) tile);
 		if(ID == GuiInfo.GUI_TENT_CHESTS)return new ContainerTentChests(player.inventory, (IInventory) tile);
+		if(ID == GuiInfo.GUI_TRAP)return new ContainerTrap(player.inventory, (IInventory) tile);
 		return null;
 	}
 
@@ -76,6 +82,7 @@ public class CommonProxy implements IGuiHandler {
 		if(ID == GuiInfo.GUI_CAMPINV_TOOL)return new GuiContainerCampingInvTool(player);
 		if(ID == GuiInfo.GUI_COOK)return new GuiContainerCampfireCook(player.inventory, (IInventory) tile);
 		if(ID == GuiInfo.GUI_KIT)return new GuiContainerKit(player.inventory, player.getCurrentEquippedItem());
+		if(ID == GuiInfo.GUI_TRAP)return new GuiContainerTrap(player.inventory, (IInventory) tile);
 		return null;
 	}
 }

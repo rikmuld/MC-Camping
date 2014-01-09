@@ -18,8 +18,11 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
+import rikmuld.camping.core.register.ModAchievements;
 import rikmuld.camping.core.register.ModItems;
+import rikmuld.camping.core.util.PlayerUtil;
 import rikmuld.camping.item.ItemAnimalStuff;
 
 public class EntityHare extends EntityAnimal{
@@ -129,5 +132,15 @@ public class EntityHare extends EntityAnimal{
     {
         return stack.itemID == Item.carrot.itemID||stack.itemID == Item.carrotOnAStick.itemID;
     }
+	
+	 public void onDeath(DamageSource source)
+	 {
+		 if(source.getEntity() instanceof EntityPlayer)
+		 {
+			 NBTTagCompound tag = PlayerUtil.getPlayerDataTag((EntityPlayer) source.getEntity());			 
+			 tag.setInteger("killedHeers", tag.getInteger("killedHeers")+1);
+			 if(tag.getInteger("killedHeers")>=15)ModAchievements.bear.addStatToPlayer((EntityPlayer) source.getEntity());
+		 }
+	 }
     //TODO: SOUNDS
 }

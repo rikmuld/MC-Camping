@@ -100,7 +100,7 @@ public class BlockBoundsHelper extends BlockMain{
     @Override
 	public Icon getIcon(int side, int metadata)
 	{
-		return Block.cloth.getIcon(side, metadata);
+		return Block.cloth.getIcon(0, 0);
 	}
     
     @Override

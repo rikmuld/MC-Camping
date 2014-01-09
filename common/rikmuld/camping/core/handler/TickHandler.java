@@ -6,14 +6,18 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.MapData;
 import rikmuld.camping.CampingMod;
 import rikmuld.camping.client.gui.container.GuiContainerPlayerInv;
+import rikmuld.camping.core.lib.ConfigInfo;
 import rikmuld.camping.core.lib.GuiInfo;
 import rikmuld.camping.core.lib.ModInfo;
+import rikmuld.camping.core.lib.ConfigInfo.ConfigInfoBoolean;
+import rikmuld.camping.core.register.ModAchievements;
 import rikmuld.camping.core.register.ModBlocks;
 import rikmuld.camping.core.register.ModItems;
 import rikmuld.camping.core.register.ModLogger;
@@ -43,7 +47,18 @@ public class TickHandler implements ITickHandler {
 		{			
 			EntityPlayer player = (EntityPlayer) tickData[0];
 			World world = player.worldObj;
-		
+				
+			if(!world.isRemote)
+			{
+				for(ItemStack stack:player.inventory.mainInventory)
+				{
+					if(stack!=null)
+					{
+						if(stack.isItemEqual(new ItemStack(ModItems.hemp)))ModAchievements.hemp.addStatToPlayer(player);
+					}
+				}
+			}
+			
 			if(world.isRemote&&Minecraft.getMinecraft().currentScreen!=null&&Minecraft.getMinecraft().currentScreen instanceof GuiInventory&&!(Minecraft.getMinecraft().currentScreen instanceof GuiContainerPlayerInv))
 			{
 				player.openGui(CampingMod.instance, GuiInfo.GUI_INV_PLAYER, world, 0, 0, 0);
@@ -97,24 +112,30 @@ public class TickHandler implements ITickHandler {
 		            }
 				}
 			}
-			
-			if(!world.isRemote)
-			{
-				if(player.getCurrentItemOrArmor(4)!=null&&player.getCurrentItemOrArmor(4).itemID==ModItems.armorFurHelmet.itemID)this.playerWalkSpeedAmplifier+=0.00625F;
-				if(player.getCurrentItemOrArmor(3)!=null&&player.getCurrentItemOrArmor(3).itemID==ModItems.armorFurChest.itemID)this.playerWalkSpeedAmplifier+=0.00625F;
-				if(player.getCurrentItemOrArmor(2)!=null&&player.getCurrentItemOrArmor(2).itemID==ModItems.armorFurLeg.itemID)this.playerWalkSpeedAmplifier+=0.00625F;
-				if(player.getCurrentItemOrArmor(1)!=null&&player.getCurrentItemOrArmor(1).itemID==ModItems.armorFurBoots.itemID)this.playerWalkSpeedAmplifier+=0.00625F;
-				
-				player.capabilities.setPlayerWalkSpeed(this.playerWalkSpeed+this.playerWalkSpeedAmplifier);
-				playerWalkSpeedAmplifier = 0;
-			}
 		}
 	}
 
 	@Override
 	public void tickEnd(EnumSet<TickType> type, Object... tickData)
 	{
-
+		if(type.equals(EnumSet.of(TickType.PLAYER)))
+		{			
+			EntityPlayer player = (EntityPlayer) tickData[0];
+			World world = player.worldObj;
+			
+			if(!world.isRemote)
+			{				
+				if(player.getCurrentItemOrArmor(4)!=null&&player.getCurrentItemOrArmor(4).itemID==ModItems.armorFurHelmet.itemID)this.playerWalkSpeedAmplifier+=0.00625F;
+				if(player.getCurrentItemOrArmor(3)!=null&&player.getCurrentItemOrArmor(3).itemID==ModItems.armorFurChest.itemID)this.playerWalkSpeedAmplifier+=0.00625F;
+				if(player.getCurrentItemOrArmor(2)!=null&&player.getCurrentItemOrArmor(2).itemID==ModItems.armorFurLeg.itemID)this.playerWalkSpeedAmplifier+=0.00625F;
+				if(player.getCurrentItemOrArmor(1)!=null&&player.getCurrentItemOrArmor(1).itemID==ModItems.armorFurBoots.itemID)this.playerWalkSpeedAmplifier+=0.00625F;
+				
+				if(playerWalkSpeedAmplifier>=(0.00625F*4F))ModAchievements.armor.addStatToPlayer(player);
+				
+				if(ConfigInfoBoolean.value(ConfigInfo.ENBLED_SPEEDUP))player.capabilities.setPlayerWalkSpeed(this.playerWalkSpeed+this.playerWalkSpeedAmplifier);
+				playerWalkSpeedAmplifier = 0;
+			}
+		}
 	}
 
 	@Override
