@@ -10,4 +10,19 @@ Welcome to The Camping Mod 2.0 universal source for minecraft 1.6.4! This mod is
 ***
 
 ###Compiling The Source
+IMPORTAND: Make sure you know what you are doing, I am not responsible if anything happens to your computer! DO THIS AT YOUR OWN RISK!
+
+1. First of all you need to make sure you have an clean mcp setup with [Minecraft Forge](http://files.minecraftforge.net/) 9.11.1.965 or later installed for minecraft 1.6.4. 
+2. Make sure you have the java jdk installed on your computer. (just search for tutorials on google)
+3. Also Make sure you have apache ant installed on your computer. (just search for tutorials on google)
+4. Create a empty directory with 2 folders, 1 folder should be called mcp (your mcp should be installed here) and another called source.
+5. Download every file in this repo and place them in the folder called source.
+
+Now you have an folder with 2 folders. 1 called mcp, this one contains your mcp stuff. The other one called source with every file of this repo (so in that folder should be another folder called source).
+
+6. Optionally you can click on the build.proporties and edit the release mod version and the release minecraft version.
+7. To create the mod press release.bat.
+8. Wait a bit (my computer is done in 25 seconds, but the time you need to wait can be much more for slower computers).
+9. A folder called releases is now created, in it you will find the created mod file.
+
 ***
