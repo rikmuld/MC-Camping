@@ -20,7 +20,7 @@ IMPORTAND: Make sure you know what you are doing, I am not responsible if anythi
 6. Make sure you now have an folder with 2 folders. 1 called mcp, this one contains your mcp stuff. The other one called source with every file of this repo (so in that folder should be another folder called source and some other files).
 7. Optionally you can click on the build.proporties and edit the release mod version and the release minecraft version.
 8. To create the mod press release.bat.
-9. Wait a bit (my computer is done in 25 seconds, but the time you need to wait can be much more for slower computers).
+9. Wait a bit (I mostly need to wait about 20 seconds, but that varies on your computer speed).
 10. A folder called releases is now created, in it you will find the created mod file.
 
 ***
