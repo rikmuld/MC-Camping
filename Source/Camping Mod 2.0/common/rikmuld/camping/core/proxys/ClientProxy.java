@@ -97,14 +97,7 @@ public class ClientProxy extends CommonProxy {
 	
 	public void registerGuide()
 	{
-		try
-		{
-			guide = new Book(Book.class.getResource(Book.MAIN_GUIDE_PATH+"book.xml").toURI());
-		}
-		catch(URISyntaxException e)
-		{
-			e.printStackTrace();
-		}
+		guide = new Book(Book.class.getResourceAsStream(Book.MAIN_GUIDE_PATH+"book.xml"));
 	}
 	
 	@Override

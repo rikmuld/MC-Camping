@@ -1,12 +1,15 @@
 package rikmuld.camping.misc.guide;
 
 import java.io.File;
-import java.net.URI;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import org.apache.commons.io.IOUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 
@@ -17,18 +20,24 @@ public class Book {
 	
 	public ArrayList<Page> pages = new ArrayList<Page>();
 	
-	public Book(URI path)
+	public Book(InputStream input)
 	{
-		File file = new File(path);
+		File tempFile = null;
 		
-		try
-		{
-			DocumentBuilderFactory docBuilderUtil = DocumentBuilderFactory.newInstance();
+        try 
+        {
+			tempFile = File.createTempFile("temp", "temp");
+			tempFile.deleteOnExit();
+
+        	FileOutputStream out = new FileOutputStream(tempFile);
+            IOUtils.copy(input, out);
+            
+            DocumentBuilderFactory docBuilderUtil = DocumentBuilderFactory.newInstance();
 			DocumentBuilder docBuilder = docBuilderUtil.newDocumentBuilder();
-			document = docBuilder.parse(file);
-		}
-		catch(Exception e) 
-		{
+			document = docBuilder.parse(tempFile);
+        } 
+        catch (Exception e)
+        {
 			e.printStackTrace();
 		}
 		

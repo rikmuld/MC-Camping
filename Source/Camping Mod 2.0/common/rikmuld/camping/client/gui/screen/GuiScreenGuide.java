@@ -63,20 +63,11 @@ public class GuiScreenGuide extends GuiScreen{
     {
         super.drawScreen(mouseX, mouseY, par3);
         
-        update++;
-        updateGuide = true;
-        
+        update++;        
         if(update>50&&updateGuide)
         {
-            try
-            {
-            	this.book = new Book(Book.class.getResource(Book.MAIN_GUIDE_PATH+"book.xml").toURI());
-            	if(VersionData.doneChecking)this.updateGuide = false;
-            }
-            catch(URISyntaxException e)
-            {
-            	e.printStackTrace();
-            }
+            this.book = new Book(Book.class.getResourceAsStream(Book.MAIN_GUIDE_PATH+"book.xml"));
+			if(VersionData.doneChecking)this.updateGuide = false;
             update = 0;
         }
         
