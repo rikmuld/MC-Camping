@@ -23,6 +23,7 @@ import rikmuld.camping.core.register.ModPotions;
 import rikmuld.camping.core.util.BlockUtil;
 import rikmuld.camping.core.util.ItemStackUtil;
 import rikmuld.camping.entity.tileentity.TileEntityBarbedWire;
+import rikmuld.camping.item.armor.ItemArmorFur;
 
 public class BlockWireBarbed extends BlockMain {
 
@@ -98,6 +99,20 @@ public class BlockWireBarbed extends BlockMain {
         {
         	if(!world.checkNoEntityCollision(AxisAlignedBB.getBoundingBox(x+minX, y+minY, z+minZ, x+maxX, y+maxY, z+maxZ)))
         	{
+        		if(entity instanceof EntityPlayer)
+        		{
+        			EntityPlayer player = (EntityPlayer) entity;
+        			
+        			int flag = 0;
+        			
+        			if(player.getCurrentItemOrArmor(1)!=null&&player.getCurrentItemOrArmor(1).getItem() instanceof ItemArmorFur)flag++;
+        			if(player.getCurrentItemOrArmor(2)!=null&&player.getCurrentItemOrArmor(2).getItem() instanceof ItemArmorFur)flag++;
+        			if(player.getCurrentItemOrArmor(3)!=null&&player.getCurrentItemOrArmor(3).getItem() instanceof ItemArmorFur)flag++;
+        			if(player.getCurrentItemOrArmor(4)!=null&&player.getCurrentItemOrArmor(4).getItem() instanceof ItemArmorFur)flag++;
+
+        			if(flag>1)return;
+        		}
+        		
 	            entity.setInWeb();
 	
 	            if(random.nextInt(50)==0)

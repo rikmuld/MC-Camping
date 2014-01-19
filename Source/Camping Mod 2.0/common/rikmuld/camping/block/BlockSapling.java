@@ -73,7 +73,7 @@ public class BlockSapling extends BlockUnstableMain{
     {
         int l = world.getBlockId(x, y, z);
         Block block = Block.blocksList[l];
-        return (super.canPlaceBlockAt(world, x, y, z)&&world.getBlockId(x, y-1, z)==Block.grass.blockID);
+        return (super.canPlaceBlockAt(world, x, y, z)&&(world.getBlockId(x, y-1, z)==Block.grass.blockID||world.getBlockId(x, y-1, z)==Block.dirt.blockID));
     }
 	
 	@Override

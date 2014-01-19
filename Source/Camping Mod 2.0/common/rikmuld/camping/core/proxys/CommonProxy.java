@@ -41,7 +41,9 @@ public class CommonProxy implements IGuiHandler {
 	{}
 	
 	public void registerTickHandler()
-	{}
+	{
+		TickRegistry.registerTickHandler(new TickHandler(), Side.SERVER);
+	}
 
 	public void registerGuide()
 	{}

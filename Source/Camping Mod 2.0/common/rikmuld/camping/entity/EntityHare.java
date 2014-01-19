@@ -139,7 +139,7 @@ public class EntityHare extends EntityAnimal{
 		 {
 			 NBTTagCompound tag = PlayerUtil.getPlayerDataTag((EntityPlayer) source.getEntity());			 
 			 tag.setInteger("killedHeers", tag.getInteger("killedHeers")+1);
-			 if(tag.getInteger("killedHeers")>=15)ModAchievements.bear.addStatToPlayer((EntityPlayer) source.getEntity());
+			 if(tag.getInteger("killedHeers")>=15)ModAchievements.hare.addStatToPlayer((EntityPlayer) source.getEntity());
 		 }
 	 }
     //TODO: SOUNDS

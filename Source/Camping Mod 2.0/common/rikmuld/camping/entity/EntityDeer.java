@@ -98,7 +98,7 @@ public class EntityDeer extends EntityAnimal{
 		 {
 			 NBTTagCompound tag = PlayerUtil.getPlayerDataTag((EntityPlayer) source.getEntity());			 
 			 tag.setInteger("killedDeers", tag.getInteger("killedDeers")+1);
-			 if(tag.getInteger("killedDeers")>=10)ModAchievements.bear.addStatToPlayer((EntityPlayer) source.getEntity());
+			 if(tag.getInteger("killedDeers")>=10)ModAchievements.deer.addStatToPlayer((EntityPlayer) source.getEntity());
 		 }
 	 }
     //SOUNDS

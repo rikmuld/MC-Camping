@@ -2,6 +2,7 @@ package rikmuld.camping.entity.tileentity;
 
 import java.util.Random;
 
+import rikmuld.camping.core.register.ModBlocks;
 import net.minecraft.nbt.NBTTagCompound;
 
 public class TileEntityBerry extends TileEntityMain {
@@ -38,8 +39,14 @@ public class TileEntityBerry extends TileEntityMain {
 				if(berries==false&&rand.nextInt(10)==0)time++;
 				update = 0;
 			}
-			
-			if(startDecay&&rand.nextInt(decay)==0)worldObj.setBlock(xCoord, yCoord, zCoord, 0);
+		}
+		if(!worldObj.isRemote)
+		{
+			if(startDecay&&rand.nextInt(decay)==0)
+			{
+				ModBlocks.leaves.dropBlockAsItem(worldObj, xCoord, yCoord, zCoord, 0, 1);
+				worldObj.setBlock(xCoord, yCoord, zCoord, 0);
+			}
 		}
 	}
 	
@@ -48,7 +55,7 @@ public class TileEntityBerry extends TileEntityMain {
 		if(!this.noDecay)
 		{
 			this.startDecay = true;
-			this.decay = rand.nextInt(600)+400;
+			this.decay = rand.nextInt(300)+200;
 		}
 	}
 	

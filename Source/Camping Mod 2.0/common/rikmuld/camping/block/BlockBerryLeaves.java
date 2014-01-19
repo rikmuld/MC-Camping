@@ -86,6 +86,8 @@ public class BlockBerryLeaves extends BlockMain implements IShearable{
     {
     	if(!world.isRemote)
     	{
+    		player.addChatMessage("Meta: "+world.getBlockMetadata(x, y, z));
+    		
     		if(world.getBlockMetadata(x, y, z)<1)return false;
     		
     		TileEntityBerry tile = (TileEntityBerry) world.getBlockTileEntity(x, y, z);

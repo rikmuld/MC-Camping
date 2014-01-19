@@ -5,6 +5,7 @@ import java.util.EnumSet;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerCapabilities;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
@@ -28,6 +29,7 @@ import rikmuld.camping.network.packets.PacketMap;
 import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.TickType;
 import cpw.mods.fml.common.network.Player;
+import cpw.mods.fml.relauncher.ReflectionHelper;
 
 public class TickHandler implements ITickHandler {
 
@@ -116,25 +118,30 @@ public class TickHandler implements ITickHandler {
 	public void tickEnd(EnumSet<TickType> type, Object... tickData)
 	{
 		if(type.equals(EnumSet.of(TickType.PLAYER)))
-		{			
-			EntityPlayer player = (EntityPlayer) tickData[0];
-			World world = player.worldObj;
-			
-			if(!world.isRemote)
-			{				
-				if(player.getCurrentItemOrArmor(4)!=null&&player.getCurrentItemOrArmor(4).itemID==ModItems.armorFurHelmet.itemID)this.playerWalkSpeedAmplifier+=0.00625F;
-				if(player.getCurrentItemOrArmor(3)!=null&&player.getCurrentItemOrArmor(3).itemID==ModItems.armorFurChest.itemID)this.playerWalkSpeedAmplifier+=0.00625F;
-				if(player.getCurrentItemOrArmor(2)!=null&&player.getCurrentItemOrArmor(2).itemID==ModItems.armorFurLeg.itemID)this.playerWalkSpeedAmplifier+=0.00625F;
-				if(player.getCurrentItemOrArmor(1)!=null&&player.getCurrentItemOrArmor(1).itemID==ModItems.armorFurBoots.itemID)this.playerWalkSpeedAmplifier+=0.00625F;
-				
-				if(playerWalkSpeedAmplifier>=(0.00625F*4F))ModAchievements.armor.addStatToPlayer(player);
-				
-				if(ConfigInfoBoolean.value(ConfigInfo.ENBLED_SPEEDUP))player.capabilities.setPlayerWalkSpeed(this.playerWalkSpeed+this.playerWalkSpeedAmplifier);
-				playerWalkSpeedAmplifier = 0;
-			}
+		{						
+			this.handlePlayerWalkSpeed((EntityPlayer)tickData[0], ((EntityPlayer)tickData[0]).worldObj);
 		}
 	}
+	
+	public void handlePlayerWalkSpeed(EntityPlayer player, World world)
+	{		
+		if(!world.isRemote)
+		{	
+			if(player.getCurrentItemOrArmor(4)!=null&&player.getCurrentItemOrArmor(4).itemID==ModItems.armorFurHelmet.itemID)this.playerWalkSpeedAmplifier+=0.00625F;
+			if(player.getCurrentItemOrArmor(3)!=null&&player.getCurrentItemOrArmor(3).itemID==ModItems.armorFurChest.itemID)this.playerWalkSpeedAmplifier+=0.00625F;
+			if(player.getCurrentItemOrArmor(2)!=null&&player.getCurrentItemOrArmor(2).itemID==ModItems.armorFurLeg.itemID)this.playerWalkSpeedAmplifier+=0.00625F;
+			if(player.getCurrentItemOrArmor(1)!=null&&player.getCurrentItemOrArmor(1).itemID==ModItems.armorFurBoots.itemID)this.playerWalkSpeedAmplifier+=0.00625F;
+						
+			if(playerWalkSpeedAmplifier>=(0.00625F*4F))ModAchievements.armor.addStatToPlayer(player);
 
+			if(ConfigInfoBoolean.value(ConfigInfo.ENBLED_SPEEDUP))
+			{
+				ReflectionHelper.setPrivateValue(PlayerCapabilities.class, player.capabilities, (this.playerWalkSpeed+this.playerWalkSpeedAmplifier), "walkSpeed");
+			}
+			playerWalkSpeedAmplifier = 0;
+		}
+	}
+	
 	@Override
 	public EnumSet<TickType> ticks()
 	{

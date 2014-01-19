@@ -36,7 +36,7 @@ public class AchievementMain extends Achievement{
 	public void addStatToPlayer(EntityPlayer player)
 	{
 		player.addStat(this, 1);
-		PlayerUtil.getPlayerDataTag(player).setBoolean(player.username+"_"+this.getName(), true);
+		PlayerUtil.getPlayerDataTag(player).setBoolean(player.username+"_"+statName, true);
 		
 		checkForMainAchievements(player);
 	}
@@ -45,9 +45,9 @@ public class AchievementMain extends Achievement{
 	{
 		NBTTagCompound tag = PlayerUtil.getPlayerDataTag(player);
 				
-		if(tag.getBoolean(player.username+"_"+ModAchievements.encounterCamper.getName())&&tag.getBoolean(player.username+"_"+ModAchievements.berry1.getName())&&tag.getBoolean(player.username+"_"+ModAchievements.berry2.getName())&&this.getName()!=ModAchievements.basic.getName())ModAchievements.basic.addStatToPlayer(player);
-		if(tag.getBoolean(player.username+"_"+ModAchievements.hunter.getName())&&tag.getBoolean(player.username+"_"+ModAchievements.camper.getName())&&tag.getBoolean(player.username+"_"+ModAchievements.basic.getName())&&this.getName()!=ModAchievements.legend.getName())ModAchievements.legend.addStatToPlayer(player);	
-		if(tag.getBoolean(player.username+"_"+ModAchievements.throphy.getName())&&tag.getBoolean(player.username+"_"+ModAchievements.armor.getName())&&tag.getBoolean(player.username+"_"+ModAchievements.trapBait.getName())&&tag.getBoolean(player.username+"_"+ModAchievements.trapLuckey.getName())&&tag.getBoolean(player.username+"_"+ModAchievements.bear.getName())&&this.getName()!=ModAchievements.hunter.getName())ModAchievements.hunter.addStatToPlayer(player);
-		if(tag.getBoolean(player.username+"_"+ModAchievements.bag.getName())&&tag.getBoolean(player.username+"_"+ModAchievements.tentStore.getName())&&tag.getBoolean(player.username+"_"+ModAchievements.tentSleep.getName())&&tag.getBoolean(player.username+"_"+ModAchievements.tentLight.getName())&&tag.getBoolean(player.username+"_"+ModAchievements.spit.getName())&&tag.getBoolean(player.username+"_"+ModAchievements.effect.getName())&&tag.getBoolean(player.username+"_"+ModAchievements.log.getName())&&tag.getBoolean(player.username+"_"+ModAchievements.pan.getName())&&tag.getBoolean(player.username+"_"+ModAchievements.grill.getName())&&this.getName()!=ModAchievements.camper.getName())ModAchievements.camper.addStatToPlayer(player);
+		if(tag.getBoolean(player.username+"_"+ModAchievements.encounterCamper.statName)&&tag.getBoolean(player.username+"_"+ModAchievements.berry1.statName)&&tag.getBoolean(player.username+"_"+ModAchievements.berry2.statName)&&this.statName!=ModAchievements.basic.statName)ModAchievements.basic.addStatToPlayer(player);
+		if(tag.getBoolean(player.username+"_"+ModAchievements.hunter.statName)&&tag.getBoolean(player.username+"_"+ModAchievements.camper.statName)&&tag.getBoolean(player.username+"_"+ModAchievements.basic.statName)&&this.statName!=ModAchievements.legend.statName)ModAchievements.legend.addStatToPlayer(player);	
+		if(tag.getBoolean(player.username+"_"+ModAchievements.throphy.statName)&&tag.getBoolean(player.username+"_"+ModAchievements.armor.statName)&&tag.getBoolean(player.username+"_"+ModAchievements.trapBait.statName)&&tag.getBoolean(player.username+"_"+ModAchievements.trapLuckey.statName)&&tag.getBoolean(player.username+"_"+ModAchievements.bear.statName)&&this.statName!=ModAchievements.hunter.statName)ModAchievements.hunter.addStatToPlayer(player);
+		if(tag.getBoolean(player.username+"_"+ModAchievements.bag.statName)&&tag.getBoolean(player.username+"_"+ModAchievements.tentStore.statName)&&tag.getBoolean(player.username+"_"+ModAchievements.tentSleep.statName)&&tag.getBoolean(player.username+"_"+ModAchievements.tentLight.statName)&&tag.getBoolean(player.username+"_"+ModAchievements.spit.statName)&&tag.getBoolean(player.username+"_"+ModAchievements.effect.statName)&&tag.getBoolean(player.username+"_"+ModAchievements.log.statName)&&tag.getBoolean(player.username+"_"+ModAchievements.pan.statName)&&tag.getBoolean(player.username+"_"+ModAchievements.grill.statName)&&this.statName!=ModAchievements.camper.statName)ModAchievements.camper.addStatToPlayer(player);
 	}
 }
