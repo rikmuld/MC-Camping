@@ -176,7 +176,7 @@ public class EntityCamper extends EntityAgeable implements IMerchant, INpc
             if (!this.worldObj.isRemote)
             {
                 this.setCustomer(player);
-                player.displayGUIMerchant(this, this.getCustomNameTag());
+                player.displayGUIMerchant(this, "Camper");
             }
 
             return true;

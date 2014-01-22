@@ -8,6 +8,7 @@ public class AchievementInfo {
 	static int startId = 2120;
 	
 	public static Map<String, Integer> IDs = new HashMap<String, Integer>();
+	public static Map<String, Integer> devIDs = new HashMap<String, Integer>();
 	public static Map<String, String> names = new HashMap<String, String>();
 	public static Map<String, String> desc = new HashMap<String, String>();
 
@@ -94,7 +95,7 @@ public class AchievementInfo {
 	
 	public static void put(String id, String name, String description)
 	{
-		IDs.put(id, startId++);
+		devIDs.put(id, startId++);
 		names.put(id, name);
 		desc.put(id, description);
 	}

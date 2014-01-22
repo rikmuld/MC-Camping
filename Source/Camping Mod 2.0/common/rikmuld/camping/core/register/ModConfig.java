@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.logging.Level;
 
 import net.minecraftforge.common.Configuration;
+import rikmuld.camping.core.lib.AchievementInfo;
 import rikmuld.camping.core.lib.BlockInfo;
 import rikmuld.camping.core.lib.ConfigInfo;
 import rikmuld.camping.core.lib.ConfigInfo.ConfigInfoBoolean;
@@ -24,13 +25,15 @@ public class ModConfig {
 		ConfigInfo.putAll();
 		BlockInfo.putAll();
 		ItemInfo.putAll();
-		
+		AchievementInfo.putAll();
+
 		try
 		{
 			config.load();
 	
 			loadBlockIds();
 			loadItemIds();
+			loadAchievementIds();
 			loadBooleanOptions();
 			loadIntegerOptions();
 			loadDoubleOptions();
@@ -45,6 +48,22 @@ public class ModConfig {
 		}
 	}
 	
+	private static void loadAchievementIds() 
+	{
+		Iterator<String> nameIDs = AchievementInfo.names.keySet().iterator();
+		Iterator<String> gameNames = AchievementInfo.names.values().iterator();
+		Iterator<Integer> IDs = AchievementInfo.devIDs.values().iterator();
+
+		while(nameIDs.hasNext())
+		{
+			int ID = IDs.next();
+			String name = nameIDs.next();
+			String gameName = gameNames.next();
+			
+			AchievementInfo.IDs.put(name, config.get("Achievement IDs", gameName, ID).getInt(ID));
+		}
+	}
+
 	public static void loadBooleanOptions()
 	{
 		Iterator<String> nameIDs = ConfigInfoBoolean.names.keySet().iterator();

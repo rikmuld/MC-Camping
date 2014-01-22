@@ -25,7 +25,7 @@ public class EntityMountableBlock extends Entity{
 		
 		if(this.riddenByEntity!=null)
 		{
-			if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT))
+			if(Keyboard.isCreated()&&Keyboard.isKeyDown(Keyboard.KEY_LSHIFT))
 			{
 				((EntityPlayer)this.riddenByEntity).mountEntity(null);
 				this.riddenByEntity = null;

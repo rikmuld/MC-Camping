@@ -26,10 +26,11 @@ public class TileEntityTentRenderer extends TileEntitySpecialRenderer{
 		TileEntityTent tile = (TileEntityTent) tileentity;
 		
 		GL11.glPushMatrix();
-	    GL11.glEnable(GL12.GL_RESCALE_NORMAL);
 		GL11.glTranslatef((float) x+0.5F, (float) y+0.03125F, (float) z+0.5F);
 		
 		GL11.glPushMatrix();
+	    GL11.glEnable(GL12.GL_RESCALE_NORMAL);
+
 		GL11.glScalef(1.0F, -1F, -1F);
 		GL11.glScalef(0.0625F, 0.0625F, 0.0625F);
 		

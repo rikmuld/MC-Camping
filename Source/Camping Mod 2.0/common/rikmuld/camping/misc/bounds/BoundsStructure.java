@@ -17,7 +17,7 @@ public class BoundsStructure {
 	public void createStructure(World world, BoundsTracker tracker)
 	{
 		for(int i = 0; i<blocks[0].length; i++)
-		{
+		{			
 			world.setBlock(tracker.baseX+blocks[0][i], tracker.baseY+blocks[1][i], tracker.baseZ+blocks[2][i], ModBlocks.bounds.blockID, 0, 2);
 			((TileEntityBounds)world.getBlockTileEntity(tracker.baseX+blocks[0][i], tracker.baseY+blocks[1][i], tracker.baseZ+blocks[2][i])).setBounds(tracker.getBoundsOnRelativePoistion(blocks[0][i], blocks[1][i], blocks[2][i]));
 			((TileEntityBounds)world.getBlockTileEntity(tracker.baseX+blocks[0][i], tracker.baseY+blocks[1][i], tracker.baseZ+blocks[2][i])).setBaseCoords(tracker.baseX, tracker.baseY, tracker.baseZ);

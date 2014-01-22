@@ -2,20 +2,11 @@ package rikmuld.camping.block;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumMovingObjectType;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.Vec3;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeDirection;
-import rikmuld.camping.core.register.ModLogger;
 import rikmuld.camping.entity.tileentity.TileEntityAntlerThrophy;
-import rikmuld.camping.entity.tileentity.TileEntityRotation;
 import rikmuld.camping.item.itemblock.ItemBlockAntlerThrophy;
 
 public class BlockAntlerThrophy extends BlockMain{

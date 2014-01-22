@@ -14,8 +14,9 @@ public class ConfigInfo {
 	public static final String USE_WORLDGEN_CAMP = "useCampGen";
 	public static final String USE_WORLDGEN_HEMP = "useHempGen";
 	public static final String ENBLED_SPEEDUP = "enabledSpeedUp";
-	public static final String ENBLED_PLAYER_TRAP = "enablePlayerTrap";
+	public static final String ENABLE_PLAYER_TRAP = "enablePlayerTrap";
 	public static final String ENABLE_VERSION = "enableGuideVersion";
+	public static final String ENABLE_AUTO_INV = "enableAutoInv";
 	public static final String RARENESS_TREE = "rarenessTree";
 	public static final String RARENESS_HEMP = "rarenessHemp";
 	public static final String RARENESS_CAMP = "rarenessCamp";
@@ -26,7 +27,7 @@ public class ConfigInfo {
 	public static final String HEAL_HARE_COOKED = "hareHealCooked";
 	public static final String HEAL_VANISON_RAW = "vanisonHealRaw";
 	public static final String HEAL_VANISON_COOKED = "vanisonHealCooked";
-	public static final String SPEEDBOOST = "speedBoost";
+	public static final String ENABLE_SPEEDBOOST = "speedBoost";
 
 	public static void putAll()
 	{
@@ -40,8 +41,9 @@ public class ConfigInfo {
 		ConfigInfoBoolean.put(USE_WORLDGEN_HEMP, "Use Hemp Generation", true, "World Generation");
 		ConfigInfoBoolean.put(ENBLED_SPEEDUP, "Enable Fur Armor Speed Boost", true, "Tools");
 		ConfigInfoBoolean.put(ENABLE_VERSION, "Enable Camping Guide Version Checker", true, "General");
-		ConfigInfoBoolean.put(ENBLED_PLAYER_TRAP, "Trap Can Hurt The Player", true, "General");
-		ConfigInfoDouble.put(SPEEDBOOST, "Fur Armor Speed Boost", 0.0625, "Tools");
+		ConfigInfoBoolean.put(ENABLE_PLAYER_TRAP, "Trap Can Hurt The Player", true, "General");
+		ConfigInfoBoolean.put(ENABLE_AUTO_INV, "Auto Open The Camping Inventory", true, "General");
+		ConfigInfoDouble.put(ENABLE_SPEEDBOOST, "Fur Armor Speed Boost", 0.0625, "Tools");
 		ConfigInfoInteger.put(RARENESS_TREE, "Berry Tree Spawn Rareness", 25, "World Generation");
 		ConfigInfoInteger.put(RARENESS_HEMP, "Hemp Spawn Rareness", 48, "World Generation");
 		ConfigInfoInteger.put(RARENESS_CAMP, "Camp Spawn Rareness", 50, "World Generation");

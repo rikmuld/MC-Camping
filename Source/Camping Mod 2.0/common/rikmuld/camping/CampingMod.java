@@ -7,6 +7,7 @@ import net.minecraftforge.common.AchievementPage;
 import net.minecraftforge.common.MinecraftForge;
 import rikmuld.camping.core.handler.CraftHandler;
 import rikmuld.camping.core.handler.EventsHandler;
+import rikmuld.camping.core.handler.KeyHandler;
 import rikmuld.camping.core.handler.PlayerHandler;
 import rikmuld.camping.core.lib.ModInfo;
 import rikmuld.camping.core.proxys.CommonProxy;
@@ -25,8 +26,11 @@ import rikmuld.camping.core.register.ModRecipes;
 import rikmuld.camping.core.register.ModStructures;
 import rikmuld.camping.core.register.ModTabs;
 import rikmuld.camping.core.register.ModTileentitys;
+import rikmuld.camping.core.util.KeyUtil;
+import rikmuld.camping.misc.key.KeyListner;
 import rikmuld.camping.network.PacketHandler;
 import rikmuld.camping.world.WorldGen;
+import cpw.mods.fml.client.registry.KeyBindingRegistry;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -68,12 +72,16 @@ public class CampingMod {
 		
 		if(event.getSide()==Side.CLIENT)ModModels.init();
 		
+		MinecraftForge.EVENT_BUS.register(new EventsHandler());
 		NetworkRegistry.instance().registerGuiHandler(this, CampingMod.proxy);
 		GameRegistry.registerPlayerTracker(new PlayerHandler());
-		MinecraftForge.EVENT_BUS.register(new EventsHandler());
 		GameRegistry.registerCraftingHandler(new CraftHandler());
 		GameRegistry.registerWorldGenerator(new WorldGen());
-
+		
+		KeyUtil.registerKeyListner(new KeyListner());
+		KeyUtil.putKeyBindings();
+		KeyBindingRegistry.registerKeyBinding(new KeyHandler());
+		
 		ModPackets.init();
 		ModEntitys.init();
 		ModTabs.init();
@@ -105,6 +113,7 @@ public class CampingMod {
 	NEXT UP FOR RELEASE
 	{	
 		BUGS
+		ADD STAT IDS TO CONFIG
 	}
 	FUTURE
 	{

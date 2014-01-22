@@ -8,7 +8,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.stats.Achievement;
 import rikmuld.camping.core.lib.AchievementInfo;
 import rikmuld.camping.core.register.ModAchievements;
-import rikmuld.camping.core.register.ModLogger;
 import rikmuld.camping.core.util.PlayerUtil;
 
 public class AchievementMain extends Achievement{

@@ -2,7 +2,9 @@ package rikmuld.camping.core.register;
 
 import rikmuld.camping.network.PacketHandler;
 import rikmuld.camping.network.packets.PacketBounds;
+import rikmuld.camping.network.packets.PacketCampInvPos;
 import rikmuld.camping.network.packets.PacketItems;
+import rikmuld.camping.network.packets.PacketKeyPressed;
 import rikmuld.camping.network.packets.PacketMain;
 import rikmuld.camping.network.packets.PacketMap;
 import rikmuld.camping.network.packets.PacketOpenGui;
@@ -21,6 +23,8 @@ public class ModPackets {
 		PacketHandler.registerNewPacketClass(PacketMap.class);
 		PacketHandler.registerNewPacketClass(PacketOpenGui.class);
 		PacketHandler.registerNewPacketClass(PacketPlayerData.class);
+		PacketHandler.registerNewPacketClass(PacketCampInvPos.class);
+		PacketHandler.registerNewPacketClass(PacketKeyPressed.class);
 		PacketHandler.registerNewPacketClass(PacketPlayerSleepIntent.class);
 	}
 }

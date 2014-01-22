@@ -6,4 +6,5 @@ public class EntityInfo {
 	public static final int DEER = 1;
 	public static final int HARE = 2;
 	public static final int CAMPER = 3;
+	public static final int LOG = 4;
 }

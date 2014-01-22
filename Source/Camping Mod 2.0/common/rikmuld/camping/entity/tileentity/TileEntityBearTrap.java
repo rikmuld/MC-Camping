@@ -56,7 +56,7 @@ public class TileEntityBearTrap extends TileEntityInventory{
 				List<EntityLivingBase> entities = worldObj.getEntitiesWithinAABB(EntityLivingBase.class, AxisAlignedBB.getBoundingBox(this.xCoord+0.21875F, this.yCoord, this.zCoord+0.21875, this.xCoord+0.78125, this.yCoord+0.1875, this.zCoord+0.78125));
 				if(entities.size()>0)
 				{
-					if(entities.get(0)instanceof EntityPlayer&&ConfigInfoBoolean.value(ConfigInfo.ENBLED_PLAYER_TRAP))this.trappedEntity = entities.get(0);
+					if(entities.get(0)instanceof EntityPlayer&&ConfigInfoBoolean.value(ConfigInfo.ENABLE_PLAYER_TRAP))this.trappedEntity = entities.get(0);
 					else if(!(entities.get(0)instanceof EntityPlayer))
 					{
 						this.trappedEntity = entities.get(0);

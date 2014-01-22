@@ -28,17 +28,21 @@ import rikmuld.camping.core.util.ItemStackUtil;
 import rikmuld.camping.core.util.PacketUtil;
 import rikmuld.camping.entity.tileentity.TileEntityRotation;
 import rikmuld.camping.entity.tileentity.TileEntityTent;
+import rikmuld.camping.item.itemblock.ItemBlockTent;
 import rikmuld.camping.misc.bounds.BoundsTracker;
 import rikmuld.camping.network.packets.PacketOpenGui;
+import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.network.Player;
+import cpw.mods.fml.server.FMLServerHandler;
 
 public class BlockTent extends BlockRotationMain {
 		
 	int color;
+	public float rotationYaw = 0;
 	
 	public BlockTent(String name)
 	{
-		super(name, Material.sponge, false);
+		super(name, Material.sponge, null, ItemBlockTent.class, false);
 		this.setHardness(0.2F);
 	}
     
@@ -170,7 +174,7 @@ public class BlockTent extends BlockRotationMain {
         Block block = Block.blocksList[l];
         
         int direction = 0;
-	    int facing = MathHelper.floor_double(Minecraft.getMinecraft().thePlayer.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
+	    int facing = MathHelper.floor_double(rotationYaw  * 4.0F / 360.0F + 0.5D) & 3;
 	
 	    if (facing == 0) direction = ForgeDirection.NORTH.ordinal()-2;	    
 	    else if (facing == 1) direction = ForgeDirection.SOUTH.ordinal()-2;

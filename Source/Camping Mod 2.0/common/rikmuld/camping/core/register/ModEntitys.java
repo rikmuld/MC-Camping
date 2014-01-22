@@ -5,6 +5,8 @@ import net.minecraft.entity.EntityEggInfo;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraftforge.common.BiomeDictionary;
+import net.minecraftforge.common.BiomeDictionary.Type;
 import rikmuld.camping.CampingMod;
 import rikmuld.camping.core.lib.ConfigInfo;
 import rikmuld.camping.core.lib.ConfigInfo.ConfigInfoBoolean;
@@ -21,6 +23,9 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 public class ModEntitys {
 
 	public static int startEntityId = 300;
+
+	public static BiomeGenBase[] forests = BiomeDictionary.getBiomesForType(Type.FOREST);
+	public static BiomeGenBase[] plains = BiomeDictionary.getBiomesForType(Type.PLAINS);
 
 	public static int getUniqueEntityId()
 	{
@@ -49,21 +54,38 @@ public class ModEntitys {
 		if(ConfigInfoBoolean.value(ConfigInfo.USE_BEARS))
 		{
 			registerEntity(EntityBear.class, "Grizzly Bear", EntityInfo.BEAR, true, 0x583B2D, 0xE2B572);
-			EntityRegistry.addSpawn(EntityBear.class, 3, 2, 4, EnumCreatureType.creature, BiomeGenBase.forest);
+			
+			for(BiomeGenBase biome:forests)
+			{
+				EntityRegistry.addSpawn(EntityBear.class, 3, 2, 4, EnumCreatureType.creature, biome);
+			}
 			EntityRegistry.addSpawn(EntityBear.class, 3, 2, 4, EnumCreatureType.creature, BiomeGenBase.river);
 		}
 		if(ConfigInfoBoolean.value(ConfigInfo.USE_DEERS))
 		{
 			registerEntity(EntityDeer.class, "Deer", EntityInfo.DEER, true, 0xb57d41, 0xe8cfa0);
-			EntityRegistry.addSpawn(EntityDeer.class, 4, 3, 4, EnumCreatureType.creature, BiomeGenBase.forest);
-			EntityRegistry.addSpawn(EntityDeer.class, 6, 3, 4, EnumCreatureType.creature, BiomeGenBase.plains);
+			for(BiomeGenBase biome:forests)
+			{
+				EntityRegistry.addSpawn(EntityDeer.class, 4, 3, 4, EnumCreatureType.creature, biome);
+			}
+			for(BiomeGenBase biome:plains)
+			{
+				EntityRegistry.addSpawn(EntityDeer.class, 6, 3, 4, EnumCreatureType.creature, biome);
+			}
 		}
 		if(ConfigInfoBoolean.value(ConfigInfo.USE_HARES))
 		{
 			registerEntity(EntityHare.class, "Hare", EntityInfo.HARE, true, 0xcccccc, 0xe882a0);
-			EntityRegistry.addSpawn(EntityHare.class, 4, 3, 4, EnumCreatureType.creature, BiomeGenBase.forest);
-			EntityRegistry.addSpawn(EntityHare.class, 6, 3, 4, EnumCreatureType.creature, BiomeGenBase.plains);
+			for(BiomeGenBase biome:forests)
+			{
+				EntityRegistry.addSpawn(EntityHare.class, 4, 3, 4, EnumCreatureType.creature, biome);
+			}
+			for(BiomeGenBase biome:plains)
+			{
+				EntityRegistry.addSpawn(EntityHare.class, 6, 3, 4, EnumCreatureType.creature, biome);
+			}
 		}
 		if(ConfigInfoBoolean.value(ConfigInfo.USE_CAMPERS)) registerEntity(EntityCamper.class, "Camper", EntityInfo.CAMPER, true, 0x747B51, 0x70471B);
+		registerEntity(EntityDeer.class, "Log Seat", EntityInfo.LOG, false, 0, 0);
 	}
 }

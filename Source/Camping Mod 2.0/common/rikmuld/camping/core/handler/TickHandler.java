@@ -60,7 +60,7 @@ public class TickHandler implements ITickHandler {
 			
 			if(world.isRemote&&Minecraft.getMinecraft().currentScreen!=null&&Minecraft.getMinecraft().currentScreen instanceof GuiInventory&&!(Minecraft.getMinecraft().currentScreen instanceof GuiContainerPlayerInv))
 			{
-				player.openGui(CampingMod.instance, GuiInfo.GUI_INV_PLAYER, world, 0, 0, 0);
+				if(ConfigInfoBoolean.value(ConfigInfo.ENABLE_AUTO_INV))player.openGui(CampingMod.instance, GuiInfo.GUI_INV_PLAYER, world, 0, 0, 0);
 			}
 				
 			if(!world.isRemote&&CampingInvUtil.hasLantarn(player))
@@ -136,7 +136,7 @@ public class TickHandler implements ITickHandler {
 
 			if(ConfigInfoBoolean.value(ConfigInfo.ENBLED_SPEEDUP))
 			{
-				ReflectionHelper.setPrivateValue(PlayerCapabilities.class, player.capabilities, (this.playerWalkSpeed+this.playerWalkSpeedAmplifier), "walkSpeed");
+				ReflectionHelper.setPrivateValue(PlayerCapabilities.class, player.capabilities, (this.playerWalkSpeed+this.playerWalkSpeedAmplifier), 6);
 			}
 			playerWalkSpeedAmplifier = 0;
 		}

@@ -123,22 +123,6 @@ public class ModelDeer extends ModelBase {
 		neck.render(f5);
 	}
 	
-	public void render(float f5)
-	{
-		leg1.render(f5);
-		leg2.render(f5);
-		leg4.render(f5);
-		leg3.render(f5);
-		body.render(f5);
-		head.render(f5);
-		earL.render(f5);
-		earR.render(f5);
-		HL.render(f5);
-		HR.render(f5);
-		tail.render(f5);
-		neck.render(f5);
-	}
-
 	private void setRotation(ModelRenderer model, float x, float y, float z)
 	{
 		model.rotateAngleX = x;

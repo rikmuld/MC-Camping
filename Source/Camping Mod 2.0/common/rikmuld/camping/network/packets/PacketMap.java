@@ -50,7 +50,10 @@ public class PacketMap extends PacketMain {
 	@Override
 	public void execute(INetworkManager network, EntityPlayer player)
 	{
-		EventsHandler.map.colorData.put(player, colours);
-		EventsHandler.map.posData.put(player, new int[]{scale, x, z});
+		if(EventsHandler.map!=null)
+		{
+			EventsHandler.map.colorData.put(player, colours);
+			EventsHandler.map.posData.put(player, new int[]{scale, x, z});
+		}
 	}
 }

@@ -54,9 +54,7 @@ public class ModAchievements {
 	public static AchievementMain legend;
 
 	public static void init() 
-	{
-		AchievementInfo.putAll();
-		
+	{		
 		guide = new AchievementMain(AchievementInfo.GUIDE, 0, 0, Item.book, null, false);
 		knife = new AchievementMain(AchievementInfo.KNIVE, 3, 0, ModItems.knife, guide, false);
 		trap = new AchievementMain(AchievementInfo.TRAP, -2, 1, ModBlocks.bearTrap, guide, false);

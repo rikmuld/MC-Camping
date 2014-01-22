@@ -29,4 +29,10 @@ public class GuiContainerPlayerInv extends GuiInventory{
     	super.drawGuiContainerBackgroundLayer(par1, xPoint, yPoint);
     	screen.drawScreen(xPoint, yPoint, par1);
     }
+    
+    @Override
+    public void onGuiClosed() 
+    {
+    	screen.onGuiClosed();
+    }
 }
