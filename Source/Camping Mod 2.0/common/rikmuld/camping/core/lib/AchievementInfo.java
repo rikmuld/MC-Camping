@@ -6,7 +6,7 @@ import java.util.Map;
 public class AchievementInfo {
 
 	static int startId = 2120;
-	
+
 	public static Map<String, Integer> IDs = new HashMap<String, Integer>();
 	public static Map<String, Integer> devIDs = new HashMap<String, Integer>();
 	public static Map<String, String> names = new HashMap<String, String>();
@@ -45,11 +45,33 @@ public class AchievementInfo {
 	public static final String TRAP_LUCKEY = "hunting.trapLuckey";
 	public static final String TRAP_BAIT = "hunting.trapBait";
 	public static final String TRAP = "hunting.trap";
-	
+
 	public static final String CAMPER = "master.camper";
 	public static final String HUNTER = "master.hunter";
 	public static final String GENERAL = "master.general";
 	public static final String LEGEND = "master.legend";
+
+	public static String description(String name)
+	{
+		return desc.get(name);
+	}
+
+	public static int id(String name)
+	{
+		return IDs.get(name) != null? IDs.get(name):-1;
+	}
+
+	public static String name(String name)
+	{
+		return names.get(name);
+	}
+
+	public static void put(String id, String name, String description)
+	{
+		devIDs.put(id, startId++);
+		names.put(id, name);
+		desc.put(id, description);
+	}
 
 	public static void putAll()
 	{
@@ -66,7 +88,7 @@ public class AchievementInfo {
 		put(TENT, "C: Tentastic!", "Create a Tent!");
 		put(CAMPFIRE_COOK, "C: We Made It!", "Warm Yourself With A Cooking Fire!");
 		put(CAMPFIRE_DECO, "C: Decoration Needs!", "Create a Decoration Campfire!");
-		put(CAMPFIRE_DECO_EFFECT, "C: Unexpected Effects!", "Burn Some Dye In A Decoration Campfire!");		
+		put(CAMPFIRE_DECO_EFFECT, "C: Unexpected Effects!", "Burn Some Dye In A Decoration Campfire!");
 		put(TENT_STORE, "C: Store More!", "Put a Chest Inside a Tent!");
 		put(BAG_SLEEP, "C: Outside Sleeper!", "Sleep in a Sleeping Bag!");
 		put(TENT_SLEEP, "C: Inside Outside Sleeper!", "Put a Sleeping Bag Inside a Tent!");
@@ -86,32 +108,10 @@ public class AchievementInfo {
 		put(TRAP_LUCKEY, "H: Luckey Hunter!", "Catch Something in a Trap Without Bait!");
 		put(TRAP_BAIT, "H: Thoughtfull Hunter!", "Catch Something in a Trap With Bait!");
 		put(TRAP, "H: Trapper!", "Create a Trap!");
-	
+
 		put(HUNTER, "Hunter Mastery!", "Complete all The Hunter Achievements!");
 		put(CAMPER, "Camper Mastery!", "Complete all The Camper Achievements!");
 		put(GENERAL, "Basic Mastery!", "Complete all The General Achievements!");
 		put(LEGEND, "Legendary Camper!", "Complete all The Masteries!");
-	}
-	
-	public static void put(String id, String name, String description)
-	{
-		devIDs.put(id, startId++);
-		names.put(id, name);
-		desc.put(id, description);
-	}
-	
-	public static int id(String name)
-	{
-		return IDs.get(name)!=null? IDs.get(name):-1;
-	}
-	
-	public static String name(String name)
-	{
-		return names.get(name);
-	}
-	
-	public static String description(String name)
-	{
-		return desc.get(name);
 	}
 }

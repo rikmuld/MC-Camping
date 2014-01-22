@@ -12,28 +12,42 @@ public class SlotCookingAchievementGet extends SlotDisable {
 
 	ArrayList<Integer> ID = new ArrayList<Integer>();
 	EntityPlayer player;
-	
+
 	public SlotCookingAchievementGet(IInventory inventory, int slotIndex, int xPos, int yPos, EntityPlayer player, int... IDs)
 	{
 		super(inventory, slotIndex, xPos, yPos);
-		for(Integer id:IDs)this.ID.add(id);
+		for(Integer id: IDs)
+		{
+			ID.add(id);
+		}
 		this.player = player;
 	}
-	
-    public void putStack(ItemStack stack)
-    {
-    	super.putStack(stack);
-    	
-    	if(stack!=null)
-    	{
-	    	if(stack.getItemDamage()==ItemKit.KIT_SPIT) ModAchievements.spit.addStatToPlayer(player);
-	    	else if(stack.getItemDamage()==ItemKit.KIT_GRILL) ModAchievements.grill.addStatToPlayer(player);
-	    	else if(stack.getItemDamage()==ItemKit.KIT_PAN)ModAchievements.pan.addStatToPlayer(player);
-    	}
-    }
 
+	@Override
 	public boolean isItemValid(ItemStack is)
 	{
 		return ID.contains(-1)? true:ID.contains(is.itemID);
+	}
+
+	@Override
+	public void putStack(ItemStack stack)
+	{
+		super.putStack(stack);
+
+		if(stack != null)
+		{
+			if(stack.getItemDamage() == ItemKit.KIT_SPIT)
+			{
+				ModAchievements.spit.addStatToPlayer(player);
+			}
+			else if(stack.getItemDamage() == ItemKit.KIT_GRILL)
+			{
+				ModAchievements.grill.addStatToPlayer(player);
+			}
+			else if(stack.getItemDamage() == ItemKit.KIT_PAN)
+			{
+				ModAchievements.pan.addStatToPlayer(player);
+			}
+		}
 	}
 }

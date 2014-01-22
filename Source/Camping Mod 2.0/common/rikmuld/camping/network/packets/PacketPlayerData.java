@@ -20,22 +20,24 @@ public class PacketPlayerData extends PacketMain {
 	public PacketPlayerData(NBTTagCompound tag)
 	{
 		super(false);
-		this.data = tag;
-	}
-
-	public void readData(DataInputStream dataStream) throws IOException
-	{
-		this.data = this.readNBTTagCompound(dataStream);
-	}
-
-	public void writeData(DataOutputStream dataStream) throws IOException
-	{
-		this.writeNBTTagCompound(data, dataStream);
+		data = tag;
 	}
 
 	@Override
 	public void execute(INetworkManager network, EntityPlayer player)
 	{
 		player.getEntityData().setCompoundTag("campInv", data);
+	}
+
+	@Override
+	public void readData(DataInputStream dataStream) throws IOException
+	{
+		data = readNBTTagCompound(dataStream);
+	}
+
+	@Override
+	public void writeData(DataOutputStream dataStream) throws IOException
+	{
+		writeNBTTagCompound(data, dataStream);
 	}
 }

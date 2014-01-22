@@ -5,12 +5,10 @@ import java.util.Random;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
-import net.minecraftforge.event.Event;
 import net.minecraftforge.event.EventPriority;
 import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.entity.player.BonemealEvent;
 import net.minecraftforge.event.entity.player.PlayerDropsEvent;
-import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
 import rikmuld.camping.block.BlockSapling;
 import rikmuld.camping.block.plant.BlockFlowerHemp;
 import rikmuld.camping.client.gui.screen.GuiScreenMapHUD;
@@ -21,26 +19,12 @@ import rikmuld.camping.inventory.player.InventoryCampingInvTool;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class EventsHandler{
+public class EventsHandler {
 
 	Minecraft mc;
 	public static GuiScreenMapHUD map;
 	Random random = new Random();
-	
-    @ForgeSubscribe
-	@SideOnly(Side.CLIENT)
-    public void onUseBonemeal(BonemealEvent event)
-    {
-        if (event.ID == ModBlocks.hemp.blockID)
-        {
-        	((BlockFlowerHemp)ModBlocks.hemp).Grow(event.world, event.X, event.Y, event.Z, event);
-        }
-        if (event.ID == ModBlocks.sapling.blockID)
-        {
-    		((BlockSapling)ModBlocks.sapling).growTree(event.world, event.X, event.Y, event.Z, random, event);
-        }
-    }
-    
+
 	@ForgeSubscribe
 	@SideOnly(Side.CLIENT)
 	public void onPlayerDead(PlayerDropsEvent event)
@@ -48,19 +32,39 @@ public class EventsHandler{
 		InventoryCampingInvBack.dropItems(event.entityPlayer);
 		InventoryCampingInvTool.dropItems(event.entityPlayer);
 	}
-	
+
 	@ForgeSubscribe(priority = EventPriority.NORMAL)
 	@SideOnly(Side.CLIENT)
 	public void onRenderExperienceBar(RenderGameOverlayEvent event)
 	{
-    	if(mc==null)mc = Minecraft.getMinecraft();
-		if(map==null)map = new GuiScreenMapHUD();
-		
-		if(event.isCancelable() || event.type != ElementType.EXPERIENCE) return;
+		if(mc == null)
+		{
+			mc = Minecraft.getMinecraft();
+		}
+		if(map == null)
+		{
+			map = new GuiScreenMapHUD();
+		}
+
+		if(event.isCancelable() || (event.type != ElementType.EXPERIENCE)) return;
 		if(CampingInvUtil.hasMap(mc.thePlayer))
-		{			 
-			  map.setWorldAndResolution(mc, event.resolution.getScaledWidth(), event.resolution.getScaledHeight());
-			  map.drawScreen(event.mouseX, event.mouseY, event.partialTicks);
+		{
+			map.setWorldAndResolution(mc, event.resolution.getScaledWidth(), event.resolution.getScaledHeight());
+			map.drawScreen(event.mouseX, event.mouseY, event.partialTicks);
+		}
+	}
+
+	@ForgeSubscribe
+	@SideOnly(Side.CLIENT)
+	public void onUseBonemeal(BonemealEvent event)
+	{
+		if(event.ID == ModBlocks.hemp.blockID)
+		{
+			((BlockFlowerHemp)ModBlocks.hemp).Grow(event.world, event.X, event.Y, event.Z, event);
+		}
+		if(event.ID == ModBlocks.sapling.blockID)
+		{
+			((BlockSapling)ModBlocks.sapling).growTree(event.world, event.X, event.Y, event.Z, random, event);
 		}
 	}
 }

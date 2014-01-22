@@ -19,8 +19,9 @@ public class ModCookingEquipment {
 
 	static ItemStack stick = new ItemStack(Item.stick);
 	static ItemStack ironStick = new ItemStack(ModItems.parts.itemID, 1, ItemParts.STICK);
+
 	public static void init()
-	{		
+	{
 		CookingEquipmentList.addGrillFood(Item.fishRaw.itemID, 0, new ItemStack(Item.fishCooked.itemID, 1, 0));
 		CookingEquipmentList.addGrillFood(Item.beefRaw.itemID, 0, new ItemStack(Item.beefCooked.itemID, 1, 0));
 		CookingEquipmentList.addGrillFood(Item.porkRaw.itemID, 0, new ItemStack(Item.porkCooked.itemID, 1, 0));
@@ -33,16 +34,16 @@ public class ModCookingEquipment {
 		CookingEquipmentList.addSpitFood(Item.chickenRaw.itemID, 0, new ItemStack(Item.chickenCooked.itemID, 1, 0));
 		CookingEquipmentList.addSpitFood(Item.chickenRaw.itemID, 0, new ItemStack(Item.chickenCooked.itemID, 1, 0));
 		CookingEquipmentList.addSpitFood(Item.fishRaw.itemID, 0, new ItemStack(Item.fishCooked.itemID, 1, 0));
-		
-		spit = new Spit(new ItemStack(ModItems.kit.itemID, 1, ItemKit.KIT_SPIT));	
-		grill = new Grill(new ItemStack(ModItems.kit.itemID, 1, ItemKit.KIT_GRILL));	
+
+		spit = new Spit(new ItemStack(ModItems.kit.itemID, 1, ItemKit.KIT_SPIT));
+		grill = new Grill(new ItemStack(ModItems.kit.itemID, 1, ItemKit.KIT_GRILL));
 		pan = new Pan(new ItemStack(ModItems.kit.itemID, 1, ItemKit.KIT_PAN));
-		
+
 		CookingEquipmentList.addEquipmentRecipe(spit, stick, stick, ironStick);
-		CookingEquipmentList.addEquipmentRecipe(grill, stick, stick, stick, stick,  ironStick, ironStick, new ItemStack(Block.fenceIron));
-		CookingEquipmentList.addEquipmentRecipe(pan, stick, stick,  ironStick, new ItemStack(Item.silk), new ItemStack(ModItems.parts, 1, 2));
+		CookingEquipmentList.addEquipmentRecipe(grill, stick, stick, stick, stick, ironStick, ironStick, new ItemStack(Block.fenceIron));
+		CookingEquipmentList.addEquipmentRecipe(pan, stick, stick, ironStick, new ItemStack(Item.silk), new ItemStack(ModItems.parts, 1, 2));
 	}
-	
+
 	public static void register(CookingEquipment cooking, ItemStack item)
 	{
 		CookingEquipmentList.addCooking(item, cooking);

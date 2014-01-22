@@ -23,83 +23,108 @@ import rikmuld.camping.core.register.ModItems;
 import rikmuld.camping.core.util.PlayerUtil;
 import rikmuld.camping.item.ItemAnimalStuff;
 
-public class EntityDeer extends EntityAnimal{
+public class EntityDeer extends EntityAnimal {
 
-	public EntityDeer(World world) 
+	public EntityDeer(World world)
 	{
 		super(world);
-        this.setSize(1F, 1.5F);
-        this.tasks.addTask(1, new EntityAIWander(this, 1.0D));
-        this.tasks.addTask(2, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
-        this.tasks.addTask(3, new EntityAILookIdle(this));
-        this.tasks.addTask(4, new EntityAISwimming(this)); 
-        this.tasks.addTask(5, new EntityAIPanic(this, 1.2D));
-        this.tasks.addTask(6, new EntityAIFollowParent(this, 1.0D));
-        this.tasks.addTask(7, new EntityAITempt(this, 1.2D, Item.wheat.itemID, true));
-        this.tasks.addTask(8, new EntityAIMate(this, 1.0D));
+		setSize(1F, 1.5F);
+		tasks.addTask(1, new EntityAIWander(this, 1.0D));
+		tasks.addTask(2, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
+		tasks.addTask(3, new EntityAILookIdle(this));
+		tasks.addTask(4, new EntityAISwimming(this));
+		tasks.addTask(5, new EntityAIPanic(this, 1.2D));
+		tasks.addTask(6, new EntityAIFollowParent(this, 1.0D));
+		tasks.addTask(7, new EntityAITempt(this, 1.2D, Item.wheat.itemID, true));
+		tasks.addTask(8, new EntityAIMate(this, 1.0D));
 	}
-	
-    protected void applyEntityAttributes()
-    {
-        super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setAttribute(0.4D);
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setAttribute(15.0D);
-    }
-    
-    public boolean isAIEnabled()
-    {
-        return true;
-    } 
-    
-    public int getTotalArmorValue()
-    {
-        return 5;
-    }
-
-    public EnumCreatureAttribute getCreatureAttribute()
-    {
-        return EnumCreatureAttribute.UNDEFINED;
-    }
-    
-    protected boolean canDespawn()
-    {
-        return false;
-    }
 
 	@Override
-	public EntityAgeable createChild(EntityAgeable entityageable) 
+	protected void applyEntityAttributes()
+	{
+		super.applyEntityAttributes();
+		getEntityAttribute(SharedMonsterAttributes.movementSpeed).setAttribute(0.4D);
+		getEntityAttribute(SharedMonsterAttributes.maxHealth).setAttribute(15.0D);
+	}
+
+	@Override
+	protected boolean canDespawn()
+	{
+		return false;
+	}
+
+	@Override
+	public EntityAgeable createChild(EntityAgeable entityageable)
 	{
 		return new EntityDeer(worldObj);
 	}
-    
+
+	@Override
 	protected void dropFewItems(boolean par1, int par2)
-    {
-        int dropChance = this.rand.nextInt(3) + this.rand.nextInt(1 + par2);
-        int drops;
+	{
+		int dropChance = rand.nextInt(3) + rand.nextInt(1 + par2);
+		int drops;
 
-        for (drops = 0; drops < dropChance; ++drops)this.entityDropItem(new ItemStack(Item.leather.itemID, 1, 0), 0);           
-        dropChance = this.rand.nextInt(3) + 1 + this.rand.nextInt(1 + par2);
+		for(drops = 0; drops < dropChance; ++drops)
+		{
+			entityDropItem(new ItemStack(Item.leather.itemID, 1, 0), 0);
+		}
+		dropChance = rand.nextInt(3) + 1 + rand.nextInt(1 + par2);
 
-        for (drops = 0; drops < dropChance; ++drops)
-        {
-            if(this.isBurning())this.entityDropItem(new ItemStack(ModItems.venisonCooked.itemID, 1, 0), 0);
-            else this.entityDropItem(new ItemStack(ModItems.venisonRaw.itemID, 1, 0), 0);
-        }
-        
-        dropChance = this.rand.nextInt(20) - 18 + this.rand.nextInt(1 + par2);
-        if(dropChance>2)dropChance=2;
-        
-        for (drops = 0; drops < dropChance; ++drops)this.entityDropItem(new ItemStack(ModItems.animalStuff.itemID, 1, ItemAnimalStuff.ANTLER), 0);        
-    }
+		for(drops = 0; drops < dropChance; ++drops)
+		{
+			if(isBurning())
+			{
+				entityDropItem(new ItemStack(ModItems.venisonCooked.itemID, 1, 0), 0);
+			}
+			else
+			{
+				entityDropItem(new ItemStack(ModItems.venisonRaw.itemID, 1, 0), 0);
+			}
+		}
 
-	 public void onDeath(DamageSource source)
-	 {
-		 if(source.getEntity() instanceof EntityPlayer)
-		 {
-			 NBTTagCompound tag = PlayerUtil.getPlayerDataTag((EntityPlayer) source.getEntity());			 
-			 tag.setInteger("killedDeers", tag.getInteger("killedDeers")+1);
-			 if(tag.getInteger("killedDeers")>=10)ModAchievements.deer.addStatToPlayer((EntityPlayer) source.getEntity());
-		 }
-	 }
-    //SOUNDS
+		dropChance = (rand.nextInt(20) - 18) + rand.nextInt(1 + par2);
+		if(dropChance > 2)
+		{
+			dropChance = 2;
+		}
+
+		for(drops = 0; drops < dropChance; ++drops)
+		{
+			entityDropItem(new ItemStack(ModItems.animalStuff.itemID, 1, ItemAnimalStuff.ANTLER), 0);
+		}
+	}
+
+	@Override
+	public EnumCreatureAttribute getCreatureAttribute()
+	{
+		return EnumCreatureAttribute.UNDEFINED;
+	}
+
+	@Override
+	public int getTotalArmorValue()
+	{
+		return 5;
+	}
+
+	@Override
+	public boolean isAIEnabled()
+	{
+		return true;
+	}
+
+	@Override
+	public void onDeath(DamageSource source)
+	{
+		if(source.getEntity() instanceof EntityPlayer)
+		{
+			NBTTagCompound tag = PlayerUtil.getPlayerDataTag((EntityPlayer)source.getEntity());
+			tag.setInteger("killedDeers", tag.getInteger("killedDeers") + 1);
+			if(tag.getInteger("killedDeers") >= 10)
+			{
+				ModAchievements.deer.addStatToPlayer((EntityPlayer)source.getEntity());
+			}
+		}
+	}
+	// SOUNDS
 }

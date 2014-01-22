@@ -21,23 +21,35 @@ public class RendererCampfireBaseItem implements IItemRenderer {
 	}
 
 	@Override
-	public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack item, ItemRendererHelper helper)
-	{
-		return true;
-	}
-
-	@Override
 	public void renderItem(ItemRenderType type, ItemStack item, Object... data)
 	{
 		GL11.glPushMatrix();
-		if(type!=ItemRenderType.ENTITY)GL11.glTranslatef(0, -0.35F, 0);
-		if(type==ItemRenderType.EQUIPPED)GL11.glTranslatef(0.6F, 0.6F, 0.6F);
-		if(type==ItemRenderType.EQUIPPED_FIRST_PERSON)GL11.glTranslatef(0, 1F, 0.7F);
+		if(type != ItemRenderType.ENTITY)
+		{
+			GL11.glTranslatef(0, -0.35F, 0);
+		}
+		if(type == ItemRenderType.EQUIPPED)
+		{
+			GL11.glTranslatef(0.6F, 0.6F, 0.6F);
+		}
+		if(type == ItemRenderType.EQUIPPED_FIRST_PERSON)
+		{
+			GL11.glTranslatef(0, 1F, 0.7F);
+		}
 		GL11.glScalef(1.0F, -1F, -1F);
 		GL11.glScalef(0.0625F, 0.0625F, 0.0625F);
 		GL11.glScalef(1.4F, 1.4F, 1.4F);
 		Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation(TextureInfo.MODEL_CAMPFIRE_DECO));
-		for(String string:strings)ModModels.campfire.renderPart(string);
+		for(String string: strings)
+		{
+			ModModels.campfire.renderPart(string);
+		}
 		GL11.glPopMatrix();
+	}
+
+	@Override
+	public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack item, ItemRendererHelper helper)
+	{
+		return true;
 	}
 }

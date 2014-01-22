@@ -15,7 +15,7 @@ public class GuiContainerCampingInvTool extends GuiContainer {
 
 	GuiScreenInvExtention screen;
 	EntityPlayer player;
-	
+
 	public GuiContainerCampingInvTool(EntityPlayer player)
 	{
 		super(new ContainerCampinvTool(player));
@@ -27,16 +27,16 @@ public class GuiContainerCampingInvTool extends GuiContainer {
 	{
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		mc.renderEngine.bindTexture(new ResourceLocation(TextureInfo.GUI_CAMPINV_TOOL));
-		int var5 = (width-xSize)/2;
-		int var6 = (height-ySize)/2;
-		this.drawTexturedModalRect(var5, var6, 0, 0, xSize, ySize);
-    	screen.drawScreen(xPoint, yPoint, par1);
+		int var5 = (width - xSize) / 2;
+		int var6 = (height - ySize) / 2;
+		drawTexturedModalRect(var5, var6, 0, 0, xSize, ySize);
+		screen.drawScreen(xPoint, yPoint, par1);
 	}
-	
+
 	@Override
-    public void initGui()
-    {
-    	super.initGui();
-    	screen = new GuiScreenInvExtention(guiTop, guiLeft, xSize, ySize, width, height, GuiInfo.GUI_CAMPINV_TOOL, player);
-    }
+	public void initGui()
+	{
+		super.initGui();
+		screen = new GuiScreenInvExtention(guiTop, guiLeft, xSize, ySize, width, height, GuiInfo.GUI_CAMPINV_TOOL, player);
+	}
 }

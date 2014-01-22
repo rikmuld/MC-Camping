@@ -14,11 +14,11 @@ public class ItemBlockSleepingBag extends ItemBlockMain {
 
 	public static final String[] metadataIGNames = new String[]{"Sleeping Bag", ""};
 	public static final String[] metadataNames = new String[]{"sleepingBag", ""};
-	
+
 	public ItemBlockSleepingBag(int id)
 	{
 		super(id, metadataIGNames, metadataNames, true, true);
-		this.setMaxStackSize(1);
+		setMaxStackSize(1);
 	}
 
 	@Override
@@ -26,16 +26,17 @@ public class ItemBlockSleepingBag extends ItemBlockMain {
 	{
 		return damageValue;
 	}
-	
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void getSubItems(int id, CreativeTabs creativetabs, List stackList)
+	{
+		stackList.add(new ItemStack(id, 1, 0));
+	}
+
 	@Override
 	public String getUnlocalizedName(ItemStack itemstack)
 	{
 		return metadataNames[itemstack.getItemDamage()];
-	}
-	
-	@SideOnly(Side.CLIENT)
-	public void getSubItems(int id, CreativeTabs creativetabs, List stackList)
-	{
-        stackList.add(new ItemStack(id, 1, 0));
 	}
 }

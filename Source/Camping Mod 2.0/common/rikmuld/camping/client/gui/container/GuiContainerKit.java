@@ -15,7 +15,7 @@ public class GuiContainerKit extends GuiContainer {
 	public GuiContainerKit(InventoryPlayer playerInv, ItemStack item)
 	{
 		super(new ContainerKit(playerInv, item));
-		this.ySize = 181;
+		ySize = 181;
 	}
 
 	@Override
@@ -23,8 +23,8 @@ public class GuiContainerKit extends GuiContainer {
 	{
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		mc.renderEngine.bindTexture(new ResourceLocation(TextureInfo.GUI_KIT));
-		int var5 = (width-xSize)/2;
-		int var6 = (height-ySize)/2;
-		this.drawTexturedModalRect(var5, var6, 0, 0, xSize, ySize);
+		int var5 = (width - xSize) / 2;
+		int var6 = (height - ySize) / 2;
+		drawTexturedModalRect(var5, var6, 0, 0, xSize, ySize);
 	}
 }

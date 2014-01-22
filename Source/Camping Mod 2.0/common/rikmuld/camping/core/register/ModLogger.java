@@ -22,10 +22,16 @@ public class ModLogger {
 
 	public static void logMulti(Object... message)
 	{
-		for(int i = 0; i<message.length; i++)
+		for(int i = 0; i < message.length; i++)
 		{
-			if(message[i]==null) ModLogger.log(Level.INFO, "NULL");
-			else ModLogger.log(Level.INFO, message[i].toString());
+			if(message[i] == null)
+			{
+				ModLogger.log(Level.INFO, "NULL");
+			}
+			else
+			{
+				ModLogger.log(Level.INFO, message[i].toString());
+			}
 		}
 	}
 }

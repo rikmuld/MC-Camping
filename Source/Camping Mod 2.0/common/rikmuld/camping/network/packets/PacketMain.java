@@ -23,14 +23,86 @@ public abstract class PacketMain {
 		this.isChunkDataPacket = isChunkDataPacket;
 	}
 
+	public static ItemStack readItemStack(DataInput dataStream) throws IOException
+	{
+		ItemStack itemstack = null;
+		short id = dataStream.readShort();
+
+		if(id >= 0)
+		{
+			byte stackSize = dataStream.readByte();
+			short damage = dataStream.readShort();
+			itemstack = new ItemStack(id, stackSize, damage);
+			itemstack.stackTagCompound = readNBTTagCompound(dataStream);
+		}
+
+		return itemstack;
+	}
+
+	public static NBTTagCompound readNBTTagCompound(DataInput dataStream) throws IOException
+	{
+		short short1 = dataStream.readShort();
+
+		if(short1 < 0) return null;
+		else
+		{
+			byte[] abyte = new byte[short1];
+			dataStream.readFully(abyte);
+			return CompressedStreamTools.decompress(abyte);
+		}
+	}
+
+	public static void writeItemStack(ItemStack stack, DataOutput dataStream) throws IOException
+	{
+		if(stack == null)
+		{
+			dataStream.writeShort(-1);
+		}
+		else
+		{
+			dataStream.writeShort(stack.itemID);
+			dataStream.writeByte(stack.stackSize);
+			dataStream.writeShort(stack.getItemDamage());
+			NBTTagCompound nbttagcompound = null;
+
+			if(stack.getItem().isDamageable() || stack.getItem().getShareTag())
+			{
+				nbttagcompound = stack.stackTagCompound;
+			}
+
+			writeNBTTagCompound(nbttagcompound, dataStream);
+		}
+	}
+
+	protected static void writeNBTTagCompound(NBTTagCompound tag, DataOutput dataStream) throws IOException
+	{
+		if(tag == null)
+		{
+			dataStream.writeShort(-1);
+		}
+		else
+		{
+			byte[] abyte = CompressedStreamTools.compress(tag);
+			dataStream.writeShort((short)abyte.length);
+			dataStream.write(abyte);
+		}
+	}
+
+	public abstract void execute(INetworkManager network, EntityPlayer player);
+
+	public Integer getType()
+	{
+		return PacketHandler.packets.indexOf(getClass());
+	}
+
 	public byte[] populate()
 	{
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();
 		DataOutputStream dos = new DataOutputStream(bos);
 		try
 		{
-			dos.writeByte(this.getType());
-			this.writeData(dos);
+			dos.writeByte(getType());
+			writeData(dos);
 		}
 		catch(IOException e)
 		{
@@ -39,11 +111,13 @@ public abstract class PacketMain {
 		return bos.toByteArray();
 	}
 
+	public abstract void readData(DataInputStream data) throws IOException;
+
 	public void readPopulate(DataInputStream data)
 	{
 		try
 		{
-			this.readData(data);
+			readData(data);
 		}
 		catch(IOException e)
 		{
@@ -51,74 +125,5 @@ public abstract class PacketMain {
 		}
 	}
 
-	public abstract void readData(DataInputStream data) throws IOException;
 	public abstract void writeData(DataOutputStream dos) throws IOException;
-	public abstract void execute(INetworkManager network, EntityPlayer player);
-	
-    public static ItemStack readItemStack(DataInput dataStream) throws IOException
-    {
-        ItemStack itemstack = null;
-        short id = dataStream.readShort();
-
-        if (id >= 0)
-        {
-            byte stackSize = dataStream.readByte();
-            short damage = dataStream.readShort();
-            itemstack = new ItemStack(id, stackSize, damage);
-            itemstack.stackTagCompound = readNBTTagCompound(dataStream);
-        }
-
-        return itemstack;
-    }
-
-    public static void writeItemStack(ItemStack stack, DataOutput dataStream) throws IOException
-    {
-        if (stack == null) dataStream.writeShort(-1);
-        else
-        {
-            dataStream.writeShort(stack.itemID);
-            dataStream.writeByte(stack.stackSize);
-            dataStream.writeShort(stack.getItemDamage());
-            NBTTagCompound nbttagcompound = null;
-
-            if (stack.getItem().isDamageable() || stack.getItem().getShareTag())
-            {
-                nbttagcompound = stack.stackTagCompound;
-            }
-
-            writeNBTTagCompound(nbttagcompound, dataStream);
-        }
-    }
-
-    public static NBTTagCompound readNBTTagCompound(DataInput dataStream) throws IOException
-    {
-        short short1 = dataStream.readShort();
-
-        if (short1 < 0) return null;
-        else
-        {
-            byte[] abyte = new byte[short1];
-            dataStream.readFully(abyte);
-            return CompressedStreamTools.decompress(abyte);
-        }
-    }
-
-    protected static void writeNBTTagCompound(NBTTagCompound tag, DataOutput dataStream) throws IOException
-    {
-        if (tag == null)
-        {
-            dataStream.writeShort(-1);
-        }
-        else
-        {
-            byte[] abyte = CompressedStreamTools.compress(tag);
-            dataStream.writeShort((short)abyte.length);
-            dataStream.write(abyte);
-        }
-    }
-    
-    public Integer getType()
-    {
-    	return PacketHandler.packets.indexOf(getClass());
-    }
 }

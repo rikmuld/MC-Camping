@@ -16,67 +16,75 @@ import rikmuld.camping.core.lib.ConfigInfo.ConfigInfoBoolean;
 import rikmuld.camping.core.lib.ModInfo;
 import rikmuld.camping.core.register.ModLogger;
 
-public class VersionData  implements Runnable {
+public class VersionData implements Runnable {
 
 	private static VersionData instance = new VersionData();
-	
+
 	Document doc;
-	
+
 	boolean checked = false;
 	public static boolean doneChecking = false;
-	
+
 	int check = 0;
 
 	public static String NEW_VERSION = "Not Found";
+
+	public void CheckVersion()
+	{
+		GetXmlFile();
+		if(doc != null)
+		{
+			NodeList Version = doc.getElementsByTagName("Version");
+
+			Node NewestVersion = Version.item(0);
+
+			String NewVersion = NewestVersion.getTextContent();
+
+			if(!NewVersion.equals(ModInfo.MOD_VERSION))
+			{
+				NEW_VERSION = NewVersion;
+			}
+
+			checked = true;
+		}
+	}
+
+	public void execute()
+	{
+		if(ConfigInfoBoolean.value(ConfigInfo.ENABLE_VERSION))
+		{
+			new Thread(instance).start();
+		}
+	}
 
 	public void GetXmlFile()
 	{
 		try
 		{
 			URL url = new URL("http://rikmuld.com/assets/files/version.xml");
-			
+
 			URLConnection connection = url.openConnection();
 			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder builder = factory.newDocumentBuilder();
-			
+
 			connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.4; en-US; rv:1.9.2.2) Gecko/20100316 Firefox/3.6.2");
 
 			doc = builder.parse(connection.getInputStream());
 		}
 		catch(Exception e)
 		{
-			ModLogger.log(Level.WARNING, "Whooops, something whent wrong while cheking the version! "+Integer.toString(2-check)+((2-check==1)? " attempt":" attempts")+" left!");
-		}
-	}
-
-	public void CheckVersion()
-	{
-		GetXmlFile();
-		if(doc!=null)
-		{			
-			NodeList Version = doc.getElementsByTagName("Version");
-
-			Node NewestVersion = Version.item(0);
-
-			String NewVersion = NewestVersion.getTextContent();
-			
-			if(!NewVersion.equals(ModInfo.MOD_VERSION))
-			{
-				this.NEW_VERSION = NewVersion;
-			}
-			
-			checked = true;
+			ModLogger.log(Level.WARNING, "Whooops, something whent wrong while cheking the version! " + Integer.toString(2 - check) + (((2 - check) == 1)? " attempt":" attempts") + " left!");
 		}
 	}
 
 	@Override
 	public void run()
-	{		
-		while(checked==false)
+	{
+		while(checked == false)
 		{
 			CheckVersion();
 			check++;
-			if(checked==false)
+			if(checked == false)
 			{
 				try
 				{
@@ -87,17 +95,12 @@ public class VersionData  implements Runnable {
 					e.printStackTrace();
 				}
 			}
-			if(check>=3)
+			if(check >= 3)
 			{
 				break;
 			}
 		}
-		
-		this.doneChecking = true;
-	}
 
-	public void execute()
-	{
-		if(ConfigInfoBoolean.value(ConfigInfo.ENABLE_VERSION))new Thread(instance).start();
+		doneChecking = true;
 	}
 }

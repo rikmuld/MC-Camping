@@ -15,24 +15,28 @@ import rikmuld.camping.CampingMod;
 import rikmuld.camping.core.lib.GuiInfo;
 import rikmuld.camping.entity.tileentity.TileEntityBearTrap;
 
-public class BlockTrap extends BlockUnstableMain{
+public class BlockTrap extends BlockUnstableMain {
 
-	public BlockTrap(String name) 
+	public BlockTrap(String name)
 	{
 		super(name, Material.iron);
-		this.setBlockBounds(0.21875F, 0, 0.21875F, 0.78125F, 0.1875F, 0.78125F);
+		setBlockBounds(0.21875F, 0, 0.21875F, 0.78125F, 0.1875F, 0.78125F);
 	}
-	
+
 	@Override
-	public final boolean isOpaqueCube()
+	public void addCollisionBoxesToList(World world, int x, int y, int z, AxisAlignedBB axisAllignedBB, List list, Entity entity)
+	{}
+
+	@Override
+	public TileEntity createNewTileEntity(World world)
 	{
-		return false;
+		return new TileEntityBearTrap();
 	}
-    
+
 	@Override
-	public final boolean renderAsNormalBlock()
+	public Icon getIcon(int side, int metadata)
 	{
-		return false;
+		return Block.blockIron.getIcon(0, 0);
 	}
 
 	@Override
@@ -40,46 +44,48 @@ public class BlockTrap extends BlockUnstableMain{
 	{
 		return -1;
 	}
-	
-	@Override
-	public TileEntity createNewTileEntity(World world)
-	{
-		return new TileEntityBearTrap();
-	}
-	
-	@Override
-    public void addCollisionBoxesToList(World world, int x, int y, int z, AxisAlignedBB axisAllignedBB, List list, Entity entity)
-	{}
 
 	@Override
-    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float par7, float par8, float par9)
+	public final boolean isOpaqueCube()
 	{
-		TileEntityBearTrap tile = (TileEntityBearTrap) world.getBlockTileEntity(x, y, z);
+		return false;
+	}
+
+	@Override
+	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float par7, float par8, float par9)
+	{
+		TileEntityBearTrap tile = (TileEntityBearTrap)world.getBlockTileEntity(x, y, z);
 		if(!tile.open)
 		{
 			tile.open = true;
 			tile.cooldown = 10;
-			tile.trappedEntity=null;
-			return  true;
+			tile.trappedEntity = null;
+			return true;
 		}
-		else 
+		else
 		{
 			player.openGui(CampingMod.instance, GuiInfo.GUI_TRAP, world, x, y, z);
 			return true;
 		}
 	}
-	
+
 	@Override
-    public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z)
+	public final boolean renderAsNormalBlock()
 	{
-		TileEntityBearTrap tile = (TileEntityBearTrap) world.getBlockTileEntity(x, y, z);
-		if(tile.open)setBlockBounds(0.21875F, 0, 0.21875F, 0.78125F, 0.1875F, 0.78125F);
-		else setBlockBounds(0.21875F, 0, 0.34375F, 0.78125F, 0.25F, 0.65F);
+		return false;
 	}
-	
+
 	@Override
-	public Icon getIcon(int side, int metadata)
+	public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z)
 	{
-		return Block.blockIron.getIcon(0, 0);
+		TileEntityBearTrap tile = (TileEntityBearTrap)world.getBlockTileEntity(x, y, z);
+		if(tile.open)
+		{
+			setBlockBounds(0.21875F, 0, 0.21875F, 0.78125F, 0.1875F, 0.78125F);
+		}
+		else
+		{
+			setBlockBounds(0.21875F, 0, 0.34375F, 0.78125F, 0.25F, 0.65F);
+		}
 	}
 }

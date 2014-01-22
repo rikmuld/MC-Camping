@@ -12,9 +12,9 @@ import rikmuld.camping.entity.tileentity.TileEntityRotation;
 
 public class BlockRotationMain extends BlockMain {
 
-	public BlockRotationMain(String name, Material material, String[] meta, Class<? extends ItemBlock> itemBlock, boolean side)
+	public BlockRotationMain(String name, Material material)
 	{
-		super(name, material, meta, itemBlock, side);
+		super(name, material);
 	}
 
 	public BlockRotationMain(String name, Material material, boolean side)
@@ -22,33 +22,45 @@ public class BlockRotationMain extends BlockMain {
 		super(name, material, side);
 	}
 
-	public BlockRotationMain(String name, Material material)
+	public BlockRotationMain(String name, Material material, String[] meta, Class<? extends ItemBlock> itemBlock, boolean side)
 	{
-		super(name, material);
-	}
-
-	@Override
-    public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entityLiving, ItemStack itemStack) 
-    {
-	    int direction = 0;
-	    int facing = MathHelper.floor_double(entityLiving.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
-	
-	    if (facing == 0) direction = ForgeDirection.NORTH.ordinal()-2;	    
-	    else if (facing == 1) direction = ForgeDirection.SOUTH.ordinal()-2;
-	    else if (facing == 2) direction = ForgeDirection.WEST.ordinal()-2;
-	    else if (facing == 3) direction = ForgeDirection.EAST.ordinal()-2;
-
-	    ((TileEntityRotation)world.getBlockTileEntity(x, y, z)).setRotation(direction);
-    }
-
-	public void wrenchClick(World world, EntityPlayer player, int x, int y, int z)
-	{
-	    ((TileEntityRotation)world.getBlockTileEntity(x, y, z)).cycleRotation();
+		super(name, material, meta, itemBlock, side);
 	}
 
 	@Override
 	public TileEntityRotation createNewTileEntity(World world)
 	{
 		return new TileEntityRotation();
+	}
+
+	@Override
+	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entityLiving, ItemStack itemStack)
+	{
+		int direction = 0;
+		int facing = MathHelper.floor_double(((entityLiving.rotationYaw * 4.0F) / 360.0F) + 0.5D) & 3;
+
+		if(facing == 0)
+		{
+			direction = ForgeDirection.NORTH.ordinal() - 2;
+		}
+		else if(facing == 1)
+		{
+			direction = ForgeDirection.SOUTH.ordinal() - 2;
+		}
+		else if(facing == 2)
+		{
+			direction = ForgeDirection.WEST.ordinal() - 2;
+		}
+		else if(facing == 3)
+		{
+			direction = ForgeDirection.EAST.ordinal() - 2;
+		}
+
+		((TileEntityRotation)world.getBlockTileEntity(x, y, z)).setRotation(direction);
+	}
+
+	public void wrenchClick(World world, EntityPlayer player, int x, int y, int z)
+	{
+		((TileEntityRotation)world.getBlockTileEntity(x, y, z)).cycleRotation();
 	}
 }

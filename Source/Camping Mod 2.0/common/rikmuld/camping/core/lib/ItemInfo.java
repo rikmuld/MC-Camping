@@ -6,11 +6,11 @@ import java.util.Map;
 public class ItemInfo {
 
 	static int startId = 5000;
-	
+
 	public static Map<String, Integer> devIDs = new HashMap<String, Integer>();
 	public static Map<String, Integer> IDs = new HashMap<String, Integer>();
 	public static Map<String, String> names = new HashMap<String, String>();
-	
+
 	public static final String KNIFE = "knife";
 	public static final String BACKPACK = "backpack";
 	public static final String HEMP = "hemp";
@@ -27,6 +27,22 @@ public class ItemInfo {
 	public static final String ARMOR_FUR_CHEST = "armorFurChest";
 	public static final String ARMOR_FUR_LEG = "armorFurLeg";
 	public static final String ARMOR_FUR_BOOTS = "armorFurBoots";
+
+	public static int id(String name)
+	{
+		return IDs.get(name) != null? IDs.get(name):-1;
+	}
+
+	public static String name(String name)
+	{
+		return names.get(name);
+	}
+
+	public static void put(String id, String name)
+	{
+		devIDs.put(id, startId++);
+		names.put(id, name);
+	}
 
 	public static void putAll()
 	{
@@ -46,21 +62,5 @@ public class ItemInfo {
 		put(HARE_RAW, "Raw Hare");
 		put(HARE_COOKED, "Cooked Hare");
 		put(ANIMAL_STUFF, "Animal Stuff");
-	}
-	
-	public static void put(String id, String name)
-	{
-		devIDs.put(id, startId++);
-		names.put(id, name);
-	}
-
-	public static int id(String name)
-	{
-		return IDs.get(name)!=null? IDs.get(name):-1;
-	}
-	
-	public static String name(String name)
-	{
-		return names.get(name);
 	}
 }

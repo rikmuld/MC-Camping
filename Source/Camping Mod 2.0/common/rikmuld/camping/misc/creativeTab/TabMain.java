@@ -17,29 +17,29 @@ public class TabMain extends CreativeTabs {
 
 	public TabMain(String label)
 	{
-		super(label);	
+		super(label);
+	}
+
+	@Override
+	public void displayAllReleventItems(List list)
+	{
+		super.displayAllReleventItems(list);
+
+		Iterator iterator = EntityList.entityEggs.values().iterator();
+
+		while(iterator.hasNext())
+		{
+			EntityEggInfo entityegginfo = (EntityEggInfo)iterator.next();
+			if(eggIds.contains(entityegginfo.spawnedID))
+			{
+				list.add(new ItemStack(Item.monsterPlacer.itemID, 1, entityegginfo.spawnedID));
+			}
+		}
 	}
 
 	@Override
 	public ItemStack getIconItemStack()
 	{
 		return new ItemStack(ModBlocks.campfireDeco);
-	}
-	
-	@Override
-	public void displayAllReleventItems(List list)
-    {
-		super.displayAllReleventItems(list);
-		
-		Iterator iterator = EntityList.entityEggs.values().iterator();
-
-        while (iterator.hasNext())
-        {
-            EntityEggInfo entityegginfo = (EntityEggInfo)iterator.next();
-        	if(eggIds.contains(entityegginfo.spawnedID))
-        	{
-        		list.add(new ItemStack(Item.monsterPlacer.itemID, 1, entityegginfo.spawnedID));
-        	}
-        }
 	}
 }

@@ -11,19 +11,17 @@ public class EntityAILookAtTradePlayerCamper extends EntityAIWatchClosest {
 	public EntityAILookAtTradePlayerCamper(EntityCamper par1EntityCamper)
 	{
 		super(par1EntityCamper, EntityPlayer.class, 8.0F);
-		this.theMerchant = par1EntityCamper;
+		theMerchant = par1EntityCamper;
 	}
 
+	@Override
 	public boolean shouldExecute()
 	{
-		if(this.theMerchant.isTrading())
+		if(theMerchant.isTrading())
 		{
-			this.closestEntity = this.theMerchant.getCustomer();
+			closestEntity = theMerchant.getCustomer();
 			return true;
 		}
-		else
-		{
-			return false;
-		}
+		else return false;
 	}
 }

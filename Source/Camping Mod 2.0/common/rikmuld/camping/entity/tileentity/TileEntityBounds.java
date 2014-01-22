@@ -8,67 +8,74 @@ import rikmuld.camping.network.packets.PacketBounds;
 public class TileEntityBounds extends TileEntityMain {
 
 	public Bounds bounds;
-	
+
 	public int baseX;
 	public int baseY;
 	public int baseZ;
 
 	private boolean update;
-	
-	public void updateEntity()
-	{
-		if(!worldObj.isRemote&&update)
-		{
-			PacketUtil.sendToAllPlayers(new PacketBounds(bounds, xCoord, yCoord, zCoord));
-			update=false;
-		}
-	}
-	
-	public void setBounds(Bounds bounds)
-	{
-		this.bounds = bounds;
-		this.update = true;
-	}
-	
-	public void setBaseCoords(int x, int y, int z)
-	{
-		this.baseX = x;
-		this.baseY = y;
-		this.baseZ = z;
-		
-		this.sendTileData(0, true, x, y, z);
-	}
-	
-	@Override
-	public void setTileData(int id, int[] data)
-	{
-		if(id==0)
-		{
-			this.baseX = data[0];
-			this.baseY = data[1];
-			this.baseZ = data[2];
-		}
-	}
-	
+
 	@Override
 	public void readFromNBT(NBTTagCompound tag)
 	{
 		super.readFromNBT(tag);
-		
-		this.baseX = tag.getInteger("baseX");
-		this.baseY = tag.getInteger("baseY");
-		this.baseZ = tag.getInteger("baseZ");
-		if(tag.hasKey("xMin"))this.setBounds(Bounds.readBoundsToNBT(tag));
+
+		baseX = tag.getInteger("baseX");
+		baseY = tag.getInteger("baseY");
+		baseZ = tag.getInteger("baseZ");
+		if(tag.hasKey("xMin"))
+		{
+			setBounds(Bounds.readBoundsToNBT(tag));
+		}
+	}
+
+	public void setBaseCoords(int x, int y, int z)
+	{
+		baseX = x;
+		baseY = y;
+		baseZ = z;
+
+		sendTileData(0, true, x, y, z);
+	}
+
+	public void setBounds(Bounds bounds)
+	{
+		this.bounds = bounds;
+		update = true;
+	}
+
+	@Override
+	public void setTileData(int id, int[] data)
+	{
+		if(id == 0)
+		{
+			baseX = data[0];
+			baseY = data[1];
+			baseZ = data[2];
+		}
+	}
+
+	@Override
+	public void updateEntity()
+	{
+		if(!worldObj.isRemote && update)
+		{
+			PacketUtil.sendToAllPlayers(new PacketBounds(bounds, xCoord, yCoord, zCoord));
+			update = false;
+		}
 	}
 
 	@Override
 	public void writeToNBT(NBTTagCompound tag)
-	{	
+	{
 		super.writeToNBT(tag);
-		
+
 		tag.setInteger("baseX", baseX);
 		tag.setInteger("baseY", baseY);
 		tag.setInteger("baseZ", baseZ);
-		if(this.bounds!=null)this.bounds.writeBoundsToNBT(tag);
+		if(bounds != null)
+		{
+			bounds.writeBoundsToNBT(tag);
+		}
 	}
 }

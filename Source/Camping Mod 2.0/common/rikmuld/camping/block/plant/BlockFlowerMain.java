@@ -10,7 +10,7 @@ import rikmuld.camping.core.register.ModBlocks;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class BlockFlowerMain extends BlockFlower{
+public class BlockFlowerMain extends BlockFlower {
 
 	public int metadata;
 	public static Icon[] icon;
@@ -25,27 +25,28 @@ public class BlockFlowerMain extends BlockFlower{
 	@Override
 	public Icon getIcon(int par1, int par2)
 	{
-		if(par2<0||par2>this.metadata)
+		if((par2 < 0) || (par2 > metadata))
 		{
 			par2 = metadata;
 		}
 		return icon[par2];
 	}
 
-	public int setGrowStates(int Metadata)
-	{
-		this.metadata = Metadata;
-		return metadata;
-	}
-
+	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IconRegister iconRegister)
 	{
-		this.icon = new Icon[this.metadata+1];
+		icon = new Icon[metadata + 1];
 
-		for(int i = 0; i<this.icon.length; ++i)
+		for(int i = 0; i < icon.length; ++i)
 		{
-			this.icon[i] = iconRegister.registerIcon(ModInfo.MOD_ID+":"+this.getUnlocalizedName().substring(5)+"_"+i);
+			icon[i] = iconRegister.registerIcon(ModInfo.MOD_ID + ":" + getUnlocalizedName().substring(5) + "_" + i);
 		}
+	}
+
+	public int setGrowStates(int Metadata)
+	{
+		metadata = Metadata;
+		return metadata;
 	}
 }

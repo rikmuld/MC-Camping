@@ -6,23 +6,21 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
 import rikmuld.camping.core.register.ModAchievements;
 import rikmuld.camping.core.util.ContainerUtil;
 import rikmuld.camping.entity.tileentity.TileEntityCampfireDeco;
 import rikmuld.camping.inventory.slot.SlotAchivementGet;
 
-public class ContainerCampfireDeco extends ContainerMain{
+public class ContainerCampfireDeco extends ContainerMain {
 
 	private TileEntityCampfireDeco fire;
-	private World worldObj;
 
 	public ContainerCampfireDeco(InventoryPlayer playerInv, IInventory tile)
 	{
-		this.fire = (TileEntityCampfireDeco) tile;
+		fire = (TileEntityCampfireDeco)tile;
 
-		this.addSlotToContainer(new SlotAchivementGet(tile, 0, 71, 12, playerInv.player, ModAchievements.effect, Item.dyePowder.itemID));
-		
+		addSlotToContainer(new SlotAchivementGet(tile, 0, 71, 12, playerInv.player, ModAchievements.effect, Item.dyePowder.itemID));
+
 		ContainerUtil.addSlots(this, playerInv, 0, 1, 9, 8, 96);
 		ContainerUtil.addSlots(this, playerInv, 9, 3, 9, 8, 38);
 	}
@@ -37,30 +35,24 @@ public class ContainerCampfireDeco extends ContainerMain{
 	public ItemStack transferStackInSlot(EntityPlayer player, int slotNum)
 	{
 		ItemStack itemstack = null;
-		Slot slot = (Slot) inventorySlots.get(slotNum);
-		if(slot!=null&&slot.getHasStack())
+		Slot slot = (Slot)inventorySlots.get(slotNum);
+		if((slot != null) && slot.getHasStack())
 		{
 			ItemStack itemstack1 = slot.getStack();
 			itemstack = itemstack1.copy();
-			if(slotNum<fire.getSizeInventory())
+			if(slotNum < fire.getSizeInventory())
 			{
-				if(!mergeItemStack(itemstack1, fire.getSizeInventory(), inventorySlots.size(), true))
-				{
-					return null;
-				}
+				if(!mergeItemStack(itemstack1, fire.getSizeInventory(), inventorySlots.size(), true)) return null;
 			}
 			else
 			{
-				if(itemstack.getItem()==Item.dyePowder)
+				if(itemstack.getItem() == Item.dyePowder)
 				{
-					if(!mergeItemStack(itemstack1, 0, 1, false))
-					{
-						return null;
-					}
+					if(!mergeItemStack(itemstack1, 0, 1, false)) return null;
 				}
 				else return null;
 			}
-			if(itemstack1.stackSize==0)
+			if(itemstack1.stackSize == 0)
 			{
 				slot.putStack(null);
 			}

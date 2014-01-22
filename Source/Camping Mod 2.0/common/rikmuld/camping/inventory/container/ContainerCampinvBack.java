@@ -19,76 +19,30 @@ public class ContainerCampinvBack extends ContainerMain {
 	IInventory backpack;
 
 	ArrayList<SlotDisable> slots = new ArrayList<SlotDisable>();
-	
+
 	public ContainerCampinvBack(EntityPlayer player)
 	{
 		backpack = new InventoryItemMain(new ItemStack(ModItems.backpack.itemID, 1, 0), 27, 64);
-		
-		for(int row = 0; row<3; ++row)
+
+		for(int row = 0; row < 3; ++row)
 		{
-			for(int collom = 0; collom<9; ++collom)
+			for(int collom = 0; collom < 9; ++collom)
 			{
-				SlotDisable slot = new SlotDisable(backpack, collom+row*9, 8+collom*18, 26+row*18);
+				SlotDisable slot = new SlotDisable(backpack, collom + (row * 9), 8 + (collom * 18), 26 + (row * 18));
 				slot.disable();
-				this.addSlotToContainer(slot);
+				addSlotToContainer(slot);
 				slots.add(slot);
 			}
 		}
 
-		inventory = new InventoryCampingInvBack(player, 1, slots, (InventoryItemMain) backpack);
-		this.addSlotToContainer(new SlotItemsOnly(inventory, 0, 80, 6, ModItems.backpack.itemID));
+		inventory = new InventoryCampingInvBack(player, 1, slots, (InventoryItemMain)backpack);
+		addSlotToContainer(new SlotItemsOnly(inventory, 0, 80, 6, ModItems.backpack.itemID));
 
 		ContainerUtil.addSlots(this, player.inventory, 9, 3, 9, 8, 84);
 		ContainerUtil.addSlots(this, player.inventory, 0, 1, 9, 8, 142);
-		
+
 		inventory.openChest();
 		backpack.openChest();
-	}
-
-	@Override
-	public ItemStack transferStackInSlot(EntityPlayer p, int i)
-	{
-		ItemStack itemstack = null;
-		Slot slot = (Slot) inventorySlots.get(i);
-		if(slot!=null&&slot.getHasStack())
-		{
-			ItemStack itemstack1 = slot.getStack();
-			itemstack = itemstack1.copy();
-			
-			if(i<28)
-			{
-				if(!mergeItemStack(itemstack1, 28, inventorySlots.size(), true))
-				{
-					return null;
-				}
-			}
-			else
-			{
-				if(inventory.getStackInSlot(0)==null)
-				{
-					if(itemstack1.itemID!=ModItems.backpack.itemID||!mergeItemStack(itemstack1, backpack.getSizeInventory(), backpack.getSizeInventory()+inventory.getSizeInventory(), false))
-					{
-						return null;
-					}
-				}
-				else
-				{
-					if(!mergeItemStack(itemstack1, 0, backpack.getSizeInventory(), false))
-					{
-						return null;
-					}
-				}
-			}
-			if(itemstack1.stackSize==0)
-			{
-				slot.putStack(null);
-			}
-			else
-			{
-				slot.onSlotChanged();
-			}
-		}
-		return itemstack;
 	}
 
 	@Override
@@ -102,5 +56,42 @@ public class ContainerCampinvBack extends ContainerMain {
 	{
 		inventory.closeChest();
 		backpack.closeChest();
+	}
+
+	@Override
+	public ItemStack transferStackInSlot(EntityPlayer p, int i)
+	{
+		ItemStack itemstack = null;
+		Slot slot = (Slot)inventorySlots.get(i);
+		if((slot != null) && slot.getHasStack())
+		{
+			ItemStack itemstack1 = slot.getStack();
+			itemstack = itemstack1.copy();
+
+			if(i < 28)
+			{
+				if(!mergeItemStack(itemstack1, 28, inventorySlots.size(), true)) return null;
+			}
+			else
+			{
+				if(inventory.getStackInSlot(0) == null)
+				{
+					if((itemstack1.itemID != ModItems.backpack.itemID) || !mergeItemStack(itemstack1, backpack.getSizeInventory(), backpack.getSizeInventory() + inventory.getSizeInventory(), false)) return null;
+				}
+				else
+				{
+					if(!mergeItemStack(itemstack1, 0, backpack.getSizeInventory(), false)) return null;
+				}
+			}
+			if(itemstack1.stackSize == 0)
+			{
+				slot.putStack(null);
+			}
+			else
+			{
+				slot.onSlotChanged();
+			}
+		}
+		return itemstack;
 	}
 }

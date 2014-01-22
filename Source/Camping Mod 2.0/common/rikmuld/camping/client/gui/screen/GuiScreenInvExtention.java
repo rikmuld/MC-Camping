@@ -23,9 +23,9 @@ import rikmuld.camping.network.packets.PacketOpenGui;
 public class GuiScreenInvExtention extends GuiScreen {
 
 	public GuiContendHandler handler;
-		
+
 	public static boolean resetContend = false;
-	
+
 	public static int[] guiXFlag = new int[3];
 	public static int[] guiYFlag = new int[3];
 	public static int[] guiXStart = new int[3];
@@ -33,133 +33,182 @@ public class GuiScreenInvExtention extends GuiScreen {
 
 	int mainWidth;
 	int mainHeight;
-	
+
 	int mainGuiWidth;
 	int mainGuiHeight;
 	int mainGuiLeft;
 	int mainGuiTop;
-	
+
 	int baseLeft;
 	int baseLength;
 	int baseTop;
-	
+
 	int id;
-	
+
 	private boolean clickReady;
 	private int clicker;
-	
+
 	boolean[] canClick = new boolean[]{false, false, false};
-	
+
 	EntityPlayer player;
 	RenderItem itemRender;
 
 	public GuiScreenInvExtention(int guiTop, int guiLeft, int guiWidth, int guiHeight, int width, int height, int id, EntityPlayer player)
 	{
-		this.mc = Minecraft.getMinecraft();
-		
-		this.mainGuiHeight = guiHeight;
-		this.mainGuiWidth = guiWidth;
-		this.mainGuiLeft = guiLeft;
-		this.mainGuiTop = guiTop;
+		mc = Minecraft.getMinecraft();
 
-		this.baseLength = 236;
-		this.baseLeft = (width-baseLength)/2;
-		this.baseTop = guiTop+guiHeight+4;
-		
+		mainGuiHeight = guiHeight;
+		mainGuiWidth = guiWidth;
+		mainGuiLeft = guiLeft;
+		mainGuiTop = guiTop;
+
+		baseLength = 236;
+		baseLeft = (width - baseLength) / 2;
+		baseTop = guiTop + guiHeight + 4;
+
 		this.player = player;
 		this.id = id;
-		
+
 		itemRender = new RenderItem();
-		
-		if(GuiContendHandler.readFromNBT(player, this.getClass().getSimpleName())==null)handler = new GuiContendHandler(3, this.getClass().getSimpleName());
-		else handler = GuiContendHandler.readFromNBT(player, this.getClass().getSimpleName());
+
+		if(GuiContendHandler.readFromNBT(player, this.getClass().getSimpleName()) == null)
+		{
+			handler = new GuiContendHandler(3, this.getClass().getSimpleName());
+		}
+		else
+		{
+			handler = GuiContendHandler.readFromNBT(player, this.getClass().getSimpleName());
+		}
 	}
 
+	@Override
 	public void drawScreen(int pointX, int pointY, float par3)
 	{
 		super.drawScreen(pointX, pointY, par3);
-		
+
 		if(resetContend)
 		{
 			handler.resetAll();
 			resetContend = false;
 		}
-		
-		if(clicker<20)clicker++;
-		if(clicker>=20)clickReady = true;
-		
+
+		if(clicker < 20)
+		{
+			clicker++;
+		}
+		if(clicker >= 20)
+		{
+			clickReady = true;
+		}
+
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		mc.renderEngine.bindTexture(new ResourceLocation(TextureInfo.GUI_UTILS));
-				
-		this.drawTexturedModalRect(baseLeft+handler.posX(2), baseTop+handler.posY(2), 0, 0, 117, 22);
-		this.drawTexturedModalRect(baseLeft + 120 + handler.posX(1), baseTop + handler.posY(1), 0, 0, 117, 22);
-		
+
+		drawTexturedModalRect(baseLeft + handler.posX(2), baseTop + handler.posY(2), 0, 0, 117, 22);
+		drawTexturedModalRect(baseLeft + 120 + handler.posX(1), baseTop + handler.posY(1), 0, 0, 117, 22);
+
 		if(id == GuiInfo.GUI_INV_PLAYER)
 		{
-			this.drawTexturedModalRect(mainGuiLeft + mainGuiWidth-25+handler.posX(0), mainGuiTop+5+handler.posY(0), 0, 22, 20, 20);
-			this.drawTexturedModalRect(mainGuiLeft + mainGuiWidth-23+handler.posX(0), mainGuiTop+8+handler.posY(0), 34, 22, 16, 16);
+			drawTexturedModalRect(((mainGuiLeft + mainGuiWidth) - 25) + handler.posX(0), mainGuiTop + 5 + handler.posY(0), 0, 22, 20, 20);
+			drawTexturedModalRect(((mainGuiLeft + mainGuiWidth) - 23) + handler.posX(0), mainGuiTop + 8 + handler.posY(0), 34, 22, 16, 16);
 		}
 
-		if(id!=GuiInfo.GUI_CAMPINV_BACK)itemRender.renderItemIntoGUI(fontRenderer, mc.renderEngine, new ItemStack(ModItems.backpack.itemID, 1, 0), baseLeft+117/2-8+handler.posX(2), baseTop+3+handler.posY(2));
-		else itemRender.renderItemIntoGUI(fontRenderer, mc.renderEngine, new ItemStack(Item.skull, 1, 3), baseLeft+117/2-8+handler.posX(2), baseTop+3+handler.posY(2));
-		
-		if(id!=GuiInfo.GUI_CAMPINV_TOOL)itemRender.renderItemIntoGUI(fontRenderer, mc.renderEngine, new ItemStack(ModItems.knife.itemID, 1, 0), baseLeft+120+117/2-8+handler.posX(1), baseTop+3+handler.posY(1));
-		else itemRender.renderItemIntoGUI(fontRenderer, mc.renderEngine, new ItemStack(Item.skull, 1, 3), baseLeft+120+117/2-8+handler.posX(1), baseTop+3+handler.posY(1));
-		
-		if(this.isPointInRegion(handler.posX(2), handler.posY(2), 117, 21, pointX, pointY, baseLeft, baseTop))
+		if(id != GuiInfo.GUI_CAMPINV_BACK)
 		{
-			if(Mouse.isButtonDown(0)&&clickReady&&this.canClick[0])
+			itemRender.renderItemIntoGUI(fontRenderer, mc.renderEngine, new ItemStack(ModItems.backpack.itemID, 1, 0), ((baseLeft + (117 / 2)) - 8) + handler.posX(2), baseTop + 3 + handler.posY(2));
+		}
+		else
+		{
+			itemRender.renderItemIntoGUI(fontRenderer, mc.renderEngine, new ItemStack(Item.skull, 1, 3), ((baseLeft + (117 / 2)) - 8) + handler.posX(2), baseTop + 3 + handler.posY(2));
+		}
+
+		if(id != GuiInfo.GUI_CAMPINV_TOOL)
+		{
+			itemRender.renderItemIntoGUI(fontRenderer, mc.renderEngine, new ItemStack(ModItems.knife.itemID, 1, 0), ((baseLeft + 120 + (117 / 2)) - 8) + handler.posX(1), baseTop + 3 + handler.posY(1));
+		}
+		else
+		{
+			itemRender.renderItemIntoGUI(fontRenderer, mc.renderEngine, new ItemStack(Item.skull, 1, 3), ((baseLeft + 120 + (117 / 2)) - 8) + handler.posX(1), baseTop + 3 + handler.posY(1));
+		}
+
+		if(isPointInRegion(handler.posX(2), handler.posY(2), 117, 21, pointX, pointY, baseLeft, baseTop))
+		{
+			if(Mouse.isButtonDown(0) && clickReady && canClick[0])
 			{
 				clickReady = false;
-				
-				if(id!=GuiInfo.GUI_CAMPINV_BACK)PacketUtil.sendToSever(new PacketOpenGui(GuiInfo.GUI_CAMPINV_BACK));
+
+				if(id != GuiInfo.GUI_CAMPINV_BACK)
+				{
+					PacketUtil.sendToSever(new PacketOpenGui(GuiInfo.GUI_CAMPINV_BACK));
+				}
 				else
 				{
 					player.closeScreen();
 					player.openGui(CampingMod.instance, GuiInfo.GUI_INV_PLAYER, player.worldObj, 0, 0, 0);
 				}
 			}
-			if(!Mouse.isButtonDown(0))this.canClick[0] = true;
-			
+			if(!Mouse.isButtonDown(0))
+			{
+				canClick[0] = true;
+			}
+
 			handler.updateContend(2, pointX, pointY, true);
 		}
-		else this.canClick[0] = false;
-				
-		if(this.isPointInRegion(120+handler.posX(1), handler.posY(1), 117, 21, pointX, pointY, baseLeft, baseTop))
+		else
 		{
-			if(Mouse.isButtonDown(0)&&clickReady&&this.canClick[1])
+			canClick[0] = false;
+		}
+
+		if(isPointInRegion(120 + handler.posX(1), handler.posY(1), 117, 21, pointX, pointY, baseLeft, baseTop))
+		{
+			if(Mouse.isButtonDown(0) && clickReady && canClick[1])
 			{
 				clickReady = false;
-			
-				if(id!=GuiInfo.GUI_CAMPINV_TOOL)PacketUtil.sendToSever(new PacketOpenGui(GuiInfo.GUI_CAMPINV_TOOL));
+
+				if(id != GuiInfo.GUI_CAMPINV_TOOL)
+				{
+					PacketUtil.sendToSever(new PacketOpenGui(GuiInfo.GUI_CAMPINV_TOOL));
+				}
 				else
 				{
 					player.closeScreen();
 					player.openGui(CampingMod.instance, GuiInfo.GUI_INV_PLAYER, player.worldObj, 0, 0, 0);
 				}
 			}
-			if(!Mouse.isButtonDown(0))this.canClick[1] = true;
-			
+			if(!Mouse.isButtonDown(0))
+			{
+				canClick[1] = true;
+			}
+
 			handler.updateContend(1, pointX, pointY, true);
 		}
-		else this.canClick[1] = false;
-
-		if(this.isPointInRegion(mainGuiWidth-25+handler.posX(0), 5+handler.posY(0), 22, 22, pointX, pointY, mainGuiLeft, mainGuiTop))
+		else
 		{
-			if(Mouse.isButtonDown(0)&&clickReady&&this.canClick[2])
+			canClick[1] = false;
+		}
+
+		if(isPointInRegion((mainGuiWidth - 25) + handler.posX(0), 5 + handler.posY(0), 22, 22, pointX, pointY, mainGuiLeft, mainGuiTop))
+		{
+			if(Mouse.isButtonDown(0) && clickReady && canClick[2])
 			{
-				if(id==GuiInfo.GUI_INV_PLAYER)
+				if(id == GuiInfo.GUI_INV_PLAYER)
 				{
 					ModAchievements.guide.addStatToPlayer(player);
 					clickReady = false;
 					player.openGui(CampingMod.instance, GuiInfo.GUI_GUIDE, player.worldObj, 0, 0, 0);
 				}
 			}
-			if(!Mouse.isButtonDown(0))this.canClick[2] = true;
+			if(!Mouse.isButtonDown(0))
+			{
+				canClick[2] = true;
+			}
 			handler.updateContend(0, pointX, pointY, true);
 		}
-		else this.canClick[2] = false;
-		
+		else
+		{
+			canClick[2] = false;
+		}
+
 		handler.updateContend(0, pointX, pointY, false);
 		handler.updateContend(1, pointX, pointY, false);
 		handler.updateContend(2, pointX, pointY, false);
@@ -169,11 +218,12 @@ public class GuiScreenInvExtention extends GuiScreen {
 	{
 		pointX -= guiLeft;
 		pointY -= guiTop;
-		return pointX>=x-1&&pointX<x+width+1&&pointY>=y-1&&pointY<y+height+1;
+		return (pointX >= (x - 1)) && (pointX < (x + width + 1)) && (pointY >= (y - 1)) && (pointY < (y + height + 1));
 	}
-	
-    public void onGuiClosed()
-    {
-    	handler.writeToNBT(player);
-    }
+
+	@Override
+	public void onGuiClosed()
+	{
+		handler.writeToNBT(player);
+	}
 }

@@ -38,23 +38,23 @@ public class ModBlocks {
 	public static Block throphy;
 
 	public static void init()
-	{		
-		campfireBase = new BlockCampfireCook(BlockInfo.CAMPFIRE_BASE);	
-		campfireDeco = new BlockCampfireDeco(BlockInfo.CAMPFIRE_DECO_NAME);	
+	{
+		campfireBase = new BlockCampfireCook(BlockInfo.CAMPFIRE_BASE);
+		campfireDeco = new BlockCampfireDeco(BlockInfo.CAMPFIRE_DECO_NAME);
 		light = new BlockLight(BlockInfo.LIGHT);
 		hemp = new BlockFlowerHemp(BlockInfo.HEMP);
-		log = new BlockLog(BlockInfo.LOG);	
+		log = new BlockLog(BlockInfo.LOG);
 		lantern = new BlockLantern(BlockInfo.LANTERN);
 		sleepingbag = new BlockSleepingBag(BlockInfo.SLEEPING);
 		leaves = new BlockBerryLeaves(BlockInfo.BERRY);
-		tent = new BlockTent(BlockInfo.TENT);	
+		tent = new BlockTent(BlockInfo.TENT);
 		bounds = new BlockBoundsHelper(BlockInfo.BOUNDS);
 		sapling = new BlockSapling(BlockInfo.SAPLING);
 		bearTrap = new BlockTrap(BlockInfo.BEARTRAP);
 		wireBarbed = new BlockWireBarbed(BlockInfo.WIRE);
 		throphy = new BlockAntlerThrophy(BlockInfo.THROPHY);
 	}
-	
+
 	public static void register(Block block, String name)
 	{
 		GameRegistry.registerBlock(block, name);

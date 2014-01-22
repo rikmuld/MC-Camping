@@ -6,7 +6,7 @@ import java.util.Map;
 public class BlockInfo {
 
 	static int startId = 2120;
-	
+
 	public static Map<String, Integer> devIDs = new HashMap<String, Integer>();
 	public static Map<String, Integer> IDs = new HashMap<String, Integer>();
 	public static Map<String, String> names = new HashMap<String, String>();
@@ -26,6 +26,22 @@ public class BlockInfo {
 	public static final String WIRE = "barbedWire";
 	public static final String THROPHY = "throphyAntler";
 
+	public static int id(String name)
+	{
+		return IDs.get(name) != null? IDs.get(name):-1;
+	}
+
+	public static String name(String name)
+	{
+		return names.get(name);
+	}
+
+	public static void put(String id, String name)
+	{
+		devIDs.put(id, startId++);
+		names.put(id, name);
+	}
+
 	public static void putAll()
 	{
 		put(BERRY, "Berry Leaves");
@@ -42,21 +58,5 @@ public class BlockInfo {
 		put(BEARTRAP, "Bear Trap");
 		put(WIRE, "Barbed Wire");
 		put(THROPHY, "Antler Throphy");
-	}
-	
-	public static void put(String id, String name)
-	{
-		devIDs.put(id, startId++);
-		names.put(id, name);
-	}
-	
-	public static int id(String name)
-	{
-		return IDs.get(name)!=null? IDs.get(name):-1;
-	}
-	
-	public static String name(String name)
-	{
-		return names.get(name);
 	}
 }

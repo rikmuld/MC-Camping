@@ -9,14 +9,19 @@ public class KeyInfo {
 
 	public static Map<String, Integer> keys = new HashMap<String, Integer>();
 	public static Map<String, String> names = new HashMap<String, String>();
-	
+
 	public static String INV = "campInventory";
 
-	public static void putAll()
+	public static int getKey(String nameID)
 	{
-		put(INV, "Open Camping Inventory", Keyboard.KEY_C);
+		return keys.get(nameID) != null? keys.get(nameID):-1;
 	}
-	
+
+	public static String getKeyGameName(String nameID)
+	{
+		return names.get(nameID);
+	}
+
 	public static boolean put(String nameID, String gameName, int key)
 	{
 		if(!keys.values().contains(key))
@@ -27,14 +32,9 @@ public class KeyInfo {
 		}
 		else return false;
 	}
-	
-	public static int getKey(String nameID)
+
+	public static void putAll()
 	{
-		return keys.get(nameID)!=null? keys.get(nameID):-1;
-	}
-	
-	public static String getKeyGameName(String nameID)
-	{
-		return names.get(nameID);
+		put(INV, "Open Camping Inventory", Keyboard.KEY_C);
 	}
 }

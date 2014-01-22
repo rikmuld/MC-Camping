@@ -14,14 +14,14 @@ public class PacketBounds extends PacketMain {
 	public int x;
 	public int y;
 	public int z;
-	
+
 	public float xMin;
 	public float yMin;
 	public float zMin;
 	public float xMax;
 	public float yMax;
 	public float zMax;
-		
+
 	public PacketBounds()
 	{
 		super(true);
@@ -42,38 +42,42 @@ public class PacketBounds extends PacketMain {
 		zMax = bounds.zMax;
 	}
 
-
-	public void readData(DataInputStream dataStream) throws IOException
+	@Override
+	public void execute(INetworkManager network, EntityPlayer player)
 	{
-		this.x = dataStream.readInt();
-		this.y = dataStream.readInt();
-		this.z = dataStream.readInt();
-
-		this.xMin = dataStream.readFloat();
-		this.yMin = dataStream.readFloat();
-		this.zMin = dataStream.readFloat();
-		this.xMax = dataStream.readFloat();
-		this.yMax = dataStream.readFloat();
-		this.zMax = dataStream.readFloat();
+		if(player.worldObj.getBlockTileEntity(x, y, z) != null)
+		{
+			((TileEntityBounds)player.worldObj.getBlockTileEntity(x, y, z)).bounds = new Bounds(xMin, yMin, zMin, xMax, yMax, zMax);
+		}
 	}
 
+	@Override
+	public void readData(DataInputStream dataStream) throws IOException
+	{
+		x = dataStream.readInt();
+		y = dataStream.readInt();
+		z = dataStream.readInt();
+
+		xMin = dataStream.readFloat();
+		yMin = dataStream.readFloat();
+		zMin = dataStream.readFloat();
+		xMax = dataStream.readFloat();
+		yMax = dataStream.readFloat();
+		zMax = dataStream.readFloat();
+	}
+
+	@Override
 	public void writeData(DataOutputStream dataStream) throws IOException
 	{
 		dataStream.writeInt(x);
 		dataStream.writeInt(y);
 		dataStream.writeInt(z);
-		
+
 		dataStream.writeFloat(xMin);
 		dataStream.writeFloat(yMin);
 		dataStream.writeFloat(zMin);
 		dataStream.writeFloat(xMax);
 		dataStream.writeFloat(yMax);
 		dataStream.writeFloat(zMax);
-	}
-
-	@Override
-	public void execute(INetworkManager network, EntityPlayer player)
-	{
-		if(player.worldObj.getBlockTileEntity(x, y, z)!=null)((TileEntityBounds)player.worldObj.getBlockTileEntity(x, y, z)).bounds = new Bounds(xMin, yMin, zMin, xMax, yMax, zMax);
 	}
 }

@@ -18,12 +18,12 @@ public class EntityCamperRenderer extends RenderLiving {
 	@Override
 	public void doRender(Entity entity, double d0, double d1, double d2, float f, float f1)
 	{
-		super.doRenderLiving((EntityLiving) entity, d0, d1, d2, f, f1);
+		super.doRenderLiving((EntityLiving)entity, d0, d1, d2, f, f1);
 	}
 
 	@Override
 	protected ResourceLocation getEntityTexture(Entity entity)
 	{
-		return ((EntityCamper)entity).getGender()==0? new ResourceLocation(TextureInfo.MODEL_CAMPER_MALE):new ResourceLocation(TextureInfo.MODEL_CAMPER_FEMALE);
+		return ((EntityCamper)entity).getGender() == 0? new ResourceLocation(TextureInfo.MODEL_CAMPER_MALE):new ResourceLocation(TextureInfo.MODEL_CAMPER_FEMALE);
 	}
 }

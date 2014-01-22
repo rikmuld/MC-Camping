@@ -7,7 +7,7 @@ import net.minecraft.world.World;
 import rikmuld.camping.entity.tileentity.TileEntityLight;
 
 public class BlockLight extends BlockMain {
-	
+
 	public BlockLight(String name)
 	{
 		super(name, Material.air);
@@ -15,7 +15,25 @@ public class BlockLight extends BlockMain {
 		setBlockBounds(0F, 0F, 0F, 0F, 0F, 0F);
 		setCreativeTab(null);
 	}
-	
+
+	@Override
+	public TileEntity createTileEntity(World world, int meta)
+	{
+		return new TileEntityLight();
+	}
+
+	@Override
+	public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z)
+	{
+		return null;
+	}
+
+	@Override
+	public final int getRenderType()
+	{
+		return -1;
+	}
+
 	@Override
 	public final boolean isOpaqueCube()
 	{
@@ -27,21 +45,4 @@ public class BlockLight extends BlockMain {
 	{
 		return false;
 	}
-
-	@Override
-	public final int getRenderType()
-	{
-		return -1;
-	}
-	
-	@Override
-	public TileEntity createTileEntity(World world, int meta)
-	{
-		return new TileEntityLight();
-	}
-	
-	public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z)
-    {
-        return null;
-    }
 }

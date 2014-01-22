@@ -17,38 +17,37 @@ import rikmuld.camping.core.lib.TextureInfo;
 import rikmuld.camping.core.register.ModModels;
 import rikmuld.camping.entity.tileentity.TileEntityCampfireDeco;
 
-
-public class TileEntityCampfireDecoRenderer extends TileEntitySpecialRenderer{
+public class TileEntityCampfireDecoRenderer extends TileEntitySpecialRenderer {
 
 	ItemRenderer renderer = new ItemRenderer(Minecraft.getMinecraft());
 	Random rand = new Random();
-	
+
 	@Override
 	public void renderTileEntityAt(TileEntity tileentity, double x, double y, double z, float f)
 	{
 		GL11.glPushMatrix();
-	    GL11.glEnable(GL12.GL_RESCALE_NORMAL);
+		GL11.glEnable(GL12.GL_RESCALE_NORMAL);
 
-		TileEntityCampfireDeco tile = (TileEntityCampfireDeco) tileentity;
-		
+		TileEntityCampfireDeco tile = (TileEntityCampfireDeco)tileentity;
+
 		bindTexture(new ResourceLocation(TextureInfo.MODEL_CAMPFIRE_DECO));
 
-		GL11.glTranslatef((float) x+0.5F, (float) y+0.03125F, (float) z+0.5F);
+		GL11.glTranslatef((float)x + 0.5F, (float)y + 0.03125F, (float)z + 0.5F);
 		GL11.glScalef(1.0F, -1F, -1F);
 		GL11.glScalef(0.0625F, 0.0625F, 0.0625F);
-		
-		ModModels.campfire.renderAll();
-		
-		GL11.glPopMatrix();
-		
-		GL11.glPushMatrix();
-	    GL11.glEnable(GL12.GL_RESCALE_NORMAL);
 
-		GL11.glTranslatef((float) x+0.4F, (float) y+0.0625f, (float) z+0.4F);
-		
+		ModModels.campfire.renderAll();
+
+		GL11.glPopMatrix();
+
+		GL11.glPushMatrix();
+		GL11.glEnable(GL12.GL_RESCALE_NORMAL);
+
+		GL11.glTranslatef((float)x + 0.4F, (float)y + 0.0625f, (float)z + 0.4F);
+
 		ItemStack coalItem = new ItemStack(Item.coal.itemID, 1, 0);
-		
-		for(int i = 0; i<20; i++)
+
+		for(int i = 0; i < 20; i++)
 		{
 			GL11.glPushMatrix();
 			GL11.glTranslatef(tile.coals[0][i], 0, tile.coals[1][i]);
@@ -60,7 +59,7 @@ public class TileEntityCampfireDecoRenderer extends TileEntitySpecialRenderer{
 			renderer.renderItem(tileentity.worldObj.getClosestPlayer(x, y, z, 2000), coalItem, 0);
 			GL11.glPopMatrix();
 		}
-		
+
 		GL11.glPopMatrix();
 	}
 }

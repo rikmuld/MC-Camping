@@ -14,28 +14,50 @@ public class KeyUtil {
 	public static ArrayList<Boolean> isRepeatingList;
 	public static ArrayList<IKeyListner> keyListners = new ArrayList<IKeyListner>();
 
-	public static void putKeyBindings()
+	public static void addIsRepeating(boolean value)
 	{
-		KeyInfo.putAll();
-		for(int i = 0; i<KeyInfo.keys.size(); i++)
+		if(isRepeatingList == null)
 		{
-			addKeyBinding(((String)KeyInfo.keys.keySet().toArray()[i]), ((Integer)KeyInfo.keys.values().toArray()[i]));
-			LanguageRegistry.instance().addStringLocalization(((String)KeyInfo.names.keySet().toArray()[i]), "en_US", ((String)KeyInfo.names.values().toArray()[i]));
+			isRepeatingList = new ArrayList<Boolean>();
 		}
+		isRepeatingList.add(value);
 	}
-	
+
 	public static void addKeyBinding(String name, int value)
 	{
-		if(keyBindingsList==null)keyBindingsList = new ArrayList<KeyBinding>();
+		if(keyBindingsList == null)
+		{
+			keyBindingsList = new ArrayList<KeyBinding>();
+		}
 		keyBindingsList.add(new KeyBinding(name, value));
-		
+
 		addIsRepeating(false);
 	}
 
-	public static void addIsRepeating(boolean value)
+	public static void fireKey(boolean down, int key, EntityPlayer player)
 	{
-		if(isRepeatingList==null)isRepeatingList = new ArrayList<Boolean>();
-		isRepeatingList.add(value);
+		for(IKeyListner listner: keyListners)
+		{
+			if(down)
+			{
+				listner.keyDown(key, player);
+			}
+			else
+			{
+				listner.keyUp(key, player);
+			}
+		}
+	}
+
+	public static boolean[] gatherIsRepeating()
+	{
+		boolean[] isRepeating = new boolean[isRepeatingList.size()];
+		for(int x = 0; x < isRepeating.length; x++)
+		{
+			isRepeating[x] = isRepeatingList.get(x).booleanValue();
+		}
+
+		return isRepeating;
 	}
 
 	public static KeyBinding[] gatherKeyBindings()
@@ -43,25 +65,18 @@ public class KeyUtil {
 		return keyBindingsList.toArray(new KeyBinding[keyBindingsList.size()]);
 	}
 
-	public static boolean[] gatherIsRepeating()
+	public static void putKeyBindings()
 	{
-		boolean[] isRepeating = new boolean[isRepeatingList.size()];
-		for(int x = 0; x<isRepeating.length; x++)isRepeating[x] = isRepeatingList.get(x).booleanValue();
-		
-		return isRepeating;
+		KeyInfo.putAll();
+		for(int i = 0; i < KeyInfo.keys.size(); i++)
+		{
+			addKeyBinding(((String)KeyInfo.keys.keySet().toArray()[i]), ((Integer)KeyInfo.keys.values().toArray()[i]));
+			LanguageRegistry.instance().addStringLocalization(((String)KeyInfo.names.keySet().toArray()[i]), "en_US", ((String)KeyInfo.names.values().toArray()[i]));
+		}
 	}
-	
+
 	public static void registerKeyListner(IKeyListner listner)
 	{
 		keyListners.add(listner);
-	}
-	
-	public static void fireKey(boolean down, int key, EntityPlayer player)
-	{
-		for(IKeyListner listner:keyListners)
-		{	
-			if(down)listner.keyDown(key, player);
-			else listner.keyUp(key, player);
-		}
 	}
 }

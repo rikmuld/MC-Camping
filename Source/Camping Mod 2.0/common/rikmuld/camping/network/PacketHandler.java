@@ -17,18 +17,6 @@ public class PacketHandler implements IPacketHandler {
 
 	public static ArrayList<Class<? extends PacketMain>> packets = new ArrayList<Class<? extends PacketMain>>();
 
-	public static void registerNewPacketClass(Class<? extends PacketMain> packet)
-	{
-		if(!packets.contains(packet))packets.add(packet);
-	}
-	
-	@Override
-	public void onPacketData(INetworkManager manager, Packet250CustomPayload packet, Player player)
-	{
-		PacketMain packetMain = buildPacket(packet.data);
-		packetMain.execute(manager, (EntityPlayer)player);
-	}
-	
 	public static PacketMain buildPacket(byte[] data)
 	{
 		ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(data);
@@ -44,7 +32,7 @@ public class PacketHandler implements IPacketHandler {
 		{
 			e.printStackTrace(System.err);
 		}
-				
+
 		packet.readPopulate(dataInputStream);
 		return packet;
 	}
@@ -58,5 +46,20 @@ public class PacketHandler implements IPacketHandler {
 		packet250.length = data.length;
 		packet250.isChunkDataPacket = packet.isChunkDataPacket;
 		return packet250;
+	}
+
+	public static void registerNewPacketClass(Class<? extends PacketMain> packet)
+	{
+		if(!packets.contains(packet))
+		{
+			packets.add(packet);
+		}
+	}
+
+	@Override
+	public void onPacketData(INetworkManager manager, Packet250CustomPayload packet, Player player)
+	{
+		PacketMain packetMain = buildPacket(packet.data);
+		packetMain.execute(manager, (EntityPlayer)player);
 	}
 }

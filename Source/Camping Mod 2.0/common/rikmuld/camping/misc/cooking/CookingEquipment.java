@@ -21,44 +21,50 @@ public abstract class CookingEquipment {
 	protected ItemRenderer renderer;
 	public int maxFood;
 	public ItemStack itemInfo;
-	
+
 	public CookingEquipment(int cookTime, HashMap<List<Integer>, ItemStack> cookableFoood, int maxFood, ItemStack item)
 	{
 		this.cookTime = cookTime;
 		this.cookableFoood = cookableFoood;
 		this.maxFood = maxFood;
 		slots = new int[2][maxFood];
-		this.setSlots();
-		this.itemInfo = item;
+		setSlots();
+		itemInfo = item;
 		ModCookingEquipment.register(this, item);
 	}
-	
-	public abstract void setSlots();
-	public abstract void renderModel();
-	protected abstract void doRenderFood(int foodIndex, ItemStack stack, EntityLivingBase entity);
-	public abstract void drawGuiTexture(GuiContainerCampfireCook container);
-	
-	public int getBaseCookTime()
-	{
-		return this.cookTime;
-	}
-	
+
 	public boolean canCook(int id, int meta)
 	{
 		return cookableFoood.containsKey(Arrays.asList(id, meta));
 	}
-	
+
+	protected abstract void doRenderFood(int foodIndex, ItemStack stack, EntityLivingBase entity);
+
+	public abstract void drawGuiTexture(GuiContainerCampfireCook container);
+
+	public int getBaseCookTime()
+	{
+		return cookTime;
+	}
+
 	public ItemStack getCookedFood(int id, int meta)
 	{
 		return cookableFoood.get(Arrays.asList(id, meta));
 	}
-	
+
 	public void renderFood(int foodIndex, ItemStack stack, EntityLivingBase entity)
 	{
-		if(this.renderer==null)renderer = new ItemRenderer(Minecraft.getMinecraft());
-		if(foodIndex<maxFood&&(stack.itemID!=ModItems.parts.itemID||stack.getItemDamage()!=ItemParts.ASH))
+		if(renderer == null)
 		{
-			this.doRenderFood(foodIndex, stack, entity);
+			renderer = new ItemRenderer(Minecraft.getMinecraft());
+		}
+		if((foodIndex < maxFood) && ((stack.itemID != ModItems.parts.itemID) || (stack.getItemDamage() != ItemParts.ASH)))
+		{
+			doRenderFood(foodIndex, stack, entity);
 		}
 	}
+
+	public abstract void renderModel();
+
+	public abstract void setSlots();
 }

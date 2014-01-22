@@ -13,23 +13,36 @@ public class ItemBlockMain extends ItemBlock {
 	private String[] metadata;
 	boolean useIcon;
 
-	public ItemBlockMain(int id, String[] meta,  String[] metaName, boolean renderMeta, boolean useIcon)
+	public ItemBlockMain(int id, String name, boolean useIcon)
 	{
 		super(id);
-		if(renderMeta)metadata = metaName;
-		this.setHasSubtypes(true);
-		this.setCreativeTab(ModTabs.campingTab);
+		setUnlocalizedName(name);
+		setCreativeTab(ModTabs.campingTab);
+		ModItems.registerItemBlock(this, name);
+		this.useIcon = useIcon;
+	}
+
+	public ItemBlockMain(int id, String[] meta, String[] metaName, boolean renderMeta, boolean useIcon)
+	{
+		super(id);
+		if(renderMeta)
+		{
+			metadata = metaName;
+		}
+		setHasSubtypes(true);
+		setCreativeTab(ModTabs.campingTab);
 		ModItems.registerItemBlockWithMeta(this, meta);
 		this.useIcon = useIcon;
 	}
 
-	public ItemBlockMain(int id, String name, boolean useIcon)
+	@Override
+	public Icon getIconFromDamage(int metadata)
 	{
-		super(id);
-		this.setUnlocalizedName(name);
-		this.setCreativeTab(ModTabs.campingTab);
-		ModItems.registerItemBlock(this, name);
-		this.useIcon = useIcon;
+		if((this.metadata != null) && useIcon)
+		{
+			itemIcon = iconBuffer[metadata];
+		}
+		return itemIcon;
 	}
 
 	@Override
@@ -37,28 +50,18 @@ public class ItemBlockMain extends ItemBlock {
 	{
 		if(useIcon)
 		{
-			if(this.metadata==null)
+			if(metadata == null)
 			{
-				itemIcon = iconRegister.registerIcon(ModInfo.MOD_ID+":"+this.getUnlocalizedName().substring(5));
+				itemIcon = iconRegister.registerIcon(ModInfo.MOD_ID + ":" + this.getUnlocalizedName().substring(5));
 			}
 			else
 			{
-				iconBuffer = new Icon[metadata.length+1];
-				for(int x = 0; x<metadata.length; x++)
+				iconBuffer = new Icon[metadata.length + 1];
+				for(int x = 0; x < metadata.length; x++)
 				{
-					iconBuffer[x] = iconRegister.registerIcon(ModInfo.MOD_ID+":"+this.metadata[x].toString());
+					iconBuffer[x] = iconRegister.registerIcon(ModInfo.MOD_ID + ":" + metadata[x].toString());
 				}
 			}
 		}
-	}
-
-	@Override
-	public Icon getIconFromDamage(int metadata)
-	{
-		if(this.metadata!=null&&useIcon)
-		{
-			itemIcon = iconBuffer[metadata];
-		}
-		return this.itemIcon;
 	}
 }

@@ -13,7 +13,7 @@ public class PacketPlayerSleepIntent extends PacketMain {
 	int x;
 	int y;
 	int z;
-	
+
 	public PacketPlayerSleepIntent()
 	{
 		super(false);
@@ -26,24 +26,26 @@ public class PacketPlayerSleepIntent extends PacketMain {
 		this.y = y;
 		this.z = z;
 	}
-	
-	public void readData(DataInputStream dataStream) throws IOException
-	{
-		this.x = dataStream.readInt();
-		this.y = dataStream.readInt();
-		this.z = dataStream.readInt();
-	}
-
-	public void writeData(DataOutputStream dataStream) throws IOException
-	{
-		dataStream.writeInt(x);
-		dataStream.writeInt(y);
-		dataStream.writeInt(z);
-	}
 
 	@Override
 	public void execute(INetworkManager network, EntityPlayer player)
 	{
 		((TileEntityTent)player.worldObj.getBlockTileEntity(x, y, z)).sleep(player);
+	}
+
+	@Override
+	public void readData(DataInputStream dataStream) throws IOException
+	{
+		x = dataStream.readInt();
+		y = dataStream.readInt();
+		z = dataStream.readInt();
+	}
+
+	@Override
+	public void writeData(DataOutputStream dataStream) throws IOException
+	{
+		dataStream.writeInt(x);
+		dataStream.writeInt(y);
+		dataStream.writeInt(z);
 	}
 }

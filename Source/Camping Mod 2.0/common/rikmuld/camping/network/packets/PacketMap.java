@@ -23,37 +23,39 @@ public class PacketMap extends PacketMain {
 	public PacketMap(int scale, int x, int z, byte[] colours)
 	{
 		super(false);
-		
+
 		this.x = x;
 		this.z = z;
 		this.scale = scale;
 		this.colours = colours;
 	}
 
+	@Override
+	public void execute(INetworkManager network, EntityPlayer player)
+	{
+		if(EventsHandler.map != null)
+		{
+			EventsHandler.map.colorData.put(player, colours);
+			EventsHandler.map.posData.put(player, new int[]{scale, x, z});
+		}
+	}
+
+	@Override
 	public void readData(DataInputStream dataStream) throws IOException
 	{
-		this.x = dataStream.readInt();
-		this.z = dataStream.readInt();
-		this.scale = dataStream.readInt();
-		this.colours = new byte[16384];
+		x = dataStream.readInt();
+		z = dataStream.readInt();
+		scale = dataStream.readInt();
+		colours = new byte[16384];
 		dataStream.read(colours);
 	}
 
+	@Override
 	public void writeData(DataOutputStream dataStream) throws IOException
 	{
 		dataStream.writeInt(x);
 		dataStream.writeInt(z);
 		dataStream.writeInt(scale);
 		dataStream.write(colours);
-	}
-
-	@Override
-	public void execute(INetworkManager network, EntityPlayer player)
-	{
-		if(EventsHandler.map!=null)
-		{
-			EventsHandler.map.colorData.put(player, colours);
-			EventsHandler.map.posData.put(player, new int[]{scale, x, z});
-		}
 	}
 }

@@ -11,35 +11,39 @@ import rikmuld.camping.entity.tileentity.TileEntityTent;
 
 public class WorldGenCamp extends WorldGenerator {
 
-	public boolean LocationIsValidSpawn(World world, int i, int j, int k)
-	{
-		return (world.getBlockId(i, j, k)==Block.grass.blockID);
-	}
-
+	@Override
 	public boolean generate(World world, Random rand, int x, int y, int z)
-	{		
-		while(world.getBlockId(x, y+1, z)!=0||world.getBlockId(x, y+2, z)!=0)y++;
-		
-		if(!LocationIsValidSpawn(world, x-1, y, z)||!LocationIsValidSpawn(world, x-1, y, z+2)||!LocationIsValidSpawn(world, x+4, y, z+2)||!LocationIsValidSpawn(world, x+4, y, z)||!this.isValitSpawn(world, x, y, z, 6, 3)) return false;
-			
-		world.setBlock(x+0, y+1, z+1, ModBlocks.campfireDeco.blockID, 0, 2);
-		world.setBlock(x+2, y+1, z+1, ModBlocks.tent.blockID, 2, 2);
-		((TileEntityTent)world.getBlockTileEntity(x+2, y+1, z+1)).setRotation(3);
-		((TileEntityTent)world.getBlockTileEntity(x+2, y+1, z+1)).setContends(1, TileEntityTent.BEDS, true, 0);
+	{
+		while((world.getBlockId(x, y + 1, z) != 0) || (world.getBlockId(x, y + 2, z) != 0))
+		{
+			y++;
+		}
 
-		world.spawnEntityInWorld(new EntityCamper(world, x, y+1, z));
+		if(!LocationIsValidSpawn(world, x - 1, y, z) || !LocationIsValidSpawn(world, x - 1, y, z + 2) || !LocationIsValidSpawn(world, x + 4, y, z + 2) || !LocationIsValidSpawn(world, x + 4, y, z) || !isValitSpawn(world, x, y, z, 6, 3)) return false;
+
+		world.setBlock(x + 0, y + 1, z + 1, ModBlocks.campfireDeco.blockID, 0, 2);
+		world.setBlock(x + 2, y + 1, z + 1, ModBlocks.tent.blockID, 2, 2);
+		((TileEntityTent)world.getBlockTileEntity(x + 2, y + 1, z + 1)).setRotation(3);
+		((TileEntityTent)world.getBlockTileEntity(x + 2, y + 1, z + 1)).setContends(1, TileEntityTent.BEDS, true, 0);
+
+		world.spawnEntityInWorld(new EntityCamper(world, x, y + 1, z));
 		return true;
 	}
-	
+
 	public boolean isValitSpawn(World world, int x, int y, int z, int xLength, int zLength)
 	{
-		for(int i = 0; i<xLength; i++)
+		for(int i = 0; i < xLength; i++)
 		{
-			for(int j = 0; j<zLength; j++)
+			for(int j = 0; j < zLength; j++)
 			{
-				if(world.getBlockId(x+xLength, y+1, z+zLength)!=0)return false;
+				if(world.getBlockId(x + xLength, y + 1, z + zLength) != 0) return false;
 			}
 		}
 		return true;
+	}
+
+	public boolean LocationIsValidSpawn(World world, int i, int j, int k)
+	{
+		return(world.getBlockId(i, j, k) == Block.grass.blockID);
 	}
 }

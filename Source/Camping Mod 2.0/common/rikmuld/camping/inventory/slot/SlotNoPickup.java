@@ -11,6 +11,7 @@ public class SlotNoPickup extends Slot {
 		super(inventory, slotIndex, xPos, yPos);
 	}
 
+	@Override
 	public boolean canTakeStack(EntityPlayer par1EntityPlayer)
 	{
 		return false;

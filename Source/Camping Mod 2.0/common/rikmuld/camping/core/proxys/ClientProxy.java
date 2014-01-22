@@ -1,7 +1,5 @@
 package rikmuld.camping.core.proxys;
 
-import java.net.URISyntaxException;
-
 import net.minecraft.world.World;
 import net.minecraftforge.client.MinecraftForgeClient;
 import rikmuld.camping.client.render.entity.EntityBearRenderer;
@@ -55,10 +53,23 @@ import cpw.mods.fml.relauncher.Side;
 public class ClientProxy extends CommonProxy {
 
 	public static Book guide;
-	
+
+	@Override
+	public void checkVersion()
+	{
+		VersionData data = new VersionData();
+		data.execute();
+	}
+
+	@Override
+	public void registerGuide()
+	{
+		guide = new Book(Book.class.getResourceAsStream(Book.MAIN_GUIDE_PATH + "book.xml"));
+	}
+
 	@Override
 	public void registerRenderers()
-	{		
+	{
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCampfireDeco.class, new TileEntityCampfireDecoRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCampfireCook.class, new TileEntityCampfireCookRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityLog.class, new TileEntityLogRenderer());
@@ -81,29 +92,17 @@ public class ClientProxy extends CommonProxy {
 		RenderingRegistry.registerEntityRenderingHandler(EntityHare.class, new EntityHareRenderer(new ModelHare()));
 		RenderingRegistry.registerEntityRenderingHandler(EntityCamper.class, new EntityCamperRenderer());
 	}
-	
-	@Override
-	public void spawnFlame(World world, double x, double y, double z, double motionX, double motionY, double motionZ, int color)
-	{
-		FMLClientHandler.instance().getClient().effectRenderer.addEffect(new FXColoredFlame(world, x, y, z, motionX, motionY, motionZ, color));
-	}
-	
+
 	@Override
 	public void registerTickHandler()
 	{
 		super.registerTickHandler();
 		TickRegistry.registerTickHandler(new TickHandler(), Side.CLIENT);
 	}
-	
-	public void registerGuide()
-	{
-		guide = new Book(Book.class.getResourceAsStream(Book.MAIN_GUIDE_PATH+"book.xml"));
-	}
-	
+
 	@Override
-	public void checkVersion()
+	public void spawnFlame(World world, double x, double y, double z, double motionX, double motionY, double motionZ, int color)
 	{
-		VersionData data = new VersionData();
-		data.execute();
+		FMLClientHandler.instance().getClient().effectRenderer.addEffect(new FXColoredFlame(world, x, y, z, motionX, motionY, motionZ, color));
 	}
 }

@@ -20,20 +20,20 @@ public class KeyHandler extends KeyBindingRegistry.KeyHandler {
 	}
 
 	@Override
-	public String getLabel() 
+	public String getLabel()
 	{
 		return ModInfo.MOD_ID + ": " + this.getClass().getSimpleName();
 	}
 
 	@Override
-	public void keyDown(EnumSet<TickType> types, KeyBinding kb, boolean tickEnd, boolean isRepeat) 
+	public void keyDown(EnumSet<TickType> types, KeyBinding kb, boolean tickEnd, boolean isRepeat)
 	{
-		if (tickEnd) 
+		if(tickEnd)
 		{
-			if (FMLClientHandler.instance().getClient().inGameHasFocus) 
+			if(FMLClientHandler.instance().getClient().inGameHasFocus)
 			{
 				EntityPlayer player = FMLClientHandler.instance().getClient().thePlayer;
-				if (player != null) 
+				if(player != null)
 				{
 					KeyUtil.fireKey(true, kb.keyCode, player);
 					PacketUtil.sendToSever(new PacketKeyPressed(kb.keyCode, true));
@@ -45,12 +45,12 @@ public class KeyHandler extends KeyBindingRegistry.KeyHandler {
 	@Override
 	public void keyUp(EnumSet<TickType> types, KeyBinding kb, boolean tickEnd)
 	{
-		if (tickEnd) 
+		if(tickEnd)
 		{
-			if (FMLClientHandler.instance().getClient().inGameHasFocus) 
+			if(FMLClientHandler.instance().getClient().inGameHasFocus)
 			{
 				EntityPlayer player = FMLClientHandler.instance().getClient().thePlayer;
-				if (player != null) 
+				if(player != null)
 				{
 					KeyUtil.fireKey(false, kb.keyCode, player);
 					PacketUtil.sendToSever(new PacketKeyPressed(kb.keyCode, false));
@@ -60,7 +60,7 @@ public class KeyHandler extends KeyBindingRegistry.KeyHandler {
 	}
 
 	@Override
-	public EnumSet<TickType> ticks() 
+	public EnumSet<TickType> ticks()
 	{
 		return EnumSet.of(TickType.CLIENT);
 	}

@@ -18,7 +18,10 @@ public class ItemBackpack extends ItemMain {
 	@Override
 	public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player)
 	{
-		if(!world.isRemote)player.openGui(CampingMod.instance, GuiInfo.GUI_BACKPACK, world, 0, 0, 0);
+		if(!world.isRemote)
+		{
+			player.openGui(CampingMod.instance, GuiInfo.GUI_BACKPACK, world, 0, 0, 0);
+		}
 		return stack;
 	}
 }

@@ -1,11 +1,11 @@
 package rikmuld.camping.client.render.model;
 
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.MathHelper;
+
+import org.lwjgl.opengl.GL11;
 
 public class ModelBear extends ModelBase {
 
@@ -20,7 +20,7 @@ public class ModelBear extends ModelBase {
 	ModelRenderer earLeft;
 	ModelRenderer head;
 
-	public ModelBear() 
+	public ModelBear()
 	{
 		textureWidth = 128;
 		textureHeight = 64;
@@ -87,12 +87,16 @@ public class ModelBear extends ModelBase {
 		setRotation(head, 0F, 0F, 0F);
 	}
 
-	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) 
+	@Override
+	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5)
 	{
 		super.render(entity, f, f1, f2, f3, f4, f5);
 		setRotationAngles(entity, f, f1, f2, f3, f4, f5);
 
-		if(this.isChild)GL11.glScalef(0.5F, 0.5F, 0.5F);
+		if(isChild)
+		{
+			GL11.glScalef(0.5F, 0.5F, 0.5F);
+		}
 
 		leg1.render(f5);
 		leg3.render(f5);
@@ -113,13 +117,12 @@ public class ModelBear extends ModelBase {
 		model.rotateAngleZ = z;
 	}
 
-	public void setRotationAngles(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) 
+	public void setRotationAngles(Entity entity, float f, float f1, float f2, float f3, float f4, float f5)
 	{
 		super.setRotationAngles(f, f1, f2, f3, f4, f5, entity);
-        float f6 = (180F / (float)Math.PI);
-        this.leg1.rotateAngleX = MathHelper.cos(f * 0.6662F) * 1.4F * f1;
-        this.leg2.rotateAngleX = MathHelper.cos(f * 0.6662F + (float)Math.PI) * 1.4F * f1;
-        this.leg3.rotateAngleX = MathHelper.cos(f * 0.6662F + (float)Math.PI) * 1.4F * f1;
-        this.leg4.rotateAngleX = MathHelper.cos(f * 0.6662F) * 1.4F * f1;
-    }
+		leg1.rotateAngleX = MathHelper.cos(f * 0.6662F) * 1.4F * f1;
+		leg2.rotateAngleX = MathHelper.cos((f * 0.6662F) + (float)Math.PI) * 1.4F * f1;
+		leg3.rotateAngleX = MathHelper.cos((f * 0.6662F) + (float)Math.PI) * 1.4F * f1;
+		leg4.rotateAngleX = MathHelper.cos(f * 0.6662F) * 1.4F * f1;
+	}
 }

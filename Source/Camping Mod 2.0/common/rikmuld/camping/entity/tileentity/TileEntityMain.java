@@ -10,25 +10,12 @@ import rikmuld.camping.network.packets.PacketTileData;
 
 public class TileEntityMain extends TileEntity {
 
-	public void sendTileData(int id, boolean client, int... data)
-	{
-		if(!client&&this.worldObj.isRemote)PacketUtil.sendToSever(new PacketTileData(id, this.xCoord, this.yCoord, this.zCoord, data));	
-		if(client&&!this.worldObj.isRemote)PacketUtil.sendToAllPlayers(new PacketTileData(id, this.xCoord, this.yCoord, this.zCoord, data));
-	}
-
-	public void setTileData(int id, int[] data)
-	{}
-
 	@Override
-	public void readFromNBT(NBTTagCompound tag)
+	public Packet getDescriptionPacket()
 	{
-		super.readFromNBT(tag);
-	}
-
-	@Override
-	public void writeToNBT(NBTTagCompound tag)
-	{
-		super.writeToNBT(tag);
+		NBTTagCompound var1 = new NBTTagCompound();
+		writeToNBT(var1);
+		return new Packet132TileEntityData(xCoord, yCoord, zCoord, 1, var1);
 	}
 
 	@Override
@@ -38,10 +25,29 @@ public class TileEntityMain extends TileEntity {
 	}
 
 	@Override
-	public Packet getDescriptionPacket()
+	public void readFromNBT(NBTTagCompound tag)
 	{
-		NBTTagCompound var1 = new NBTTagCompound();
-		writeToNBT(var1);
-		return new Packet132TileEntityData(this.xCoord, this.yCoord, this.zCoord, 1, var1);
+		super.readFromNBT(tag);
+	}
+
+	public void sendTileData(int id, boolean client, int... data)
+	{
+		if(!client && worldObj.isRemote)
+		{
+			PacketUtil.sendToSever(new PacketTileData(id, xCoord, yCoord, zCoord, data));
+		}
+		if(client && !worldObj.isRemote)
+		{
+			PacketUtil.sendToAllPlayers(new PacketTileData(id, xCoord, yCoord, zCoord, data));
+		}
+	}
+
+	public void setTileData(int id, int[] data)
+	{}
+
+	@Override
+	public void writeToNBT(NBTTagCompound tag)
+	{
+		super.writeToNBT(tag);
 	}
 }

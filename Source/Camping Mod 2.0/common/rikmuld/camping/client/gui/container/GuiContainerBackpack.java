@@ -22,11 +22,11 @@ public class GuiContainerBackpack extends GuiContainer {
 	{
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		mc.renderEngine.bindTexture(new ResourceLocation(TextureInfo.GUI_BAG));
-		int var5 = (width-xSize)/2;
-		int var6 = (height-ySize)/2;
-		this.drawTexturedModalRect(var5, var6, 0, 0, xSize, ySize);
+		int var5 = (width - xSize) / 2;
+		int var6 = (height - ySize) / 2;
+		drawTexturedModalRect(var5, var6, 0, 0, xSize, ySize);
 	}
-	
+
 	@Override
 	public void drawGuiContainerForegroundLayer(int i, int j)
 	{

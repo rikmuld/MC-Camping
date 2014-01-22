@@ -8,11 +8,11 @@ public class ContainerUtil {
 
 	public static void addSlots(ContainerMain container, IInventory inv, int slotID, int rowMax, int collomMax, int xStart, int yStart)
 	{
-		for(int row = 0; row<rowMax; ++row)
+		for(int row = 0; row < rowMax; ++row)
 		{
-			for(int collom = 0; collom<collomMax; ++collom)
+			for(int collom = 0; collom < collomMax; ++collom)
 			{
-				container.addSlot(new Slot(inv, collom+row*collomMax+slotID, xStart+collom*18, yStart+row*18));
+				container.addSlot(new Slot(inv, collom + (row * collomMax) + slotID, xStart + (collom * 18), yStart + (row * 18)));
 			}
 		}
 	}

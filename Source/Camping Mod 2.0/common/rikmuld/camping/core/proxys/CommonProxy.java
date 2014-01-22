@@ -34,57 +34,57 @@ import cpw.mods.fml.relauncher.Side;
 
 public class CommonProxy implements IGuiHandler {
 
-	public void registerRenderers()
-	{}
-	
-	public void spawnFlame(World world, double x, double y, double z, double motionX, double motionY, double motionZ, int color)
-	{}
-	
-	public void registerTickHandler()
-	{
-		TickRegistry.registerTickHandler(new TickHandler(), Side.SERVER);
-	}
-
-	public void registerGuide()
-	{}
-
 	public void checkVersion()
 	{}
-	
-	@Override
-	public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z)
-	{
-		TileEntity tile = world.getBlockTileEntity(x, y, z);
-		if(ID == GuiInfo.GUI_CAMPFIRE_DECO)return new ContainerCampfireDeco(player.inventory, (IInventory) tile);
-		if(ID == GuiInfo.GUI_BACKPACK)return new ContainerBackpack(player.inventory, player.getCurrentEquippedItem());
-		if(ID == GuiInfo.GUI_CAMPINV_BACK)return new ContainerCampinvBack(player);
-		if(ID == GuiInfo.GUI_CAMPINV_TOOL)return new ContainerCampinvTool(player);
-		if(ID == GuiInfo.GUI_INV_PLAYER)return player.inventoryContainer;
-		if(ID == GuiInfo.GUI_COOK)return new ContainerCampfireCook(player.inventory, (IInventory) tile);
-		if(ID == GuiInfo.GUI_KIT)return new ContainerKit(player.inventory, player.getCurrentEquippedItem());
-		if(ID == GuiInfo.GUI_TENT_LANTERN)return new ContainerTentLanterns(player.inventory, (IInventory) tile);
-		if(ID == GuiInfo.GUI_TENT_CHESTS)return new ContainerTentChests(player.inventory, (IInventory) tile);
-		if(ID == GuiInfo.GUI_TRAP)return new ContainerTrap(player.inventory, (IInventory) tile);
-		return null;
-	}
 
 	@Override
 	public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z)
 	{
 		TileEntity tile = world.getBlockTileEntity(x, y, z);
-		if(ID == GuiInfo.GUI_TENT)return new GuiScreenTent(tile);
-		if(ID == GuiInfo.GUI_TENT_SLEEP)return new GuiScreenTentSleeping(tile);
-		if(ID == GuiInfo.GUI_TENT_LANTERN)return new GuiContainerTentLanterns(player.inventory, (IInventory) tile);
-		if(ID == GuiInfo.GUI_TENT_CHESTS)return new GuiContainerTentChests(player.inventory, (IInventory) tile);
-		if(ID == GuiInfo.GUI_CAMPFIRE_DECO)return new GuiContainerCampfireDeco(player.inventory, (IInventory) tile);
-		if(ID == GuiInfo.GUI_BACKPACK)return new GuiContainerBackpack(player.inventory, player.getCurrentEquippedItem());
-		if(ID == GuiInfo.GUI_CAMPINV_BACK)return new GuiContainerCampingInvBack(player);
-		if(ID == GuiInfo.GUI_INV_PLAYER)return new GuiContainerPlayerInv(player);
-		if(ID == GuiInfo.GUI_GUIDE)return new GuiScreenGuide();
-		if(ID == GuiInfo.GUI_CAMPINV_TOOL)return new GuiContainerCampingInvTool(player);
-		if(ID == GuiInfo.GUI_COOK)return new GuiContainerCampfireCook(player.inventory, (IInventory) tile);
-		if(ID == GuiInfo.GUI_KIT)return new GuiContainerKit(player.inventory, player.getCurrentEquippedItem());
-		if(ID == GuiInfo.GUI_TRAP)return new GuiContainerTrap(player.inventory, (IInventory) tile);
+		if(ID == GuiInfo.GUI_TENT) return new GuiScreenTent(tile);
+		if(ID == GuiInfo.GUI_TENT_SLEEP) return new GuiScreenTentSleeping(tile);
+		if(ID == GuiInfo.GUI_TENT_LANTERN) return new GuiContainerTentLanterns(player.inventory, (IInventory)tile);
+		if(ID == GuiInfo.GUI_TENT_CHESTS) return new GuiContainerTentChests(player.inventory, (IInventory)tile);
+		if(ID == GuiInfo.GUI_CAMPFIRE_DECO) return new GuiContainerCampfireDeco(player.inventory, (IInventory)tile);
+		if(ID == GuiInfo.GUI_BACKPACK) return new GuiContainerBackpack(player.inventory, player.getCurrentEquippedItem());
+		if(ID == GuiInfo.GUI_CAMPINV_BACK) return new GuiContainerCampingInvBack(player);
+		if(ID == GuiInfo.GUI_INV_PLAYER) return new GuiContainerPlayerInv(player);
+		if(ID == GuiInfo.GUI_GUIDE) return new GuiScreenGuide();
+		if(ID == GuiInfo.GUI_CAMPINV_TOOL) return new GuiContainerCampingInvTool(player);
+		if(ID == GuiInfo.GUI_COOK) return new GuiContainerCampfireCook(player.inventory, (IInventory)tile);
+		if(ID == GuiInfo.GUI_KIT) return new GuiContainerKit(player.inventory, player.getCurrentEquippedItem());
+		if(ID == GuiInfo.GUI_TRAP) return new GuiContainerTrap(player.inventory, (IInventory)tile);
 		return null;
 	}
+
+	@Override
+	public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z)
+	{
+		TileEntity tile = world.getBlockTileEntity(x, y, z);
+		if(ID == GuiInfo.GUI_CAMPFIRE_DECO) return new ContainerCampfireDeco(player.inventory, (IInventory)tile);
+		if(ID == GuiInfo.GUI_BACKPACK) return new ContainerBackpack(player.inventory, player.getCurrentEquippedItem());
+		if(ID == GuiInfo.GUI_CAMPINV_BACK) return new ContainerCampinvBack(player);
+		if(ID == GuiInfo.GUI_CAMPINV_TOOL) return new ContainerCampinvTool(player);
+		if(ID == GuiInfo.GUI_INV_PLAYER) return player.inventoryContainer;
+		if(ID == GuiInfo.GUI_COOK) return new ContainerCampfireCook(player.inventory, (IInventory)tile);
+		if(ID == GuiInfo.GUI_KIT) return new ContainerKit(player.inventory, player.getCurrentEquippedItem());
+		if(ID == GuiInfo.GUI_TENT_LANTERN) return new ContainerTentLanterns(player.inventory, (IInventory)tile);
+		if(ID == GuiInfo.GUI_TENT_CHESTS) return new ContainerTentChests(player.inventory, (IInventory)tile);
+		if(ID == GuiInfo.GUI_TRAP) return new ContainerTrap(player.inventory, (IInventory)tile);
+		return null;
+	}
+
+	public void registerGuide()
+	{}
+
+	public void registerRenderers()
+	{}
+
+	public void registerTickHandler()
+	{
+		TickRegistry.registerTickHandler(new TickHandler(), Side.SERVER);
+	}
+
+	public void spawnFlame(World world, double x, double y, double z, double motionX, double motionY, double motionZ, int color)
+	{}
 }

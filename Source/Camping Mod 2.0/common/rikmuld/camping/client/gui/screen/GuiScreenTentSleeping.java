@@ -14,86 +14,96 @@ import rikmuld.camping.core.lib.GuiInfo;
 import rikmuld.camping.core.lib.TextureInfo;
 import rikmuld.camping.entity.tileentity.TileEntityTent;
 
-public class GuiScreenTentSleeping extends GuiScreen{
-	
+public class GuiScreenTentSleeping extends GuiScreen {
+
 	TileEntityTent tent;
 	boolean canClick;
 
 	public GuiScreenTentSleeping(TileEntity tile)
-	{		
-		tent = (TileEntityTent) tile;
+	{
+		tent = (TileEntityTent)tile;
 	}
-	
+
 	@Override
-    protected void actionPerformed(GuiButton button)
+	protected void actionPerformed(GuiButton button)
 	{
 		switch(button.id)
 		{
-			case 0: tent.sleep(mc.thePlayer); break;
+			case 0:
+				tent.sleep(mc.thePlayer);
+				break;
 		}
-	}
-	
-	@Override
-	public void initGui()
-	{		
-		super.initGui();
-	    
-		int guiLeft = (this.width - 97)/2;
-		int guiTop = (this.height - 30)/2;
-				
-		this.buttonList.add(new GuiButton(0, this.width/2 + -20, guiTop+10, 61, 10, "Sleep"));
 	}
 
 	@Override
-    public void drawScreen(int mouseX, int mouseY, float partitialTicks)
+	public boolean doesGuiPauseGame()
 	{
-		this.drawDefaultBackground();
-		
-		int guiLeft = (this.width - 97)/2;
-		int guiTop = (this.height - 30)/2;
-		
+		return false;
+	}
+
+	@Override
+	public void drawCenteredString(FontRenderer fontRender, String text, int x, int y, int color)
+	{
+		fontRender.drawString(text, x - (fontRender.getStringWidth(text) / 2), y, color);
+	}
+
+	@Override
+	public void drawScreen(int mouseX, int mouseY, float partitialTicks)
+	{
+		drawDefaultBackground();
+
+		int guiLeft = (width - 97) / 2;
+		int guiTop = (height - 30) / 2;
+
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		mc.renderEngine.bindTexture(new ResourceLocation(TextureInfo.GUI_TENT_CONTENDS_1));
-		this.drawTexturedModalRect(guiLeft, guiTop, 0, 116, 97, 30);
-		
-		if(this.isPointInRegion(5, 5, 20, 20, mouseX, mouseY, guiLeft, guiTop))
+		drawTexturedModalRect(guiLeft, guiTop, 0, 116, 97, 30);
+
+		if(isPointInRegion(5, 5, 20, 20, mouseX, mouseY, guiLeft, guiTop))
 		{
-			this.drawTexturedModalRect(guiLeft+5, guiTop+5, 75, 0, 20, 20);
-			if(Mouse.isButtonDown(0)&&canClick)
+			drawTexturedModalRect(guiLeft + 5, guiTop + 5, 75, 0, 20, 20);
+			if(Mouse.isButtonDown(0) && canClick)
 			{
 				mc.thePlayer.openGui(CampingMod.instance, GuiInfo.GUI_TENT, tent.worldObj, tent.xCoord, tent.yCoord, tent.zCoord);
 			}
-			if(!Mouse.isButtonDown(0))this.canClick = true;
+			if(!Mouse.isButtonDown(0))
+			{
+				canClick = true;
+			}
 		}
-		else this.canClick = false;
-		
+		else
+		{
+			canClick = false;
+		}
+
 		super.drawScreen(mouseX, mouseY, partitialTicks);
 	}
-	
-	public void drawCenteredString(FontRenderer fontRender, String text, int x, int y, int color)
-    {
-        fontRender.drawString(text, x - fontRender.getStringWidth(text) / 2, y, color);
-    }
-	
-    public boolean doesGuiPauseGame()
-    {
-        return false;
-    }
 
-    public void updateScreen()
-    {
-        super.updateScreen();
+	@Override
+	public void initGui()
+	{
+		super.initGui();
 
-        if (!this.mc.thePlayer.isEntityAlive() || this.mc.thePlayer.isDead)
-        {
-            this.mc.thePlayer.closeScreen();
-        }
-    }
-    
-    private boolean isPointInRegion(int x, int y, int width, int height, int pointX, int pointY, int guiLeft, int guiTop)
+		int guiTop = (height - 30) / 2;
+
+		buttonList.add(new GuiButton(0, (width / 2) + -20, guiTop + 10, 61, 10, "Sleep"));
+	}
+
+	private boolean isPointInRegion(int x, int y, int width, int height, int pointX, int pointY, int guiLeft, int guiTop)
 	{
 		pointX -= guiLeft;
 		pointY -= guiTop;
-		return pointX>=x-1&&pointX<x+width+1&&pointY>=y-1&&pointY<y+height+1;
+		return (pointX >= (x - 1)) && (pointX < (x + width + 1)) && (pointY >= (y - 1)) && (pointY < (y + height + 1));
+	}
+
+	@Override
+	public void updateScreen()
+	{
+		super.updateScreen();
+
+		if(!mc.thePlayer.isEntityAlive() || mc.thePlayer.isDead)
+		{
+			mc.thePlayer.closeScreen();
+		}
 	}
 }

@@ -16,7 +16,7 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 public class ModAchievements {
 
 	public static ArrayList<AchievementMain> achievements = new ArrayList<AchievementMain>();
-	
+
 	public static AchievementMain guide;
 	public static AchievementMain knife;
 	public static AchievementMain trap;
@@ -53,8 +53,18 @@ public class ModAchievements {
 	public static AchievementMain basic;
 	public static AchievementMain legend;
 
-	public static void init() 
-	{		
+	public static Achievement[] getAll()
+	{
+		Achievement[] achievementList = new Achievement[achievements.size()];
+		for(int i = 0; i < achievements.size(); i++)
+		{
+			achievementList[i] = achievements.get(i);
+		}
+		return achievementList;
+	}
+
+	public static void init()
+	{
 		guide = new AchievementMain(AchievementInfo.GUIDE, 0, 0, Item.book, null, false);
 		knife = new AchievementMain(AchievementInfo.KNIVE, 3, 0, ModItems.knife, guide, false);
 		trap = new AchievementMain(AchievementInfo.TRAP, -2, 1, ModBlocks.bearTrap, guide, false);
@@ -96,15 +106,8 @@ public class ModAchievements {
 	{
 		achievement.registerAchievement();
 		achievements.add(achievement);
-		
-		LanguageRegistry.instance().addStringLocalization(achievement.statName, "en_US", name);
-		LanguageRegistry.instance().addStringLocalization(achievement.statName+".desc", "en_US", description);
-	}
 
-	public static Achievement[] getAll()
-	{
-		Achievement[] achievementList = new Achievement[achievements.size()];
-		for(int i = 0; i<achievements.size(); i++)achievementList[i] = achievements.get(i);
-		return achievementList;
+		LanguageRegistry.instance().addStringLocalization(achievement.statName, "en_US", name);
+		LanguageRegistry.instance().addStringLocalization(achievement.statName + ".desc", "en_US", description);
 	}
 }

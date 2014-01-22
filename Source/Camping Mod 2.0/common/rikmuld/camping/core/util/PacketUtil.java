@@ -7,11 +7,16 @@ import cpw.mods.fml.common.network.Player;
 
 public class PacketUtil {
 
-	public static void sendToSever(PacketMain packet)
+	public static void sendToAllAround(PacketMain packet, double x, double y, double z, int range, int dimensionId)
 	{
-		PacketDispatcher.sendPacketToServer(PacketHandler.populatePacket(packet));
+		PacketDispatcher.sendPacketToAllAround(x, y, z, range, dimensionId, PacketHandler.populatePacket(packet));
 	}
-	
+
+	public static void sendToAllInDimension(PacketMain packet, int dimensionId)
+	{
+		PacketDispatcher.sendPacketToAllInDimension(PacketHandler.populatePacket(packet), dimensionId);
+	}
+
 	public static void sendToAllPlayers(PacketMain packet)
 	{
 		PacketDispatcher.sendPacketToAllPlayers(PacketHandler.populatePacket(packet));
@@ -22,13 +27,8 @@ public class PacketUtil {
 		PacketDispatcher.sendPacketToPlayer(PacketHandler.populatePacket(packet), player);
 	}
 
-	public static void sendToAllAround(PacketMain packet, double x, double y, double z, int range, int dimensionId)
+	public static void sendToSever(PacketMain packet)
 	{
-		PacketDispatcher.sendPacketToAllAround(x, y, z, range, dimensionId, PacketHandler.populatePacket(packet));
-	}
-
-	public static void sendToAllInDimension(PacketMain packet, int dimensionId)
-	{
-		PacketDispatcher.sendPacketToAllInDimension(PacketHandler.populatePacket(packet), dimensionId);
+		PacketDispatcher.sendPacketToServer(PacketHandler.populatePacket(packet));
 	}
 }

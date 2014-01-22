@@ -9,74 +9,74 @@ import org.w3c.dom.NodeList;
 public class Page {
 
 	Node page;
-	
-	public ArrayList<PageTextData> text = new ArrayList<PageTextData>(); 
-	public ArrayList<PageLinkData> link = new ArrayList<PageLinkData>(); 
-	public ArrayList<PageCraftData> crafting = new ArrayList<PageCraftData>(); 
-	public ArrayList<PageImgData> image = new ArrayList<PageImgData>(); 
-	public ArrayList<PageItemImgData> item = new ArrayList<PageItemImgData>(); 
+
+	public ArrayList<PageTextData> text = new ArrayList<PageTextData>();
+	public ArrayList<PageLinkData> link = new ArrayList<PageLinkData>();
+	public ArrayList<PageCraftData> crafting = new ArrayList<PageCraftData>();
+	public ArrayList<PageImgData> image = new ArrayList<PageImgData>();
+	public ArrayList<PageItemImgData> item = new ArrayList<PageItemImgData>();
 
 	public Page(Node pageNode)
 	{
-		this.page = pageNode;
-		this.collectInfo();
+		page = pageNode;
+		collectInfo();
 	}
 
-	private void collectInfo()
+	private void collectCraft()
 	{
-		this.collectText();
-		this.collectImg();
-		this.collectItemImg();
-		this.collectCraft();
-		this.collectLink();
-	}
-
-	private void collectItemImg()
-	{
-		NodeList img = ((Element)page).getElementsByTagName("item");
-		for(int i = 0; i<img.getLength(); i++)
+		NodeList craft = ((Element)page).getElementsByTagName("craft");
+		for(int i = 0; i < craft.getLength(); i++)
 		{
-			this.item.add(new PageItemImgData(img.item(i)));
-		}
-	}
-
-	private void collectLink()
-	{
-		NodeList links = ((Element)page).getElementsByTagName("link");
-		for(int i = 0; i<links.getLength(); i++)
-		{
-			this.link.add(new PageLinkData(links.item(i)));
+			crafting.add(new PageCraftData(craft.item(i)));
 		}
 	}
 
 	private void collectImg()
 	{
 		NodeList img = ((Element)page).getElementsByTagName("img");
-		for(int i = 0; i<img.getLength(); i++)
+		for(int i = 0; i < img.getLength(); i++)
 		{
-			this.image.add(new PageImgData(img.item(i)));
+			image.add(new PageImgData(img.item(i)));
 		}
 	}
 
-	private void collectCraft()
+	private void collectInfo()
 	{
-		NodeList craft = ((Element)page).getElementsByTagName("craft");
-		for(int i = 0; i<craft.getLength(); i++)
+		collectText();
+		collectImg();
+		collectItemImg();
+		collectCraft();
+		collectLink();
+	}
+
+	private void collectItemImg()
+	{
+		NodeList img = ((Element)page).getElementsByTagName("item");
+		for(int i = 0; i < img.getLength(); i++)
 		{
-			this.crafting.add(new PageCraftData(craft.item(i)));
+			item.add(new PageItemImgData(img.item(i)));
+		}
+	}
+
+	private void collectLink()
+	{
+		NodeList links = ((Element)page).getElementsByTagName("link");
+		for(int i = 0; i < links.getLength(); i++)
+		{
+			link.add(new PageLinkData(links.item(i)));
 		}
 	}
 
 	private void collectText()
 	{
 		NodeList text = ((Element)page).getElementsByTagName("text");
-		for(int i = 0; i<text.getLength(); i++)
+		for(int i = 0; i < text.getLength(); i++)
 		{
 			this.text.add(new PageTextData(text.item(i)));
 		}
-		
+
 		NodeList version = ((Element)page).getElementsByTagName("version");
-		for(int i = 0; i<version.getLength(); i++)
+		for(int i = 0; i < version.getLength(); i++)
 		{
 			this.text.add(new PageVersionData(version.item(i)));
 		}

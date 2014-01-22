@@ -6,31 +6,31 @@ import org.w3c.dom.Node;
 public class PageLinkData {
 
 	Node data;
-	
+
 	int link;
 	int x;
 	int y;
 	int width;
 	int height;
-	
+
 	public PageLinkData(Node dataNode)
 	{
-		this.data = dataNode;
-		this.setData();
+		data = dataNode;
+		setData();
 	}
 
 	private void setData()
 	{
-		Element data = (Element) this.data;
-		
-		Element textData = (Element) data.getElementsByTagName("data").item(0);
-		this.link = Integer.parseInt(textData.getTextContent());
-		
-		Element posData = (Element) data.getElementsByTagName("pos").item(0);
+		Element data = (Element)this.data;
+
+		Element textData = (Element)data.getElementsByTagName("data").item(0);
+		link = Integer.parseInt(textData.getTextContent());
+
+		Element posData = (Element)data.getElementsByTagName("pos").item(0);
 		String pos = posData.getTextContent();
-		this.x = Integer.parseInt(pos.split("/")[0]);
-		this.y = Integer.parseInt(pos.split("/")[1]);
-		this.width = Integer.parseInt(pos.split("/")[2]);
-		this.height = Integer.parseInt(pos.split("/")[3]);
+		x = Integer.parseInt(pos.split("/")[0]);
+		y = Integer.parseInt(pos.split("/")[1]);
+		width = Integer.parseInt(pos.split("/")[2]);
+		height = Integer.parseInt(pos.split("/")[3]);
 	}
 }

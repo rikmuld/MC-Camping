@@ -21,7 +21,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
 public class ModItems {
-	
+
 	public static Item knife;
 	public static Item backpack;
 	public static Item kit;
@@ -40,7 +40,7 @@ public class ModItems {
 	public static Item armorFurBoots;
 
 	public static void init()
-	{		
+	{
 		knife = new ItemKnife(ItemInfo.KNIFE);
 		backpack = new ItemBackpack(ItemInfo.BACKPACK);
 		kit = new ItemKit(ItemInfo.KIT);
@@ -58,26 +58,32 @@ public class ModItems {
 		armorFurLeg = new ItemArmorFur(ItemInfo.ARMOR_FUR_LEG, 2);
 		armorFurBoots = new ItemArmorFur(ItemInfo.ARMOR_FUR_BOOTS, 3);
 	}
-	
+
 	public static void register(Item item, String name)
 	{
 		GameRegistry.registerItem(item, name);
 		LanguageRegistry.addName(item, ItemInfo.name(name));
-	}
-	
-	public static void registerWithMeta(Item item, String name, String[] names)
-	{
-		GameRegistry.registerItem(item, name);
-		for(int i = 0; i<names.length; i++)LanguageRegistry.addName(new ItemStack(item.itemID, 1, i), names[i]);
 	}
 
 	public static void registerItemBlock(ItemBlock item, String name)
 	{
 		LanguageRegistry.addName(item, BlockInfo.name(name));
 	}
-	
+
 	public static void registerItemBlockWithMeta(ItemBlock item, String[] names)
 	{
-		for(int i = 0; i<names.length; i++)LanguageRegistry.addName(new ItemStack(item.itemID, 1, i), names[i]);
+		for(int i = 0; i < names.length; i++)
+		{
+			LanguageRegistry.addName(new ItemStack(item.itemID, 1, i), names[i]);
+		}
+	}
+
+	public static void registerWithMeta(Item item, String name, String[] names)
+	{
+		GameRegistry.registerItem(item, name);
+		for(int i = 0; i < names.length; i++)
+		{
+			LanguageRegistry.addName(new ItemStack(item.itemID, 1, i), names[i]);
+		}
 	}
 }

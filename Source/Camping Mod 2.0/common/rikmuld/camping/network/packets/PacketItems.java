@@ -25,7 +25,7 @@ public class PacketItems extends PacketMain {
 	public PacketItems(int slot, int x, int y, int z, ItemStack stack)
 	{
 		super(true);
-		
+
 		this.slot = slot;
 		this.x = x;
 		this.y = y;
@@ -33,27 +33,32 @@ public class PacketItems extends PacketMain {
 		this.stack = stack;
 	}
 
-	public void readData(DataInputStream dataStream) throws IOException
+	@Override
+	public void execute(INetworkManager network, EntityPlayer player)
 	{
-		this.slot = dataStream.readInt();
-		this.x = dataStream.readInt();
-		this.y = dataStream.readInt();
-		this.z = dataStream.readInt();
-		this.stack = this.readItemStack(dataStream);
+		if(player.worldObj.getBlockTileEntity(x, y, z) != null)
+		{
+			((TileEntityInventory)player.worldObj.getBlockTileEntity(x, y, z)).setInventorySlotContents(slot, stack);
+		}
 	}
 
+	@Override
+	public void readData(DataInputStream dataStream) throws IOException
+	{
+		slot = dataStream.readInt();
+		x = dataStream.readInt();
+		y = dataStream.readInt();
+		z = dataStream.readInt();
+		stack = readItemStack(dataStream);
+	}
+
+	@Override
 	public void writeData(DataOutputStream dataStream) throws IOException
 	{
 		dataStream.writeInt(slot);
 		dataStream.writeInt(x);
 		dataStream.writeInt(y);
 		dataStream.writeInt(z);
-		this.writeItemStack(stack, dataStream);
-	}
-
-	@Override
-	public void execute(INetworkManager network, EntityPlayer player)
-	{
-		if(player.worldObj.getBlockTileEntity(x, y, z)!=null)((TileEntityInventory) player.worldObj.getBlockTileEntity(x, y, z)).setInventorySlotContents(slot, stack);
+		writeItemStack(stack, dataStream);
 	}
 }

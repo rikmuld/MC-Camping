@@ -8,11 +8,11 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.INetworkManager;
 import rikmuld.camping.core.util.KeyUtil;
 
-public class PacketKeyPressed extends PacketMain{
+public class PacketKeyPressed extends PacketMain {
 
-	int id; 
+	int id;
 	boolean keyDown;
-	
+
 	public PacketKeyPressed()
 	{
 		super(false);
@@ -21,27 +21,28 @@ public class PacketKeyPressed extends PacketMain{
 	public PacketKeyPressed(int id, boolean keyDown)
 	{
 		super(false);
-		
+
 		this.id = id;
 		this.keyDown = keyDown;
 	}
-	
+
+	@Override
+	public void execute(INetworkManager network, EntityPlayer player)
+	{
+		KeyUtil.fireKey(keyDown, id, player);
+	}
+
 	@Override
 	public void readData(DataInputStream dataInput) throws IOException
 	{
 		id = dataInput.readInt();
 		keyDown = dataInput.readBoolean();
 	}
-	
+
 	@Override
 	public void writeData(DataOutputStream dataOutput) throws IOException
 	{
 		dataOutput.writeInt(id);
 		dataOutput.writeBoolean(keyDown);
-	}
-
-	public void execute(INetworkManager network, EntityPlayer player)
-	{
-		KeyUtil.fireKey(keyDown, id, player);
 	}
 }

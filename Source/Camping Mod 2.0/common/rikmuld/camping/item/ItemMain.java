@@ -13,48 +13,54 @@ public class ItemMain extends Item {
 	private Icon[] iconBuffer;
 	private String[] metadata;
 
-	public ItemMain(String name, String[] meta,  String[] metaName, boolean renderMeta)
-	{
-		super(ItemInfo.id(name));
-		if(renderMeta)metadata = metaName;
-		else this.setUnlocalizedName(name);
-		this.setHasSubtypes(true);
-		this.setCreativeTab(ModTabs.campingTab);
-		ModItems.registerWithMeta(this, name, meta);
-	}
-
 	public ItemMain(String name)
 	{
 		super(ItemInfo.id(name));
-		this.setUnlocalizedName(name);
-		this.setCreativeTab(ModTabs.campingTab);
+		setUnlocalizedName(name);
+		setCreativeTab(ModTabs.campingTab);
 		ModItems.register(this, name);
 	}
 
-	@Override
-	public void registerIcons(IconRegister iconRegister)
+	public ItemMain(String name, String[] meta, String[] metaName, boolean renderMeta)
 	{
-		if(this.metadata==null)
+		super(ItemInfo.id(name));
+		if(renderMeta)
 		{
-			itemIcon = iconRegister.registerIcon(ModInfo.MOD_ID+":"+this.getUnlocalizedName().substring(5));
+			metadata = metaName;
 		}
 		else
 		{
-			iconBuffer = new Icon[metadata.length+1];
-			for(int x = 0; x<metadata.length; x++)
-			{
-				iconBuffer[x] = iconRegister.registerIcon(ModInfo.MOD_ID+":"+this.metadata[x].toString());
-			}
+			setUnlocalizedName(name);
 		}
+		setHasSubtypes(true);
+		setCreativeTab(ModTabs.campingTab);
+		ModItems.registerWithMeta(this, name, meta);
 	}
 
 	@Override
 	public Icon getIconFromDamage(int metadata)
 	{
-		if(this.metadata!=null)
+		if(this.metadata != null)
 		{
 			itemIcon = iconBuffer[metadata];
 		}
-		return this.itemIcon;
+		return itemIcon;
+	}
+
+	@Override
+	public void registerIcons(IconRegister iconRegister)
+	{
+		if(metadata == null)
+		{
+			itemIcon = iconRegister.registerIcon(ModInfo.MOD_ID + ":" + this.getUnlocalizedName().substring(5));
+		}
+		else
+		{
+			iconBuffer = new Icon[metadata.length + 1];
+			for(int x = 0; x < metadata.length; x++)
+			{
+				iconBuffer[x] = iconRegister.registerIcon(ModInfo.MOD_ID + ":" + metadata[x].toString());
+			}
+		}
 	}
 }

@@ -20,57 +20,63 @@ public class CookingEquipmentList {
 	{
 		equipment.put(Arrays.asList(item.itemID, item.getItemDamage()), cookEquipment);
 	}
-	
+
+	public static void addEquipmentRecipe(CookingEquipment equipment, ItemStack... items)
+	{
+		ArrayList<List<Integer>> key = new ArrayList<List<Integer>>();
+		for(ItemStack item: items)
+		{
+			key.add(Arrays.asList(item.itemID, item.getItemDamage()));
+		}
+		equipmentRecipes.put(key, equipment);
+	}
+
+	public static void addGrillFood(int id, int meta, ItemStack item)
+	{
+		grillFood.put(Arrays.asList(id, meta), item);
+	}
+
+	public static void addPanFood(int id, int meta, ItemStack item)
+	{
+		panFood.put(Arrays.asList(id, meta), item);
+	}
+
+	public static void addSpitFood(int id, int meta, ItemStack item)
+	{
+		spitFood.put(Arrays.asList(id, meta), item);
+	}
+
 	public static CookingEquipment getCooking(ItemStack item)
 	{
 		return equipment.get(Arrays.asList(item.itemID, item.getItemDamage()));
 	}
-	
+
 	public static CookingEquipment getCookingForRecipe(ArrayList<List<Integer>> items)
 	{
 		int i = 0;
 		boolean flag = false;
 
-		for(ArrayList<List<Integer>> list:equipmentRecipes.keySet())
+		for(ArrayList<List<Integer>> list: equipmentRecipes.keySet())
 		{
 			int cound = 0;
 			ArrayList<List<Integer>> copyItems = new ArrayList<List<Integer>>(items);
-			for(List<Integer> itemInfo:list)
+			for(List<Integer> itemInfo: list)
 			{
 				if(copyItems.contains(Arrays.asList(itemInfo.get(0), itemInfo.get(1))))
 				{
 					copyItems.remove(Arrays.asList(itemInfo.get(0), itemInfo.get(1)));
 					cound++;
 				}
-				flag = cound==list.size()&&items.size()==list.size();
+				flag = (cound == list.size()) && (items.size() == list.size());
 			}
-			if(flag)break;
+			if(flag)
+			{
+				break;
+			}
 			i++;
 		}
 
 		if(flag) return (CookingEquipment)equipmentRecipes.values().toArray()[i];
 		else return null;
-	}
-	
-	public static void addGrillFood(int id, int meta, ItemStack item)
-	{
-		grillFood.put(Arrays.asList(id, meta), item);
-	}
-	
-	public static void addSpitFood(int id, int meta, ItemStack item)
-	{
-		spitFood.put(Arrays.asList(id, meta), item);
-	}
-	
-	public static void addPanFood(int id, int meta, ItemStack item)
-	{
-		panFood.put(Arrays.asList(id, meta), item);
-	}
-	
-	public static void addEquipmentRecipe(CookingEquipment equipment, ItemStack... items)
-	{
-		ArrayList<List<Integer>> key = new ArrayList<List<Integer>>();
-		for(ItemStack item:items)key.add(Arrays.asList(item.itemID, item.getItemDamage()));
-		equipmentRecipes.put(key, equipment);
 	}
 }

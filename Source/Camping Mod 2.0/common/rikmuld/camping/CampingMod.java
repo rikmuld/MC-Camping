@@ -46,42 +46,34 @@ import cpw.mods.fml.relauncher.Side;
 @Mod(modid = ModInfo.MOD_ID, name = ModInfo.MOD_NAME, version = ModInfo.MOD_VERSION, dependencies = ModInfo.MOD_DEPENDENCIES)
 @NetworkMod(channels = {ModInfo.PACKET_CHANEL}, clientSideRequired = true, serverSideRequired = false, packetHandler = PacketHandler.class)
 public class CampingMod {
-	
+
 	@Instance(ModInfo.MOD_ID)
 	public static CampingMod instance;
 	@SidedProxy(clientSide = ModInfo.MOD_CLIENT_PROXY, serverSide = ModInfo.MOD_SERVER_PROXY)
 	public static CommonProxy proxy;
-	
-	@EventHandler
-	public void preInit(FMLPreInitializationEvent event)
-	{
-		ModLogger.init();
-		ModConfig.init(new File(event.getModConfigurationDirectory().getAbsolutePath()+"/The Camping Mod/"+ModInfo.MOD_ID+".cfg"));
-		ModBlocks.init();
-		ModItems.init();
-		ModAchievements.init();
-		AchievementPage.registerAchievementPage(new AchievementPage("Camping Millestones", ModAchievements.getAll()));
-	}
 
 	@EventHandler
 	public void load(FMLInitializationEvent event)
-	{		
+	{
 		proxy.registerRenderers();
 		proxy.registerTickHandler();
 		proxy.checkVersion();
-		
-		if(event.getSide()==Side.CLIENT)ModModels.init();
-		
+
+		if(event.getSide() == Side.CLIENT)
+		{
+			ModModels.init();
+		}
+
 		MinecraftForge.EVENT_BUS.register(new EventsHandler());
 		NetworkRegistry.instance().registerGuiHandler(this, CampingMod.proxy);
 		GameRegistry.registerPlayerTracker(new PlayerHandler());
 		GameRegistry.registerCraftingHandler(new CraftHandler());
 		GameRegistry.registerWorldGenerator(new WorldGen());
-		
+
 		KeyUtil.registerKeyListner(new KeyListner());
 		KeyUtil.putKeyBindings();
 		KeyBindingRegistry.registerKeyBinding(new KeyHandler());
-		
+
 		ModPackets.init();
 		ModEntitys.init();
 		ModTabs.init();
@@ -97,29 +89,22 @@ public class CampingMod {
 	public void postInit(FMLPostInitializationEvent event)
 	{
 		proxy.registerGuide();
-		ModLogger.log(Level.INFO, ModInfo.MOD_NAME+" is loaded successfully.");
+		ModLogger.log(Level.INFO, ModInfo.MOD_NAME + " is loaded successfully.");
 	}
-	
-	/*
-	
-	BUGS
+
+	@EventHandler
+	public void preInit(FMLPreInitializationEvent event)
 	{
-		ON SERVER SIDE YOU SLEEP ABOVE SLEEPINGBAG/TENT -- STANDARD BED HEIGHT, ON CLIENT YOU FALL TO THE GOUND ON SERVER NOT
+		ModLogger.init();
+		ModConfig.init(new File(event.getModConfigurationDirectory().getAbsolutePath() + "/The Camping Mod/" + ModInfo.MOD_ID + ".cfg"));
+		ModBlocks.init();
+		ModItems.init();
+		ModAchievements.init();
+		AchievementPage.registerAchievementPage(new AchievementPage("Camping Millestones", ModAchievements.getAll()));
 	}
-	UNFINISHED
-	{		
-		CAMPINGGUIDE -- MANY THINGS
-	}
-	NEXT UP FOR RELEASE
-	{	
-		BUGS
-	}
-	FUTURE
-	{
-		UNFINISHED
-		CAMPER -- INTEGEGENCE
-		MOB -- SOUNDS
-	}
-	
-	 */
+
+	/* BUGS { ON SERVER SIDE YOU SLEEP ABOVE SLEEPINGBAG/TENT -- STANDARD BED
+	 * HEIGHT, ON CLIENT YOU FALL TO THE GOUND ON SERVER NOT } UNFINISHED {
+	 * CAMPINGGUIDE -- MANY THINGS } NEXT UP FOR RELEASE { BUGS } FUTURE {
+	 * UNFINISHED CAMPER -- INTEGEGENCE MOB -- SOUNDS } */
 }

@@ -16,12 +16,12 @@ public class SlotDisable extends Slot {
 
 	public void disable()
 	{
-		this.xDisplayPosition = this.yDisplayPosition = -500;
+		xDisplayPosition = yDisplayPosition = -500;
 	}
 
 	public void enable()
 	{
-		this.xDisplayPosition = xFlag;
-		this.yDisplayPosition = yFlag;
+		xDisplayPosition = xFlag;
+		yDisplayPosition = yFlag;
 	}
 }

@@ -2,31 +2,32 @@ package rikmuld.camping.inventory.slot;
 
 import net.minecraft.inventory.IInventory;
 
-public class SlotState extends SlotDisable{
+public class SlotState extends SlotDisable {
 
 	int stateX;
 	int stateY;
-	
-	public SlotState(IInventory inv, int id, int x, int y) 
+
+	public SlotState(IInventory inv, int id, int x, int y)
 	{
 		super(inv, id, x, y);
-		this.stateX = this.xFlag;
-		this.stateY = this.yFlag;
+		stateX = xFlag;
+		stateY = yFlag;
 	}
-	
-	public void setStateX(int state)
-	{
-		this.stateX = this.xFlag-18*state;
-	}
-	
-	public void setStateY(int state)
-	{
-		this.stateY = this.yFlag-18*state;
-	}
-	
+
+	@Override
 	public void enable()
 	{
-		this.xDisplayPosition = stateX;
-		this.yDisplayPosition = stateY;
+		xDisplayPosition = stateX;
+		yDisplayPosition = stateY;
+	}
+
+	public void setStateX(int state)
+	{
+		stateX = xFlag - (18 * state);
+	}
+
+	public void setStateY(int state)
+	{
+		stateY = yFlag - (18 * state);
 	}
 }

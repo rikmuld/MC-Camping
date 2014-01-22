@@ -2,7 +2,7 @@ package rikmuld.camping.core.lib;
 
 public class ModelInfo {
 
-	public static final String MODEL_LOC = "/assets/camping/models/";	
+	public static final String MODEL_LOC = "/assets/camping/models/";
 	public static final String CAMPFIRE = MODEL_LOC + "ModelCampfireDeco.tcn";
 	public static final String TENT = MODEL_LOC + "ModelTent.tcn";
 	public static final String LOG = MODEL_LOC + "ModelLog.tcn";

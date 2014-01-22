@@ -18,8 +18,8 @@ public class GuiContainerTrap extends GuiContainer {
 	public GuiContainerTrap(InventoryPlayer playerInv, IInventory inv)
 	{
 		super(new ContainerTrap(playerInv, inv));
-		this.ySize = 120;
-		trap = (TileEntityBearTrap) inv;
+		ySize = 120;
+		trap = (TileEntityBearTrap)inv;
 	}
 
 	@Override
@@ -27,6 +27,6 @@ public class GuiContainerTrap extends GuiContainer {
 	{
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		mc.renderEngine.bindTexture(new ResourceLocation(TextureInfo.GUI_TRAP));
-		this.drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
+		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
 	}
 }

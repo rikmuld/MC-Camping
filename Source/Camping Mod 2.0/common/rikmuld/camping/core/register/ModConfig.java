@@ -21,7 +21,7 @@ public class ModConfig {
 	public static void init(File file)
 	{
 		config = new Configuration(file);
-		
+
 		ConfigInfo.putAll();
 		BlockInfo.putAll();
 		ItemInfo.putAll();
@@ -30,7 +30,7 @@ public class ModConfig {
 		try
 		{
 			config.load();
-	
+
 			loadBlockIds();
 			loadItemIds();
 			loadAchievementIds();
@@ -40,15 +40,15 @@ public class ModConfig {
 		}
 		catch(Exception e)
 		{
-			ModLogger.log(Level.SEVERE, ModInfo.MOD_NAME+" could not load its configuration properly.");
+			ModLogger.log(Level.SEVERE, ModInfo.MOD_NAME + " could not load its configuration properly.");
 		}
 		finally
 		{
 			config.save();
 		}
 	}
-	
-	private static void loadAchievementIds() 
+
+	private static void loadAchievementIds()
 	{
 		Iterator<String> nameIDs = AchievementInfo.names.keySet().iterator();
 		Iterator<String> gameNames = AchievementInfo.names.values().iterator();
@@ -59,8 +59,24 @@ public class ModConfig {
 			int ID = IDs.next();
 			String name = nameIDs.next();
 			String gameName = gameNames.next();
-			
+
 			AchievementInfo.IDs.put(name, config.get("Achievement IDs", gameName, ID).getInt(ID));
+		}
+	}
+
+	public static void loadBlockIds()
+	{
+		Iterator<String> nameIDs = BlockInfo.names.keySet().iterator();
+		Iterator<String> gameNames = BlockInfo.names.values().iterator();
+		Iterator<Integer> IDs = BlockInfo.devIDs.values().iterator();
+
+		while(nameIDs.hasNext())
+		{
+			int ID = IDs.next();
+			String name = nameIDs.next();
+			String gameName = gameNames.next();
+
+			BlockInfo.IDs.put(name, config.getBlock(gameName, ID).getInt(ID));
 		}
 	}
 
@@ -70,36 +86,18 @@ public class ModConfig {
 		Iterator<String> gameNames = ConfigInfoBoolean.names.values().iterator();
 		Iterator<Boolean> values = ConfigInfoBoolean.devValues.values().iterator();
 		Iterator<String> types = ConfigInfoBoolean.catagories.values().iterator();
-		
+
 		while(nameIDs.hasNext())
 		{
 			String type = types.next();
 			boolean value = values.next();
 			String name = nameIDs.next();
 			String gameName = gameNames.next();
-			
+
 			ConfigInfoBoolean.values.put(name, config.get(type, gameName, value).getBoolean(value));
 		}
 	}
-	
-	public static void loadIntegerOptions()
-	{
-		Iterator<String> nameIDs = ConfigInfoInteger.names.keySet().iterator();
-		Iterator<String> gameNames = ConfigInfoInteger.names.values().iterator();
-		Iterator<Integer> values = ConfigInfoInteger.devValues.values().iterator();
-		Iterator<String> types = ConfigInfoInteger.catagories.values().iterator();
-		
-		while(nameIDs.hasNext())
-		{
-			String type = types.next();
-			int value = values.next();
-			String name = nameIDs.next();
-			String gameName = gameNames.next();
-			
-			ConfigInfoInteger.values.put(name, config.get(type, gameName, value).getInt(value));
-		}
-	}
-	
+
 	public static void loadDoubleOptions()
 	{
 		Iterator<String> nameIDs = ConfigInfoDouble.names.keySet().iterator();
@@ -113,27 +111,29 @@ public class ModConfig {
 			double value = values.next();
 			String name = nameIDs.next();
 			String gameName = gameNames.next();
-			
+
 			ConfigInfoDouble.values.put(name, config.get(type, gameName, value).getDouble(value));
 		}
 	}
-	
-	public static void loadBlockIds()
+
+	public static void loadIntegerOptions()
 	{
-		Iterator<String> nameIDs = BlockInfo.names.keySet().iterator();
-		Iterator<String> gameNames = BlockInfo.names.values().iterator();
-		Iterator<Integer> IDs = BlockInfo.devIDs.values().iterator();
-		
+		Iterator<String> nameIDs = ConfigInfoInteger.names.keySet().iterator();
+		Iterator<String> gameNames = ConfigInfoInteger.names.values().iterator();
+		Iterator<Integer> values = ConfigInfoInteger.devValues.values().iterator();
+		Iterator<String> types = ConfigInfoInteger.catagories.values().iterator();
+
 		while(nameIDs.hasNext())
 		{
-			int ID = IDs.next();
+			String type = types.next();
+			int value = values.next();
 			String name = nameIDs.next();
 			String gameName = gameNames.next();
-			
-			BlockInfo.IDs.put(name, config.getBlock(gameName, ID).getInt(ID));
+
+			ConfigInfoInteger.values.put(name, config.get(type, gameName, value).getInt(value));
 		}
 	}
-	
+
 	public static void loadItemIds()
 	{
 		Iterator<String> nameIDs = ItemInfo.names.keySet().iterator();
@@ -145,7 +145,7 @@ public class ModConfig {
 			int ID = IDs.next();
 			String name = nameIDs.next();
 			String gameName = gameNames.next();
-			
+
 			ItemInfo.IDs.put(name, config.getItem(gameName, ID).getInt(ID));
 		}
 	}

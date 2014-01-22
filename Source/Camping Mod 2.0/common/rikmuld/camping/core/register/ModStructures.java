@@ -7,7 +7,7 @@ import rikmuld.camping.misc.bounds.BoundsStructureRegister;
 public class ModStructures {
 
 	public static BoundsStructure[] tent;
-	
+
 	public static void init()
 	{
 		int[] xLine = new int[]{1, -1, 1, -1, 0, 1, -1, 0, 1, -1, 0, 1, -1, 0, 1, -1, 0};

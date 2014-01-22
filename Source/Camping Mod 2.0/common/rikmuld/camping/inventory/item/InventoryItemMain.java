@@ -17,11 +17,59 @@ public class InventoryItemMain implements IInventory {
 	public InventoryItemMain(ItemStack item, int size, int stacksize)
 	{
 		inventoryContents = new ItemStack[size];
-		this.name = item.getUnlocalizedName();
-		if(item.hasTagCompound()==false) item.setTagCompound(new NBTTagCompound());
-		this.tag = item.getTagCompound();
+		name = item.getUnlocalizedName();
+		if(item.hasTagCompound() == false)
+		{
+			item.setTagCompound(new NBTTagCompound());
+		}
+		tag = item.getTagCompound();
 		this.item = item;
-		this.stackSize = stacksize;
+		stackSize = stacksize;
+	}
+
+	@Override
+	public void closeChest()
+	{
+		writeToNBT(tag);
+	}
+
+	@Override
+	public ItemStack decrStackSize(int slot, int amount)
+	{
+		if(inventoryContents[slot] != null)
+		{
+			ItemStack itemstack;
+			if(inventoryContents[slot].stackSize <= amount)
+			{
+				itemstack = inventoryContents[slot];
+				inventoryContents[slot] = null;
+				onInventoryChanged();
+				return itemstack;
+			}
+			else
+			{
+				itemstack = inventoryContents[slot].splitStack(amount);
+				if(inventoryContents[slot].stackSize == 0)
+				{
+					inventoryContents[slot] = null;
+				}
+				onInventoryChanged();
+				return itemstack;
+			}
+		}
+		else return null;
+	}
+
+	@Override
+	public int getInventoryStackLimit()
+	{
+		return stackSize;
+	}
+
+	@Override
+	public String getInvName()
+	{
+		return "container_" + name;
 	}
 
 	@Override
@@ -33,76 +81,19 @@ public class InventoryItemMain implements IInventory {
 	@Override
 	public ItemStack getStackInSlot(int slot)
 	{
-		return this.inventoryContents[slot];
-	}
-
-	@Override
-	public ItemStack decrStackSize(int slot, int amount)
-	{
-		if(this.inventoryContents[slot]!=null)
-		{
-			ItemStack itemstack;
-			if(this.inventoryContents[slot].stackSize<=amount)
-			{
-				itemstack = this.inventoryContents[slot];
-				this.inventoryContents[slot] = null;
-				this.onInventoryChanged();
-				return itemstack;
-			}
-			else
-			{
-				itemstack = this.inventoryContents[slot].splitStack(amount);
-				if(this.inventoryContents[slot].stackSize==0)
-				{
-					this.inventoryContents[slot] = null;
-				}
-				this.onInventoryChanged();
-				return itemstack;
-			}
-		}
-		else
-		{
-			return null;
-		}
-	}
-
-	@Override
-	public void onInventoryChanged()
-	{
-		this.writeToNBT(tag);
-		this.setNBT(item);
+		return inventoryContents[slot];
 	}
 
 	@Override
 	public ItemStack getStackInSlotOnClosing(int slot)
 	{
-		if(this.inventoryContents[slot]!=null)
+		if(inventoryContents[slot] != null)
 		{
-			ItemStack itemstack = this.inventoryContents[slot];
-			this.inventoryContents[slot] = null;
+			ItemStack itemstack = inventoryContents[slot];
+			inventoryContents[slot] = null;
 			return itemstack;
 		}
-		else
-		{
-			return null;
-		}
-	}
-
-	@Override
-	public void setInventorySlotContents(int slot, ItemStack stack)
-	{
-		this.inventoryContents[slot] = stack;
-		if(stack!=null&&stack.stackSize>this.getInventoryStackLimit())
-		{
-			stack.stackSize = this.getInventoryStackLimit();
-		}
-		this.onInventoryChanged();
-	}
-
-	@Override
-	public String getInvName()
-	{
-		return "container_"+name;
+		else return null;
 	}
 
 	@Override
@@ -112,9 +103,9 @@ public class InventoryItemMain implements IInventory {
 	}
 
 	@Override
-	public int getInventoryStackLimit()
+	public boolean isItemValidForSlot(int slot, ItemStack itemstack)
 	{
-		return stackSize;
+		return true;
 	}
 
 	@Override
@@ -124,15 +115,42 @@ public class InventoryItemMain implements IInventory {
 	}
 
 	@Override
-	public void openChest()
+	public void onInventoryChanged()
 	{
-		this.readFromNBT(tag);
+		writeToNBT(tag);
+		setNBT(item);
 	}
 
 	@Override
-	public void closeChest()
+	public void openChest()
 	{
-		this.writeToNBT(tag);
+		readFromNBT(tag);
+	}
+
+	public void readFromNBT(NBTTagCompound NBTTagCompound)
+	{
+		inventoryContents = new ItemStack[getSizeInventory()];
+		NBTTagList inventory = NBTTagCompound.getTagList("Items");
+		for(int i = 0; i < inventory.tagCount(); ++i)
+		{
+			NBTTagCompound Slots = (NBTTagCompound)inventory.tagAt(i);
+			byte slot = Slots.getByte("Slot");
+			if((slot >= 0) && (slot < inventoryContents.length))
+			{
+				inventoryContents[slot] = ItemStack.loadItemStackFromNBT(Slots);
+			}
+		}
+	}
+
+	@Override
+	public void setInventorySlotContents(int slot, ItemStack stack)
+	{
+		inventoryContents[slot] = stack;
+		if((stack != null) && (stack.stackSize > getInventoryStackLimit()))
+		{
+			stack.stackSize = getInventoryStackLimit();
+		}
+		onInventoryChanged();
 	}
 
 	public void setNBT(ItemStack item)
@@ -140,37 +158,16 @@ public class InventoryItemMain implements IInventory {
 		item.setTagCompound(tag);
 	}
 
-	@Override
-	public boolean isItemValidForSlot(int slot, ItemStack itemstack)
-	{
-		return true;
-	}
-
-	public void readFromNBT(NBTTagCompound NBTTagCompound)
-	{
-		this.inventoryContents = new ItemStack[this.getSizeInventory()];
-		NBTTagList inventory = NBTTagCompound.getTagList("Items");
-		for(int i = 0; i<inventory.tagCount(); ++i)
-		{
-			NBTTagCompound Slots = (NBTTagCompound) inventory.tagAt(i);
-			byte slot = Slots.getByte("Slot");
-			if(slot>=0&&slot<this.inventoryContents.length)
-			{
-				this.inventoryContents[slot] = ItemStack.loadItemStackFromNBT(Slots);
-			}
-		}
-	}
-
 	public void writeToNBT(NBTTagCompound NBTTagCompound)
 	{
 		NBTTagList inventory = new NBTTagList();
-		for(int slot = 0; slot<this.inventoryContents.length; ++slot)
+		for(int slot = 0; slot < inventoryContents.length; ++slot)
 		{
-			if(this.inventoryContents[slot]!=null)
+			if(inventoryContents[slot] != null)
 			{
 				NBTTagCompound Slots = new NBTTagCompound();
-				Slots.setByte("Slot", (byte) slot);
-				this.inventoryContents[slot].writeToNBT(Slots);
+				Slots.setByte("Slot", (byte)slot);
+				inventoryContents[slot].writeToNBT(Slots);
 				inventory.appendTag(Slots);
 			}
 		}

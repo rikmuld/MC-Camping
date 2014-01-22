@@ -8,7 +8,22 @@ import rikmuld.camping.core.util.ItemStackUtil;
 public class TileEntityAntlerThrophy extends TileEntityMain {
 
 	public int[] block = new int[4];
-	
+
+	public void attatchToBlock(int x, int y, int z, int side)
+	{
+		block[0] = x;
+		block[1] = y;
+		block[2] = z;
+		block[3] = side;
+	}
+
+	@Override
+	public void readFromNBT(NBTTagCompound tag)
+	{
+		super.readFromNBT(tag);
+		block = tag.getIntArray("block");
+	}
+
 	@Override
 	public void updateEntity()
 	{
@@ -20,21 +35,6 @@ public class TileEntityAntlerThrophy extends TileEntityMain {
 				worldObj.setBlock(xCoord, yCoord, zCoord, 0);
 			}
 		}
-	}
-	
-	public void attatchToBlock(int x, int y, int z, int side) 
-	{
-		block[0] = x;
-		block[1] = y;
-		block[2] = z;
-		block[3] = side;
-	}
-	
-	@Override
-	public void readFromNBT(NBTTagCompound tag)
-	{
-		super.readFromNBT(tag);
-		block = tag.getIntArray("block");
 	}
 
 	@Override

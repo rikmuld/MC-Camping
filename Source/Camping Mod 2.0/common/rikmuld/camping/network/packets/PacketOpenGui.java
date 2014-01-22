@@ -14,7 +14,7 @@ public class PacketOpenGui extends PacketMain {
 	int x = 0;
 	int y = 0;
 	int z = 0;
-	
+
 	public PacketOpenGui()
 	{
 		super(false);
@@ -25,7 +25,7 @@ public class PacketOpenGui extends PacketMain {
 		super(false);
 		this.id = id;
 	}
-	
+
 	public PacketOpenGui(int id, int x, int y, int z)
 	{
 		super(false);
@@ -34,26 +34,28 @@ public class PacketOpenGui extends PacketMain {
 		this.y = y;
 		this.z = z;
 	}
-	
-	public void readData(DataInputStream dataStream) throws IOException
+
+	@Override
+	public void execute(INetworkManager network, EntityPlayer player)
 	{
-		this.id = dataStream.readInt();
-		this.x = dataStream.readInt();
-		this.y = dataStream.readInt();
-		this.z = dataStream.readInt();
+		player.openGui(CampingMod.instance, id, player.worldObj, x, y, z);
 	}
 
+	@Override
+	public void readData(DataInputStream dataStream) throws IOException
+	{
+		id = dataStream.readInt();
+		x = dataStream.readInt();
+		y = dataStream.readInt();
+		z = dataStream.readInt();
+	}
+
+	@Override
 	public void writeData(DataOutputStream dataStream) throws IOException
 	{
 		dataStream.writeInt(id);
 		dataStream.writeInt(x);
 		dataStream.writeInt(y);
 		dataStream.writeInt(z);
-	}
-
-	@Override
-	public void execute(INetworkManager network, EntityPlayer player)
-	{
-		player.openGui(CampingMod.instance, id, player.worldObj, x, y, z);
 	}
 }

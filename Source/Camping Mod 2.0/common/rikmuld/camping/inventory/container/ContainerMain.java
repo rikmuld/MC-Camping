@@ -7,6 +7,6 @@ public abstract class ContainerMain extends Container {
 
 	public void addSlot(Slot slot)
 	{
-		this.addSlotToContainer(slot);
+		addSlotToContainer(slot);
 	}
 }
