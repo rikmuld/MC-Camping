@@ -113,7 +113,6 @@ public class CampingMod {
 	NEXT UP FOR RELEASE
 	{	
 		BUGS
-		ADD STAT IDS TO CONFIG
 	}
 	FUTURE
 	{

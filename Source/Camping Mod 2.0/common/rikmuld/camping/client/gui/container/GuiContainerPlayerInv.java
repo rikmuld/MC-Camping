@@ -33,6 +33,6 @@ public class GuiContainerPlayerInv extends GuiInventory{
     @Override
     public void onGuiClosed() 
     {
-    	screen.onGuiClosed();
+    	if(screen!=null)screen.onGuiClosed();
     }
 }

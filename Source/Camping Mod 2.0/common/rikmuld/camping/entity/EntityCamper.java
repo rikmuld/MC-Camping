@@ -63,7 +63,6 @@ public class EntityCamper extends EntityAgeable implements IMerchant, INpc
     private boolean isMating;
     private boolean isPlaying;
     Random random = new Random();
-    public ChunkCoordinates chunkcoordinates;
     
     private EntityPlayer buyingPlayer;
 
@@ -119,17 +118,6 @@ public class EntityCamper extends EntityAgeable implements IMerchant, INpc
 
     protected void updateAITick()
     {
-    	if(chunkcoordinates==null)
-    	{
-    		this.chunkcoordinates = new ChunkCoordinates(this.chunkCoordX, this.chunkCoordY, this.chunkCoordZ);
-    	}
-    	
-        if (--this.randomTickDivider <= 0)
-        {
-        	this.randomTickDivider = 70 + this.rand.nextInt(50);
-            this.setHomeArea(chunkcoordinates.posX, chunkcoordinates.posY, chunkcoordinates.posZ, 16);
-        }
-
         if (!this.isTrading() && this.timeUntilReset > 0)
         {
             --this.timeUntilReset;
@@ -198,10 +186,6 @@ public class EntityCamper extends EntityAgeable implements IMerchant, INpc
         super.writeEntityToNBT(tag);
         tag.setInteger("gender", this.getGender());
         tag.setInteger("Riches", this.wealth);     
-        
-		tag.setInteger("cunkX", this.chunkcoordinates.posX);
-	    tag.setInteger("cunkY", this.chunkcoordinates.posY);
-	    tag.setInteger("cunkZ", this.chunkcoordinates.posZ);
            
         if (this.buyingList != null)
         {
@@ -214,8 +198,6 @@ public class EntityCamper extends EntityAgeable implements IMerchant, INpc
         super.readEntityFromNBT(tag);
         this.setGender(tag.getInteger("gender"));
         this.wealth = tag.getInteger("Riches");
-
-        this.chunkcoordinates = new ChunkCoordinates(tag.getInteger("chunkX"), tag.getInteger("chunkY"), tag.getInteger("chunkZ"));
         
         if (tag.hasKey("Offers"))
         {
