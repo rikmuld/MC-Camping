@@ -56,7 +56,7 @@ public class TileEntityCampfireDecoRenderer extends TileEntitySpecialRenderer {
 			GL11.glRotatef(45, 1F, 1F, 0.4F);
 			GL11.glRotatef(10, 0.0F, 1F, 0F);
 			GL11.glRotatef(5, 0.0F, 0F, -0.2F);
-			renderer.renderItem(tileentity.worldObj.getClosestPlayer(x, y, z, 2000), coalItem, 0);
+			renderer.renderItem(tileentity.worldObj.getClosestPlayer(x, y, z, -1), coalItem, 0);
 			GL11.glPopMatrix();
 		}
 

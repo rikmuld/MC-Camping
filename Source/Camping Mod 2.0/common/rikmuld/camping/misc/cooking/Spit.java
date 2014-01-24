@@ -19,7 +19,7 @@ public class Spit extends CookingEquipment {
 
 	public Spit(ItemStack item)
 	{
-		super(250, CookingEquipmentList.spitFood, 2, item);
+		super(300, CookingEquipmentList.spitFood, 2, item);
 	}
 
 	@Override

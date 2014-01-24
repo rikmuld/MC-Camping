@@ -7,8 +7,11 @@ import rikmuld.camping.core.util.PlayerUtil;
 import rikmuld.camping.network.packets.PacketPlayerData;
 import cpw.mods.fml.common.IPlayerTracker;
 import cpw.mods.fml.common.network.Player;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
-public class PlayerHandler implements IPlayerTracker {
+@SideOnly(Side.CLIENT)
+public class PlayerHandlerClient implements IPlayerTracker {
 
 	@Override
 	public void onPlayerChangedDimension(EntityPlayer player)
@@ -19,8 +22,11 @@ public class PlayerHandler implements IPlayerTracker {
 	@Override
 	public void onPlayerLogin(EntityPlayer player)
 	{
-		PacketUtil.sendToPlayer(new PacketPlayerData(player.getEntityData().getCompoundTag("campInv")), (Player)player);
-		GuiContendHandler.sendServerContendsToClient(GuiScreenInvExtention.class.getSimpleName(), player, PlayerUtil.getPlayerDataTag(player).getCompoundTag(GuiScreenInvExtention.class.getSimpleName() + ".guiContends"));
+		if(!player.worldObj.isRemote)
+		{
+			PacketUtil.sendToPlayer(new PacketPlayerData(player.getEntityData().getCompoundTag("campInv")), (Player)player);
+			GuiContendHandler.sendServerContendsToClient(GuiScreenInvExtention.class.getSimpleName(), player, PlayerUtil.getPlayerDataTag(player).getCompoundTag(GuiScreenInvExtention.class.getSimpleName() + ".guiContends"));
+		}
 	}
 
 	@Override

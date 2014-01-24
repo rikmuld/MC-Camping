@@ -32,7 +32,6 @@ public class ModCookingEquipment {
 
 		CookingEquipmentList.addSpitFood(ModItems.hareRaw.itemID, 0, new ItemStack(ModItems.hareCooked.itemID, 1, 0));
 		CookingEquipmentList.addSpitFood(Item.chickenRaw.itemID, 0, new ItemStack(Item.chickenCooked.itemID, 1, 0));
-		CookingEquipmentList.addSpitFood(Item.chickenRaw.itemID, 0, new ItemStack(Item.chickenCooked.itemID, 1, 0));
 		CookingEquipmentList.addSpitFood(Item.fishRaw.itemID, 0, new ItemStack(Item.fishCooked.itemID, 1, 0));
 
 		spit = new Spit(new ItemStack(ModItems.kit.itemID, 1, ItemKit.KIT_SPIT));

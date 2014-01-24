@@ -24,7 +24,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class ContainerCampfireCook extends ContainerMain {
 
-	private int[] cookProgress = new int[10];
 	private TileEntityCampfireCook fire;
 
 	public ContainerCampfireCook(InventoryPlayer playerInv, IInventory tile)
@@ -69,25 +68,6 @@ public class ContainerCampfireCook extends ContainerMain {
 	public void detectAndSendChanges()
 	{
 		super.detectAndSendChanges();
-		Iterator<?> var1 = crafters.iterator();
-
-		while(var1.hasNext())
-		{
-			ICrafting var2 = (ICrafting)var1.next();
-
-			for(int i = 0; i < fire.cookProgress.length; i++)
-			{
-				if(cookProgress[i] != fire.cookProgress[i])
-				{
-					var2.sendProgressBarUpdate(this, i, fire.cookProgress[i]);
-				}
-			}
-		}
-
-		for(int i = 0; i < fire.cookProgress.length; i++)
-		{
-			cookProgress[i] = fire.cookProgress[i];
-		}
 	}
 
 	@Override
@@ -125,12 +105,5 @@ public class ContainerCampfireCook extends ContainerMain {
 			}
 		}
 		return itemstack;
-	}
-
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void updateProgressBar(int id, int data)
-	{
-		fire.cookProgress[id] = data;
 	}
 }

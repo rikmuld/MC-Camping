@@ -8,7 +8,7 @@ import net.minecraftforge.common.MinecraftForge;
 import rikmuld.camping.core.handler.CraftHandler;
 import rikmuld.camping.core.handler.EventsHandler;
 import rikmuld.camping.core.handler.KeyHandler;
-import rikmuld.camping.core.handler.PlayerHandler;
+import rikmuld.camping.core.handler.PlayerHandlerClient;
 import rikmuld.camping.core.lib.ModInfo;
 import rikmuld.camping.core.proxys.CommonProxy;
 import rikmuld.camping.core.register.ModAchievements;
@@ -59,20 +59,23 @@ public class CampingMod {
 		proxy.registerTickHandler();
 		proxy.checkVersion();
 
-		if(event.getSide() == Side.CLIENT)
-		{
-			ModModels.init();
-		}
-
 		MinecraftForge.EVENT_BUS.register(new EventsHandler());
 		NetworkRegistry.instance().registerGuiHandler(this, CampingMod.proxy);
-		GameRegistry.registerPlayerTracker(new PlayerHandler());
+		
 		GameRegistry.registerCraftingHandler(new CraftHandler());
 		GameRegistry.registerWorldGenerator(new WorldGen());
 
 		KeyUtil.registerKeyListner(new KeyListner());
-		KeyUtil.putKeyBindings();
-		KeyBindingRegistry.registerKeyBinding(new KeyHandler());
+		
+		if(event.getSide()==Side.CLIENT)
+		{
+			GameRegistry.registerPlayerTracker(new PlayerHandlerClient());
+
+			KeyUtil.putKeyBindings();
+			KeyBindingRegistry.registerKeyBinding(new KeyHandler());
+			
+			ModModels.init();
+		}
 
 		ModPackets.init();
 		ModEntitys.init();
@@ -103,8 +106,13 @@ public class CampingMod {
 		AchievementPage.registerAchievementPage(new AchievementPage("Camping Millestones", ModAchievements.getAll()));
 	}
 
-	/* BUGS { ON SERVER SIDE YOU SLEEP ABOVE SLEEPINGBAG/TENT -- STANDARD BED
-	 * HEIGHT, ON CLIENT YOU FALL TO THE GOUND ON SERVER NOT } UNFINISHED {
-	 * CAMPINGGUIDE -- MANY THINGS } NEXT UP FOR RELEASE { BUGS } FUTURE {
+	/* BUGS { 
+	 * ON SERVER SIDE YOU SLEEP ABOVE SLEEPINGBAG/TENT -- STANDARD BED
+	 * HEIGHT, ON CLIENT YOU FALL TO THE GOUND ON SERVER NOT. NOT SAVE GUI CONTEND POS ON SEREVR
+	 * UNFINISHED {
+	 * CAMPINGGUIDE -- MANY THINGS } 
+	 * NEXT UP FOR RELEASE { 
+	 * BUGS } 
+	 * FUTURE {
 	 * UNFINISHED CAMPER -- INTEGEGENCE MOB -- SOUNDS } */
 }

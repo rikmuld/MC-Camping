@@ -20,13 +20,14 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class TileEntityCampfireCook extends TileEntityInventory {
 
-	public int maxFeul = 12000;
-	public int fuelForCoal = 600;
+	public int maxFeul = 20000;
+	public int fuelForCoal = 1000;
 	public int fuel;
 	public float[][] coals = new float[3][20];
 	Random rand = new Random();
 
 	public int[] cookProgress = new int[10];
+	public int[] oldCookProgress = new int[10];
 
 	public CookingEquipment equipment;
 	public ArrayList<SlotCooking> slots;
@@ -49,30 +50,15 @@ public class TileEntityCampfireCook extends TileEntityInventory {
 	private void cookFood()
 	{
 		if(equipment != null)
-		{
+		{			
 			for(int i = 0; i < equipment.maxFood; i++)
 			{
-				if(fuel > 0)
-				{
-					if((getStackInSlot(i + 2) != null) && ((getStackInSlot(i + 2).itemID != ModItems.parts.itemID) || (getStackInSlot(i + 2).getItemDamage() != ItemParts.ASH)))
-					{
-						cookProgress[i]++;
-					}
-				}
-				else
-				{
-					if(cookProgress[i] > 0)
-					{
-						cookProgress[i] = 0;
-					}
-				}
-				if((getStackInSlot(i + 2) == null) && (cookProgress[i] > 0))
-				{
-					cookProgress[i] = 0;
-				}
+				this.oldCookProgress[i] = this.cookProgress[i];
 
 				if(cookProgress[i] >= equipment.cookTime)
 				{
+					cookProgress[i] = 0;
+
 					if(equipment.canCook(getStackInSlot(i + 2).itemID, getStackInSlot(i + 2).getItemDamage()))
 					{
 						setInventorySlotContents(i + 2, equipment.cookableFoood.get(Arrays.asList(getStackInSlot(i + 2).itemID, getStackInSlot(i + 2).getItemDamage())).copy());
@@ -82,7 +68,27 @@ public class TileEntityCampfireCook extends TileEntityInventory {
 						setInventorySlotContents(i + 2, new ItemStack(ModItems.parts, 1, ItemParts.ASH));
 					}
 					PacketUtil.sendToAllPlayers(new PacketItems(i + 2, xCoord, yCoord, zCoord, getStackInSlot(i + 2)));
+				}
+
+				if(fuel > 0)
+				{
+					if((getStackInSlot(i + 2) != null) && ((getStackInSlot(i + 2).itemID != ModItems.parts.itemID) || (getStackInSlot(i + 2).getItemDamage() != ItemParts.ASH)))
+					{
+						cookProgress[i]++;
+					}
+				}
+				else if(cookProgress[i] > 0)
+				{
 					cookProgress[i] = 0;
+				}
+				if((getStackInSlot(i + 2) == null) && (cookProgress[i] > 0))
+				{
+					cookProgress[i] = 0;
+				}
+				
+				if(this.oldCookProgress[i]!=this.cookProgress[i])
+				{
+					this.sendTileData(1, true, cookProgress[i], i);
 				}
 			}
 		}
@@ -213,6 +219,10 @@ public class TileEntityCampfireCook extends TileEntityInventory {
 		if(id == 0)
 		{
 			fuel = data[0];
+		}
+		if(id == 1)
+		{
+			cookProgress[data[1]] = data[0];
 		}
 	}
 
