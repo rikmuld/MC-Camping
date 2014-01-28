@@ -34,7 +34,7 @@ public class KeyUtil {
 		addIsRepeating(false);
 	}
 
-	public static void fireKey(boolean down, int key, EntityPlayer player)
+	public static void fireKey(boolean down, String key, EntityPlayer player)
 	{
 		for(IKeyListner listner: keyListners)
 		{

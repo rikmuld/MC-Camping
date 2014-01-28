@@ -11,6 +11,7 @@ import rikmuld.camping.client.gui.container.GuiContainerCampingInvBack;
 import rikmuld.camping.client.gui.container.GuiContainerCampingInvTool;
 import rikmuld.camping.client.gui.container.GuiContainerKit;
 import rikmuld.camping.client.gui.container.GuiContainerPlayerInv;
+import rikmuld.camping.client.gui.container.GuiContainerPlayerInvCreative;
 import rikmuld.camping.client.gui.container.GuiContainerTentChests;
 import rikmuld.camping.client.gui.container.GuiContainerTentLanterns;
 import rikmuld.camping.client.gui.container.GuiContainerTrap;
@@ -49,6 +50,7 @@ public class CommonProxy implements IGuiHandler {
 		if(ID == GuiInfo.GUI_BACKPACK) return new GuiContainerBackpack(player.inventory, player.getCurrentEquippedItem());
 		if(ID == GuiInfo.GUI_CAMPINV_BACK) return new GuiContainerCampingInvBack(player);
 		if(ID == GuiInfo.GUI_INV_PLAYER) return new GuiContainerPlayerInv(player);
+		if(ID == GuiInfo.GUI_INV_CREATIVE) return new GuiContainerPlayerInvCreative(player);
 		if(ID == GuiInfo.GUI_GUIDE) return new GuiScreenGuide();
 		if(ID == GuiInfo.GUI_CAMPINV_TOOL) return new GuiContainerCampingInvTool(player);
 		if(ID == GuiInfo.GUI_COOK) return new GuiContainerCampfireCook(player.inventory, (IInventory)tile);
@@ -66,6 +68,7 @@ public class CommonProxy implements IGuiHandler {
 		if(ID == GuiInfo.GUI_CAMPINV_BACK) return new ContainerCampinvBack(player);
 		if(ID == GuiInfo.GUI_CAMPINV_TOOL) return new ContainerCampinvTool(player);
 		if(ID == GuiInfo.GUI_INV_PLAYER) return player.inventoryContainer;
+		if(ID == GuiInfo.GUI_INV_CREATIVE) return player.inventoryContainer;
 		if(ID == GuiInfo.GUI_COOK) return new ContainerCampfireCook(player.inventory, (IInventory)tile);
 		if(ID == GuiInfo.GUI_KIT) return new ContainerKit(player.inventory, player.getCurrentEquippedItem());
 		if(ID == GuiInfo.GUI_TENT_LANTERN) return new ContainerTentLanterns(player.inventory, (IInventory)tile);

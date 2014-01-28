@@ -26,7 +26,6 @@ public class EventsHandler {
 	Random random = new Random();
 
 	@ForgeSubscribe
-	@SideOnly(Side.CLIENT)
 	public void onPlayerDead(PlayerDropsEvent event)
 	{
 		InventoryCampingInvBack.dropItems(event.entityPlayer);

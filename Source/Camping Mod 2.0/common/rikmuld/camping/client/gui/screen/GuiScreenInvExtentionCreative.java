@@ -20,7 +20,7 @@ import rikmuld.camping.core.register.ModItems;
 import rikmuld.camping.core.util.PacketUtil;
 import rikmuld.camping.network.packets.PacketOpenGui;
 
-public class GuiScreenInvExtention extends GuiScreen {
+public class GuiScreenInvExtentionCreative extends GuiScreen {
 
 	public GuiContendHandler handler;
 
@@ -46,7 +46,9 @@ public class GuiScreenInvExtention extends GuiScreen {
 	EntityPlayer player;
 	RenderItem itemRender;
 
-	public GuiScreenInvExtention(int guiTop, int guiLeft, int guiWidth, int guiHeight, int width, int height, int id, EntityPlayer player)
+	public boolean hasRightTab;
+
+	public GuiScreenInvExtentionCreative(int guiTop, int guiLeft, int guiWidth, int guiHeight, int width, int height, int id, EntityPlayer player)
 	{
 		mc = Minecraft.getMinecraft();
 
@@ -57,7 +59,7 @@ public class GuiScreenInvExtention extends GuiScreen {
 
 		baseLength = 236;
 		baseLeft = (width - baseLength) / 2;
-		baseTop = guiTop + guiHeight + 4;
+		baseTop = guiTop + guiHeight + 28;
 
 		this.player = player;
 		this.id = id;
@@ -94,7 +96,7 @@ public class GuiScreenInvExtention extends GuiScreen {
 		drawTexturedModalRect(baseLeft + handler.posX(2), baseTop + handler.posY(2), 0, 0, 117, 22);
 		drawTexturedModalRect(baseLeft + 120 + handler.posX(1), baseTop + handler.posY(1), 0, 0, 117, 22);
 
-		if(id == GuiInfo.GUI_INV_PLAYER)
+		if(id == GuiInfo.GUI_INV_CREATIVE&&this.hasRightTab)
 		{
 			drawTexturedModalRect(((mainGuiLeft + mainGuiWidth) - 25) + handler.posX(0), mainGuiTop + 5 + handler.posY(0), 0, 22, 20, 20);
 			drawTexturedModalRect(((mainGuiLeft + mainGuiWidth) - 23) + handler.posX(0), mainGuiTop + 8 + handler.posY(0), 34, 22, 16, 16);
@@ -131,7 +133,7 @@ public class GuiScreenInvExtention extends GuiScreen {
 				else
 				{
 					player.closeScreen();
-					player.openGui(CampingMod.instance, GuiInfo.GUI_INV_PLAYER, player.worldObj, 0, 0, 0);
+					player.openGui(CampingMod.instance, GuiInfo.GUI_INV_CREATIVE, player.worldObj, 0, 0, 0);
 				}
 			}
 			if(!Mouse.isButtonDown(0))
@@ -159,7 +161,7 @@ public class GuiScreenInvExtention extends GuiScreen {
 				else
 				{
 					player.closeScreen();
-					player.openGui(CampingMod.instance, GuiInfo.GUI_INV_PLAYER, player.worldObj, 0, 0, 0);
+					player.openGui(CampingMod.instance, GuiInfo.GUI_INV_CREATIVE, player.worldObj, 0, 0, 0);
 				}
 			}
 			if(!Mouse.isButtonDown(0))
@@ -178,7 +180,7 @@ public class GuiScreenInvExtention extends GuiScreen {
 		{
 			if(Mouse.isButtonDown(0) && clickReady && canClick[2])
 			{
-				if(id == GuiInfo.GUI_INV_PLAYER)
+				if(id == GuiInfo.GUI_INV_CREATIVE)
 				{
 					ModAchievements.guide.addStatToPlayer(player);
 					clickReady = false;

@@ -40,10 +40,13 @@ public class AchievementMain extends Achievement {
 
 	public void addStatToPlayer(EntityPlayer player)
 	{
-		player.addStat(this, 1);
-		PlayerUtil.getPlayerDataTag(player).setBoolean(player.username + "_" + statName, true);
-
-		checkForMainAchievements(player);
+		if(player!=null)
+		{
+			player.addStat(this, 1);
+			PlayerUtil.getPlayerDataTag(player).setBoolean(player.username + "_" + statName, true);
+	
+			checkForMainAchievements(player);
+		}
 	}
 
 	private void checkForMainAchievements(EntityPlayer player)

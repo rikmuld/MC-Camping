@@ -23,16 +23,6 @@ public class ItemAnimalStuff extends ItemMain {
 	}
 
 	@Override
-	@SideOnly(Side.CLIENT)
-	public void getSubItems(int id, CreativeTabs creativetabs, List list)
-	{
-		for(int meta = 0; meta < metadataNames.length; ++meta)
-		{
-			list.add(new ItemStack(id, 1, meta));
-		}
-	}
-
-	@Override
 	public String getUnlocalizedName(ItemStack itemstack)
 	{
 		return metadataNames[itemstack.getItemDamage()];

@@ -10,6 +10,7 @@ import org.lwjgl.opengl.GL11;
 import rikmuld.camping.core.lib.TextureInfo;
 import rikmuld.camping.entity.tileentity.TileEntityCampfireCook;
 import rikmuld.camping.inventory.container.ContainerCampfireCook;
+import rikmuld.camping.misc.cooking.Pan;
 
 public class GuiContainerCampfireCook extends GuiContainer {
 
@@ -48,6 +49,11 @@ public class GuiContainerCampfireCook extends GuiContainer {
 				boolean isNotCooked = fire.getStackInSlot(i + 2) != null? fire.equipment.canCook(fire.getStackInSlot(i + 2).itemID, fire.getStackInSlot(i + 2).getItemDamage()):false;
 				drawTexturedModalRect(guiLeft + fire.equipment.slots[0][i] + 16, guiTop + fire.equipment.slots[1][i] + 2, 223, 0, 3, 12);
 				drawTexturedModalRect(guiLeft + fire.equipment.slots[0][i] + 17, (guiTop + fire.equipment.slots[1][i] + 13) - scale2, isNotCooked? 226:227, 11 - scale2, 1, scale2);
+			}
+			
+			if(fire.equipment instanceof Pan)
+			{
+				this.drawTexturedModalRect(guiLeft+7, guiTop+7, 7, 105, 18, 18);
 			}
 		}
 	}

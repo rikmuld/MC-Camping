@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
+import rikmuld.camping.entity.tileentity.TileEntityCampfireCook;
+import rikmuld.camping.misc.cooking.CookingEquipment;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
@@ -11,7 +13,8 @@ import net.minecraft.item.ItemStack;
 public class SlotCooking extends Slot {
 
 	public boolean active;
-	Set<List<Integer>> stacks;
+	public CookingEquipment equipment;
+	public TileEntityCampfireCook fire;
 
 	public SlotCooking(IInventory par1iInventory, int id, int x, int y)
 	{
@@ -19,10 +22,11 @@ public class SlotCooking extends Slot {
 		deActivate();
 	}
 
-	public void activate(int x, int y, Set<List<Integer>> stacks)
+	public void activate(int x, int y, CookingEquipment equipment, TileEntityCampfireCook fire)
 	{
 		active = true;
-		this.stacks = stacks;
+		this.equipment = equipment;
+		this.fire = fire;
 
 		xDisplayPosition = x;
 		yDisplayPosition = y;
@@ -31,7 +35,8 @@ public class SlotCooking extends Slot {
 	public void deActivate()
 	{
 		active = false;
-		stacks = null;
+		equipment = null;
+		this.fire = null;
 
 		xDisplayPosition = -1000;
 		yDisplayPosition = -1000;
@@ -46,6 +51,6 @@ public class SlotCooking extends Slot {
 	@Override
 	public boolean isItemValid(ItemStack stack)
 	{
-		return stacks != null? stacks.contains(Arrays.asList(stack.itemID, stack.getItemDamage())):false;
+		return equipment != null&&this.fire!=null? equipment.canCook(stack.itemID, stack.getItemDamage())&&fire.getStackInSlot(12)!=null? true:(equipment.getCookedFood(stack.itemID, stack.getItemDamage())!=null):false;
 	}
 }

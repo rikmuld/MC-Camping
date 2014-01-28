@@ -84,7 +84,7 @@ public class EntityHare extends EntityAnimal {
 			}
 		}
 
-		dropChance = rand.nextInt(3) + 1 + rand.nextInt(1 + par2);
+		dropChance = -2 + rand.nextInt(5) + rand.nextInt(1 + par2);
 		if(dropChance > 1)
 		{
 			dropChance = 1;
@@ -151,6 +151,8 @@ public class EntityHare extends EntityAnimal {
 				ModAchievements.hare.addStatToPlayer((EntityPlayer)source.getEntity());
 			}
 		}
+		
+		super.onDeath(source);
 	}
 
 	// TODO: SOUNDS

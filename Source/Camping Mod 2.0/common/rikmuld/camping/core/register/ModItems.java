@@ -17,6 +17,7 @@ import rikmuld.camping.item.armor.ItemArmorFur;
 import rikmuld.camping.item.food.ItemFoodBerry;
 import rikmuld.camping.item.food.ItemFoodMain;
 import rikmuld.camping.item.food.ItemFoodMarshmallow;
+import rikmuld.camping.item.food.ItemFoodStew;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
@@ -38,6 +39,7 @@ public class ModItems {
 	public static Item armorFurChest;
 	public static Item armorFurLeg;
 	public static Item armorFurBoots;
+	public static Item stew;
 
 	public static void init()
 	{
@@ -48,6 +50,7 @@ public class ModItems {
 		parts = new ItemParts(ItemInfo.PARTS);
 		marshmallowCooked = new ItemFoodMarshmallow(ItemInfo.MARSHSTICK_COOKED);
 		berries = new ItemFoodBerry(ItemInfo.BERRIES);
+		stew = new ItemFoodStew(ItemInfo.STEW);
 		animalStuff = new ItemAnimalStuff(ItemInfo.ANIMAL_STUFF);
 		venisonRaw = new ItemFoodMain(ItemInfo.VANISON_RAW, ConfigInfoInteger.value(ConfigInfo.HEAL_VANISON_RAW), 1.8F, true);
 		venisonCooked = new ItemFoodMain(ItemInfo.VANISON_COOKED, ConfigInfoInteger.value(ConfigInfo.HEAL_VANISON_COOKED), 12.8F, true);

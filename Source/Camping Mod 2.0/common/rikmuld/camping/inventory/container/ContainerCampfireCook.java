@@ -18,6 +18,7 @@ import rikmuld.camping.entity.tileentity.TileEntityCampfireCook;
 import rikmuld.camping.inventory.slot.SlotAchivementGet;
 import rikmuld.camping.inventory.slot.SlotCooking;
 import rikmuld.camping.inventory.slot.SlotCookingAchievementGet;
+import rikmuld.camping.inventory.slot.SlotItemsOnly;
 import rikmuld.camping.misc.cooking.CookingEquipmentList;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -41,8 +42,15 @@ public class ContainerCampfireCook extends ContainerMain {
 			slots.add(slot);
 			addSlotToContainer(slot);
 		}
+		
+		SlotItemsOnly slot = new SlotItemsOnly(tile, 12, 8, 8, Item.bowlEmpty.itemID);
+		slot.disable();
+		addSlotToContainer(slot);
 
 		fire.setSlots(slots);
+		fire.bowlSlot = slot;
+		
+		if(playerInv.player.worldObj.isRemote)fire.manageBowlSlot();
 
 		ContainerUtil.addSlots(this, playerInv, 0, 1, 9, 8, 164);
 		ContainerUtil.addSlots(this, playerInv, 9, 3, 9, 8, 106);
@@ -62,12 +70,6 @@ public class ContainerCampfireCook extends ContainerMain {
 	public boolean canInteractWith(EntityPlayer player)
 	{
 		return true;
-	}
-
-	@Override
-	public void detectAndSendChanges()
-	{
-		super.detectAndSendChanges();
 	}
 
 	@Override

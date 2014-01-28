@@ -12,6 +12,7 @@ import rikmuld.camping.client.gui.container.GuiContainerCampfireCook;
 import rikmuld.camping.core.register.ModCookingEquipment;
 import rikmuld.camping.core.register.ModItems;
 import rikmuld.camping.item.ItemParts;
+import rikmuld.camping.item.food.ItemFoodStew;
 
 public abstract class CookingEquipment {
 
@@ -63,6 +64,13 @@ public abstract class CookingEquipment {
 			doRenderFood(foodIndex, stack, entity);
 		}
 	}
+	
+	public ItemStack getSoup(int id, int meta)
+	{
+		if(!(this instanceof Pan))return null;
+		return CookingEquipmentList.soupFood.containsKey(Arrays.asList(id, meta))? CookingEquipmentList.soupFood.get(Arrays.asList(id, meta)):null;
+	}
+
 
 	public abstract void renderModel();
 

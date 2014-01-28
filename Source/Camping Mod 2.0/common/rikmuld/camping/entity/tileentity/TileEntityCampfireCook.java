@@ -11,9 +11,11 @@ import rikmuld.camping.core.register.ModItems;
 import rikmuld.camping.core.util.ItemStackUtil;
 import rikmuld.camping.core.util.PacketUtil;
 import rikmuld.camping.inventory.slot.SlotCooking;
+import rikmuld.camping.inventory.slot.SlotItemsOnly;
 import rikmuld.camping.item.ItemParts;
 import rikmuld.camping.misc.cooking.CookingEquipment;
 import rikmuld.camping.misc.cooking.CookingEquipmentList;
+import rikmuld.camping.misc.cooking.Pan;
 import rikmuld.camping.network.packets.PacketItems;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -36,6 +38,7 @@ public class TileEntityCampfireCook extends TileEntityInventory {
 	private boolean oldActive;
 
 	private int update;
+	public SlotItemsOnly bowlSlot;
 
 	public TileEntityCampfireCook()
 	{
@@ -61,7 +64,16 @@ public class TileEntityCampfireCook extends TileEntityInventory {
 
 					if(equipment.canCook(getStackInSlot(i + 2).itemID, getStackInSlot(i + 2).getItemDamage()))
 					{
-						setInventorySlotContents(i + 2, equipment.cookableFoood.get(Arrays.asList(getStackInSlot(i + 2).itemID, getStackInSlot(i + 2).getItemDamage())).copy());
+						if(equipment.getCookedFood(getStackInSlot(i + 2).itemID, getStackInSlot(i + 2).getItemDamage())!=null)
+						{
+							setInventorySlotContents(i + 2, equipment.cookableFoood.get(Arrays.asList(getStackInSlot(i + 2).itemID, getStackInSlot(i + 2).getItemDamage())).copy());
+						}
+						else if(equipment.getSoup(getStackInSlot(i + 2).itemID, getStackInSlot(i + 2).getItemDamage())!=null&&this.getStackInSlot(12)!=null)
+						{
+							setInventorySlotContents(i + 2, equipment.getSoup(getStackInSlot(i + 2).itemID, getStackInSlot(i + 2).getItemDamage()).copy());
+							this.decrStackSize(12, 1);
+						}
+						else setInventorySlotContents(i + 2, new ItemStack(ModItems.parts, 1, ItemParts.ASH));
 					}
 					else
 					{
@@ -119,18 +131,39 @@ public class TileEntityCampfireCook extends TileEntityInventory {
 	@Override
 	public int getSizeInventory()
 	{
-		return 12;
+		return 13;
 	}
 
+	public void manageBowlSlot()
+	{
+		if(this.bowlSlot!=null)
+		{
+			if(equipment instanceof Pan)
+			{
+				this.bowlSlot.enable();
+			}
+			else 
+			{
+				this.bowlSlot.disable();
+				if(this.getStackInSlot(12)!=null)
+				{
+					this.sendTileData(2, false);
+				}
+			}	
+		}
+	}
+	
 	public void manageCookingEquipment()
 	{
 		if((equipment == null) && (getStackInSlot(1) != null))
 		{
 			equipment = CookingEquipmentList.getCooking(getStackInSlot(1));
+			if(worldObj.isRemote)manageBowlSlot();
 		}
 		else if((equipment != null) && (getStackInSlot(1) == null))
 		{
 			equipment = null;
+			if(worldObj.isRemote)manageBowlSlot();
 		}
 
 		if(slots != null)
@@ -141,7 +174,7 @@ public class TileEntityCampfireCook extends TileEntityInventory {
 				{
 					if(!slots.get(i).active)
 					{
-						slots.get(i).activate(equipment.slots[0][i], equipment.slots[1][i], equipment.cookableFoood.keySet());
+						slots.get(i).activate(equipment.slots[0][i], equipment.slots[1][i], equipment, this);
 					}
 				}
 			}
@@ -224,12 +257,17 @@ public class TileEntityCampfireCook extends TileEntityInventory {
 		{
 			cookProgress[data[1]] = data[0];
 		}
+		if(id==2)
+		{
+			ItemStackUtil.dropItemInWorld(this.getStackInSlot(12), worldObj, xCoord, yCoord, zCoord);
+			this.setInventorySlotContents(12, null);
+		}
 	}
 
 	@Override
 	public void updateEntity()
-	{
-		manageCookingEquipment();
+	{		 		
+		this.manageCookingEquipment();
 		if(!worldObj.isRemote)
 		{
 			active = fuel > 0;

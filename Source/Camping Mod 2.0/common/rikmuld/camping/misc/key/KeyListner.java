@@ -8,19 +8,20 @@ import rikmuld.camping.core.lib.KeyInfo;
 public class KeyListner implements IKeyListner {
 
 	@Override
-	public void keyDown(int key, EntityPlayer player)
+	public void keyDown(String key, EntityPlayer player)
 	{
 		if(player.worldObj.isRemote)
 		{
-			if(key == KeyInfo.getKey(KeyInfo.INV))
+			if(key.equals(KeyInfo.INV))
 			{
-				player.openGui(CampingMod.instance, GuiInfo.GUI_INV_PLAYER, player.worldObj, 0, 0, 0);
+				if(!player.capabilities.isCreativeMode)player.openGui(CampingMod.instance, GuiInfo.GUI_INV_PLAYER, player.worldObj, 0, 0, 0);
+				else player.openGui(CampingMod.instance, GuiInfo.GUI_INV_CREATIVE, player.worldObj, 0, 0, 0);
 			}
 		}
 	}
 
 	@Override
-	public void keyUp(int key, EntityPlayer player)
+	public void keyUp(String key, EntityPlayer player)
 	{
 
 	}

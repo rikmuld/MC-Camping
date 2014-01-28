@@ -10,7 +10,7 @@ import rikmuld.camping.core.util.KeyUtil;
 
 public class PacketKeyPressed extends PacketMain {
 
-	int id;
+	String key;
 	boolean keyDown;
 
 	public PacketKeyPressed()
@@ -18,31 +18,31 @@ public class PacketKeyPressed extends PacketMain {
 		super(false);
 	}
 
-	public PacketKeyPressed(int id, boolean keyDown)
+	public PacketKeyPressed(String keyDescription, boolean keyDown)
 	{
 		super(false);
 
-		this.id = id;
+		this.key = keyDescription;
 		this.keyDown = keyDown;
 	}
 
 	@Override
 	public void execute(INetworkManager network, EntityPlayer player)
 	{
-		KeyUtil.fireKey(keyDown, id, player);
+		KeyUtil.fireKey(keyDown, key, player);
 	}
 
 	@Override
 	public void readData(DataInputStream dataInput) throws IOException
 	{
-		id = dataInput.readInt();
+		key = dataInput.readUTF();
 		keyDown = dataInput.readBoolean();
 	}
 
 	@Override
 	public void writeData(DataOutputStream dataOutput) throws IOException
 	{
-		dataOutput.writeInt(id);
+		dataOutput.writeUTF(key);
 		dataOutput.writeBoolean(keyDown);
 	}
 }

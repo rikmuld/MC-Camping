@@ -125,6 +125,7 @@ public class EntityDeer extends EntityAnimal {
 				ModAchievements.deer.addStatToPlayer((EntityPlayer)source.getEntity());
 			}
 		}
+		
+		super.onDeath(source);
 	}
-	// SOUNDS
 }

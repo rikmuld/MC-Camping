@@ -4,7 +4,7 @@ import net.minecraft.entity.player.EntityPlayer;
 
 public interface IKeyListner {
 
-	public void keyDown(int key, EntityPlayer player);
+	public void keyDown(String key, EntityPlayer player);
 
-	public void keyUp(int key, EntityPlayer player);
+	public void keyUp(String key, EntityPlayer player);
 }

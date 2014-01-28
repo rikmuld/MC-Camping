@@ -3,6 +3,7 @@ package rikmuld.camping.core.handler;
 import java.util.EnumSet;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.inventory.GuiContainerCreative;
 import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.PlayerCapabilities;
@@ -13,6 +14,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.storage.MapData;
 import rikmuld.camping.CampingMod;
 import rikmuld.camping.client.gui.container.GuiContainerPlayerInv;
+import rikmuld.camping.client.gui.container.GuiContainerPlayerInvCreative;
 import rikmuld.camping.core.lib.ConfigInfo;
 import rikmuld.camping.core.lib.ConfigInfo.ConfigInfoBoolean;
 import rikmuld.camping.core.lib.GuiInfo;
@@ -115,11 +117,12 @@ public class TickHandler implements ITickHandler {
 				}
 			}
 
-			if(world.isRemote && (Minecraft.getMinecraft().currentScreen != null) && (Minecraft.getMinecraft().currentScreen instanceof GuiInventory) && !(Minecraft.getMinecraft().currentScreen instanceof GuiContainerPlayerInv))
+			if(world.isRemote && (Minecraft.getMinecraft().currentScreen != null) && !(Minecraft.getMinecraft().currentScreen instanceof GuiContainerPlayerInv||(Minecraft.getMinecraft().currentScreen instanceof GuiContainerPlayerInvCreative))&& ((Minecraft.getMinecraft().currentScreen instanceof GuiInventory)||(Minecraft.getMinecraft().currentScreen instanceof GuiContainerCreative)))
 			{
 				if(ConfigInfoBoolean.value(ConfigInfo.ENABLE_AUTO_INV))
 				{
-					player.openGui(CampingMod.instance, GuiInfo.GUI_INV_PLAYER, world, 0, 0, 0);
+					if(!player.capabilities.isCreativeMode)player.openGui(CampingMod.instance, GuiInfo.GUI_INV_PLAYER, player.worldObj, 0, 0, 0);
+					else player.openGui(CampingMod.instance, GuiInfo.GUI_INV_CREATIVE, player.worldObj, 0, 0, 0);
 				}
 			}
 

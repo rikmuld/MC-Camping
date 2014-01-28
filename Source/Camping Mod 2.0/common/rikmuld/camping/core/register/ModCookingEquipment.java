@@ -5,6 +5,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import rikmuld.camping.item.ItemKit;
 import rikmuld.camping.item.ItemParts;
+import rikmuld.camping.item.food.ItemFoodStew;
 import rikmuld.camping.misc.cooking.CookingEquipment;
 import rikmuld.camping.misc.cooking.CookingEquipmentList;
 import rikmuld.camping.misc.cooking.Grill;
@@ -27,8 +28,22 @@ public class ModCookingEquipment {
 		CookingEquipmentList.addGrillFood(Item.porkRaw.itemID, 0, new ItemStack(Item.porkCooked.itemID, 1, 0));
 		CookingEquipmentList.addGrillFood(ModItems.venisonRaw.itemID, 0, new ItemStack(ModItems.venisonCooked.itemID, 1, 0));
 
-		CookingEquipmentList.addPanFood(Item.potato.itemID, 0, new ItemStack(Item.bakedPotato.itemID, 1, 0));
-		CookingEquipmentList.addPanFood(Item.rottenFlesh.itemID, 0, new ItemStack(Item.leather.itemID, 1, 0));
+		CookingEquipmentList.addPanFood(Item.potato.itemID, 0, new ItemStack(Item.bakedPotato.itemID, 1, 0), false);
+		CookingEquipmentList.addPanFood(Item.rottenFlesh.itemID, 0, new ItemStack(Item.leather.itemID, 1, 0), false);
+		CookingEquipmentList.addPanFood(Item.carrot.itemID, 0, new ItemStack(ModItems.stew.itemID, 1, ItemFoodStew.VEGETABLE), true);
+		CookingEquipmentList.addPanFood(Item.reed.itemID, 0, new ItemStack(ModItems.stew.itemID, 1, ItemFoodStew.VEGETABLE), true);
+		CookingEquipmentList.addPanFood(ModItems.hemp.itemID, 0, new ItemStack(ModItems.stew.itemID, 1, ItemFoodStew.VEGETABLE), true);
+		CookingEquipmentList.addPanFood(Item.seeds.itemID, 0, new ItemStack(ModItems.stew.itemID, 1, ItemFoodStew.VEGETABLE), true);
+		CookingEquipmentList.addPanFood(ModItems.hareRaw.itemID, 0, new ItemStack(ModItems.stew.itemID, 1, ItemFoodStew.MEAT), true);
+		CookingEquipmentList.addPanFood(Item.beefRaw.itemID, 0, new ItemStack(ModItems.stew.itemID, 1, ItemFoodStew.MEAT), true);
+		CookingEquipmentList.addPanFood(Item.porkRaw.itemID, 0, new ItemStack(ModItems.stew.itemID, 1, ItemFoodStew.MEAT), true);
+		CookingEquipmentList.addPanFood(ModItems.venisonRaw.itemID, 0, new ItemStack(ModItems.stew.itemID, 1, ItemFoodStew.MEAT), true);
+		CookingEquipmentList.addPanFood(Item.chickenRaw.itemID, 0, new ItemStack(ModItems.stew.itemID, 1, ItemFoodStew.MEAT), true);
+		CookingEquipmentList.addPanFood(Item.slimeBall.itemID, 0, new ItemStack(ModItems.stew.itemID, 1, ItemFoodStew.WIRED), true);
+		CookingEquipmentList.addPanFood(Item.spiderEye.itemID, 0, new ItemStack(ModItems.stew.itemID, 1, ItemFoodStew.WIRED), true);
+		CookingEquipmentList.addPanFood(Item.netherStalkSeeds.itemID, 0, new ItemStack(ModItems.stew.itemID, 1, ItemFoodStew.WIRED), true);
+		CookingEquipmentList.addPanFood(Block.mushroomBrown.blockID, 0, new ItemStack(Item.bowlSoup), true);
+		CookingEquipmentList.addPanFood(Block.mushroomRed.blockID, 0, new ItemStack(Item.bowlSoup), true);
 
 		CookingEquipmentList.addSpitFood(ModItems.hareRaw.itemID, 0, new ItemStack(ModItems.hareCooked.itemID, 1, 0));
 		CookingEquipmentList.addSpitFood(Item.chickenRaw.itemID, 0, new ItemStack(Item.chickenCooked.itemID, 1, 0));

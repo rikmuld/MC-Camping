@@ -85,11 +85,9 @@ public class ConfigInfo {
 	public static final String HEAL_MARSH = "marshHeal";
 	public static final String HEAL_HARE_RAW = "hareHealRaw";
 	public static final String HEAL_HARE_COOKED = "hareHealCooked";
-
+	public static final String HEAL_STEW = "stewHeal";
 	public static final String HEAL_VANISON_RAW = "vanisonHealRaw";
-
 	public static final String HEAL_VANISON_COOKED = "vanisonHealCooked";
-
 	public static final String ENABLE_SPEEDBOOST = "speedBoost";
 
 	public static void putAll()
@@ -114,6 +112,7 @@ public class ConfigInfo {
 		ConfigInfoInteger.put(HEAL_MARSH, "Berry Heal", 2, "Food");
 		ConfigInfoInteger.put(HEAL_VANISON_RAW, "Raw Vanison Heal", 3, "Food");
 		ConfigInfoInteger.put(HEAL_VANISON_COOKED, "Cooked Venison Heal", 8, "Food");
+		ConfigInfoInteger.put(HEAL_STEW, "Stew Heal", 6, "Food");
 		ConfigInfoInteger.put(HEAL_HARE_RAW, "Raw Hare Heal", 2, "Food");
 		ConfigInfoInteger.put(HEAL_HARE_COOKED, "Cooked Hare Heal", 6, "Food");
 		ConfigInfoInteger.put(TOOL_DAMAGE, "Max Knife Damage", 250, "Tools");

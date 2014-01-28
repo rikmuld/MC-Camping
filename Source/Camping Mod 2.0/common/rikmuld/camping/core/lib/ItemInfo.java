@@ -27,6 +27,7 @@ public class ItemInfo {
 	public static final String ARMOR_FUR_CHEST = "armorFurChest";
 	public static final String ARMOR_FUR_LEG = "armorFurLeg";
 	public static final String ARMOR_FUR_BOOTS = "armorFurBoots";
+	public static final String STEW = "stew";
 
 	public static int id(String name)
 	{
@@ -62,5 +63,6 @@ public class ItemInfo {
 		put(HARE_RAW, "Raw Hare");
 		put(HARE_COOKED, "Cooked Hare");
 		put(ANIMAL_STUFF, "Animal Stuff");
+		put(STEW, "Stew");
 	}
 }

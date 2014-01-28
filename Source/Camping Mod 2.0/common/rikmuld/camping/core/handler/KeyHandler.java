@@ -35,8 +35,8 @@ public class KeyHandler extends KeyBindingRegistry.KeyHandler {
 				EntityPlayer player = FMLClientHandler.instance().getClient().thePlayer;
 				if(player != null)
 				{
-					KeyUtil.fireKey(true, kb.keyCode, player);
-					PacketUtil.sendToSever(new PacketKeyPressed(kb.keyCode, true));
+					KeyUtil.fireKey(true, kb.keyDescription, player);
+					PacketUtil.sendToSever(new PacketKeyPressed(kb.keyDescription, true));
 				}
 			}
 		}
@@ -52,8 +52,8 @@ public class KeyHandler extends KeyBindingRegistry.KeyHandler {
 				EntityPlayer player = FMLClientHandler.instance().getClient().thePlayer;
 				if(player != null)
 				{
-					KeyUtil.fireKey(false, kb.keyCode, player);
-					PacketUtil.sendToSever(new PacketKeyPressed(kb.keyCode, false));
+					KeyUtil.fireKey(false, kb.keyDescription, player);
+					PacketUtil.sendToSever(new PacketKeyPressed(kb.keyDescription, false));
 				}
 			}
 		}

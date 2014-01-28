@@ -1,5 +1,7 @@
 package rikmuld.camping.misc.cooking;
 
+import java.util.Arrays;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.EntityLivingBase;
@@ -11,6 +13,8 @@ import org.lwjgl.opengl.GL11;
 import rikmuld.camping.client.gui.container.GuiContainerCampfireCook;
 import rikmuld.camping.client.render.model.AbstractBox;
 import rikmuld.camping.core.lib.TextureInfo;
+import rikmuld.camping.core.register.ModItems;
+import rikmuld.camping.item.food.ItemFoodStew;
 
 public class Pan extends CookingEquipment {
 
@@ -42,7 +46,12 @@ public class Pan extends CookingEquipment {
 		container.drawTexturedModalRect(container.getGuiLeft() + 65, container.getGuiTop() + 21, 7, 105, 18, 18);
 		container.drawTexturedModalRect(container.getGuiLeft() + 90, container.getGuiTop() + 21, 7, 105, 18, 18);
 	}
-
+	
+	public boolean canCook(int id, int meta)
+	{
+		return (super.canCook(id, meta)||super.getSoup(id, meta)!=null)&&id!=ModItems.stew.itemID;
+	}
+	
 	@Override
 	public void renderModel()
 	{

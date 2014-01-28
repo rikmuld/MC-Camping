@@ -12,6 +12,7 @@ public class CookingEquipmentList {
 	public static HashMap<List<Integer>, ItemStack> grillFood = new HashMap<List<Integer>, ItemStack>();
 	public static HashMap<List<Integer>, ItemStack> spitFood = new HashMap<List<Integer>, ItemStack>();
 	public static HashMap<List<Integer>, ItemStack> panFood = new HashMap<List<Integer>, ItemStack>();
+	public static HashMap<List<Integer>, ItemStack> soupFood = new HashMap<List<Integer>, ItemStack>();
 
 	public static HashMap<List<Integer>, CookingEquipment> equipment = new HashMap<List<Integer>, CookingEquipment>();
 	public static HashMap<ArrayList<List<Integer>>, CookingEquipment> equipmentRecipes = new HashMap<ArrayList<List<Integer>>, CookingEquipment>();
@@ -36,9 +37,10 @@ public class CookingEquipmentList {
 		grillFood.put(Arrays.asList(id, meta), item);
 	}
 
-	public static void addPanFood(int id, int meta, ItemStack item)
+	public static void addPanFood(int id, int meta, ItemStack item, boolean isSoup)
 	{
-		panFood.put(Arrays.asList(id, meta), item);
+		if(!isSoup)panFood.put(Arrays.asList(id, meta), item);
+		else soupFood.put(Arrays.asList(id, meta), item);
 	}
 
 	public static void addSpitFood(int id, int meta, ItemStack item)
