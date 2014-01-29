@@ -14,8 +14,14 @@ public class KeyListner implements IKeyListner {
 		{
 			if(key.equals(KeyInfo.INV))
 			{
-				if(!player.capabilities.isCreativeMode)player.openGui(CampingMod.instance, GuiInfo.GUI_INV_PLAYER, player.worldObj, 0, 0, 0);
-				else player.openGui(CampingMod.instance, GuiInfo.GUI_INV_CREATIVE, player.worldObj, 0, 0, 0);
+				if(!player.capabilities.isCreativeMode)
+				{
+					player.openGui(CampingMod.instance, GuiInfo.GUI_INV_PLAYER, player.worldObj, 0, 0, 0);
+				}
+				else
+				{
+					player.openGui(CampingMod.instance, GuiInfo.GUI_INV_CREATIVE, player.worldObj, 0, 0, 0);
+				}
 			}
 		}
 	}

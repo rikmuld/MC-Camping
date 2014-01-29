@@ -117,12 +117,18 @@ public class TickHandler implements ITickHandler {
 				}
 			}
 
-			if(world.isRemote && (Minecraft.getMinecraft().currentScreen != null) && !(Minecraft.getMinecraft().currentScreen instanceof GuiContainerPlayerInv||(Minecraft.getMinecraft().currentScreen instanceof GuiContainerPlayerInvCreative))&& ((Minecraft.getMinecraft().currentScreen instanceof GuiInventory)||(Minecraft.getMinecraft().currentScreen instanceof GuiContainerCreative)))
+			if(world.isRemote && (Minecraft.getMinecraft().currentScreen != null) && !((Minecraft.getMinecraft().currentScreen instanceof GuiContainerPlayerInv) || (Minecraft.getMinecraft().currentScreen instanceof GuiContainerPlayerInvCreative)) && ((Minecraft.getMinecraft().currentScreen instanceof GuiInventory) || (Minecraft.getMinecraft().currentScreen instanceof GuiContainerCreative)))
 			{
 				if(ConfigInfoBoolean.value(ConfigInfo.ENABLE_AUTO_INV))
 				{
-					if(!player.capabilities.isCreativeMode)player.openGui(CampingMod.instance, GuiInfo.GUI_INV_PLAYER, player.worldObj, 0, 0, 0);
-					else player.openGui(CampingMod.instance, GuiInfo.GUI_INV_CREATIVE, player.worldObj, 0, 0, 0);
+					if(!player.capabilities.isCreativeMode)
+					{
+						player.openGui(CampingMod.instance, GuiInfo.GUI_INV_PLAYER, player.worldObj, 0, 0, 0);
+					}
+					else
+					{
+						player.openGui(CampingMod.instance, GuiInfo.GUI_INV_CREATIVE, player.worldObj, 0, 0, 0);
+					}
 				}
 			}
 

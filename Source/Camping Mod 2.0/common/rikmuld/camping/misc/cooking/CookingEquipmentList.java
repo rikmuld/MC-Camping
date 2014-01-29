@@ -39,8 +39,14 @@ public class CookingEquipmentList {
 
 	public static void addPanFood(int id, int meta, ItemStack item, boolean isSoup)
 	{
-		if(!isSoup)panFood.put(Arrays.asList(id, meta), item);
-		else soupFood.put(Arrays.asList(id, meta), item);
+		if(!isSoup)
+		{
+			panFood.put(Arrays.asList(id, meta), item);
+		}
+		else
+		{
+			soupFood.put(Arrays.asList(id, meta), item);
+		}
 	}
 
 	public static void addSpitFood(int id, int meta, ItemStack item)

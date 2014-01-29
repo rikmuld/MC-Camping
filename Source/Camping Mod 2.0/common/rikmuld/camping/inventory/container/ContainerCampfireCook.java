@@ -2,7 +2,6 @@ package rikmuld.camping.inventory.container;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -20,8 +19,6 @@ import rikmuld.camping.inventory.slot.SlotCooking;
 import rikmuld.camping.inventory.slot.SlotCookingAchievementGet;
 import rikmuld.camping.inventory.slot.SlotItemsOnly;
 import rikmuld.camping.misc.cooking.CookingEquipmentList;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 public class ContainerCampfireCook extends ContainerMain {
 
@@ -42,15 +39,18 @@ public class ContainerCampfireCook extends ContainerMain {
 			slots.add(slot);
 			addSlotToContainer(slot);
 		}
-		
+
 		SlotItemsOnly slot = new SlotItemsOnly(tile, 12, 8, 8, Item.bowlEmpty.itemID);
 		slot.disable();
 		addSlotToContainer(slot);
 
 		fire.setSlots(slots);
 		fire.bowlSlot = slot;
-		
-		if(playerInv.player.worldObj.isRemote)fire.manageBowlSlot();
+
+		if(playerInv.player.worldObj.isRemote)
+		{
+			fire.manageBowlSlot();
+		}
 
 		ContainerUtil.addSlots(this, playerInv, 0, 1, 9, 8, 164);
 		ContainerUtil.addSlots(this, playerInv, 9, 3, 9, 8, 106);

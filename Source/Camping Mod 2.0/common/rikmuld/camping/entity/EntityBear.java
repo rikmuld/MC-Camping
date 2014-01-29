@@ -220,7 +220,7 @@ public class EntityBear extends EntityAnimal {
 				ModAchievements.bear.addStatToPlayer((EntityPlayer)source.getEntity());
 			}
 		}
-		
+
 		super.onDeath(source);
 	}
 

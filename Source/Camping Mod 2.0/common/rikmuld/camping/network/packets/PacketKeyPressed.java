@@ -22,7 +22,7 @@ public class PacketKeyPressed extends PacketMain {
 	{
 		super(false);
 
-		this.key = keyDescription;
+		key = keyDescription;
 		this.keyDown = keyDown;
 	}
 

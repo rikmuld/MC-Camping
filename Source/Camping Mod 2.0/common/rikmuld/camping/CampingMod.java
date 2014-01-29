@@ -61,19 +61,19 @@ public class CampingMod {
 
 		MinecraftForge.EVENT_BUS.register(new EventsHandler());
 		NetworkRegistry.instance().registerGuiHandler(this, CampingMod.proxy);
-		
+
 		GameRegistry.registerCraftingHandler(new CraftHandler());
 		GameRegistry.registerWorldGenerator(new WorldGen());
 
 		KeyUtil.registerKeyListner(new KeyListner());
-		
-		if(event.getSide()==Side.CLIENT)
+
+		if(event.getSide() == Side.CLIENT)
 		{
 			GameRegistry.registerPlayerTracker(new PlayerHandlerClient());
 
 			KeyUtil.putKeyBindings();
 			KeyBindingRegistry.registerKeyBinding(new KeyHandler());
-			
+
 			ModModels.init();
 		}
 
@@ -106,13 +106,9 @@ public class CampingMod {
 		AchievementPage.registerAchievementPage(new AchievementPage("Camping Millestones", ModAchievements.getAll()));
 	}
 
-	/* BUGS { 
-	 * ON SERVER SIDE YOU SLEEP ABOVE SLEEPINGBAG/TENT -- STANDARD BED
-	 * HEIGHT, ON CLIENT YOU FALL TO THE GOUND ON SERVER NOT. NOT SAVE GUI CONTEND POS ON SEREVR
-	 * UNFINISHED {
-	 * STEW SYSTEM; CAMPINGGUIDE -- MANY THINGS } 
-	 * NEXT UP FOR RELEASE { 
-	 * BUGS } 
-	 * FUTURE {
-	 * UNFINISHED CAMPER -- INTEGEGENCE MOB -- SOUNDS } */
+	/* BUGS { ON SERVER SIDE YOU SLEEP ABOVE SLEEPINGBAG/TENT -- STANDARD BED
+	 * HEIGHT, ON CLIENT YOU FALL TO THE GOUND ON SERVER NOT. NOT SAVE GUI
+	 * CONTEND POS ON SEREVR UNFINISHED { STEW SYSTEM; CAMPINGGUIDE -- MANY
+	 * THINGS } NEXT UP FOR RELEASE { BUGS } FUTURE { UNFINISHED CAMPER --
+	 * INTEGEGENCE MOB -- SOUNDS } */
 }

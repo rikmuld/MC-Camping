@@ -12,7 +12,7 @@
 		<antcall target="reobfuscate" />
 		
 		<mkdir dir="${dir.release}\${release.minecraft.version}\${release.mod.version}" />
-		<jar destfile="${dir.release}\${release.minecraft.version}\${release.mod.version}\CampingMod-[${release.mod.version}].jar">
+		<jar destfile="${dir.release}\${release.minecraft.version}\${release.mod.version}\TheCampingMod_${release.mod.version}.jar">
 			<fileset dir="${dir.development}\mcp\src\minecraft\" includes="mcmod.info" />
 			<fileset dir="${dir.development}\mcp\reobf\minecraft\" includes="rikmuld\" />
 			<fileset dir="${dir.modsource}\resources" />

@@ -21,9 +21,9 @@ public class GuiContainerPlayerInvCreative extends GuiContainerCreative {
 	public void drawGuiContainerBackgroundLayer(float par1, int xPoint, int yPoint)
 	{
 		super.drawGuiContainerBackgroundLayer(par1, xPoint, yPoint);
-		
-		screen.hasRightTab = this.getCurrentTabIndex()==CreativeTabs.tabInventory.getTabIndex();
-		
+
+		screen.hasRightTab = getCurrentTabIndex() == CreativeTabs.tabInventory.getTabIndex();
+
 		screen.drawScreen(xPoint, yPoint, par1);
 	}
 

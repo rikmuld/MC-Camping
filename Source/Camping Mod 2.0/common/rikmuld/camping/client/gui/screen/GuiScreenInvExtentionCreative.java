@@ -96,7 +96,7 @@ public class GuiScreenInvExtentionCreative extends GuiScreen {
 		drawTexturedModalRect(baseLeft + handler.posX(2), baseTop + handler.posY(2), 0, 0, 117, 22);
 		drawTexturedModalRect(baseLeft + 120 + handler.posX(1), baseTop + handler.posY(1), 0, 0, 117, 22);
 
-		if(id == GuiInfo.GUI_INV_CREATIVE&&this.hasRightTab)
+		if((id == GuiInfo.GUI_INV_CREATIVE) && hasRightTab)
 		{
 			drawTexturedModalRect(((mainGuiLeft + mainGuiWidth) - 25) + handler.posX(0), mainGuiTop + 5 + handler.posY(0), 0, 22, 20, 20);
 			drawTexturedModalRect(((mainGuiLeft + mainGuiWidth) - 23) + handler.posX(0), mainGuiTop + 8 + handler.posY(0), 34, 22, 16, 16);

@@ -50,10 +50,10 @@ public class GuiContainerCampfireCook extends GuiContainer {
 				drawTexturedModalRect(guiLeft + fire.equipment.slots[0][i] + 16, guiTop + fire.equipment.slots[1][i] + 2, 223, 0, 3, 12);
 				drawTexturedModalRect(guiLeft + fire.equipment.slots[0][i] + 17, (guiTop + fire.equipment.slots[1][i] + 13) - scale2, isNotCooked? 226:227, 11 - scale2, 1, scale2);
 			}
-			
+
 			if(fire.equipment instanceof Pan)
 			{
-				this.drawTexturedModalRect(guiLeft+7, guiTop+7, 7, 105, 18, 18);
+				drawTexturedModalRect(guiLeft + 7, guiTop + 7, 7, 105, 18, 18);
 			}
 		}
 	}

@@ -2,8 +2,6 @@ package rikmuld.camping.item;
 
 import java.util.List;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
@@ -13,6 +11,8 @@ import rikmuld.camping.core.lib.ItemInfo;
 import rikmuld.camping.core.lib.ModInfo;
 import rikmuld.camping.core.register.ModItems;
 import rikmuld.camping.core.register.ModTabs;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemMain extends Item {
 
@@ -54,6 +54,16 @@ public class ItemMain extends Item {
 	}
 
 	@Override
+	@SideOnly(Side.CLIENT)
+	public void getSubItems(int id, CreativeTabs creativetabs, List list)
+	{
+		for(int meta = 0; meta < (metadata != null? metadata.length:1); ++meta)
+		{
+			list.add(new ItemStack(id, 1, meta));
+		}
+	}
+
+	@Override
 	public void registerIcons(IconRegister iconRegister)
 	{
 		if(metadata == null)
@@ -67,16 +77,6 @@ public class ItemMain extends Item {
 			{
 				iconBuffer[x] = iconRegister.registerIcon(ModInfo.MOD_ID + ":" + metadata[x].toString());
 			}
-		}
-	}
-	
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void getSubItems(int id, CreativeTabs creativetabs, List list)
-	{
-		for(int meta = 0; meta < (metadata!=null?metadata.length:1); ++meta)
-		{
-			list.add(new ItemStack(id, 1, meta));
 		}
 	}
 }

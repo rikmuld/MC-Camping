@@ -1,14 +1,10 @@
 package rikmuld.camping.inventory.slot;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Set;
-
-import rikmuld.camping.entity.tileentity.TileEntityCampfireCook;
-import rikmuld.camping.misc.cooking.CookingEquipment;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import rikmuld.camping.entity.tileentity.TileEntityCampfireCook;
+import rikmuld.camping.misc.cooking.CookingEquipment;
 
 public class SlotCooking extends Slot {
 
@@ -36,7 +32,7 @@ public class SlotCooking extends Slot {
 	{
 		active = false;
 		equipment = null;
-		this.fire = null;
+		fire = null;
 
 		xDisplayPosition = -1000;
 		yDisplayPosition = -1000;
@@ -51,6 +47,6 @@ public class SlotCooking extends Slot {
 	@Override
 	public boolean isItemValid(ItemStack stack)
 	{
-		return equipment != null&&this.fire!=null? equipment.canCook(stack.itemID, stack.getItemDamage())&&fire.getStackInSlot(12)!=null? true:(equipment.getCookedFood(stack.itemID, stack.getItemDamage())!=null):false;
+		return (equipment != null) && (fire != null)? equipment.canCook(stack.itemID, stack.getItemDamage()) && (fire.getStackInSlot(12) != null)? true:(equipment.getCookedFood(stack.itemID, stack.getItemDamage()) != null):false;
 	}
 }

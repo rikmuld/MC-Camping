@@ -53,10 +53,10 @@ public class TileEntityCampfireCook extends TileEntityInventory {
 	private void cookFood()
 	{
 		if(equipment != null)
-		{			
+		{
 			for(int i = 0; i < equipment.maxFood; i++)
 			{
-				this.oldCookProgress[i] = this.cookProgress[i];
+				oldCookProgress[i] = cookProgress[i];
 
 				if(cookProgress[i] >= equipment.cookTime)
 				{
@@ -64,16 +64,19 @@ public class TileEntityCampfireCook extends TileEntityInventory {
 
 					if(equipment.canCook(getStackInSlot(i + 2).itemID, getStackInSlot(i + 2).getItemDamage()))
 					{
-						if(equipment.getCookedFood(getStackInSlot(i + 2).itemID, getStackInSlot(i + 2).getItemDamage())!=null)
+						if(equipment.getCookedFood(getStackInSlot(i + 2).itemID, getStackInSlot(i + 2).getItemDamage()) != null)
 						{
 							setInventorySlotContents(i + 2, equipment.cookableFoood.get(Arrays.asList(getStackInSlot(i + 2).itemID, getStackInSlot(i + 2).getItemDamage())).copy());
 						}
-						else if(equipment.getSoup(getStackInSlot(i + 2).itemID, getStackInSlot(i + 2).getItemDamage())!=null&&this.getStackInSlot(12)!=null)
+						else if((equipment.getSoup(getStackInSlot(i + 2).itemID, getStackInSlot(i + 2).getItemDamage()) != null) && (getStackInSlot(12) != null))
 						{
 							setInventorySlotContents(i + 2, equipment.getSoup(getStackInSlot(i + 2).itemID, getStackInSlot(i + 2).getItemDamage()).copy());
-							this.decrStackSize(12, 1);
+							decrStackSize(12, 1);
 						}
-						else setInventorySlotContents(i + 2, new ItemStack(ModItems.parts, 1, ItemParts.ASH));
+						else
+						{
+							setInventorySlotContents(i + 2, new ItemStack(ModItems.parts, 1, ItemParts.ASH));
+						}
 					}
 					else
 					{
@@ -97,10 +100,10 @@ public class TileEntityCampfireCook extends TileEntityInventory {
 				{
 					cookProgress[i] = 0;
 				}
-				
-				if(this.oldCookProgress[i]!=this.cookProgress[i])
+
+				if(oldCookProgress[i] != cookProgress[i])
 				{
-					this.sendTileData(1, true, cookProgress[i], i);
+					sendTileData(1, true, cookProgress[i], i);
 				}
 			}
 		}
@@ -136,34 +139,40 @@ public class TileEntityCampfireCook extends TileEntityInventory {
 
 	public void manageBowlSlot()
 	{
-		if(this.bowlSlot!=null)
+		if(bowlSlot != null)
 		{
 			if(equipment instanceof Pan)
 			{
-				this.bowlSlot.enable();
+				bowlSlot.enable();
 			}
-			else 
+			else
 			{
-				this.bowlSlot.disable();
-				if(this.getStackInSlot(12)!=null)
+				bowlSlot.disable();
+				if(getStackInSlot(12) != null)
 				{
-					this.sendTileData(2, false);
+					sendTileData(2, false);
 				}
-			}	
+			}
 		}
 	}
-	
+
 	public void manageCookingEquipment()
 	{
 		if((equipment == null) && (getStackInSlot(1) != null))
 		{
 			equipment = CookingEquipmentList.getCooking(getStackInSlot(1));
-			if(worldObj.isRemote)manageBowlSlot();
+			if(worldObj.isRemote)
+			{
+				manageBowlSlot();
+			}
 		}
 		else if((equipment != null) && (getStackInSlot(1) == null))
 		{
 			equipment = null;
-			if(worldObj.isRemote)manageBowlSlot();
+			if(worldObj.isRemote)
+			{
+				manageBowlSlot();
+			}
 		}
 
 		if(slots != null)
@@ -257,17 +266,17 @@ public class TileEntityCampfireCook extends TileEntityInventory {
 		{
 			cookProgress[data[1]] = data[0];
 		}
-		if(id==2)
+		if(id == 2)
 		{
-			ItemStackUtil.dropItemInWorld(this.getStackInSlot(12), worldObj, xCoord, yCoord, zCoord);
-			this.setInventorySlotContents(12, null);
+			ItemStackUtil.dropItemInWorld(getStackInSlot(12), worldObj, xCoord, yCoord, zCoord);
+			setInventorySlotContents(12, null);
 		}
 	}
 
 	@Override
 	public void updateEntity()
-	{		 		
-		this.manageCookingEquipment();
+	{
+		manageCookingEquipment();
 		if(!worldObj.isRemote)
 		{
 			active = fuel > 0;

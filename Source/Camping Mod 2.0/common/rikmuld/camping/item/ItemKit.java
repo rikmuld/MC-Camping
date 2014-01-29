@@ -16,13 +16,12 @@ import net.minecraft.world.World;
 
 import org.lwjgl.input.Keyboard;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import rikmuld.camping.CampingMod;
 import rikmuld.camping.core.lib.GuiInfo;
 import rikmuld.camping.core.lib.TextInfo;
-import rikmuld.camping.core.register.ModBlocks;
 import rikmuld.camping.core.register.ModItems;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemKit extends ItemMain {
 
@@ -82,6 +81,43 @@ public class ItemKit extends ItemMain {
 	}
 
 	@Override
+	@SideOnly(Side.CLIENT)
+	public void getSubItems(int id, CreativeTabs creativetabs, List list)
+	{
+		ItemStack stick = new ItemStack(Item.stick);
+		ItemStack stickIron = new ItemStack(ModItems.parts, 1, ItemParts.STICK);
+		ItemStack string = new ItemStack(ModItems.parts, 1, ItemParts.PAN);
+		ItemStack pan = new ItemStack(Item.silk);
+		ItemStack fenceIron = new ItemStack(Block.fenceIron);
+
+		ItemStack[][] inventoryContents = new ItemStack[][]{{stick, stick, stickIron}, {stick, stick, stick, stick, stickIron, stickIron, fenceIron}, {stick, stick, stickIron, string, pan}};
+
+		list.add(new ItemStack(id, 1, 0));
+
+		for(int meta = 1; meta < (metadataNames.length - 1); ++meta)
+		{
+			ItemStack stack = new ItemStack(id, 1, meta);
+
+			NBTTagList inventory = new NBTTagList();
+			for(int slot = 0; slot < inventoryContents[meta - 1].length; ++slot)
+			{
+				if(inventoryContents[meta - 1][slot] != null)
+				{
+					NBTTagCompound Slots = new NBTTagCompound();
+					Slots.setByte("Slot", (byte)slot);
+					inventoryContents[meta - 1][slot].writeToNBT(Slots);
+					inventory.appendTag(Slots);
+				}
+			}
+
+			stack.setTagCompound(new NBTTagCompound());
+			stack.getTagCompound().setTag("Items", inventory);
+
+			list.add(stack);
+		}
+	}
+
+	@Override
 	public String getUnlocalizedName(ItemStack itemstack)
 	{
 		return metadataNames[itemstack.getItemDamage()];
@@ -95,42 +131,5 @@ public class ItemKit extends ItemMain {
 			player.openGui(CampingMod.instance, GuiInfo.GUI_KIT, world, 0, 0, 0);
 		}
 		return stack;
-	}
-	
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void getSubItems(int id, CreativeTabs creativetabs, List list)
-	{
-		ItemStack stick = new ItemStack(Item.stick);
-		ItemStack stickIron = new ItemStack(ModItems.parts, 1, ItemParts.STICK);
-		ItemStack string = new ItemStack(ModItems.parts, 1, ItemParts.PAN);
-		ItemStack pan = new ItemStack(Item.silk);
-		ItemStack fenceIron = new ItemStack(Block.fenceIron);
-
-		ItemStack[][] inventoryContents = new ItemStack[][]{{stick, stick, stickIron},{stick, stick, stick, stick, stickIron, stickIron, fenceIron},{stick, stick, stickIron, string, pan}};
-		
-		list.add(new ItemStack(id, 1, 0));
-		
-		for(int meta = 1; meta < metadataNames.length-1; ++meta)
-		{
-			ItemStack stack = new ItemStack(id, 1, meta);
-
-			NBTTagList inventory = new NBTTagList();
-			for(int slot = 0; slot < inventoryContents[meta-1].length; ++slot)
-			{
-				if(inventoryContents[meta-1][slot] != null)
-				{
-					NBTTagCompound Slots = new NBTTagCompound();
-					Slots.setByte("Slot", (byte)slot);
-					inventoryContents[meta-1][slot].writeToNBT(Slots);
-					inventory.appendTag(Slots);
-				}
-			}
-			
-			stack.setTagCompound(new NBTTagCompound());			
-			stack.getTagCompound().setTag("Items", inventory);
-			
-			list.add(stack);
-		}
 	}
 }

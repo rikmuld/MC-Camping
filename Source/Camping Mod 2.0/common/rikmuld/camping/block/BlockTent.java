@@ -93,7 +93,7 @@ public class BlockTent extends BlockRotationMain {
 	{
 		int l = world.getBlockId(x, y, z);
 		Block block = Block.blocksList[l];
-		
+
 		int direction = 0;
 		int facing = MathHelper.floor_double(((rotationYaw * 4.0F) / 360.0F) + 0.5D) & 3;
 
@@ -138,7 +138,7 @@ public class BlockTent extends BlockRotationMain {
 	{
 		TileEntityTent tile = (TileEntityTent)world.getBlockTileEntity(x, y, z);
 
-		if(tile.structures!=null&&!tile.structures[tile.rotation].hadSolitUnderGround(world, tile.tracker[tile.rotation]))
+		if((tile.structures != null) && !tile.structures[tile.rotation].hadSolitUnderGround(world, tile.tracker[tile.rotation]))
 		{
 			breakBlock(world, x, y, z, 0, 0);
 		}

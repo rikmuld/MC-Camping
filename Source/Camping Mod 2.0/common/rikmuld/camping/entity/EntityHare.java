@@ -151,7 +151,7 @@ public class EntityHare extends EntityAnimal {
 				ModAchievements.hare.addStatToPlayer((EntityPlayer)source.getEntity());
 			}
 		}
-		
+
 		super.onDeath(source);
 	}
 
