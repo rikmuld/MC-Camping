@@ -161,7 +161,7 @@ public class GuiScreenGuide extends GuiScreen {
 			book = new Book(Book.class.getResourceAsStream(Book.MAIN_GUIDE_PATH + "book.xml"));
 			if(VersionData.doneChecking)
 			{
-				// updateGuide = false;
+				updateGuide = false;
 			}
 			update = 0;
 		}
