@@ -1,5 +1,6 @@
 package rikmuld.camping.entity;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -63,7 +64,7 @@ public class EntityMountableBlock extends Entity {
 
 		if(riddenByEntity != null)
 		{
-			if(Keyboard.isCreated() && Keyboard.isKeyDown(Keyboard.KEY_LSHIFT))
+			if(Keyboard.isCreated() && Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) && Minecraft.getMinecraft().inGameHasFocus)
 			{
 				((EntityPlayer)riddenByEntity).mountEntity(null);
 				riddenByEntity = null;

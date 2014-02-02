@@ -227,6 +227,10 @@
             <data>Hare</data>
             <pos>28/151/150/0.7</pos>
         </text>
+        <text>
+            <data>Stews</data>
+            <pos>28/159/150/0.7</pos>
+        </text>
     </page>
     <page>
         <text>
@@ -708,6 +712,102 @@ However a lantern does not burn forever, after 300 seconds you need to refuel th
             <data>The decoration campfire can't be removed by hand, you will need to use the pocket knife or else you will only get the campfire base back.</data>            
             <pos>28/57/124/0.7</pos>
         </text>
+    </page>
+    <page>
+        <text>
+            <data>Campfires</data>
+            <pos>28/25/150/1.3</pos>
+        </text>
+        <item>
+            <stack>campfireBase/0</stack>
+            <pos>133/37</pos>           
+        </item>
+        <text>
+            <data>Campfire Base</data>
+            <pos>28/45/150/1</pos>
+        </text>
+        <text>
+            <data>The campfire base is the base of your cooking fire, when it is placed on the ground you can put coal and a campfire kit in it to start cooking.</data>            
+            <pos>28/57/124/0.7</pos>
+        </text>
+        <text>
+            <data>The campfire base can hold up too 20 pices of coal at once. One coal pice will burn for 50 seconds. Without a kit you can still roast marshmallos on it by pointing a marshmallow stick to it.</data>            
+            <pos>28/92/70/0.7</pos>
+        </text>
+        <craft>
+            <pos>97/92</pos>
+            <shapeless>false</shapeless>
+            <stacks>
+                <stack></stack>
+                <stack>4/0</stack>
+                <stack></stack>
+                <stack>4/0</stack>
+                <stack></stack>
+                <stack>4/0</stack>
+                <stack></stack>
+                <stack>4/0</stack> 
+                <stack></stack>                
+            </stacks>
+        </craft>
+    </page>
+    <page>
+        <text>
+            <data>Campfires</data>
+            <pos>28/25/150/1.3</pos>
+        </text>
+        <item>
+            <stack>kit/0</stack>
+            <pos>133/39</pos>           
+        </item>
+        <text>
+            <data>Campfire Kits</data>
+            <pos>28/45/150/1</pos>
+        </text>
+        <text>
+            <data>Campfire Kits are required for any type of cooking done on a campfire. When you right click with a kit you a GUI will open were you can place itmes in, when you close the GUI the kit will change in another type of kit based on the items inside the kit. The kit types are: Empty Kit, Spit Kit, Grill Kit, Pan Kit, Useless Kit.</data>            
+            <pos>28/57/124/0.7</pos>
+        </text>
+        <text>
+            <data>Spit Kit: 2 sticks, 1 iron stick.</data>            
+            <pos>28/124/124/0.7</pos>
+        </text>
+        <text>
+            <data>Grill Kit: 4 sticks, 2 iron stick, 1 iron bar.</data>            
+            <pos>28/133/124/0.7</pos>
+        </text>
+        <text>
+            <data>Pan Kit: 2 sticks, 1 iron stick, 1 string, 1 pan.</data>            
+            <pos>28/148/124/0.7</pos>
+        </text>
+    </page>
+    <page>
+        <text>
+            <data>Campfires</data>
+            <pos>28/25/150/1.3</pos>
+        </text>
+        <item>
+            <stack>kit/0</stack>
+            <pos>133/39</pos>           
+        </item>
+        <text>
+            <data>Campfire Kits</data>
+            <pos>28/45/150/1</pos>
+        </text>
+        <craft>
+            <pos>66/80</pos>
+            <shapeless>false</shapeless>
+            <stacks>
+                <stack>265/0</stack>
+                <stack>265/0</stack>
+                <stack>265/0</stack>
+                <stack>351/11</stack>
+                <stack>351/11</stack>
+                <stack>351/11</stack>
+                <stack>265/0</stack>
+                <stack>265/0</stack> 
+                <stack>265/0</stack>                
+            </stacks>
+        </craft>
     </page>
     <page>
         <text>

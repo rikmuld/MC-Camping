@@ -15,6 +15,7 @@ import net.minecraft.entity.IMerchant;
 import net.minecraft.entity.INpc;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIAttackOnCollide;
+import net.minecraft.entity.ai.EntityAIMoveTowardsRestriction;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAIWander;
@@ -26,6 +27,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.Tuple;
@@ -33,9 +35,11 @@ import net.minecraft.village.MerchantRecipe;
 import net.minecraft.village.MerchantRecipeList;
 import net.minecraft.world.World;
 import rikmuld.camping.core.register.ModAchievements;
+import rikmuld.camping.core.register.ModBlocks;
 import rikmuld.camping.core.register.ModItems;
 import rikmuld.camping.entity.ai.EntityAILookAtTradePlayerCamper;
 import rikmuld.camping.entity.ai.EntityAITradePlayerCamper;
+import rikmuld.camping.entity.tileentity.TileEntityCampfireCook;
 import rikmuld.camping.item.ItemAnimalStuff;
 import rikmuld.camping.item.ItemParts;
 import cpw.mods.fml.relauncher.Side;
@@ -46,6 +50,9 @@ public class EntityCamper extends EntityAgeable implements IMerchant, INpc {
 	private boolean isMating;
 	private boolean isPlaying;
 	Random random = new Random();
+
+	public int[] theCampfire = new int[]{0, 0, 0};
+	public int updateHome = 0;
 
 	private EntityPlayer buyingPlayer;
 
@@ -83,14 +90,15 @@ public class EntityCamper extends EntityAgeable implements IMerchant, INpc {
 		setSize(0.6F, 1.8F);
 		getNavigator().setBreakDoors(true);
 		getNavigator().setAvoidsWater(true);
-		tasks.addTask(0, new EntityAISwimming(this));
-		tasks.addTask(1, new EntityAIAttackOnCollide(this, EntityBear.class, 1.0F, false));
-		tasks.addTask(1, new EntityAIAttackOnCollide(this, EntityMob.class, 1.0F, false));
-		tasks.addTask(1, new EntityAITradePlayerCamper(this));
-		tasks.addTask(1, new EntityAILookAtTradePlayerCamper(this));
-		tasks.addTask(2, new EntityAIWatchClosest2(this, EntityPlayer.class, 3.0F, 1.0F));
-		tasks.addTask(2, new EntityAIWatchClosest2(this, EntityCamper.class, 5.0F, 0.02F));
-		tasks.addTask(2, new EntityAIWander(this, 0.6D));
+		tasks.addTask(0, new EntityAIMoveTowardsRestriction(this, 1.0F));
+		tasks.addTask(1, new EntityAISwimming(this));
+		tasks.addTask(2, new EntityAIAttackOnCollide(this, EntityBear.class, 1.0F, false));
+		tasks.addTask(2, new EntityAIAttackOnCollide(this, EntityMob.class, 1.0F, false));
+		tasks.addTask(2, new EntityAITradePlayerCamper(this));
+		tasks.addTask(2, new EntityAILookAtTradePlayerCamper(this));
+		tasks.addTask(3, new EntityAIWatchClosest2(this, EntityPlayer.class, 3.0F, 1.0F));
+		tasks.addTask(3, new EntityAIWatchClosest2(this, EntityCamper.class, 5.0F, 0.02F));
+		tasks.addTask(3, new EntityAIWander(this, 0.6D));
 		targetTasks.addTask(0, new EntityAINearestAttackableTarget(this, EntityMob.class, 0, false));
 		targetTasks.addTask(0, new EntityAINearestAttackableTarget(this, EntityBear.class, 0, false));
 	}
@@ -99,6 +107,7 @@ public class EntityCamper extends EntityAgeable implements IMerchant, INpc {
 	{
 		this(world);
 		setPosition(x, y, z);
+		setHomeArea(x, y, z, 8);
 	}
 
 	public static void addBlacksmithItem(MerchantRecipeList merchantRecipeList, int id, int meta, Random par2Random, float par3)
@@ -451,6 +460,7 @@ public class EntityCamper extends EntityAgeable implements IMerchant, INpc {
 		super.readEntityFromNBT(tag);
 		setGender(tag.getInteger("gender"));
 		wealth = tag.getInteger("Riches");
+		theCampfire = tag.getIntArray("theCampfire");
 
 		if(tag.hasKey("Offers"))
 		{
@@ -488,6 +498,35 @@ public class EntityCamper extends EntityAgeable implements IMerchant, INpc {
 	@Override
 	protected void updateAITick()
 	{
+		if((theCampfire == null) || (theCampfire.length < 3))
+		{
+			theCampfire = new int[]{0, 0, 0};
+		}
+
+		if((updateHome-- <= 0) && (worldObj.getBlockId(theCampfire[0], theCampfire[1], theCampfire[2]) != ModBlocks.campfireBase.blockID))
+		{
+			setHomeArea(theCampfire[0], theCampfire[1], theCampfire[2], -1);
+
+			Iterator tiles = worldObj.getChunkFromBlockCoords((int)posX, (int)posZ).chunkTileEntityMap.values().iterator();
+
+			while(tiles.hasNext())
+			{
+				TileEntity tile = (TileEntity)tiles.next();
+
+				if(tile instanceof TileEntityCampfireCook)
+				{
+					theCampfire = new int[]{tile.xCoord, tile.yCoord, tile.zCoord};
+					setHomeArea(theCampfire[0], theCampfire[1], theCampfire[2], 8);
+					break;
+				}
+			}
+			updateHome = 100;
+		}
+		else if(updateHome == 20)
+		{
+			setHomeArea(theCampfire[0], theCampfire[1], theCampfire[2], 8);
+		}
+
 		if(!isTrading() && (timeUntilReset > 0))
 		{
 			--timeUntilReset;
@@ -556,6 +595,7 @@ public class EntityCamper extends EntityAgeable implements IMerchant, INpc {
 		super.writeEntityToNBT(tag);
 		tag.setInteger("gender", getGender());
 		tag.setInteger("Riches", wealth);
+		tag.setIntArray("theCampfire", theCampfire);
 
 		if(buyingList != null)
 		{

@@ -8,6 +8,7 @@ import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL12;
 
 import rikmuld.camping.core.lib.TextureInfo;
 import rikmuld.camping.core.proxys.ClientProxy;
@@ -119,6 +120,7 @@ public class GuiScreenGuide extends GuiScreen {
 		}
 
 		RenderHelper.enableGUIStandardItemLighting();
+		GL11.glEnable(GL12.GL_RESCALE_NORMAL);
 
 		for(PageCraftData craft: page.crafting)
 		{
@@ -159,7 +161,7 @@ public class GuiScreenGuide extends GuiScreen {
 			book = new Book(Book.class.getResourceAsStream(Book.MAIN_GUIDE_PATH + "book.xml"));
 			if(VersionData.doneChecking)
 			{
-				updateGuide = false;
+				// updateGuide = false;
 			}
 			update = 0;
 		}

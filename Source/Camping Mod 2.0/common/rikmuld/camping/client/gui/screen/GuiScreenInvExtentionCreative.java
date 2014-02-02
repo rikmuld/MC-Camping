@@ -180,7 +180,7 @@ public class GuiScreenInvExtentionCreative extends GuiScreen {
 		{
 			if(Mouse.isButtonDown(0) && clickReady && canClick[2])
 			{
-				if(id == GuiInfo.GUI_INV_CREATIVE)
+				if((id == GuiInfo.GUI_INV_CREATIVE) && hasRightTab)
 				{
 					ModAchievements.guide.addStatToPlayer(player);
 					clickReady = false;
