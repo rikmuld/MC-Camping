@@ -1,4 +1,4 @@
-package com.rikmuld.camping.common.obj.block
+package com.rikmuld.camping.common.objs.block
 
 import net.minecraft.block.BlockContainer
 import net.minecraft.block.material.Material

@@ -1,4 +1,4 @@
-package com.rikmuld.camping.common.obj.item
+package com.rikmuld.camping.common.objs.item
 
 import java.util.List
 import cpw.mods.fml.relauncher.SideOnly

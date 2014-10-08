@@ -10,11 +10,20 @@ object ModInfo {
   final val MOD_DEPENDENCIES = "required-after:Forge@[v10.13.0.1180,)"
   final val MOD_SERVER_PROXY = "com.rikmuld.camping.core.ProxyServer"
   final val MOD_CLIENT_PROXY = "com.rikmuld.camping.core.ProxyClient"
+  final val MOD_GUIFACTORY = "com.rikmuld.camping.core.GuiFactory"
   final val PACKET_CHANEL = MOD_ID
 }
 
 object GuiInfo {
 
+}
+
+object ConfigInfo {
+  final val CAT_ANIMALS = "animals"
+  final val CAT_WORLD = "world genaration"
+  final val CAT_TOOLS = "tools"
+  final val CAT_FOOD = "food"
+  final val CAT_GENERAL = "general"
 }
 
 object ModelInfo {
