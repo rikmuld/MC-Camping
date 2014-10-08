@@ -1,0 +1,973 @@
+<?xml version="1.0"?>
+<book>
+    <page>
+        <text>
+            <data>The Camping Guide</data>
+            <pos>28/25/150/1.3</pos>
+        </text>
+        <text>
+            <data>The best guide for starting campers</data>
+            <pos>30/45/120/0.8</pos>
+        </text>
+        <text>
+            <data>by RikMuld</data>
+            <pos>92/65/120/0.7</pos>
+        </text>
+        <img>
+            <source>camper.png</source>
+            <pos>24/66/370/520/0.2</pos>        
+        </img>
+    </page>
+    <page>
+        <text>
+            <data>The Guide</data>
+            <pos>28/25/150/1.3</pos>
+        </text>
+        <text>
+            <data>The Camping Guide is still incomplete, it will be completed as soon as possible. If you want to help feel free to come up with text, or improve excisting parts, for the guide and mail them to: contact@rikmuld.com. You can also test how it looks in-game because the file that is used to make the guide is a resource (xml file), it is located in the jar -> assets -> camping -> guide -> guide.xml (you can add new pictures as well!).</data>
+            <pos>28/45/124/0.7</pos>
+        </text>
+        <text>
+            <data>If you find bugs please send a bug report with the contact page on rikmuld.com</data>
+            <pos>28/135/124/0.7</pos>
+        </text>
+    </page>
+    <page>
+        <text>
+            <data>Introduction</data>
+            <pos>28/25/150/1.3</pos>
+        </text>
+        <text>
+            <data>About The Mod</data>
+            <pos>28/45/150/1</pos>
+        </text>
+         <text>
+            <data>The Camping Mod allows you to finally experience the full outdoor experience in Minecraft. Set camp, build your own tent, fry some marshmallows over your warming campfire. The Camping mod is simply a must for every self-declared Minecaft adventurer/explorer.</data>
+            <pos>28/57/124/0.7</pos>
+        </text>
+        <text>
+            <data>Mod Author: RikMuld</data>
+            <pos>28/117/150/0.8</pos>
+        </text>
+        <text>
+            <data>Current Version: CAMP_VERSION</data>
+            <pos>28/132/150/0.8</pos>
+        </text>
+        <version>
+            <data>New Version: </data>
+            <pos>28/142/150/0.8</pos>
+        </version>
+    </page>
+    <page>
+        <text>
+            <data>Table of Contents</data>
+            <pos>28/25/150/1.3</pos>
+        </text>
+        <text>
+            <data>Camping Inventory</data>
+            <pos>28/45/150/1</pos>
+        </text>
+        <text>
+            <data>Player Inventory</data>
+            <pos>28/57/150/0.7</pos>
+        </text>
+        <text>
+            <data>Backpack Inventory</data>
+            <pos>28/65/150/0.7</pos>
+        </text>
+        <text>
+            <data>Tool Inventory</data>
+            <pos>28/73/150/0.7</pos>
+        </text>
+        <text>
+            <data>Equipment</data>
+            <pos>28/85/150/1</pos>
+        </text>
+        <text>
+            <data>Backpacks</data>
+            <pos>28/97/150/0.7</pos>
+        </text>
+        <text>
+            <data>Pocket Knife</data>
+            <pos>28/105/150/0.7</pos>
+        </text>
+        <text>
+            <data>Lanterns</data>
+            <pos>28/113/150/0.7</pos>
+        </text>
+        <text>
+            <data>Maps</data>
+            <pos>28/121/150/0.7</pos>
+        </text>
+         <text>
+            <data>Fur Armor</data>
+            <pos>28/129/150/0.7</pos>
+        </text>
+        <text>
+            <data>Campfires</data>
+            <pos>28/141/150/1</pos>
+        </text>
+        <text>
+            <data>Decoration Campfire</data>
+            <pos>28/153/150/0.7</pos>
+        </text>
+        <img>
+            <source>tools.png</source>
+            <pos>84/74/340/349/0.2</pos>
+        </img>
+    </page>
+    <page>
+        <text>
+            <data>Table of Contents</data>
+            <pos>28/25/150/1.3</pos>
+        </text>
+        <text>
+            <data>Campfires</data>
+            <pos>28/45/150/1</pos>
+        </text>
+        <text>
+            <data>Cooking Campfire Basics</data>
+            <pos>28/57/150/0.7</pos>
+        </text>
+        <text>
+            <data>Campfire Kits</data>
+            <pos>28/65/150/0.7</pos>
+        </text>
+        <text>
+            <data>Spit Cooking</data>
+            <pos>28/73/150/0.7</pos>
+        </text>
+        <text>
+            <data>Grill Cooking</data>
+            <pos>28/81/150/0.7</pos>
+        </text>
+        <text>
+            <data>Pan Cooking</data>
+            <pos>28/89/150/0.7</pos>
+        </text>
+        <text>
+            <data>Campsite</data>
+            <pos>28/101/150/1</pos>
+        </text>
+        <text>
+            <data>Sleeping Bag</data>
+            <pos>28/113/150/0.7</pos>
+        </text>
+        <text>
+            <data>Tent Info</data>
+            <pos>28/121/150/0.7</pos>
+        </text>
+        <text>
+            <data>Tent Contends</data>
+            <pos>28/129/150/0.7</pos>
+        </text>
+        <text>
+            <data>Log Seat</data>
+            <pos>28/137/150/0.7</pos>
+        </text>
+        <text>
+            <data>Lantern</data>
+            <pos>28/145/150/0.7</pos>
+        </text>
+        <img>
+            <source>campfireSpit.png</source>
+            <pos>73/86/340/349/0.25</pos>
+        </img>
+    </page>
+    <page>
+        <text>
+            <data>Table of Contents</data>
+            <pos>28/25/150/1.3</pos>
+        </text>
+        <text>
+            <data>Materials</data>
+            <pos>28/45/150/1</pos>
+        </text>
+        <text>
+            <data>Iron Sticks</data>
+            <pos>28/57/150/0.7</pos>
+        </text>
+        <text>
+            <data>Canvas</data>
+            <pos>28/65/150/0.7</pos>
+        </text>
+        <text>
+            <data>Pan</data>
+            <pos>28/73/150/0.7</pos>
+        </text>
+        <text>
+            <data>Animal Materials</data>
+            <pos>28/83/150/1</pos>
+        </text>
+        <text>
+            <data>Fur</data>
+            <pos>28/95/150/0.7</pos>
+        </text>
+        <text>
+            <data>Antlers</data>
+            <pos>28/103/150/0.7</pos>
+        </text>
+        <text>
+            <data>Food</data>
+            <pos>28/115/150/1</pos>
+        </text>
+        <text>
+            <data>Berries</data>
+            <pos>28/127/150/0.7</pos>
+        </text>
+        <text>
+            <data>Marshmallows</data>
+            <pos>28/135/150/0.7</pos>
+        </text>
+        <text>
+            <data>Vanison</data>
+            <pos>28/143/150/0.7</pos>
+        </text>
+        <text>
+            <data>Hare</data>
+            <pos>28/151/150/0.7</pos>
+        </text>
+        <text>
+            <data>Stews</data>
+            <pos>28/159/150/0.7</pos>
+        </text>
+    </page>
+    <page>
+        <text>
+            <data>Table of Contents</data>
+            <pos>28/25/150/1.3</pos>
+        </text>
+        <text>
+            <data>Plants</data>
+            <pos>28/45/150/1</pos>
+        </text>
+        <text>
+            <data>Hemp</data>
+            <pos>28/57/150/0.7</pos>
+        </text>
+        <text>
+            <data>Berry Trees</data>
+            <pos>28/65/150/0.7</pos>
+        </text> 
+        <text>
+            <data>Traps</data>
+            <pos>28/77/150/1</pos>
+        </text>
+        <text>
+            <data>Bear Trap</data>
+            <pos>28/89/150/0.7</pos>
+        </text>
+        <text>
+            <data>Barbed Wire</data>
+            <pos>28/97/150/0.7</pos>
+        </text> 
+        <text>
+            <data>Mobs</data>
+            <pos>28/109/150/1</pos>
+        </text>
+        <text>
+            <data>Camper</data>
+            <pos>28/121/150/0.7</pos>
+        </text>
+        <text>
+            <data>Grizzly Bear</data>
+            <pos>28/129/150/0.7</pos>
+        </text> 
+        <text>
+            <data>Dear</data>
+            <pos>28/137/150/0.7</pos>
+        </text> 
+        <text>
+            <data>Hare</data>
+            <pos>28/145/150/0.7</pos>
+        </text>   
+    </page>
+    <page>
+        <text>
+            <data>Table of Contents</data>
+            <pos>28/25/150/1.3</pos>
+        </text>
+        <text>
+            <data>Miscallanious Stuff</data>
+            <pos>28/45/150/1</pos>
+        </text>
+        <text>
+            <data>Ash</data>
+            <pos>28/57/150/0.7</pos>
+        </text>
+        <text>
+            <data>Antler Throphy</data>
+            <pos>28/65/150/0.7</pos>
+        </text> 
+    </page>
+    <page>
+         <text>
+            <data>Camping Inventory</data>
+            <pos>28/25/150/1.3</pos>
+        </text>
+        <text>
+            <data>The Camping Inventory is completely replacing the player inventory. 
+            
+This renewed inventory contains 3 smaller inventories. The first one is called the player inventory, this one will always open when you open your inventory. The second one is the backpack inventory and the last one is the tool inventory. 
+
+To cycle through the inventories you can use the 2 big buttons below the inventory.</data>
+            <pos>28/45/124/0.7</pos>
+        </text>
+    </page>
+    <page>
+        <text>
+            <data>Camping Inventory</data>
+            <pos>28/25/150/1.3</pos>
+        </text>
+        <text>
+            <data>Player Inventory</data>
+            <pos>28/45/150/1</pos>
+        </text>
+        <text>
+            <data>Player Inventory</data>
+            <pos>28/45/150/1</pos>
+        </text>
+        <text>
+            <data>The player inventory is part of the Camping Inventory. This inventory is almost equal to the normal vanilla minecraft inventory. 
+            
+The only difference is that it has a button at the top right to open the Camping Guide, and it has 2 big buttons to go to the other parts of the Camping Inventory.</data>
+            <pos>28/57/124/0.7</pos>
+        </text>
+    </page>
+    <page>
+        <text>
+            <data>Camping Inventory</data>
+            <pos>28/25/150/1.3</pos>
+        </text>
+        <text>
+            <data>Backpack Inventory</data>
+            <pos>28/45/150/1</pos>
+        </text>
+        <text>
+            <data>The backpack inventory is just like the player inventory meant for item storage. The difference however is, that in this inventory you need to place an backpack to store the items in. 
+            
+When you remove the backpack from the backpack inventory the storage slots will be disabled and your items are in the backpack. To access the items again you can just place the backpack back in the backpack slot, or you can right click the backpack in your hand to manage it's contends</data>
+            <pos>28/57/124/0.7</pos>
+        </text>
+    </page>
+    <page>
+        <text>
+            <data>Camping Inventory</data>
+            <pos>28/25/150/1.3</pos>
+        </text>
+        <text>
+            <data>Tool Inventory</data>
+            <pos>28/45/150/1</pos>
+        </text>
+        <text>
+            <data>The tool inventory is the place were you can put all of your newest camping gadgets to get special "bonuses".
+            
+The 3 items that can go into the tool inventory are: the pocket knife, the lantern and a map.
+
+The Campers tool will allows you to craft with a full 3*3 crafting matrix right from your inventory.
+
+When a lantern is placed in the tool inventory the array around you will be light.</data>
+            <pos>28/57/124/0.7</pos>
+        </text>
+    </page>
+    <page>
+        <text>
+            <data>Camping Inventory</data>
+            <pos>28/25/150/1.3</pos>
+        </text>
+        <text>
+            <data>Tool Inventory</data>
+            <pos>28/45/150/1</pos>
+        </text>
+        <text>
+            <data>When a map is placed in the tool inventory it will become a minimap that is visible in the most right corner of your screen.
+            
+On this map you will be displayed as an red dot and even when you are outside the borders of the map, the dot will still be visible. Other players will be displayed as a blue dot and they are also always visible on the map.</data>
+            <pos>28/57/124/0.7</pos>
+        </text>
+    </page>
+    <page>
+        <text>
+            <data>Backpacks</data>
+            <pos>28/25/150/1.3</pos>
+        </text>
+        <item>
+            <stack>backpack/0</stack>
+            <pos>120/21</pos>
+        </item>
+        <text>
+            <data>The backpacks are perfect to store some extra items. 1 backpack can hold 27 items, so 1 backpack is already dubbeling you invertory size.</data>
+            <pos>28/45/124/0.7</pos>
+        </text>
+        <text>
+            <data>There are 2 ways to use your backpacks. You can right click with to backpack, or you can use them in your camping inventory.</data>
+            <pos>28/85/65/0.7</pos>
+        </text>
+        <craft>
+            <pos>97/78</pos>
+            <shapeless>false</shapeless>
+            <stacks>
+                <stack>parts/0</stack>
+                <stack>parts/0</stack>
+                <stack>parts/0</stack>
+                <stack>parts/0</stack>
+                <stack></stack>
+                <stack>parts/0</stack>
+                <stack>parts/0</stack>
+                <stack>parts/0</stack> 
+                <stack>parts/0</stack>                
+            </stacks>
+        </craft>
+    </page>
+    <page>
+        <text>
+            <data>Pocket Knife</data>
+            <pos>28/25/150/1.3</pos>
+        </text>
+        <item>
+            <stack>knife/0</stack>
+            <pos>120/21</pos>
+        </item>
+        <text>
+            <data>The pocket knife has many uses, it is a miust have for every camper.</data>
+            <pos>28/45/124/0.7</pos>
+        </text>
+        <text>
+            <data>If the pocket knife is used it will</data>
+            <pos>28/67/124/0.7</pos>
+        </text>
+        <text>
+            <data>take damage, the total durability of the knife is 250.</data>
+            <pos>28/73/65/0.7</pos>     
+        </text>
+        <text>
+            <data>The uses are: Removing campfires, rotating any rotatable block in he game, crafting in the camping</data>
+            <pos>28/99/65/0.7</pos>     
+        </text>
+        <text>
+            <data>inventory and the knife is used in some crafting recipes</data>
+            <pos>28/144/124/0.7</pos>     
+        </text>
+        <craft>
+            <pos>97/78</pos>
+            <shapeless>false</shapeless>
+            <stacks>
+                <stack>351/1</stack>
+                <stack>265/0</stack>
+                <stack>351/1</stack>
+                <stack>351/1</stack>
+                <stack>265/0</stack>
+                <stack>351/1</stack>
+                <stack>351/1</stack>
+                <stack>265/0</stack> 
+                <stack>351/1</stack>                
+            </stacks>
+        </craft>
+        </page>
+    <page>
+        <text>
+            <data>Lanterns</data>
+            <pos>28/25/150/1.3</pos>
+        </text>
+        <text>
+            <data>The lantern is used to light the array arround you if it is placed inside the tool inventory, so you never need to get into the dark.
+
+However a lantern does not burn forever, after 300 seconds you need to refuel the empty lantern with glowstone.</data>
+            <pos>28/45/124/0.7</pos>
+        </text>
+        <text>
+            <data>Empty lantern</data>
+            <pos>28/106/150/1</pos>
+        </text>
+        <item>
+            <stack>lantern/1</stack>
+            <pos>120/102</pos>           
+        </item>
+        <text>
+            <data>You will get an empty lantern when your lantern is burbned up, to refuel it put it in a crafting bench with a glowstone dust</data>
+            <pos>28/124/124/0.7</pos>
+        </text>
+    </page>
+    <page>
+        <text>
+            <data>Lanterns</data>
+            <pos>28/25/150/1.3</pos>
+        </text>
+        <text>
+            <data>Empty</data>
+            <pos>33/45/150/1</pos>
+        </text>
+        <item>
+            <stack>lantern/1</stack>
+            <pos>62/41</pos>           
+        </item>
+         <craft>
+            <pos>30/64</pos>
+            <shapeless>false</shapeless>
+            <stacks>
+                <stack>102/0</stack>
+                <stack>102/0</stack>
+                <stack>102/0</stack>
+                <stack>102/0</stack>
+                <stack></stack>
+                <stack>102/0</stack>
+                <stack>266/0</stack>
+                <stack>266/0</stack> 
+                <stack>266/0</stack>                
+            </stacks>
+        </craft>
+        <text>
+            <data>Full</data>
+            <pos>110/45/150/1</pos>
+        </text>
+        <item>
+            <stack>lantern/0</stack>
+            <pos>129/41</pos>           
+        </item>
+         <craft>
+            <pos>100/64</pos>
+            <shapeless>true</shapeless>
+            <stacks>
+                <stack>lantern/1</stack>
+                <stack>348/0</stack>
+                <stack></stack>
+                <stack></stack>
+                <stack></stack>
+                <stack></stack>
+                <stack></stack>
+                <stack></stack> 
+                <stack></stack>                
+            </stacks>
+        </craft>
+    </page>
+    <page>
+         <text>
+            <data>Drawn Maps</data>
+            <pos>28/25/150/1.3</pos>
+        </text>
+        <item>
+            <stack>358/0</stack>
+            <pos>120/21</pos>
+        </item>
+        <img>
+            <source>map.png</source>
+            <pos>102/43/192/192/0.25/0.25</pos>
+        </img>
+        <text>
+            <data>The map isn't a item added by this mod, but it has given a new use. Namely When a map is placed inside the tool inventory you will see the map</data>
+            <pos>28/45/73/0.7</pos>
+        </text>
+        <text>
+            <data>renderd in the top right corner of your screen. You will be renderd as an red dot and other players as an blue one. And even when you or other players are far outside the borders of the map, they will still be renderd. Note that the map will not update inside the tool inventory.</data>
+            <pos>28/95/124/0.7</pos>
+        </text>
+    </page>    
+    <page>
+        <text>
+            <data>Fur Armor</data>
+            <pos>28/25/150/1.3</pos>
+        </text>
+        <text>
+            <data>The fur armor is a new type of armor added by the mod. If you are a camper, hunter, travaler or just a human it's perfect for you! the armor will give you a nice protection and has a great enchantabilaty. Furthermore you will get a speed bonus of 7,5% for each part of the armor (so 25% for a complete set).</data>
+            <pos>28/45/90/0.7</pos>
+        </text>
+        <item>      
+            <stack>armorFurHelm/0</stack>
+            <pos>125/53</pos>
+        </item>
+        <item>      
+            <stack>armorFurChest/0</stack>
+            <pos>125/67</pos>
+        </item>
+        <item>      
+            <stack>armorFurLeg/0</stack>
+            <pos>125/85</pos>
+        </item>
+        <item>      
+            <stack>armorFurBoots/0</stack>
+            <pos>125/103</pos>
+        </item>
+    </page>
+    <page>
+        <text>
+            <data>Fur Armor</data>
+            <pos>28/25/150/1.3</pos>
+        </text>
+        <craft>
+            <pos>94/40</pos>
+            <shapeless>false</shapeless>
+            <stacks>
+                <stack>animalStuff/0</stack>
+                <stack></stack>
+                <stack>animalStuff/0</stack> 
+                <stack>animalStuff/0</stack>          
+                <stack>299/0</stack>
+                <stack>animalStuff/0</stack>
+                <stack>animalStuff/1</stack>
+                <stack>animalStuff/1</stack> 
+                <stack>animalStuff/1</stack>                
+            </stacks>
+        </craft>
+        <craft>
+            <pos>32/40</pos>
+            <shapeless>false</shapeless>
+            <stacks>
+                <stack>animalStuff/0</stack>
+                <stack>animalStuff/0</stack>
+                <stack>animalStuff/0</stack>
+                <stack>animalStuff/0</stack>
+                <stack>298/0</stack>
+                <stack>animalStuff/0</stack>
+                <stack></stack>
+                <stack></stack> 
+                <stack></stack>                
+            </stacks>
+        </craft>
+        <craft>
+            <pos>94/105</pos>
+            <shapeless>false</shapeless>
+            <stacks>
+                <stack>animalStuff/1</stack>
+                <stack></stack>
+                <stack>animalStuff/1</stack> 
+                <stack>animalStuff/1</stack>          
+                <stack>301/0</stack>
+                <stack>animalStuff/1</stack>
+                <stack></stack>
+                <stack></stack> 
+                <stack></stack>                
+            </stacks>
+        </craft>
+        <craft>
+            <pos>32/105</pos>
+            <shapeless>false</shapeless>
+            <stacks>
+                <stack>animalStuff/1</stack>
+                <stack>animalStuff/1</stack>
+                <stack>animalStuff/1</stack>
+                <stack>animalStuff/1</stack>
+                <stack>300/0</stack>
+                <stack>animalStuff/1</stack>
+                <stack>animalStuff/1</stack>
+                <stack></stack> 
+                <stack>animalStuff/1</stack>                
+            </stacks>
+        </craft>
+    </page>
+    <page>
+        <text>
+            <data>Campfires</data>
+            <pos>28/25/150/1.3</pos>
+        </text>
+        <text>
+            <data>Decoration Campfire</data>
+            <pos>28/45/150/1</pos>
+        </text>
+        <text>
+            <data>The decoration campfire is only for decoration, so it is impossible to cook anything with it.</data>            
+            <pos>28/57/124/0.7</pos>
+        </text>
+        <text>
+            <data>As an decorational plus you can change the color of the flame by putting a dye or any other minecraft color in the campfire, and the color will change for 5</data>            
+            <pos>28/83/70/0.7</pos>
+        </text>
+        <text>
+            <data>minutes. But Beware: The dyes will cause strange effects!</data>
+            <pos>28/146/124/0.7</pos>
+        </text>
+        <item>
+            <stack>campfireDeco/0</stack>
+            <pos>133/41</pos>           
+        </item>
+        <craft>
+            <pos>97/78</pos>
+            <shapeless>false</shapeless>
+            <stacks>
+                <stack></stack>
+                <stack>280/0</stack>
+                <stack></stack>
+                <stack>280/0</stack>
+                <stack>318/0</stack>
+                <stack>280/0</stack>
+                <stack>280/0</stack>
+                <stack>campfireBase/0</stack> 
+                <stack>280/0</stack>                
+            </stacks>
+        </craft>
+    </page>
+    <page>
+        <text>
+            <data>Campfires</data>
+            <pos>28/25/150/1.3</pos>
+        </text>
+        <item>
+            <stack>campfireDeco/0</stack>
+            <pos>133/41</pos>           
+        </item>
+        <text>
+            <data>Decoration Campfire</data>
+            <pos>28/45/150/1</pos>
+        </text>
+        <text>
+            <data>The decoration campfire can't be removed by hand, you will need to use the pocket knife or else you will only get the campfire base back.</data>            
+            <pos>28/57/124/0.7</pos>
+        </text>
+    </page>
+    <page>
+        <text>
+            <data>Campfires</data>
+            <pos>28/25/150/1.3</pos>
+        </text>
+        <item>
+            <stack>campfireBase/0</stack>
+            <pos>133/37</pos>           
+        </item>
+        <text>
+            <data>Campfire Base</data>
+            <pos>28/45/150/1</pos>
+        </text>
+        <text>
+            <data>The campfire base is the base of your cooking fire, when it is placed on the ground you can put coal and a campfire kit in it to start cooking.</data>            
+            <pos>28/57/124/0.7</pos>
+        </text>
+        <text>
+            <data>The campfire base can hold up too 20 pices of coal at once. One coal pice will burn for 50 seconds. Without a kit you can still roast marshmallos on it by pointing a marshmallow stick to it.</data>            
+            <pos>28/92/70/0.7</pos>
+        </text>
+        <craft>
+            <pos>97/92</pos>
+            <shapeless>false</shapeless>
+            <stacks>
+                <stack></stack>
+                <stack>4/0</stack>
+                <stack></stack>
+                <stack>4/0</stack>
+                <stack></stack>
+                <stack>4/0</stack>
+                <stack></stack>
+                <stack>4/0</stack> 
+                <stack></stack>                
+            </stacks>
+        </craft>
+    </page>
+    <page>
+        <text>
+            <data>Campfires</data>
+            <pos>28/25/150/1.3</pos>
+        </text>
+        <item>
+            <stack>kit/0</stack>
+            <pos>133/39</pos>           
+        </item>
+        <text>
+            <data>Campfire Kits</data>
+            <pos>28/45/150/1</pos>
+        </text>
+        <text>
+            <data>Campfire Kits are required for any type of cooking done on a campfire. When you right click with a kit you a GUI will open were you can place itmes in, when you close the GUI the kit will change in another type of kit based on the items inside the kit. The kit types are: Empty Kit, Spit Kit, Grill Kit, Pan Kit, Useless Kit.</data>            
+            <pos>28/57/124/0.7</pos>
+        </text>
+        <text>
+            <data>Spit Kit: 2 sticks, 1 iron stick.</data>            
+            <pos>28/124/124/0.7</pos>
+        </text>
+        <text>
+            <data>Grill Kit: 4 sticks, 2 iron stick, 1 iron bar.</data>            
+            <pos>28/133/124/0.7</pos>
+        </text>
+        <text>
+            <data>Pan Kit: 2 sticks, 1 iron stick, 1 string, 1 pan.</data>            
+            <pos>28/148/124/0.7</pos>
+        </text>
+    </page>
+    <page>
+        <text>
+            <data>Campfires</data>
+            <pos>28/25/150/1.3</pos>
+        </text>
+        <item>
+            <stack>kit/0</stack>
+            <pos>133/39</pos>           
+        </item>
+        <text>
+            <data>Campfire Kits</data>
+            <pos>28/45/150/1</pos>
+        </text>
+        <craft>
+            <pos>66/80</pos>
+            <shapeless>false</shapeless>
+            <stacks>
+                <stack>265/0</stack>
+                <stack>265/0</stack>
+                <stack>265/0</stack>
+                <stack>351/11</stack>
+                <stack>351/11</stack>
+                <stack>351/11</stack>
+                <stack>265/0</stack>
+                <stack>265/0</stack> 
+                <stack>265/0</stack>                
+            </stacks>
+        </craft>
+    </page>
+    <page>
+        <text>
+            <data>Materials</data>
+            <pos>28/25/150/1.3</pos>
+        </text>
+        <text>
+            <data>Of cource this mod also ads some items not doing anything by itself, but are needed in crafting recipes. A list of those items with crafting recipes will folow:</data>
+            <pos>28/45/124/0.7</pos>
+        </text>
+        <text>
+            <data>Iron Stick</data>
+            <pos>24/85/150/1</pos>
+        </text>
+        <item>
+            <stack>parts/1</stack>
+            <pos>74/81</pos>           
+        </item>
+         <craft>
+            <pos>30/100</pos>
+            <shapeless>false</shapeless>
+            <stacks>
+                <stack>265/0</stack>
+                <stack></stack>
+                <stack></stack>
+                <stack>265/0</stack>
+                <stack></stack>
+                <stack></stack>
+                <stack></stack>
+                <stack></stack> 
+                <stack></stack>                
+            </stacks>
+        </craft>
+        <text>
+            <data>Canvas</data>
+            <pos>96/85/150/1</pos>
+        </text>
+        <item>
+            <stack>parts/0</stack>
+            <pos>134/81</pos>           
+        </item>
+         <craft>
+            <pos>100/100</pos>
+            <shapeless>true</shapeless>
+            <stacks>
+                <stack>hemp/0</stack>
+                <stack>knife/0</stack>
+                <stack></stack>
+                <stack></stack>
+                <stack></stack>
+                <stack></stack>
+                <stack></stack>
+                <stack></stack> 
+                <stack></stack>                
+            </stacks>
+        </craft>
+    </page>
+    <page>
+        <text>
+            <data>Materials</data>
+            <pos>28/25/150/1.3</pos>
+        </text>
+         <text>
+            <data>Of cource this mod also ads some items not doing anything by itself, but are needed in crafting recipes. A list of those items with crafting recipes will folow:</data>
+            <pos>28/45/124/0.7</pos>
+        </text>
+        <text>
+            <data>Pan</data>
+            <pos>35/85/150/1</pos>
+        </text>
+        <item>
+            <stack>parts/2</stack>
+            <pos>60/81</pos>           
+        </item>
+         <craft>
+            <pos>30/100</pos>
+            <shapeless>false</shapeless>
+            <stacks>
+                <stack></stack>
+                <stack>351/1</stack>
+                <stack></stack>
+                <stack>265/0</stack>
+                <stack>281/0</stack>
+                <stack>265/0</stack>
+                <stack></stack>
+                <stack>265/0</stack> 
+                <stack></stack>                
+            </stacks>
+        </craft>
+    </page>
+    <page>
+        <text>
+            <data>Animal Materials</data>
+            <pos>28/25/150/1.3</pos>
+        </text>
+        <text>
+            <data>Animal materials are items who are needed in the crafting recipes of other items and are only aquirable by killing an mod added by this mod.</data>
+            <pos>28/45/124/0.7</pos>
+        </text>
+        <text>
+            <data>White Fur</data>
+            <pos>28/80/150/1</pos>
+        </text>
+        <item>
+            <stack>animalStuff/0</stack>
+            <pos>80/76</pos>           
+        </item>
+        <text>
+            <data>White hares</data>
+            <pos>104/82/50/0.7</pos>
+        </text>
+        <text>
+            <data>Brown Fur</data>
+            <pos>28/100/150/1</pos>
+        </text>
+        <text>
+            <data>Brown hares</data>
+            <pos>104/97/50/0.7</pos>
+        </text>
+        <text>
+            <data>Bears</data>
+            <pos>104/105/50/0.7</pos>
+        </text>
+        <item>
+            <stack>animalStuff/1</stack>
+            <pos>80/96</pos>           
+        </item>
+        <text>
+            <data>Antlers</data>
+            <pos>28/120/150/1</pos>
+        </text>
+        <text>
+            <data>Deers</data>
+            <pos>104/122/50/0.7</pos>
+        </text>
+        <item>
+            <stack>animalStuff/2</stack>
+            <pos>80/116</pos>           
+        </item>
+    </page>
+    <page>
+        <text>
+            <data>Hemp</data>
+            <pos>28/25/150/1.3</pos>
+        </text>
+        <item>
+            <stack>hemp/0</stack>
+            <pos>120/21</pos>
+        </item>
+        <img>
+            <source>hemp.png</source>
+            <pos>32/122/446/150/0.25</pos>
+        </img>
+        <text>
+            <data>Hemp is an new type of plant in minecraft, but is differs a bit from any other plant types. It grows just like potatos and wheet as an crop, but is also grown in the height.</data>
+            <pos>28/45/124/0.7</pos>
+        </text>
+        <text>
+            <data>Hemp can be found in any of it's grow stages in the world, and only full grown hemp plants will give you a hemp (last 2 of the picture).</data>
+            <pos>28/91/124/0.7</pos>
+        </text>
+    </page>
+</book>
