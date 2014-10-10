@@ -14,8 +14,18 @@ object ModInfo {
   final val PACKET_CHANEL = MOD_ID
 }
 
-object GuiInfo {
+object NBTInfo {
+  final val INV_CAMPING = "campInv";
+}
 
+object GuiInfo {
+  final val GUI_CAMPFIRE = 0
+  final val GUI_BACKPACK = 1
+  final val GUI_KIT = 2
+  final val GUI_CAMPFIRE_COOK = 3
+  final val GUI_CAMPINV = 4
+  final val GUI_INVENTORY = 5
+  final val GUI_CAMPINV_CRAFT = 6
 }
 
 object ConfigInfo {
@@ -28,11 +38,35 @@ object ConfigInfo {
 
 object ModelInfo {
   final val MODEL_LOCATION = ModInfo.MOD_ID + ":models/"
+  final val CAMPFIRE = MODEL_LOCATION + "ModelCampfireDeco.tcn"
+  final val LOG = MODEL_LOCATION + "ModelLog.tcn"
 }
 
 object TextureInfo {
-  final val GUI_LOCATION = ModInfo.MOD_ID + ":textures/guis/"
+  final val GUI_LOCATION = ModInfo.MOD_ID + ":textures/gui/"
   final val MODEL_LOCATION = ModInfo.MOD_ID + ":textures/models/"
+  final val SPRITE_LOCATION = ModInfo.MOD_ID + ":textures/sprite/"
+  final val MC_GUI_LOCATION = "minecraft:textures/gui/"
+
+  final val MODEL_CAMPFIRE = MODEL_LOCATION + "ModelCampfireDeco.png"
+  final val SPRITE_FX = SPRITE_LOCATION + "SpriteFX.png"
+  final val GUI_CAMPFIRE = GUI_LOCATION + "GuiCampfireDeco.png"
+  final val GUI_CAMPINV_BACK = GUI_LOCATION + "GuiCampingBackpack.png"
+  final val GUI_CAMPINV_TOOL = GUI_LOCATION + "GuiCampingTool.png"
+  final val MC_INVENTORY = MC_GUI_LOCATION + "inventory.png"
+  final val GUI_BAG = GUI_LOCATION + "GuiBackpack.png"
+  final val GUI_KIT = GUI_LOCATION + "GuiKit.png"
+  final val GUI_CAMPFIRE_COOK = GUI_LOCATION + "GuiCampfireCook.png"
+  final val MODEL_GRILL = MODEL_LOCATION + "ModelGrill.png"
+  final val MODEL_PAN = MODEL_LOCATION + "ModelPan.png"
+  final val MODEL_LOG = MODEL_LOCATION + "ModelLog.png"
+  final val MODEL_LOG2 = MODEL_LOCATION + "ModelLog2.png"
+  final val MODEL_SPIT = MODEL_LOCATION + "ModelSpit.png"
+  final val GUI_CAMPINV = GUI_LOCATION + "GuiCampinv.png"
+  final val GUI_CAMPINV_CRAFT = GUI_LOCATION + "GuiCampinvCraft.png"
+  final val RED_DOT = GUI_LOCATION + "GuiMapRed.png"
+  final val BLUE_DOT = GUI_LOCATION + "GuiMapBlue.png"
+  final val GUI_UTILS = GUI_LOCATION + "GuiUtils.png"
 }
 
 object TextInfo {

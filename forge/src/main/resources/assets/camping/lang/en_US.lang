@@ -16,3 +16,5 @@ panKit.name=Pan Kit
 uselessKit.name=Useless Kit
 tile.logSeat.name=Log Seat
 item.marshmallowStickCooked.name=Cooked Marshmallow Stick
+lanternOn.name=Lantern On
+lanternOff.name=Lantern Off

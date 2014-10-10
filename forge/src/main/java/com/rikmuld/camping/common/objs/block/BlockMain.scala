@@ -57,7 +57,7 @@ class BlockMain(infoClass: Class[ObjInfo], material: Material, itemBlock: Class[
     } else if(icon){
       if (useSides == false) {
         iconBuffer = Array.ofDim[IIcon](metadata.length, 1)
-        for (x <- 0 to metadata.length - 1) iconBuffer(x)(1) = register.registerIcon(ModInfo.MOD_ID + ":" + metadata(x).toString)
+        for (x <- 0 to metadata.length - 1) iconBuffer(x)(0) = register.registerIcon(ModInfo.MOD_ID + ":" + metadata(x).toString)
       } else {
         iconBuffer = Array.ofDim[IIcon](metadata.length, 6)
         for (x <- 0 to metadata.length - 1; y <- 0 to 5) iconBuffer(x)(y) = register.registerIcon(ModInfo.MOD_ID + ":" + metadata(x).toString + "_" + getSides(x)(y))
