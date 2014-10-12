@@ -1,17 +1,17 @@
 package com.rikmuld.camping.common.network
 
 import java.nio.ByteBuffer
-
 import com.rikmuld.camping.CampingMod
 import com.rikmuld.camping.common.objs.tile.TileEntityMain
 import com.rikmuld.camping.core.Events
 import com.rikmuld.camping.core.NBTInfo
-
 import cpw.mods.fml.common.network.simpleimpl.MessageContext
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.network.PacketBuffer
 import scala.collection.JavaConversions._
+import net.minecraft.item.ItemStack
+import com.rikmuld.camping.common.objs.tile.TileEntityWithInventory
 
 class TileData(var id: Int, var x: Int, var y: Int, var z: Int, tileData: Seq[Int]) extends BasicPacketData {
   var length: Int = if (tileData == null) 0 else tileData.length * 4
@@ -108,6 +108,31 @@ class Map(var scale: Int, var x: Int, var z: Int, var colours: Array[Byte]) exte
     if (Events.map != null) {
       Events.map.colorData(player) = colours
       Events.map.posData(player) = Array(scale, x, z)
+    }
+  }
+}
+
+class Items(var slot: Int, var x: Int, var y: Int, var z: Int, var stack: ItemStack) extends BasicPacketData{
+  def this() = this(0, 0, 0, 0, null)
+  override def setData(stream: PacketBuffer) {
+    stream.writeInt(slot)
+    stream.writeInt(x)
+    stream.writeInt(y)
+    stream.writeInt(z)
+    stream.writeItemStackToBuffer(stack)
+  }
+  override def getData(stream: PacketBuffer) {
+    slot = stream.readInt
+    x = stream.readInt
+    y = stream.readInt
+    z = stream.readInt
+    stack = stream.readItemStackFromBuffer()
+  }
+  override def handlePacket(player: EntityPlayer, ctx: MessageContext) {
+    println(player.worldObj.isRemote, x, y, z)
+    if (player.worldObj.getTileEntity(x, y, z) != null) {
+      println(player.worldObj.isRemote, slot, stack)
+      player.worldObj.getTileEntity(x, y, z).asInstanceOf[TileEntityWithInventory].setInventorySlotContents(slot, stack)
     }
   }
 }

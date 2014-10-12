@@ -34,6 +34,7 @@ object ConfigInfo {
   final val CAT_TOOLS = "tools"
   final val CAT_FOOD = "food"
   final val CAT_GENERAL = "general"
+  final val CAT_CAMPFIRE = "campfire"
 }
 
 object ModelInfo {

@@ -7,6 +7,8 @@ import java.util.ArrayList
 import net.minecraft.item.Item
 import scala.collection.mutable.ListBuffer
 import net.minecraft.entity.player.EntityPlayer
+import com.rikmuld.camping.common.objs.tile.TileEntityCampfireCook
+import com.rikmuld.camping.misc.CookingEquipment
 
 class SlotDisable(inv: IInventory, id: Int, var xFlag: Int, var yFlag: Int) extends Slot(inv, id, xFlag, yFlag) {
   def disable = {
@@ -57,4 +59,29 @@ class SlotItemsOnly(inventory: IInventory, slotIndex: Int, xPos: Int, yPos: Int,
     }
     if (alowedStacks.size == 0) true else flag == true
   }
+}
+
+class SlotCooking(par1iInventory: IInventory, id: Int, x: Int, y: Int) extends Slot(par1iInventory, id, x, y) {
+  var active: Boolean = _
+  var equipment: CookingEquipment = _
+  var fire: TileEntityCampfireCook = _
+
+  deActivate()
+
+  def activate(x: Int, y: Int, equipment: CookingEquipment, fire: TileEntityCampfireCook) {
+    active = true
+    this.equipment = equipment
+    this.fire = fire
+    xDisplayPosition = x
+    yDisplayPosition = y
+  }
+  def deActivate() {
+    active = false
+    equipment = null
+    fire = null
+    xDisplayPosition = -1000
+    yDisplayPosition = -1000
+  }
+  override def getSlotStackLimit(): Int = 1
+  override def isItemValid(stack: ItemStack): Boolean = if ((equipment != null) && (fire != null)) equipment.canCook(stack) else false
 }

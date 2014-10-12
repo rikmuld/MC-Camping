@@ -26,6 +26,10 @@ class CampfireInfo extends ObjInfo {
   override def NAME = "campfire"
 }
 
+class CampfireCookInfo extends ObjInfo {
+  override def NAME = "campfireCook"
+}
+
 class LightInfo extends ObjInfo {
   override def NAME = "light"
 }

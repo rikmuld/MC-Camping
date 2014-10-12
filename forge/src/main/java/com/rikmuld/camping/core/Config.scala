@@ -13,10 +13,21 @@ import java.util.ArrayList
 
 class Config(val file: Configuration) {
   var toolUse = 200
+  var campfireMaxFuel = 20000
+  var campfireCoalFuel = 1000
+  var cookTimeSpit = 300
+  var cookTimePan = 1000
+  var cookTimeGrill = 600
+  
   var elements: java.util.List[IConfigElement[_]] = new ArrayList[IConfigElement[_]];
 
   def sync = {
     toolUse = getVar("Knife Durability", "The durability of the pocket knife.", ConfigInfo.CAT_TOOLS, toolUse).asInstanceOf[Integer]
+    campfireMaxFuel = getVar("Campfire Max Fuel", "Max fuel of a campfire in ticks.", ConfigInfo.CAT_CAMPFIRE, campfireMaxFuel).asInstanceOf[Integer]
+    campfireCoalFuel = getVar("Coal Fuel", "Fuel worth of 1 coal pice in ticks.", ConfigInfo.CAT_CAMPFIRE, campfireCoalFuel).asInstanceOf[Integer]
+    cookTimeSpit = getVar("Spit cook time", "Time in ticks to complete spit cook cycle", ConfigInfo.CAT_CAMPFIRE, cookTimeSpit).asInstanceOf[Integer]
+    cookTimePan = getVar("Pan cook time", "Time in ticks to complete pan cook cycle", ConfigInfo.CAT_CAMPFIRE, cookTimePan).asInstanceOf[Integer]
+    cookTimeGrill = getVar("Grill cook time", "Time in ticks to complete grill cook cycle", ConfigInfo.CAT_CAMPFIRE, cookTimeGrill).asInstanceOf[Integer]
 
     if (file.hasChanged) file.save
     for (i <- 0 until file.getCategoryNames.size) elements.addAll(new ConfigElement(file.getCategory(file.getCategoryNames().toArray().apply(i).asInstanceOf[String])).getChildElements());

@@ -20,6 +20,8 @@ import cpw.mods.fml.relauncher.Side
 import com.rikmuld.camping.core.Utils._
 import com.rikmuld.camping.core.Objs
 import com.rikmuld.camping.common.objs.tile.TileEntityCampfire
+import net.minecraft.world.IBlockAccess
+import com.rikmuld.camping.common.objs.tile.TileEntityCampfireCook
 
 class Campfire(infoClass: Class[ObjInfo]) extends BlockMain(infoClass, Material.fire, false, false) with BlockWithModel with BlockWithInstability {
   setHardness(3.0F)
@@ -65,6 +67,41 @@ class Campfire(infoClass: Class[ObjInfo]) extends BlockMain(infoClass, Material.
       val particleZ = ((z + 0.5F) - 0.15F) + (random.nextInt(30) / 100F)
       CampingMod.proxy.spawnFlame(world, particleX, particleY, particleZ, 0.0F, motionY, 0.0F, world.getTileEntity(x,y, z).asInstanceOf[TileEntityCampfire].color)
       world.spawnParticle("smoke", particleX, particleY, particleZ, 0.0D, 0.05D, 0.0D)
+    }
+  }
+}
+
+class CampfireCook(infoClass: Class[ObjInfo]) extends BlockMain(infoClass, Material.fire, false, false) with BlockWithModel with BlockWithInstability {
+  setHardness(2.0F)
+  setStepSound(Block.soundTypeStone)
+  setBlockBounds(0.125F, 0.0F, 0.125F, 0.875F, 0.125F, 0.875F)
+
+  override def breakBlock(world: World, x: Int, y: Int, z: Int, block: Block, meta: Int) {
+    world.dropBlockItems(x, y, z, new Random())
+    super.breakBlock(world, x, y, z, block, meta)
+  }
+  override def createTileEntity(world: World, meta: Int): TileEntity = new TileEntityCampfireCook()
+  override def getIcon(side: Int, metadata: Int): IIcon = Blocks.stone.getIcon(0, 0)
+  override def getLightValue(world: IBlockAccess, x: Int, y: Int, z: Int): Int = {
+    val tile = world.getTileEntity(x, y, z).asInstanceOf[TileEntityCampfireCook]
+    if (tile.fuel > 0) 15 else 0
+  }
+  override def onBlockActivated(world: World, x: Int, y: Int, z: Int, player: EntityPlayer, side: Int, par7: Float, par8: Float, par9: Float): Boolean = {
+    if (!world.isRemote) player.openGui(CampingMod, GuiInfo.GUI_CAMPFIRE_COOK, world, x, y, z)
+    true
+  }
+  @SideOnly(Side.CLIENT)
+  override def randomDisplayTick(world: World, x: Int, y: Int, z: Int, random: Random) {
+    val tile = world.getTileEntity(x, y, z).asInstanceOf[TileEntityCampfireCook]
+    if (tile.fuel > 0) {
+      for (i <- 0 until 3) {
+        val motionY = (random.nextFloat() / 40F) + 0.025F
+        val particleX = ((x + 0.5F) - 0.15F) + (random.nextInt(30) / 100F)
+        val particleY = y + 0.1F + (random.nextInt(15) / 100F)
+        val particleZ = ((z + 0.5F) - 0.15F) + (random.nextInt(30) / 100F)
+        CampingMod.proxy.spawnFlame(world, particleX, particleY, particleZ, 0.0F, motionY, 0.0F, 16)
+        world.spawnParticle("smoke", particleX, particleY, particleZ, 0.0D, 0.05D, 0.0D)
+      }
     }
   }
 }

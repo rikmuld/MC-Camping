@@ -20,10 +20,7 @@ import com.rikmuld.camping.core.PartInfo
 import com.rikmuld.camping.core.Objs
 import com.rikmuld.camping.core.TextureInfo
 import com.rikmuld.camping.core.PartInfo
-import com.rikmuld.camping.core.TextureInfo
-import com.rikmuld.camping.core.Objs
-import com.rikmuld.camping.core.TextureInfo
-import com.rikmuld.camping.core.PartInfo
+import com.rikmuld.camping.client.gui.GuiCampfireCook
 
 abstract class CookingEquipment(var cookTime: Int, var cookableFoood: HashMap[ItemStack, ItemStack], var maxFood: Int, var itemInfo: ItemStack) {
   var slots: Array[Array[Int]] = Array.ofDim[Int](2, maxFood)
@@ -34,7 +31,7 @@ abstract class CookingEquipment(var cookTime: Int, var cookableFoood: HashMap[It
 
   def canCook(stack: ItemStack): Boolean = cookableFoood.keySet.find(_.isItemEqual(stack)).map(_ => true).getOrElse(false)
   protected def doRenderFood(foodIndex: Int, stack: ItemStack, entity: EntityLivingBase): Unit
-  //def drawGuiTexture(container: GuiCampfireCook)
+  def drawGuiTexture(container: GuiCampfireCook)
   def getBaseCookTime(): Int = cookTime
   def getCookedFood(stack: ItemStack): ItemStack = cookableFoood.keySet.find(_.isItemEqual(stack)).map(cookableFoood.get(_)).getOrElse(null)
   def renderFood(foodIndex: Int, stack: ItemStack, entity: EntityLivingBase) {
@@ -90,7 +87,7 @@ object CookingEquipment {
   }
 }
 
-class Grill(item: ItemStack) extends CookingEquipment(600, CookingEquipment.grillFood, 4, item) {
+class Grill(item: ItemStack) extends CookingEquipment(Objs.config.cookTimeGrill, CookingEquipment.grillFood, 4, item) {
   var pilar: AbstractBox = new AbstractBox(128, 32, false, 0, 2, 0, 0, 0, 1, 16, 1, 0.03125F, 0.0F, 0.0F,  0.0F)
   var line: AbstractBox = new AbstractBox(128, 32, false, 0, 0, 0, 0, 0, 60, 1, 1, 0.015625F, 0.0F, 0.0F, 0.0F)
   var line2: AbstractBox = new AbstractBox(128, 32, false, 0, 0, 0, 0, 0, 1, 1, 60, 0.015625F, 0.0F, 0.0F, 0.0F)
@@ -114,13 +111,13 @@ class Grill(item: ItemStack) extends CookingEquipment(600, CookingEquipment.gril
     renderer.renderItem(entity, item, 0)
     GL11.glPopMatrix()
   }
-//  override def drawGuiTexture(container: GuiCampfireCook) {
-//    container.drawTexturedModalRect(container.getGuiLeft + 67, container.getGuiTop + 7, 7, 105, 18, 18)
-//    container.drawTexturedModalRect(container.getGuiLeft + 89, container.getGuiTop + 7, 7, 105, 18, 18)
-//    container.drawTexturedModalRect(container.getGuiLeft + 67, container.getGuiTop + 27, 7, 105, 18, 18)
-//    container.drawTexturedModalRect(container.getGuiLeft + 89, container.getGuiTop + 27, 7, 105, 18, 18)
-//    container.drawTexturedModalRect(container.getGuiLeft + 47, container.getGuiTop + 39, 176, 115, 80, 63)
-//  }
+  override def drawGuiTexture(container: GuiCampfireCook) {
+    container.drawTexturedModalRect(container.getGuiLeft + 67, container.getGuiTop + 7, 7, 105, 18, 18)
+    container.drawTexturedModalRect(container.getGuiLeft + 89, container.getGuiTop + 7, 7, 105, 18, 18)
+    container.drawTexturedModalRect(container.getGuiLeft + 67, container.getGuiTop + 27, 7, 105, 18, 18)
+    container.drawTexturedModalRect(container.getGuiLeft + 89, container.getGuiTop + 27, 7, 105, 18, 18)
+    container.drawTexturedModalRect(container.getGuiLeft + 47, container.getGuiTop + 39, 176, 115, 80, 63)
+  }
   override def renderModel() {
     GL11.glPushMatrix()
     Minecraft.getMinecraft.renderEngine.bindTexture(new ResourceLocation(TextureInfo.MODEL_SPIT))
@@ -175,7 +172,7 @@ class Grill(item: ItemStack) extends CookingEquipment(600, CookingEquipment.gril
   }
 }
 
-class Pan(item: ItemStack) extends CookingEquipment(1000, CookingEquipment.panFood, 8, item) {
+class Pan(item: ItemStack) extends CookingEquipment(Objs.config.cookTimePan, CookingEquipment.panFood, 8, item) {
   var pilar: AbstractBox = new AbstractBox(64, 32, false, 0, 2, 0, 0, 0, 1, 28, 1, 0.03125F, 0.0F, 0.0F, 0.0F)
   var line: AbstractBox = new AbstractBox(64, 32, false, 0, 0, 0, 0, 0, 60, 1, 1, 0.015625F, 0.0F, 0.0F, 0.0F)
   var cable: AbstractBox = new AbstractBox(64, 32, false, 0, 0, 0, 0, 0, 1, 45, 1, 0.0078625F, 0.0F, 0.0F, 0.0F)
@@ -184,16 +181,16 @@ class Pan(item: ItemStack) extends CookingEquipment(1000, CookingEquipment.panFo
   var panHandle: AbstractBox = new AbstractBox(64, 32, false, 4, 13, 0, 0, 0, 1, 1, 1, 0.03125F, 0.0F, 0.0F, 0.0F)
 
   override def doRenderFood(foodIndex: Int, stack: ItemStack, entity: EntityLivingBase) {}
-//  override def drawGuiTexture(container: GuiCampfireCook) {
-//    container.drawTexturedModalRect(container.getGuiLeft + 24, container.getGuiTop + 77, 7, 105, 18, 18)
-//    container.drawTexturedModalRect(container.getGuiLeft + 131, container.getGuiTop + 77, 7, 105, 18, 18)
-//    container.drawTexturedModalRect(container.getGuiLeft + 32, container.getGuiTop + 54, 7, 105, 1818)
-//    container.drawTexturedModalRect(container.getGuiLeft + 123, container.getGuiTop + 54, 7, 105, 1818)
-//    container.drawTexturedModalRect(container.getGuiLeft + 40, container.getGuiTop + 30, 7, 105, 1818)
-//    container.drawTexturedModalRect(container.getGuiLeft + 113, container.getGuiTop + 30, 7, 105, 1818)
-//    container.drawTexturedModalRect(container.getGuiLeft + 65, container.getGuiTop + 21, 7, 105, 1818)
-//    container.drawTexturedModalRect(container.getGuiLeft + 90, container.getGuiTop + 21, 7, 105, 1818)
-//  }
+  override def drawGuiTexture(container: GuiCampfireCook) {
+    container.drawTexturedModalRect(container.getGuiLeft + 24, container.getGuiTop + 77, 7, 105, 18, 18)
+    container.drawTexturedModalRect(container.getGuiLeft + 131, container.getGuiTop + 77, 7, 105, 18, 18)
+    container.drawTexturedModalRect(container.getGuiLeft + 32, container.getGuiTop + 54, 7, 105, 18, 18)
+    container.drawTexturedModalRect(container.getGuiLeft + 123, container.getGuiTop + 54, 7, 105, 18, 18)
+    container.drawTexturedModalRect(container.getGuiLeft + 40, container.getGuiTop + 30, 7, 105, 18, 18)
+    container.drawTexturedModalRect(container.getGuiLeft + 113, container.getGuiTop + 30, 7, 105, 18, 18)
+    container.drawTexturedModalRect(container.getGuiLeft + 65, container.getGuiTop + 21, 7, 105, 18, 18)
+    container.drawTexturedModalRect(container.getGuiLeft + 90, container.getGuiTop + 21, 7, 105, 18, 18)
+  }
   override def renderModel() {
     GL11.glPushMatrix()
     Minecraft.getMinecraft.renderEngine.bindTexture(new ResourceLocation(TextureInfo.MODEL_PAN))
@@ -247,7 +244,7 @@ class Pan(item: ItemStack) extends CookingEquipment(1000, CookingEquipment.panFo
     slots(1)(7) = 22
   }
 }
-class Spit(item: ItemStack) extends CookingEquipment(300, CookingEquipment.spitFood, 2, item) {
+class Spit(item: ItemStack) extends CookingEquipment(Objs.config.cookTimeSpit, CookingEquipment.spitFood, 2, item) {
   var pilar: AbstractBox = new AbstractBox(128, 32, false, 0, 2, 0, 0, 0, 1, 16, 1, 0.03125F, 0.0F, 0.0F, 0.0F)
   var line: AbstractBox = new AbstractBox(128, 32, false, 0, 0, 0, 0, 0, 60, 1, 1, 0.015625F, 0.0F, 0.0F, 0.0F)
 
@@ -265,9 +262,9 @@ class Spit(item: ItemStack) extends CookingEquipment(300, CookingEquipment.spitF
     renderer.renderItem(entity, item, 0)
     GL11.glPopMatrix()
   }
-//  override def drawGuiTexture(container: GuiCampfireCook) {
-//    container.drawTexturedModalRect(container.getGuiLeft + 48, container.getGuiTop + 26, 176, 44, 80, 68)
-//  }
+  override def drawGuiTexture(container: GuiCampfireCook) {
+    container.drawTexturedModalRect(container.getGuiLeft + 48, container.getGuiTop + 26, 176, 44, 80, 68)
+  }
   override def renderModel() {
     Minecraft.getMinecraft.renderEngine.bindTexture(new ResourceLocation(TextureInfo.MODEL_SPIT))
     GL11.glPushMatrix()

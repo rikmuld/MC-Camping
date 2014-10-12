@@ -64,13 +64,24 @@ import com.rikmuld.camping.common.objs.item.Kit
 import com.rikmuld.camping.common.objs.item.Backpack
 import com.rikmuld.camping.common.inventory.gui.ContainerKit
 import com.rikmuld.camping.client.gui.GuiKit
+import com.rikmuld.camping.common.objs.block.CampfireCook
+import com.rikmuld.camping.common.objs.block.Campfire
+import com.rikmuld.camping.common.objs.block.CampfireCook
+import com.rikmuld.camping.common.objs.block.Campfire
+import com.rikmuld.camping.common.objs.tile.TileEntityCampfireCook
+import com.rikmuld.camping.client.render.objs.CampfireCookItemRender
+import com.rikmuld.camping.common.objs.block.CampfireCook
+import com.rikmuld.camping.client.render.objs.CampfireCookRender
+import com.rikmuld.camping.common.objs.block.Campfire
+import com.rikmuld.camping.common.inventory.gui.ContainerCampfireCook
+import com.rikmuld.camping.client.gui.GuiCampfireCook
 
 object Objs {
   var tab: CreativeTabs = _
   var network: SimpleNetworkWrapper = _
   var events: Events = _
   var knife, parts, backpack, kit: ItemMain = _
-  var lantern, light, campfire: BlockMain = _
+  var lantern, light, campfire, campfireCook: BlockMain = _
   var spit, grill, pan: CookingEquipment = _
   var config: Config = _
   var modelLoader: TechneModelLoader = _
@@ -86,17 +97,30 @@ object MiscRegistry {
     PacketDataManager.registerPacketData(classOf[com.rikmuld.camping.common.network.Map].asInstanceOf[Class[BasicPacketData]])
     PacketDataManager.registerPacketData(classOf[OpenGui].asInstanceOf[Class[BasicPacketData]])
     PacketDataManager.registerPacketData(classOf[NBTPlayer].asInstanceOf[Class[BasicPacketData]])
-    
+    PacketDataManager.registerPacketData(classOf[com.rikmuld.camping.common.network.Items].asInstanceOf[Class[BasicPacketData]])
+
     GameRegistry.registerTileEntity(classOf[TileEntityLantern], ModInfo.MOD_ID+"_lantern")
     GameRegistry.registerTileEntity(classOf[TileEntityLight], ModInfo.MOD_ID+"_light")
     GameRegistry.registerTileEntity(classOf[TileEntityCampfire], ModInfo.MOD_ID+"_campfire")
-    
+    GameRegistry.registerTileEntity(classOf[TileEntityCampfireCook], ModInfo.MOD_ID+"_campfireCook")
+
     val stick = new ItemStack(Items.stick)
     val ironStick = new ItemStack(Objs.parts, 1, PartInfo.STICK_IRON)
 
-    CookingEquipment.addEquipmentRecipe(Objs.spit, stick, stick, ironStick);
-    CookingEquipment.addEquipmentRecipe(Objs.grill, stick, stick, stick, stick, ironStick, ironStick, new ItemStack(Blocks.iron_bars));
-	CookingEquipment.addEquipmentRecipe(Objs.pan, stick, stick, ironStick, new ItemStack(Items.string), new ItemStack(Objs.parts, 1, PartInfo.PAN));
+    CookingEquipment.addEquipmentRecipe(Objs.spit, stick, stick, ironStick)
+    CookingEquipment.addEquipmentRecipe(Objs.grill, stick, stick, stick, stick, ironStick, ironStick, new ItemStack(Blocks.iron_bars))
+	CookingEquipment.addEquipmentRecipe(Objs.pan, stick, stick, ironStick, new ItemStack(Items.string), new ItemStack(Objs.parts, 1, PartInfo.PAN))
+	CookingEquipment.addGrillFood(new ItemStack(Items.fish, 1, 0), new ItemStack(Items.cooked_fished, 1, 0));
+    CookingEquipment.addGrillFood(new ItemStack(Items.fish, 1, 1), new ItemStack(Items.cooked_fished, 1, 1));
+	CookingEquipment.addGrillFood(new ItemStack(Items.beef, 1, 0), new ItemStack(Items.cooked_beef, 1, 0));
+	CookingEquipment.addGrillFood(new ItemStack(Items.porkchop, 1, 0), new ItemStack(Items.cooked_porkchop, 1, 0));
+	//CookingEquipment.addGrillFood(ModItems.venisonRaw, 0, new ItemStack(ModItems.venisonCooked, 1, 0));
+	CookingEquipment.addPanFood(new ItemStack(Items.potato, 1, 0), new ItemStack(Items.baked_potato, 1, 0));
+	CookingEquipment.addPanFood(new ItemStack(Items.rotten_flesh, 1, 0), new ItemStack(Items.leather, 1, 0));
+	//CookingEquipment.addSpitFood(ModItems.hareRaw, 0, new ItemStack(ModItems.hareCooked, 1, 0));
+	CookingEquipment.addSpitFood(new ItemStack(Items.chicken, 1, 0), new ItemStack(Items.cooked_chicken, 1, 0));
+	CookingEquipment.addSpitFood(new ItemStack(Items.fish, 1, 0), new ItemStack(Items.cooked_fished, 1, 0));
+	CookingEquipment.addSpitFood(new ItemStack(Items.fish, 1, 1), new ItemStack(Items.cooked_fished, 1, 1));
   }
   def preInit(event: FMLPreInitializationEvent) {
     Objs.config = new Config(new Configuration(event.getSuggestedConfigurationFile()))
@@ -109,6 +133,7 @@ object MiscRegistry {
     MinecraftForge.EVENT_BUS.register(Objs.events)
     FMLCommonHandler.instance.bus.register(Objs.events)
     
+    CampingMod.proxy.registerGui(GuiInfo.GUI_CAMPFIRE_COOK, classOf[ContainerCampfireCook].asInstanceOf[Class[Container]], classOf[GuiCampfireCook].asInstanceOf[Class[Gui]])
     CampingMod.proxy.registerGui(GuiInfo.GUI_KIT, classOf[ContainerKit].asInstanceOf[Class[Container]], classOf[GuiKit].asInstanceOf[Class[Gui]])
     CampingMod.proxy.registerGui(GuiInfo.GUI_CAMPFIRE, classOf[ContainerCampfire].asInstanceOf[Class[Container]], classOf[GuiCampfire].asInstanceOf[Class[Gui]])
     CampingMod.proxy.registerGui(GuiInfo.GUI_CAMPINV, classOf[ContainerCampinv].asInstanceOf[Class[Container]], classOf[GuiCampinginv].asInstanceOf[Class[Gui]])
@@ -119,6 +144,8 @@ object MiscRegistry {
   def initClient {
     MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(Objs.campfire), new CampfireItemRender())
     ClientRegistry.bindTileEntitySpecialRenderer(classOf[TileEntityCampfire], new CampfireRender())
+    MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(Objs.campfireCook), new CampfireCookItemRender())
+    ClientRegistry.bindTileEntitySpecialRenderer(classOf[TileEntityCampfireCook], new CampfireCookRender())
   }
   def initServer {}
 }
@@ -131,6 +158,7 @@ object ObjRegistry {
     Objs.lantern = new Lantern(classOf[LanternInfo].asInstanceOf[Class[ObjInfo]])
     Objs.light = new Light(classOf[LightInfo].asInstanceOf[Class[ObjInfo]]);
     Objs.campfire = new Campfire(classOf[CampfireInfo].asInstanceOf[Class[ObjInfo]])
+    Objs.campfireCook = new CampfireCook(classOf[CampfireCookInfo].asInstanceOf[Class[ObjInfo]])
     Objs.kit = new Kit(classOf[KitInfo].asInstanceOf[Class[ObjInfo]])
     Objs.grill = new Grill(new ItemStack(Objs.kit, 1, KitInfo.KIT_GRILL))
     Objs.spit = new Spit(new ItemStack(Objs.kit, 1, KitInfo.KIT_SPIT))
