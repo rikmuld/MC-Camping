@@ -23,6 +23,7 @@ import com.rikmuld.camping.common.objs.block.LanternItem
 import com.rikmuld.camping.common.objs.block.LanternItem
 import net.minecraft.nbt.NBTTagList
 import scala.collection.JavaConversions._
+import net.minecraft.nbt.NBTUtil
 
 object Utils {
   implicit class ContainerUtils(container: Container) {
@@ -106,6 +107,7 @@ object Utils {
   }
 
   implicit class PlayerUtils(player: EntityPlayer) {
+    def setCurrentItem(stack:ItemStack) = player.inventory.setInventorySlotContents(player.inventory.currentItem, stack)
     def loadCampInvItemsFromNBT(): ArrayList[ItemStack] = {
       val tag = player.getEntityData.getCompoundTag(NBTInfo.INV_CAMPING)
       if (tag == null) return null
@@ -150,30 +152,27 @@ object Utils {
     def hasLantarn(): Boolean = loadCampInvItemsFromNBT().containsItem(Item.getItemFromBlock(Objs.lantern))
     def hasMap(): Boolean = loadCampInvItemsFromNBT().containsItem(Items.filled_map)
     def lanternTick() {
-      val stacks = loadCampInvItemsFromNBT()
-      val slots = loadCampInvSlotNumFromNBT()
-      val stacks2 = new ArrayList[ItemStack]()
+      val stacks = player.loadCampInvItemsFromNBT();
+      val slots = player.loadCampInvSlotNumFromNBT();
+      val stacks2 = new ArrayList[ItemStack];
+
       for (i <- 0 until 4) {
-        if (slots.contains(i)) {
-          var stack = stacks.get(slots.indexOf(i))
-          if ((stack.getItem == Item.getItemFromBlock(Objs.lantern)) &&
-            (stack.getItemDamage == LanternInfo.LANTERN_ON)) {
+        println(i)
+        if (slots.contains(i.toByte)) {
+          var stack = stacks.get(slots.indexOf(i.toByte))
+          if ((stack.getItem().equals(Item.getItemFromBlock(Objs.lantern))) && (stack.getItemDamage() == LanternInfo.LANTERN_ON)) {
             if (!stack.hasTagCompound()) {
               stack.setTagCompound(new NBTTagCompound())
-              stack.getTagCompound.setInteger("time", 1500)
+              stack.getTagCompound().setInteger("time", 1500)
             }
-            if ((stack.getTagCompound.getInteger("time") - 1) > 0) {
-              stack.getTagCompound.setInteger("time", stack.getTagCompound.getInteger("time") - 1)
-            } else {
-              stack = new ItemStack(Objs.lantern, 1, LanternInfo.LANTERN_OFF)
-            }
+            if ((stack.getTagCompound().getInteger("time") - 1) > 0) stack.getTagCompound().setInteger("time", stack.getTagCompound().getInteger("time") - 1);
+            else stack = new ItemStack(Objs.lantern, 1, LanternInfo.LANTERN_OFF)
           }
           stacks2.add(stack)
-        } else {
-          stacks2.add(null)
-        }
+        } else stacks2.add(null)
       }
-      player.getEntityData.getCompoundTag("campInv").setTag("Items", stacks2.getNBT)
+
+      player.getEntityData().getCompoundTag(NBTInfo.INV_CAMPING).setTag("Items", stacks2.getNBT())
     }
   }
 

@@ -27,7 +27,7 @@ class TileEntityMain extends TileEntity {
   def setTileData(id: Int, data: Array[Int]) {}
   def sendTileData(id: Int, client: Boolean, data: Int*) {
     if (!client && worldObj.isRemote) PacketSender.toServer(new TileData(id, xCoord, yCoord, zCoord, data));
-    else if (client && !worldObj.isRemote)PacketSender.toClient(new TileData(id, xCoord, yCoord, zCoord, data));
+    else if (client && !worldObj.isRemote) PacketSender.toClient(new TileData(id, xCoord, yCoord, zCoord, data));
   }
 }
 
@@ -50,16 +50,14 @@ trait TileEntityWithRotation extends TileEntityMain {
     }
   }
   override def writeToNBT(tag: NBTTagCompound) {
-    super.writeToNBT(tag)
     tag.setInteger("rotation", rotation)
   }
   override def readFromNBT(tag: NBTTagCompound) {
-    super.readFromNBT(tag)
     rotation = tag.getInteger("rotation")
   }
 }
 
-trait TileEntityWithInventory extends TileEntity with IInventory with ISidedInventory {
+abstract class TileEntityWithInventory extends TileEntityMain with IInventory with ISidedInventory {
   var inventoryContents: Array[ItemStack] = new Array[ItemStack](getSizeInventory)
 
   override def canExtractItem(slot: Int, ItemStack: ItemStack, side: Int): Boolean = false
@@ -94,21 +92,21 @@ trait TileEntityWithInventory extends TileEntity with IInventory with ISidedInve
   def hasStackInSlot(slot: Int): Boolean = getStackInSlot(slot) != null
   override def isItemValidForSlot(slot: Int, itemstack: ItemStack): Boolean = false
   override def isUseableByPlayer(player: EntityPlayer): Boolean = if (getWorldObj.getTileEntity(xCoord, yCoord, zCoord) != this) false else player.getDistanceSq(xCoord + 0.5D, yCoord + 0.5D, zCoord + 0.5D) <= 64.0D
-  override def readFromNBT(NBTTagCompound: NBTTagCompound) {
-    super.readFromNBT(NBTTagCompound)
+  override def readFromNBT(tag: NBTTagCompound) {
     inventoryContents = Array.ofDim[ItemStack](getSizeInventory)
-    val inventory = NBTTagCompound.getTagList("Items", Constants.NBT.TAG_COMPOUND)
+    val inventory = tag.getTagList("Items", Constants.NBT.TAG_COMPOUND)
     for (i <- 0 until inventory.tagCount()) {
       val Slots = inventory.getCompoundTagAt(i).asInstanceOf[NBTTagCompound]
       val slot = Slots.getByte("Slot")
       if ((slot >= 0) && (slot < inventoryContents.length)) inventoryContents(slot) = ItemStack.loadItemStackFromNBT(Slots)
     }
+    super.readFromNBT(tag)
   }
   override def setInventorySlotContents(slot: Int, stack: ItemStack) {
     inventoryContents(slot) = stack
     if ((stack != null) && (stack.stackSize > getInventoryStackLimit)) stack.stackSize = getInventoryStackLimit
   }
-  override def writeToNBT(NBTTagCompound: NBTTagCompound) {
+  override def writeToNBT(tag: NBTTagCompound) {
     val inventory = new NBTTagList()
     for (slot <- 0 until inventoryContents.length if inventoryContents(slot) != null) {
       val Slots = new NBTTagCompound()
@@ -116,7 +114,8 @@ trait TileEntityWithInventory extends TileEntity with IInventory with ISidedInve
       inventoryContents(slot).writeToNBT(Slots)
       inventory.appendTag(Slots)
     }
-    NBTTagCompound.setTag("Items", inventory)
+    tag.setTag("Items", inventory)
+    super.writeToNBT(tag)
   }
   override def getInventoryName(): String = "container_" + getBlockType.getUnlocalizedName.substring(5)
   override def hasCustomInventoryName(): Boolean = false

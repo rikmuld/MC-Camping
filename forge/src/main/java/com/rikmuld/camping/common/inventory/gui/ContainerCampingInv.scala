@@ -1,14 +1,12 @@
-package com.rikmuld.camping.common.inventory
+package com.rikmuld.camping.common.inventory.gui
 
 import net.minecraft.entity.player.EntityPlayer
-import com.rikmuld.camping.core.ObjRegistry
 import net.minecraft.item.ItemStack
 import net.minecraft.init.Items
 import net.minecraft.inventory.Container
 import java.util.ArrayList
 import net.minecraft.inventory.Slot
 import com.rikmuld.camping.core.Utils._
-import com.rikmuld.camping.core.Objs
 import net.minecraft.inventory.SlotCrafting
 import net.minecraft.inventory.InventoryCraftResult
 import net.minecraft.inventory.InventoryCrafting
@@ -18,6 +16,18 @@ import net.minecraft.item.crafting.CraftingManager
 import net.minecraftforge.common.util.Constants
 import scala.collection.JavaConversions._
 import java.util.Random
+import com.rikmuld.camping.common.inventory.inventory.InventoryItemMain
+import com.rikmuld.camping.common.inventory.inventory.InventoryPlayerMain
+import com.rikmuld.camping.common.inventory.SlotDisable
+import com.rikmuld.camping.common.inventory.SlotItemsNot
+import com.rikmuld.camping.common.inventory.SlotItemsOnly
+import com.rikmuld.camping.core.Objs
+import com.rikmuld.camping.core.Objs
+import com.rikmuld.camping.common.inventory.SlotItemsNot
+import com.rikmuld.camping.common.inventory.SlotDisable
+import com.rikmuld.camping.common.inventory.inventory.InventoryItemMain
+import com.rikmuld.camping.common.inventory.SlotItemsOnly
+import com.rikmuld.camping.common.inventory.inventory.InventoryPlayerMain
 
 class ContainerCampinv(var player: EntityPlayer) extends Container {
   var backpackInv: InventoryItemMain = new InventoryItemMain(new ItemStack(Objs.backpack, 1, 0), player, 27, 64)
@@ -34,7 +44,7 @@ class ContainerCampinv(var player: EntityPlayer) extends Container {
   addSlotToContainer(new SlotItemsOnly(campinv, 0, 8, 28, new ItemStack(Objs.backpack)))
   addSlotToContainer(new SlotItemsOnly(campinv, 1, 8, 46, Objs.knife))
   addSlotToContainer(new SlotItemsOnly(campinv, 2, 196, 28, new ItemStack(Objs.lantern)))
-  addSlotToContainer(new SlotItemsOnly(campinv, 3, 196, 46, new ItemStack(Items.filled_map)))
+  addSlotToContainer(new SlotItemsOnly(campinv, 3, 196, 46, Items.filled_map))
 
   this.addSlots(player.inventory, 0, 1, 9, 30, 136)
   this.addSlots(player.inventory, 9, 3, 9, 30, 78)
@@ -58,9 +68,9 @@ class ContainerCampinv(var player: EntityPlayer) extends Container {
         if (!mergeItemStack(itemstack1, 28, inventorySlots.size, true)) return null
       } else {
         if (campinv.getStackInSlot(0) == null) {
-          if (itemstack1.getItem != Objs.backpack || 
-            !mergeItemStack(itemstack1, backpackInv.getSizeInventory, backpackInv.getSizeInventory + campinv.getSizeInventory, 
-            false)) return null
+          if (itemstack1.getItem != Objs.backpack ||
+            !mergeItemStack(itemstack1, backpackInv.getSizeInventory, backpackInv.getSizeInventory + campinv.getSizeInventory,
+              false)) return null
         } else {
           if (!mergeItemStack(itemstack1, 0, backpackInv.getSizeInventory, false)) return null
         }
@@ -96,7 +106,7 @@ class ContainerCampinvCraft(var player: EntityPlayer) extends Container {
 
   campinv.openInventory()
   backpackInv.openInventory()
-  
+
   this.onCraftMatrixChanged(this.craftMatrix)
 
   override def onCraftMatrixChanged(par1IInventory: IInventory) = this.craftResult.setInventorySlotContents(0, CraftingManager.getInstance.findMatchingRecipe(this.craftMatrix, this.player.worldObj))

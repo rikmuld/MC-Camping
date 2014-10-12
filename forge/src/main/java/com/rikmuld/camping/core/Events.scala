@@ -12,7 +12,7 @@ import cpw.mods.fml.common.gameevent.TickEvent.PlayerTickEvent
 import cpw.mods.fml.relauncher.ReflectionHelper
 import cpw.mods.fml.client.FMLClientHandler
 import net.minecraft.client.gui.inventory.GuiContainerCreative
-import com.rikmuld.camping.common.inventory.InventoryCampinv
+import com.rikmuld.camping.common.inventory.gui.InventoryCampinv
 import net.minecraftforge.client.event.RenderGameOverlayEvent
 import net.minecraft.creativetab.CreativeTabs
 import cpw.mods.fml.common.gameevent.TickEvent.ClientTickEvent
@@ -31,7 +31,7 @@ import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType
 import com.rikmuld.camping.common.network.PacketSender
 import scala.collection.JavaConversions._
 import com.rikmuld.camping.core.Utils._
-import com.rikmuld.camping.client.GuiMapHUD
+import com.rikmuld.camping.client.gui.GuiMapHUD
 import java.util.ArrayList
 
 object Events {
@@ -43,8 +43,8 @@ class Events {
   var tickLight: Int = 0
 
   @SubscribeEvent
-  def onConfigChanged(eventArgs:ConfigChangedEvent.OnConfigChangedEvent) {
-    if(eventArgs.modID.equals(ModInfo.MOD_ID))Objs.config.sync
+  def onConfigChanged(eventArgs: ConfigChangedEvent.OnConfigChangedEvent) {
+    if (eventArgs.modID.equals(ModInfo.MOD_ID)) Objs.config.sync
   }
   @SubscribeEvent
   def onPlayerDead(event: PlayerDropsEvent) = InventoryCampinv.dropItems(event.entityPlayer)
@@ -77,9 +77,9 @@ class Events {
   def onClientTick(event: ClientTickEvent) {
     if (event.phase != TickEvent.Phase.END) return
     val mc = FMLClientHandler.instance().getClient
-    if (mc.currentScreen.isInstanceOf[GuiInventory] || 
+    if (mc.currentScreen.isInstanceOf[GuiInventory] ||
       mc.currentScreen.isInstanceOf[GuiContainerCreative]) {
-      val list:ArrayList[Any] = ReflectionHelper.getPrivateValue(classOf[GuiScreen], mc.currentScreen, 4)
+      val list: ArrayList[Any] = ReflectionHelper.getPrivateValue(classOf[GuiScreen], mc.currentScreen, 4)
       list.asInstanceOf[java.util.List[GuiButton]].add(new GuiButton(10, 5, 5, 100, 10, "Camping Inventory"))
       ReflectionHelper.setPrivateValue(classOf[GuiScreen], mc.currentScreen, list, 4)
     }
@@ -97,7 +97,7 @@ class Events {
         }
       } else pressFlag(0) = true
     }
-    if (Events.map == null)Events.map = new GuiMapHUD()
+    if (Events.map == null) Events.map = new GuiMapHUD()
     if (mc.thePlayer.hasMap()) {
       Events.map.setWorldAndResolution(mc, event.resolution.getScaledWidth, event.resolution.getScaledHeight)
       Events.map.drawScreen(event.mouseX, event.mouseY, event.partialTicks)

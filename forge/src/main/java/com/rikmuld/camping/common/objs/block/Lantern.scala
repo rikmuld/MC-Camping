@@ -37,8 +37,7 @@ class Lantern(infoClass: Class[ObjInfo]) extends BlockMain(infoClass, Material.g
   }
   override def createNewTileEntity(world: World, meta: Int): TileEntity = new TileEntityLantern()
   protected override def dropBlockAsItem(world: World, x: Int, y: Int, z: Int, stack: ItemStack) {
-    if (!world.isRemote &&
-      world.getGameRules.getGameRuleBooleanValue("doTileDrops")) {
+    if (!world.isRemote && world.getGameRules.getGameRuleBooleanValue("doTileDrops")) {
       stack.setTagCompound(new NBTTagCompound())
       stack.getTagCompound.setInteger("time", burnTime)
       val f = 0.7F
@@ -50,10 +49,11 @@ class Lantern(infoClass: Class[ObjInfo]) extends BlockMain(infoClass, Material.g
       world.spawnEntityInWorld(entityitem)
     }
   }
+  override def damageDropped(meta: Int) = meta
   override def dropIfCantStay(world: World, x: Int, y: Int, z: Int) {
     if (!world.isTouchableBlockPartitionalSolidForSideOrHasCorrectBounds(x, y, z, 0, 1)) {
       breakBlock(world, x, y, z, this, 0)
-      for (item <- this.getDrops(world, x, y, z, 0, 1)) {
+      for (item <- this.getDrops(world, x, y, z, damageDropped(world.getBlockMetadata(x, y, z)), 1)) {
         dropBlockAsItem(world, x, y, z, item)
       }
       world.setBlock(x, y, z, Blocks.air)
@@ -76,17 +76,17 @@ class Lantern(infoClass: Class[ObjInfo]) extends BlockMain(infoClass, Material.g
 
 class LanternItem(block: Block) extends ItemBlockMain(block, classOf[LanternInfo].asInstanceOf[Class[ObjInfo]]) {
   setMaxStackSize(1);
-  
+
   override def addInformation(stack: ItemStack, player: EntityPlayer, list: java.util.List[_], par4: Boolean) {
     if (stack.hasTagCompound()) list.asInstanceOf[java.util.List[String]].add("Burning time left: " + (stack.getTagCompound.getInteger("time") / 2) + " seconds")
   }
   @SideOnly(Side.CLIENT)
   override def getSubItems(item: Item, creativetabs: CreativeTabs, stackList: java.util.List[_]) {
-    val log = new ItemStack(item, 1, 0)
-    log.setTagCompound(new NBTTagCompound())
-    log.getTagCompound.setInteger("time", 1500)
-    stackList.asInstanceOf[java.util.List[ItemStack]].add(log)
-    stackList.asInstanceOf[java.util.List[ItemStack]].add(new ItemStack(item, 1, 1))
+    val lantern = new ItemStack(item, 1, LanternInfo.LANTERN_ON)
+    lantern.setTagCompound(new NBTTagCompound())
+    lantern.getTagCompound.setInteger("time", 1500)
+    stackList.asInstanceOf[java.util.List[ItemStack]].add(lantern)
+    stackList.asInstanceOf[java.util.List[ItemStack]].add(new ItemStack(item, 1, LanternInfo.LANTERN_OFF))
   }
   override def placeBlockAt(stack: ItemStack, player: EntityPlayer, world: World, x: Int, y: Int, z: Int, side: Int, hitX: Float, hitY: Float, hitZ: Float, metadata: Int): Boolean = {
     if (super.placeBlockAt(stack, player, world, x, y, z, side, hitX, hitY, hitZ, metadata)) {

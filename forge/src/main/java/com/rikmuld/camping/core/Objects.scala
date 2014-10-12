@@ -22,6 +22,10 @@ class HempInfo extends ObjInfo {
   override def NAME = "hemp"
 }
 
+class CampfireInfo extends ObjInfo {
+  override def NAME = "campfire"
+}
+
 class LightInfo extends ObjInfo {
   override def NAME = "light"
 }
@@ -37,6 +41,19 @@ class MarshMallowInfo extends ObjInfo {
 object LanternInfo {
   final val LANTERN_ON = 0
   final val LANTERN_OFF = 1
+}
+
+object KitInfo {
+  final val KIT_EMPTY = 0
+  final val KIT_SPIT = 1
+  final val KIT_GRILL = 2
+  final val KIT_PAN = 3
+  final val KIT_USELESS = 4
+}
+
+class KitInfo extends ObjInfo {
+  override def NAME = "kit"
+  override def NAME_META = Array("kit", "spitKit", "grillKit", "panKit", "uselessKit")
 }
 
 class LanternInfo extends ObjInfo {

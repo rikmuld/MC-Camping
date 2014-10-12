@@ -1,13 +1,16 @@
 package com.rikmuld.camping.common.objs.tile
 
-import net.minecraft.entity.player.EntityPlayer
-import net.minecraft.util.AxisAlignedBB
-import net.minecraft.init.Blocks
 import java.util.ArrayList
-import scala.collection.JavaConversions._
-import com.rikmuld.camping.core.Utils._
 
-class TileLight extends TileEntityMain {
+import scala.collection.JavaConversions.asScalaBuffer
+
+import com.rikmuld.camping.core.Utils.PlayerUtils
+
+import net.minecraft.entity.player.EntityPlayer
+import net.minecraft.init.Blocks
+import net.minecraft.util.AxisAlignedBB
+
+class TileEntityLight extends TileEntityMain {
   var tick: Int = _
 
   override def updateEntity() {
@@ -15,7 +18,7 @@ class TileLight extends TileEntityMain {
       tick += 1
       if (tick > 10) {
         var flag = true
-        val players = worldObj.getEntitiesWithinAABB(classOf[EntityPlayer], AxisAlignedBB.getBoundingBox(xCoord - 2, 
+        val players = worldObj.getEntitiesWithinAABB(classOf[EntityPlayer], AxisAlignedBB.getBoundingBox(xCoord - 2,
           yCoord - 2, zCoord - 2, xCoord + 2, yCoord + 2, zCoord + 2)).asInstanceOf[ArrayList[EntityPlayer]]
         for (player <- players if player.hasLantarn()) {
           flag = false

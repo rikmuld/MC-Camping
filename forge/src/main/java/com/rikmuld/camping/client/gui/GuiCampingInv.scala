@@ -1,4 +1,4 @@
-package com.rikmuld.camping.client
+package com.rikmuld.camping.client.gui
 
 import java.awt.Color
 
@@ -9,8 +9,8 @@ import org.lwjgl.BufferUtils
 import org.lwjgl.opengl.GL11
 import org.lwjgl.opengl.GL12
 
-import com.rikmuld.camping.common.inventory.ContainerCampinv
-import com.rikmuld.camping.common.inventory.ContainerCampinvCraft
+import com.rikmuld.camping.common.inventory.gui.ContainerCampinv
+import com.rikmuld.camping.common.inventory.gui.ContainerCampinvCraft
 import com.rikmuld.camping.common.network.OpenGui
 import com.rikmuld.camping.common.network.PacketSender
 import com.rikmuld.camping.core.GuiInfo
@@ -39,7 +39,7 @@ class GuiCampinginv(var player: EntityPlayer) extends GuiContainer(new Container
     super.initGui()
     craftButton = new GuiButton(1, guiLeft + xSize / 2 - 50, guiTop + 6, 100, 10, "Open Crafting Grit")
     craftButton.enabled = false
-    this.buttonList.asInstanceOf[java.util.List[GuiButton]].add(new GuiButton(0, 5, 5, 100, 10, "Minecraft Inventory"))
+    if (!player.capabilities.isCreativeMode) this.buttonList.asInstanceOf[java.util.List[GuiButton]].add(new GuiButton(0, 5, 5, 100, 10, "Minecraft Inventory"))
     this.buttonList.asInstanceOf[java.util.List[GuiButton]].add(craftButton)
   }
   override def actionPerformed(button: GuiButton) {
@@ -96,6 +96,8 @@ class GuiMapHUD extends GuiScreen {
     GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f)
     GL11.glDisable(GL11.GL_LIGHTING)
     GL11.glScalef(0.5F, 0.5F, 0.5F)
+    GL11.glEnable(GL11.GL_BLEND);
+    GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA)
     mc.renderEngine.bindTexture(new ResourceLocation(TextureInfo.GUI_UTILS))
     drawTexturedModalRect((width * 2) - 133, 5, 0, 42, 128, 128)
     GL11.glScalef(2F, 2F, 2F)
@@ -151,7 +153,7 @@ class GuiMapHUD extends GuiScreen {
         else if (zDivision < -57) zDivision = -57
         if (mc.thePlayer == player) mc.renderEngine.bindTexture(new ResourceLocation(TextureInfo.RED_DOT))
         else mc.renderEngine.bindTexture(new ResourceLocation(TextureInfo.BLUE_DOT))
-     
+
         GL11.glBegin(GL11.GL_QUADS)
         GL11.glTexCoord2f(0f, 0f)
         GL11.glVertex2f(((width - (69 / 2)) + (xDivision / 2)) - 3, ((69 / 2) + (zDivision / 2)) - 3)

@@ -7,7 +7,7 @@ import com.rikmuld.camping.core.Objs
 
 class Tab(name: String) extends CreativeTabs(name) {
   override def getIconItemStack: ItemStack = {
-	new ItemStack(Objs.knife)
+    new ItemStack(Objs.knife)
   }
   override def getTabIconItem: Item = {
     getIconItemStack.getItem

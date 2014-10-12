@@ -13,8 +13,8 @@ import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.network.PacketBuffer
 import scala.collection.JavaConversions._
 
-class TileData(var id:Int, var x: Int, var y: Int, var z: Int, tileData: Seq[Int]) extends BasicPacketData {
-  var length: Int = if (tileData == null) 0 else tileData.length*4
+class TileData(var id: Int, var x: Int, var y: Int, var z: Int, tileData: Seq[Int]) extends BasicPacketData {
+  var length: Int = if (tileData == null) 0 else tileData.length * 4
   var data: Array[Byte] = {
     if (length > 0) {
       val dataHolder = new Array[Byte](length)
@@ -25,7 +25,7 @@ class TileData(var id:Int, var x: Int, var y: Int, var z: Int, tileData: Seq[Int
       dataHolder
     } else null
   }
-  
+
   def this() = this(0, 0, 0, 0, null)
   def setData(stream: PacketBuffer) {
     stream.writeInt(id)
@@ -55,7 +55,7 @@ class TileData(var id:Int, var x: Int, var y: Int, var z: Int, tileData: Seq[Int
   }
 }
 
-class OpenGui(var id:Int) extends BasicPacketData {
+class OpenGui(var id: Int) extends BasicPacketData {
   var x: Int = 0
   var y: Int = 0
   var z: Int = 0

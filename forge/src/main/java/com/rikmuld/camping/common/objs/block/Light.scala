@@ -23,13 +23,13 @@ import cpw.mods.fml.relauncher.SideOnly
 import net.minecraft.item.Item
 import cpw.mods.fml.relauncher.Side
 import net.minecraft.util.AxisAlignedBB
-import com.rikmuld.camping.common.objs.tile.TileLight
+import com.rikmuld.camping.common.objs.tile.TileEntityLight
 
 class Light(infoClass: Class[ObjInfo]) extends BlockMain(infoClass, Material.air) with BlockWithModel {
   setLightLevel(1.0F)
   setBlockBounds(0F, 0F, 0F, 0F, 0F, 0F)
   setCreativeTab(null)
 
-  override def createTileEntity(world: World, meta: Int): TileEntity = new TileLight()
-  override def getCollisionBoundingBoxFromPool(world: World,x: Int, y: Int, z: Int): AxisAlignedBB = null
+  override def createTileEntity(world: World, meta: Int): TileEntity = new TileEntityLight()
+  override def getCollisionBoundingBoxFromPool(world: World, x: Int, y: Int, z: Int): AxisAlignedBB = null
 }

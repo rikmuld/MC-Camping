@@ -1,4 +1,4 @@
-package com.rikmuld.camping.common.inventory
+package com.rikmuld.camping.common.inventory.inventory
 
 import net.minecraft.inventory.IInventory
 import net.minecraft.nbt.NBTTagList
@@ -81,13 +81,13 @@ class InventoryPlayerMain(player: EntityPlayer, size: Int) extends IInventory {
 }
 
 class InventoryItemMain(stack: ItemStack, var player: EntityPlayer, size: Int, var stackSize: Int) extends IInventory {
-  if(stack.hasTagCompound() == false) stack.setTagCompound(new NBTTagCompound())
+  if (stack.hasTagCompound() == false) stack.setTagCompound(new NBTTagCompound())
 
   private var inventoryContents: Array[ItemStack] = new Array[ItemStack](size)
   var tag: NBTTagCompound = stack.getTagCompound
   var name: String = stack.getUnlocalizedName
   var item: Item = stack.getItem
-  
+
   override def decrStackSize(slot: Int, amount: Int): ItemStack = {
     if (inventoryContents(slot) != null) {
       var itemstack: ItemStack = null
@@ -135,7 +135,7 @@ class InventoryItemMain(stack: ItemStack, var player: EntityPlayer, size: Int, v
       stack.stackSize = getInventoryStackLimit
     }
     this.writeToNBT(tag)
-    if (player.getCurrentEquippedItem != null && 
+    if (player.getCurrentEquippedItem != null &&
       player.getCurrentEquippedItem.getItem == Objs.backpack) this.setNBT(player.getCurrentEquippedItem)
   }
   def setNBT(item: ItemStack) = item.setTagCompound(tag)

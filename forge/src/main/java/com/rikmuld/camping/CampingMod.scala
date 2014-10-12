@@ -34,3 +34,8 @@ object CampingMod {
     MiscRegistry.postInit(event)
   }
 }
+
+// FASE 1 - Campfire Cook, Log, Marshmallows, Recipes so far
+// FASE 2 - Hemp, Tents, Sleeping Bag
+// FASE 3 - Trees, Animals, Traps, Armor
+// FASE 4 - Guide, New tent: shelter, Backpack when on back Model, Lantern when active wearing model.

@@ -37,7 +37,7 @@ object ConfigInfo {
 }
 
 object ModelInfo {
-  final val MODEL_LOCATION = ModInfo.MOD_ID + ":models/"
+  final val MODEL_LOCATION = ModInfo.MOD_ID + ":misc/models/"
   final val CAMPFIRE = MODEL_LOCATION + "ModelCampfireDeco.tcn"
   final val LOG = MODEL_LOCATION + "ModelLog.tcn"
 }
@@ -70,6 +70,8 @@ object TextureInfo {
 }
 
 object TextInfo {
+  final val COLOURS_DYE = Array("0", "4", "2", "6", "1", "5", "3", "7", "8", "d", "a", "e", "9", "d", "6", "f");
+
   final val COLOR_BLACK = "\u00a70"
   final val COLOR_BLUE_DARK = "\u00a71"
   final val COLOR_GREEN_DARK = "\u00a72"
