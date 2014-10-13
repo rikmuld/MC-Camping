@@ -22,6 +22,10 @@ class HempInfo extends ObjInfo {
   override def NAME = "hemp"
 }
 
+class LogInfo extends ObjInfo {
+  override def NAME = "log"
+}
+
 class CampfireInfo extends ObjInfo {
   override def NAME = "campfire"
 }

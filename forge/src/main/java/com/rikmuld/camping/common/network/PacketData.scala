@@ -1,17 +1,21 @@
 package com.rikmuld.camping.common.network
 
 import java.nio.ByteBuffer
+
+import scala.collection.JavaConversions._
+
 import com.rikmuld.camping.CampingMod
 import com.rikmuld.camping.common.objs.tile.TileEntityMain
+import com.rikmuld.camping.common.objs.tile.TileEntityWithInventory
 import com.rikmuld.camping.core.Events
 import com.rikmuld.camping.core.NBTInfo
+import com.rikmuld.camping.core.Objs
+
 import cpw.mods.fml.common.network.simpleimpl.MessageContext
 import net.minecraft.entity.player.EntityPlayer
+import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.network.PacketBuffer
-import scala.collection.JavaConversions._
-import net.minecraft.item.ItemStack
-import com.rikmuld.camping.common.objs.tile.TileEntityWithInventory
 
 class TileData(var id: Int, var x: Int, var y: Int, var z: Int, tileData: Seq[Int]) extends BasicPacketData {
   var length: Int = if (tileData == null) 0 else tileData.length * 4
@@ -105,9 +109,9 @@ class Map(var scale: Int, var x: Int, var z: Int, var colours: Array[Byte]) exte
     stream.readBytes(colours)
   }
   override def handlePacket(player: EntityPlayer, ctx: MessageContext) {
-    if (Events.map != null) {
-      Events.map.colorData(player) = colours
-      Events.map.posData(player) = Array(scale, x, z)
+    if (Objs.eventsClient.map != null) {
+      Objs.eventsClient.map.colorData(player) = colours
+      Objs.eventsClient.map.posData(player) = Array(scale, x, z)
     }
   }
 }

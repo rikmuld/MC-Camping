@@ -18,6 +18,8 @@ class Config(val file: Configuration) {
   var cookTimeSpit = 300
   var cookTimePan = 1000
   var cookTimeGrill = 600
+  var marshSaturation = 0.2f
+  var marshHeal = 3
   
   var elements: java.util.List[IConfigElement[_]] = new ArrayList[IConfigElement[_]];
 
@@ -28,13 +30,15 @@ class Config(val file: Configuration) {
     cookTimeSpit = getVar("Spit cook time", "Time in ticks to complete spit cook cycle", ConfigInfo.CAT_CAMPFIRE, cookTimeSpit).asInstanceOf[Integer]
     cookTimePan = getVar("Pan cook time", "Time in ticks to complete pan cook cycle", ConfigInfo.CAT_CAMPFIRE, cookTimePan).asInstanceOf[Integer]
     cookTimeGrill = getVar("Grill cook time", "Time in ticks to complete grill cook cycle", ConfigInfo.CAT_CAMPFIRE, cookTimeGrill).asInstanceOf[Integer]
-
+    marshSaturation = getVar("Marshmallow Saturation Amount", "The amount of saturation a marshmallow gives", ConfigInfo.CAT_FOOD, marshSaturation).asInstanceOf[Float]
+    marshHeal = getVar("Marshmallow Heal Amount", "The amount of lives a marshmallow heals (in half harts)", ConfigInfo.CAT_FOOD, marshHeal).asInstanceOf[Integer]
+    
     if (file.hasChanged) file.save
     for (i <- 0 until file.getCategoryNames.size) elements.addAll(new ConfigElement(file.getCategory(file.getCategoryNames().toArray().apply(i).asInstanceOf[String])).getChildElements());
   }
   def getVar(name: String, desc: String, cat: String, curr: Any): Any = {
     if (curr.isInstanceOf[Integer]) return file.getInt(name, cat, curr.asInstanceOf[Integer], 0, Integer.MAX_VALUE, desc)
-    else if (curr.isInstanceOf[Double]) return file.getFloat(name, cat, curr.asInstanceOf[Float], 0, Float.MaxValue, desc)
+    else if (curr.isInstanceOf[Float]) return file.getFloat(name, cat, curr.asInstanceOf[Float], 0, Float.MaxValue, desc)
     else if (curr.isInstanceOf[Boolean]) return file.getBoolean(name, cat, curr.asInstanceOf[Boolean], desc)
     else if (curr.isInstanceOf[String]) return file.getString(name, cat, curr.asInstanceOf[String], desc)
   }

@@ -2,29 +2,56 @@ package com.rikmuld.camping.core
 
 import com.rikmuld.camping.CampingMod
 import com.rikmuld.camping.client.gui.GuiBackpack
+import com.rikmuld.camping.client.gui.GuiCampfire
+import com.rikmuld.camping.client.gui.GuiCampfireCook
 import com.rikmuld.camping.client.gui.GuiCampingInvCraft
 import com.rikmuld.camping.client.gui.GuiCampinginv
-import com.rikmuld.camping.client.gui.GuiCampinginv
+import com.rikmuld.camping.client.gui.GuiKit
+import com.rikmuld.camping.client.render.objs.CampfireCookItemRender
+import com.rikmuld.camping.client.render.objs.CampfireCookRender
+import com.rikmuld.camping.client.render.objs.CampfireItemRender
+import com.rikmuld.camping.client.render.objs.CampfireRender
+import com.rikmuld.camping.client.render.objs.LogItemRender
+import com.rikmuld.camping.client.render.objs.LogRender
 import com.rikmuld.camping.common.inventory.gui.ContainerBackpack
+import com.rikmuld.camping.common.inventory.gui.ContainerCampfire
+import com.rikmuld.camping.common.inventory.gui.ContainerCampfireCook
 import com.rikmuld.camping.common.inventory.gui.ContainerCampinv
 import com.rikmuld.camping.common.inventory.gui.ContainerCampinvCraft
+import com.rikmuld.camping.common.inventory.gui.ContainerKit
 import com.rikmuld.camping.common.network.BasicPacketData
 import com.rikmuld.camping.common.network.Handler
+import com.rikmuld.camping.common.network.Items
+import com.rikmuld.camping.common.network.Map
 import com.rikmuld.camping.common.network.NBTPlayer
 import com.rikmuld.camping.common.network.OpenGui
 import com.rikmuld.camping.common.network.PacketDataManager
 import com.rikmuld.camping.common.network.PacketGlobal
 import com.rikmuld.camping.common.network.TileData
-import com.rikmuld.camping.common.objs.block.BlockMain
-import com.rikmuld.camping.common.objs.block.Lantern
+import com.rikmuld.camping.common.objs.block.Campfire
+import com.rikmuld.camping.common.objs.block.CampfireCook
 import com.rikmuld.camping.common.objs.block.Lantern
 import com.rikmuld.camping.common.objs.block.Light
+import com.rikmuld.camping.common.objs.block.Log
 import com.rikmuld.camping.common.objs.item.Backpack
 import com.rikmuld.camping.common.objs.item.ItemMain
+import com.rikmuld.camping.common.objs.item.Kit
 import com.rikmuld.camping.common.objs.item.Knife
+import com.rikmuld.camping.common.objs.item.Marshmallow
+import com.rikmuld.camping.common.objs.tile.TileEntityCampfire
+import com.rikmuld.camping.common.objs.tile.TileEntityCampfireCook
 import com.rikmuld.camping.common.objs.tile.TileEntityLantern
+import com.rikmuld.camping.common.objs.tile.TileEntityLight
+import com.rikmuld.camping.common.objs.tile.TileEntityLog
+import com.rikmuld.camping.misc.CookingEquipment
+import com.rikmuld.camping.misc.Grill
+import com.rikmuld.camping.misc.Pan
+import com.rikmuld.camping.misc.Spit
 import com.rikmuld.camping.misc.Tab
+
+import cpw.mods.fml.client.registry.ClientRegistry
 import cpw.mods.fml.common.FMLCommonHandler
+import cpw.mods.fml.common.Mod
 import cpw.mods.fml.common.event.FMLInitializationEvent
 import cpw.mods.fml.common.event.FMLPostInitializationEvent
 import cpw.mods.fml.common.event.FMLPreInitializationEvent
@@ -32,67 +59,38 @@ import cpw.mods.fml.common.network.NetworkRegistry
 import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper
 import cpw.mods.fml.common.registry.GameRegistry
 import cpw.mods.fml.relauncher.Side
+import cpw.mods.fml.relauncher.SideOnly
 import net.minecraft.block.Block
 import net.minecraft.client.gui.Gui
 import net.minecraft.creativetab.CreativeTabs
+import net.minecraft.init.Blocks
+import net.minecraft.init.Items
 import net.minecraft.inventory.Container
 import net.minecraft.item.Item
 import net.minecraft.item.ItemBlock
+import net.minecraft.item.ItemStack
 import net.minecraft.util.ResourceLocation
+import net.minecraftforge.client.MinecraftForgeClient
 import net.minecraftforge.client.model.techne.TechneModel
 import net.minecraftforge.client.model.techne.TechneModelLoader
 import net.minecraftforge.common.MinecraftForge
 import net.minecraftforge.common.config.Configuration
-import com.rikmuld.camping.common.inventory.gui.ContainerCampfire
-import com.rikmuld.camping.client.gui.GuiCampfire
-import cpw.mods.fml.client.registry.ClientRegistry
-import net.minecraftforge.client.MinecraftForgeClient
-import com.rikmuld.camping.client.render.objs.CampfireItemRender
-import com.rikmuld.camping.client.render.objs.CampfireRender
-import com.rikmuld.camping.common.objs.block.Campfire
-import com.rikmuld.camping.common.objs.tile.TileEntityCampfire
-import com.rikmuld.camping.common.objs.tile.TileEntityLight
-import com.rikmuld.camping.misc.CookingEquipment
-import net.minecraft.item.ItemStack
-import com.rikmuld.camping.misc.Grill
-import com.rikmuld.camping.misc.Spit
-import com.rikmuld.camping.misc.Pan
-import net.minecraft.init.Items
-import net.minecraft.init.Blocks
-import com.rikmuld.camping.common.objs.item.Backpack
-import com.rikmuld.camping.common.objs.item.Kit
-import com.rikmuld.camping.common.objs.item.Backpack
-import com.rikmuld.camping.common.inventory.gui.ContainerKit
-import com.rikmuld.camping.client.gui.GuiKit
-import com.rikmuld.camping.common.objs.block.CampfireCook
-import com.rikmuld.camping.common.objs.block.Campfire
-import com.rikmuld.camping.common.objs.block.CampfireCook
-import com.rikmuld.camping.common.objs.block.Campfire
-import com.rikmuld.camping.common.objs.tile.TileEntityCampfireCook
-import com.rikmuld.camping.client.render.objs.CampfireCookItemRender
-import com.rikmuld.camping.common.objs.block.CampfireCook
-import com.rikmuld.camping.client.render.objs.CampfireCookRender
-import com.rikmuld.camping.common.objs.block.Campfire
-import com.rikmuld.camping.common.inventory.gui.ContainerCampfireCook
-import com.rikmuld.camping.client.gui.GuiCampfireCook
 
 object Objs {
   var tab: CreativeTabs = _
   var network: SimpleNetworkWrapper = _
   var events: Events = _
-  var knife, parts, backpack, kit: ItemMain = _
-  var lantern, light, campfire, campfireCook: BlockMain = _
+  var eventsClient: EventsClient = _
+  var knife, parts, backpack, kit, marshmallow: Item = _
+  var lantern, light, campfire, campfireCook, log: Block = _
   var spit, grill, pan: CookingEquipment = _
   var config: Config = _
   var modelLoader: TechneModelLoader = _
-  var campfireM: TechneModel = _
+  var campfireM, logM: TechneModel = _
 }
 
 object MiscRegistry {
-  def init(event: FMLInitializationEvent) {
-    Objs.modelLoader = new TechneModelLoader();
-    Objs.campfireM = Objs.modelLoader.loadInstance(new ResourceLocation(ModelInfo.CAMPFIRE)).asInstanceOf[TechneModel];
-   
+  def init(event: FMLInitializationEvent) {      
     PacketDataManager.registerPacketData(classOf[TileData].asInstanceOf[Class[BasicPacketData]])
     PacketDataManager.registerPacketData(classOf[com.rikmuld.camping.common.network.Map].asInstanceOf[Class[BasicPacketData]])
     PacketDataManager.registerPacketData(classOf[OpenGui].asInstanceOf[Class[BasicPacketData]])
@@ -103,6 +101,7 @@ object MiscRegistry {
     GameRegistry.registerTileEntity(classOf[TileEntityLight], ModInfo.MOD_ID+"_light")
     GameRegistry.registerTileEntity(classOf[TileEntityCampfire], ModInfo.MOD_ID+"_campfire")
     GameRegistry.registerTileEntity(classOf[TileEntityCampfireCook], ModInfo.MOD_ID+"_campfireCook")
+    GameRegistry.registerTileEntity(classOf[TileEntityLog], ModInfo.MOD_ID+"_log")
 
     val stick = new ItemStack(Items.stick)
     val ironStick = new ItemStack(Objs.parts, 1, PartInfo.STICK_IRON)
@@ -123,6 +122,7 @@ object MiscRegistry {
 	CookingEquipment.addSpitFood(new ItemStack(Items.fish, 1, 1), new ItemStack(Items.cooked_fished, 1, 1));
   }
   def preInit(event: FMLPreInitializationEvent) {
+    Objs.modelLoader = new TechneModelLoader();
     Objs.config = new Config(new Configuration(event.getSuggestedConfigurationFile()))
     Objs.config.sync
     Objs.network = NetworkRegistry.INSTANCE.newSimpleChannel(ModInfo.PACKET_CHANEL)
@@ -132,22 +132,39 @@ object MiscRegistry {
     Objs.events = new Events
     MinecraftForge.EVENT_BUS.register(Objs.events)
     FMLCommonHandler.instance.bus.register(Objs.events)
-    
-    CampingMod.proxy.registerGui(GuiInfo.GUI_CAMPFIRE_COOK, classOf[ContainerCampfireCook].asInstanceOf[Class[Container]], classOf[GuiCampfireCook].asInstanceOf[Class[Gui]])
-    CampingMod.proxy.registerGui(GuiInfo.GUI_KIT, classOf[ContainerKit].asInstanceOf[Class[Container]], classOf[GuiKit].asInstanceOf[Class[Gui]])
-    CampingMod.proxy.registerGui(GuiInfo.GUI_CAMPFIRE, classOf[ContainerCampfire].asInstanceOf[Class[Container]], classOf[GuiCampfire].asInstanceOf[Class[Gui]])
-    CampingMod.proxy.registerGui(GuiInfo.GUI_CAMPINV, classOf[ContainerCampinv].asInstanceOf[Class[Container]], classOf[GuiCampinginv].asInstanceOf[Class[Gui]])
-    CampingMod.proxy.registerGui(GuiInfo.GUI_CAMPINV_CRAFT, classOf[ContainerCampinvCraft].asInstanceOf[Class[Container]], classOf[GuiCampingInvCraft].asInstanceOf[Class[Gui]])
-    CampingMod.proxy.registerGui(GuiInfo.GUI_BACKPACK, classOf[ContainerBackpack].asInstanceOf[Class[Container]], classOf[GuiBackpack].asInstanceOf[Class[Gui]])
   }
   def postInit(event: FMLPostInitializationEvent) {}
+  @SideOnly(Side.CLIENT)
   def initClient {
+    CampingMod.proxy.registerGui(GuiInfo.GUI_CAMPFIRE_COOK, classOf[ContainerCampfireCook], classOf[GuiCampfireCook])
+    CampingMod.proxy.registerGui(GuiInfo.GUI_KIT, classOf[ContainerKit], classOf[GuiKit])
+    CampingMod.proxy.registerGui(GuiInfo.GUI_CAMPFIRE, classOf[ContainerCampfire], classOf[GuiCampfire])
+    CampingMod.proxy.registerGui(GuiInfo.GUI_CAMPINV, classOf[ContainerCampinv], classOf[GuiCampinginv])
+    CampingMod.proxy.registerGui(GuiInfo.GUI_CAMPINV_CRAFT, classOf[ContainerCampinvCraft], classOf[GuiCampingInvCraft])
+    CampingMod.proxy.registerGui(GuiInfo.GUI_BACKPACK, classOf[ContainerBackpack], classOf[GuiBackpack])
+
+    Objs.eventsClient = new EventsClient
+    MinecraftForge.EVENT_BUS.register(Objs.eventsClient)
+    FMLCommonHandler.instance.bus.register(Objs.eventsClient)
+    
+    Objs.campfireM = Objs.modelLoader.loadInstance(new ResourceLocation(ModelInfo.CAMPFIRE)).asInstanceOf[TechneModel];
+    Objs.logM = Objs.modelLoader.loadInstance(new ResourceLocation(ModelInfo.LOG)).asInstanceOf[TechneModel];
+
     MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(Objs.campfire), new CampfireItemRender())
     ClientRegistry.bindTileEntitySpecialRenderer(classOf[TileEntityCampfire], new CampfireRender())
     MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(Objs.campfireCook), new CampfireCookItemRender())
     ClientRegistry.bindTileEntitySpecialRenderer(classOf[TileEntityCampfireCook], new CampfireCookRender())
+    MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(Objs.log), new LogItemRender())
+    ClientRegistry.bindTileEntitySpecialRenderer(classOf[TileEntityLog], new LogRender())
   }
-  def initServer {}
+  def initServer {
+    CampingMod.proxy.registerGui(GuiInfo.GUI_CAMPFIRE_COOK, classOf[ContainerCampfireCook], null)
+    CampingMod.proxy.registerGui(GuiInfo.GUI_KIT, classOf[ContainerKit], null)
+    CampingMod.proxy.registerGui(GuiInfo.GUI_CAMPFIRE, classOf[ContainerCampfire], null)
+    CampingMod.proxy.registerGui(GuiInfo.GUI_CAMPINV, classOf[ContainerCampinv], null)
+    CampingMod.proxy.registerGui(GuiInfo.GUI_CAMPINV_CRAFT, classOf[ContainerCampinvCraft], null)
+    CampingMod.proxy.registerGui(GuiInfo.GUI_BACKPACK, classOf[ContainerBackpack], null)
+  }
 }
 
 object ObjRegistry {
@@ -160,6 +177,9 @@ object ObjRegistry {
     Objs.campfire = new Campfire(classOf[CampfireInfo].asInstanceOf[Class[ObjInfo]])
     Objs.campfireCook = new CampfireCook(classOf[CampfireCookInfo].asInstanceOf[Class[ObjInfo]])
     Objs.kit = new Kit(classOf[KitInfo].asInstanceOf[Class[ObjInfo]])
+    Objs.marshmallow = new Marshmallow(classOf[MarshMallowInfo].asInstanceOf[Class[ObjInfo]])
+    Objs.log = new Log(classOf[LogInfo].asInstanceOf[Class[ObjInfo]])
+    
     Objs.grill = new Grill(new ItemStack(Objs.kit, 1, KitInfo.KIT_GRILL))
     Objs.spit = new Spit(new ItemStack(Objs.kit, 1, KitInfo.KIT_SPIT))
     Objs.pan = new Pan(new ItemStack(Objs.kit, 1, KitInfo.KIT_PAN))

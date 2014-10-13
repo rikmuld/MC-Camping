@@ -31,7 +31,7 @@ class TileEntityMain extends TileEntity {
   }
 }
 
-trait TileEntityWithRotation extends TileEntityMain {
+class TileEntityWithRotation extends TileEntityMain {
   var rotation: Int = _
 
   def cycleRotation() = if (!getWorldObj.isRemote) setRotation(if (rotation < 3) rotation + 1 else 0)
@@ -50,9 +50,11 @@ trait TileEntityWithRotation extends TileEntityMain {
     }
   }
   override def writeToNBT(tag: NBTTagCompound) {
+    super.writeToNBT(tag)
     tag.setInteger("rotation", rotation)
   }
   override def readFromNBT(tag: NBTTagCompound) {
+    super.readFromNBT(tag)
     rotation = tag.getInteger("rotation")
   }
 }
