@@ -18,8 +18,18 @@ class PartInfo extends ObjInfo {
   override def NAME_META = Array("canvas", "stickIron", "pan", "ash", "marshmallows", "marshmallowStickRaw")
 }
 
+class HempItemInfo extends ObjInfo {
+  override def NAME = "hempItem"
+}
+
+class SleepingBagInfo extends ObjInfo {
+  override def NAME = "sleepingBag"
+  override def NAME_META = Array("sleepingBag", "sleepingBag")
+}
+
 class HempInfo extends ObjInfo {
   override def NAME = "hemp"
+  override def NAME_META = Array("plantHemp_0", "plantHemp_1", "plantHemp_2", "plantHemp_3", "plantHemp_4", "plantHemp_5")
 }
 
 class LogInfo extends ObjInfo {

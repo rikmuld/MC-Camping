@@ -35,11 +35,18 @@ import net.minecraftforge.client.event.RenderGameOverlayEvent
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType
 import net.minecraftforge.event.entity.player.PlayerDropsEvent
 import cpw.mods.fml.relauncher.Side
+import net.minecraftforge.event.entity.player.BonemealEvent
+import com.rikmuld.camping.common.objs.block.Hemp
+import cpw.mods.fml.common.eventhandler.Event
 
 class Events {
   var tickLight: Int = 0
   var marshupdate = 0
-  
+
+  @SubscribeEvent
+  def onBoneMealUsed(event:BonemealEvent){
+    if(event.block==Objs.hemp)event.setResult(if(event.block.asInstanceOf[Hemp].grow(event.world, event.x, event.y, event.z))Event.Result.ALLOW else Event.Result.DENY)
+  }
   @SubscribeEvent
   def onConfigChanged(eventArgs: ConfigChangedEvent.OnConfigChangedEvent) {
     if (eventArgs.modID.equals(ModInfo.MOD_ID)) Objs.config.sync
@@ -87,7 +94,7 @@ class Events {
       val data = player.getCurrentMapData()
       PacketSender.to(new com.rikmuld.camping.common.network.Map(data.scale, data.xCenter, data.zCenter, data.colors), player.asInstanceOf[EntityPlayerMP])
     }
-    if (!world.isRemote && (player.getCurrentEquippedItem != null) && 
+    if (!world.isRemote && (player.getCurrentEquippedItem != null) &&
       player.getCurrentEquippedItem.getItem == Objs.parts && (player.getCurrentEquippedItem.getItemDamage == PartInfo.MARSHMALLOWSTICK)) {
       val movingobjectposition = player.getMOP
       if (movingobjectposition != null) {

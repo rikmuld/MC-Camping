@@ -33,7 +33,7 @@ class ContainerKit(player: EntityPlayer) extends ContainerItemMain(player) {
     super.onContainerClosed(player)
     if (!player.worldObj.isRemote) {
       inv.closeInventory()
-      if (player.getCurrentEquippedItem != null && 
+      if (player.getCurrentEquippedItem != null &&
         player.getCurrentEquippedItem.getItem == Objs.kit) {
         val items = new ArrayList[ItemStack]()
         val containingItems = inv.asInstanceOf[InventoryItemMain].tag.getTag("Items").asInstanceOf[NBTTagList]

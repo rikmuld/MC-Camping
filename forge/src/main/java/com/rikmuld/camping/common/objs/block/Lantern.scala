@@ -23,7 +23,7 @@ import cpw.mods.fml.relauncher.SideOnly
 import net.minecraft.item.Item
 import cpw.mods.fml.relauncher.Side
 
-class Lantern(infoClass: Class[ObjInfo]) extends BlockMain(infoClass, Material.glass, classOf[LanternItem].asInstanceOf[Class[ItemBlock]], false, true) with BlockWithModel with BlockWithInstability {
+class Lantern(infoClass: Class[_]) extends BlockMain(infoClass, Material.glass, classOf[LanternItem].asInstanceOf[Class[ItemBlock]], false, true) with BlockWithModel with BlockWithInstability {
   var burnTime: Int = _
   setBlockBounds(0.3F, 0, 0.3F, 0.7F, 0.9F, 0.7F)
 

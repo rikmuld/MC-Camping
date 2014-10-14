@@ -25,7 +25,7 @@ import cpw.mods.fml.relauncher.Side
 import net.minecraft.util.AxisAlignedBB
 import com.rikmuld.camping.common.objs.tile.TileEntityLight
 
-class Light(infoClass: Class[ObjInfo]) extends BlockMain(infoClass, Material.air) with BlockWithModel {
+class Light(infoClass: Class[_]) extends BlockMain(infoClass, Material.air) with BlockWithModel {
   setLightLevel(1.0F)
   setBlockBounds(0F, 0F, 0F, 0F, 0F, 0F)
   setCreativeTab(null)

@@ -16,8 +16,8 @@ import net.minecraft.block.Block
 import net.minecraft.item.ItemBlock
 import net.minecraft.item.ItemFood
 
-class ItemMain(infoClass: Class[ObjInfo], icon:Boolean) extends Item {
-  val info = infoClass.newInstance
+class ItemMain(infoClass: Class[_], icon: Boolean) extends Item {
+  val info = infoClass.asInstanceOf[Class[ObjInfo]].newInstance
   val metadata = info.NAME_META
 
   var iconBuffer: Array[IIcon] = null
@@ -27,7 +27,7 @@ class ItemMain(infoClass: Class[ObjInfo], icon:Boolean) extends Item {
   setUnlocalizedName(info.NAME)
   setCreativeTab(Objs.tab)
 
-  def this(infoClass: Class[ObjInfo]) = this(infoClass, true);
+  def this(infoClass: Class[_]) = this(infoClass, true);
   override def getMetadata(damageValue: Int): Int = damageValue
   override def getIconFromDamage(meta: Int): IIcon = if (metadata != null && icon) iconBuffer(meta) else itemIcon
   override def getUnlocalizedName(stack: ItemStack): String = if (metadata == null) getUnlocalizedName else metadata(stack.getItemDamage)
@@ -49,9 +49,9 @@ class ItemBlockMain(block: Block) extends ItemBlock(block) {
   setHasSubtypes(metadata != null)
   setCreativeTab(Objs.tab)
 
-  def this(block: Block, infoClass: Class[ObjInfo]) {
+  def this(block: Block, infoClass: Class[_]) {
     this(block);
-    val info = infoClass.newInstance
+    val info = infoClass.asInstanceOf[Class[ObjInfo]].newInstance
     metadata = info.NAME_META
     setHasSubtypes(metadata != null)
   }
@@ -60,7 +60,9 @@ class ItemBlockMain(block: Block) extends ItemBlock(block) {
   override def getUnlocalizedName(stack: ItemStack): String = if (metadata == null) getUnlocalizedName else metadata(stack.getItemDamage)
   override def getIconFromDamage(meta: Int): IIcon = if (metadata != null) iconBuffer(meta) else itemIcon
   @SideOnly(Side.CLIENT)
-  override def getSubItems(item: Item, tab: CreativeTabs, list: List[_]) = for (meta <- 0 to (if (metadata != null) metadata.length - 1 else 0)) list.asInstanceOf[List[ItemStack]].add(new ItemStack(item, 1, meta))
+  override def getSubItems(item: Item, tab: CreativeTabs, list: List[_]) = {
+    for (meta <- 0 to (if (metadata != null) metadata.length - 1 else 0)) list.asInstanceOf[java.util.List[ItemStack]].add(new ItemStack(item, 1, meta))
+  }
   override def registerIcons(register: IIconRegister) {
     if (metadata == null) itemIcon = register.registerIcon(ModInfo.MOD_ID + ":" + getUnlocalizedName().substring(5))
     else {
@@ -70,8 +72,8 @@ class ItemBlockMain(block: Block) extends ItemBlock(block) {
   }
 }
 
-class ItemFoodMain(infoClass: Class[ObjInfo], icon:Boolean, heal:Int, saturation:Float, wolf:Boolean) extends ItemFood(heal, saturation, wolf) {
-  val info = infoClass.newInstance
+class ItemFoodMain(infoClass: Class[_], icon: Boolean, heal: Int, saturation: Float, wolf: Boolean) extends ItemFood(heal, saturation, wolf) {
+  val info = infoClass.asInstanceOf[Class[ObjInfo]].newInstance
   val metadata = info.NAME_META
 
   var iconBuffer: Array[IIcon] = null
@@ -81,7 +83,7 @@ class ItemFoodMain(infoClass: Class[ObjInfo], icon:Boolean, heal:Int, saturation
   setUnlocalizedName(info.NAME)
   setCreativeTab(Objs.tab)
 
-  def this(infoClass: Class[ObjInfo], heal:Int, saturation:Float, wolf:Boolean) = this(infoClass, true, heal, saturation, wolf);
+  def this(infoClass: Class[_], heal: Int, saturation: Float, wolf: Boolean) = this(infoClass, true, heal, saturation, wolf);
   override def getMetadata(damageValue: Int): Int = damageValue
   override def getIconFromDamage(meta: Int): IIcon = if (metadata != null && icon) iconBuffer(meta) else itemIcon
   override def getUnlocalizedName(stack: ItemStack): String = if (metadata == null) getUnlocalizedName else metadata(stack.getItemDamage)

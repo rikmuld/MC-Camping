@@ -10,7 +10,7 @@ import net.minecraft.init.Blocks
 import com.rikmuld.camping.misc.Rotation
 import com.rikmuld.camping.core.Objs
 
-class Knife(infoClass: Class[ObjInfo]) extends ItemMain(infoClass) with IKnife {
+class Knife(infoClass: Class[_]) extends ItemMain(infoClass) with IKnife {
   setHasSubtypes(true)
   setMaxDamage(Objs.config.toolUse)
   setMaxStackSize(1)

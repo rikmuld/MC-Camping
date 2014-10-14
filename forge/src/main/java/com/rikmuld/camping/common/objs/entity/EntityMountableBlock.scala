@@ -33,7 +33,7 @@ class EntityMountableBlock(world: World, var xFlag: Int, var yFlag: Int, var zFl
     super.onUpdate()
     if (worldObj.getBlock(xFlag, yFlag, zFlag) != Objs.log) setDead()
     if (riddenByEntity != null) {
-      if (Keyboard.isCreated && Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) && 
+      if (Keyboard.isCreated && Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) &&
         Minecraft.getMinecraft.inGameHasFocus) {
         riddenByEntity.asInstanceOf[EntityPlayer].mountEntity(null)
         riddenByEntity = null

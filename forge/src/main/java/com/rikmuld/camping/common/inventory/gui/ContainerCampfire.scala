@@ -45,12 +45,12 @@ class ContainerCampfire(player: EntityPlayer, tile: IInventory) extends Containe
 
 class ContainerCampfireCook(player: EntityPlayer, tile: IInventory) extends ContainerTileMain(player, tile) {
   private var fire: TileEntityCampfireCook = _
-  var slots:ArrayList[SlotCooking] = _
-  
+  var slots: ArrayList[SlotCooking] = _
+
   override def addContainer {
     fire = tile.asInstanceOf[TileEntityCampfireCook]
     slots = new ArrayList[SlotCooking]()
-    
+
     addSlotToContainer(new SlotItemsOnly(tile, 0, 80, 84, new ItemStack(Items.coal)))
     addSlotToContainer(new SlotItemsOnly(tile, 1, 150, 9, new ItemStack(Objs.kit, 1, 1), new ItemStack(Objs.kit, 1, 3), new ItemStack(Objs.kit, 1, 2)))
     for (i <- 0 until 10) {

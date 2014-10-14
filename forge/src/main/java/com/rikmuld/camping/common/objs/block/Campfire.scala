@@ -23,7 +23,7 @@ import com.rikmuld.camping.common.objs.tile.TileEntityCampfire
 import net.minecraft.world.IBlockAccess
 import com.rikmuld.camping.common.objs.tile.TileEntityCampfireCook
 
-class Campfire(infoClass: Class[ObjInfo]) extends BlockMain(infoClass, Material.fire, false, false) with BlockWithModel with BlockWithInstability {
+class Campfire(infoClass: Class[_]) extends BlockMain(infoClass, Material.fire, false, false) with BlockWithModel with BlockWithInstability {
   setHardness(3.0F)
   setLightLevel(1.0F)
   setStepSound(Block.soundTypeStone)
@@ -44,7 +44,7 @@ class Campfire(infoClass: Class[ObjInfo]) extends BlockMain(infoClass, Material.
   override def onBlockActivated(world: World, x: Int, y: Int, z: Int, player: EntityPlayer, side: Int, par7: Float, par8: Float, par9: Float): Boolean = {
     if ((player.getCurrentEquippedItem != null) && (player.getCurrentEquippedItem.getItem == Objs.knife)) {
       if (!player.inventory.addItemStackToInventory(new ItemStack(Objs.campfire))) {
-    	world.dropItemInWorld(new ItemStack(Objs.campfire, 1, 0), x, y, z, new Random())
+        world.dropItemInWorld(new ItemStack(Objs.campfire, 1, 0), x, y, z, new Random())
       }
       breakBlock(world, x, y, z, world.getBlock(x, y, z), world.getBlockMetadata(x, y, z))
       world.setBlock(x, y, z, Blocks.air)
@@ -65,13 +65,13 @@ class Campfire(infoClass: Class[ObjInfo]) extends BlockMain(infoClass, Material.
       val particleX = ((x + 0.5F) - 0.15F) + (random.nextInt(30) / 100F)
       val particleY = y + 0.1F + (random.nextInt(15) / 100F)
       val particleZ = ((z + 0.5F) - 0.15F) + (random.nextInt(30) / 100F)
-      CampingMod.proxy.spawnFlame(world, particleX, particleY, particleZ, 0.0F, motionY, 0.0F, world.getTileEntity(x,y, z).asInstanceOf[TileEntityCampfire].color)
+      CampingMod.proxy.spawnFlame(world, particleX, particleY, particleZ, 0.0F, motionY, 0.0F, world.getTileEntity(x, y, z).asInstanceOf[TileEntityCampfire].color)
       world.spawnParticle("smoke", particleX, particleY, particleZ, 0.0D, 0.05D, 0.0D)
     }
   }
 }
 
-class CampfireCook(infoClass: Class[ObjInfo]) extends BlockMain(infoClass, Material.fire, false, false) with BlockWithModel with BlockWithInstability {
+class CampfireCook(infoClass: Class[_]) extends BlockMain(infoClass, Material.fire, false, false) with BlockWithModel with BlockWithInstability {
   setHardness(2.0F)
   setStepSound(Block.soundTypeStone)
   setBlockBounds(0.125F, 0.0F, 0.125F, 0.875F, 0.125F, 0.875F)

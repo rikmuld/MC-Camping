@@ -116,7 +116,7 @@ class TileEntityCampfireCook extends TileEntityWithInventory {
   private var active: Boolean = _
   private var oldActive: Boolean = _
   private var update: Int = _
-  
+
   for (i <- 0 until 20) {
     coals(0)(i) = rand.nextFloat() / 5F
     coals(1)(i) = rand.nextFloat() / 5F
@@ -141,9 +141,9 @@ class TileEntityCampfireCook extends TileEntityWithInventory {
           PacketSender.toClient(new com.rikmuld.camping.common.network.Items(i + 2, xCoord, yCoord, zCoord, getStackInSlot(i + 2)))
         }
         if (fuel > 0) {
-          if ((getStackInSlot(i + 2) != null) && 
-            (!(getStackInSlot(i + 2).getItem == Objs.parts) || 
-            getStackInSlot(i + 2).getItemDamage != PartInfo.ASH)) {
+          if ((getStackInSlot(i + 2) != null) &&
+            (!(getStackInSlot(i + 2).getItem == Objs.parts) ||
+              getStackInSlot(i + 2).getItemDamage != PartInfo.ASH)) {
             cookProgress(i) += 1
           }
         } else if (cookProgress(i) > 0) {

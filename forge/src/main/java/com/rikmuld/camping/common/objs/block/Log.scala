@@ -30,7 +30,7 @@ import net.minecraft.entity.Entity
 import com.rikmuld.camping.core.Objs
 import com.rikmuld.camping.common.objs.tile.TileEntityLog
 
-class Log(infoClass: Class[ObjInfo]) extends BlockMain(infoClass, Material.wood, classOf[LanternItem].asInstanceOf[Class[ItemBlock]], false, false) with BlockWithModel with BlockWithRotation {
+class Log(infoClass: Class[_]) extends BlockMain(infoClass, Material.wood, false, false) with BlockWithModel with BlockWithRotation {
   setStepSound(Block.soundTypeWood)
   setHardness(2.0F)
   setHarvestLevel("axe", 0)

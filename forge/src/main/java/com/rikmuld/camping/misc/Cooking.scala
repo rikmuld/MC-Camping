@@ -38,7 +38,7 @@ abstract class CookingEquipment(var cookTime: Int, var cookableFoood: HashMap[It
     if (renderer == null) {
       renderer = new ItemRenderer(Minecraft.getMinecraft)
     }
-    if (foodIndex < maxFood && 
+    if (foodIndex < maxFood &&
       (!(stack.getItem == Objs.parts) || (stack.getItemDamage != PartInfo.ASH))) {
       doRenderFood(foodIndex, stack, entity)
     }
@@ -53,7 +53,7 @@ object CookingEquipment {
   var panFood: HashMap[ItemStack, ItemStack] = new HashMap[ItemStack, ItemStack]()
   var equipment: HashMap[ItemStack, CookingEquipment] = new HashMap[ItemStack, CookingEquipment]()
   var equipmentRecipes: HashMap[ArrayList[ItemStack], CookingEquipment] = new HashMap[ArrayList[ItemStack], CookingEquipment]()
-  
+
   def addCooking(item: ItemStack, cookEquipment: CookingEquipment) = equipment.put(item, cookEquipment)
   def addEquipmentRecipe(equipment: CookingEquipment, items: ItemStack*) {
     val key = new ArrayList[ItemStack]()
@@ -77,18 +77,18 @@ object CookingEquipment {
         if (copyItems.contains(itemInfo)) {
           copyItems.remove(itemInfo)
           cound += 1
-        }        
+        }
         flag = flag || (cound == list.size) && (items.size == list.size)
       }
-      if(!flag)i += 1
+      if (!flag) i += 1
     }
     println(i)
-    if(i<3&&flag)equipmentRecipes.values().toArray()(i).asInstanceOf[CookingEquipment] else null
+    if (i < 3 && flag) equipmentRecipes.values().toArray()(i).asInstanceOf[CookingEquipment] else null
   }
 }
 
 class Grill(item: ItemStack) extends CookingEquipment(Objs.config.cookTimeGrill, CookingEquipment.grillFood, 4, item) {
-  var pilar: AbstractBox = new AbstractBox(128, 32, false, 0, 2, 0, 0, 0, 1, 16, 1, 0.03125F, 0.0F, 0.0F,  0.0F)
+  var pilar: AbstractBox = new AbstractBox(128, 32, false, 0, 2, 0, 0, 0, 1, 16, 1, 0.03125F, 0.0F, 0.0F, 0.0F)
   var line: AbstractBox = new AbstractBox(128, 32, false, 0, 0, 0, 0, 0, 60, 1, 1, 0.015625F, 0.0F, 0.0F, 0.0F)
   var line2: AbstractBox = new AbstractBox(128, 32, false, 0, 0, 0, 0, 0, 1, 1, 60, 0.015625F, 0.0F, 0.0F, 0.0F)
   var sLine: AbstractBox = new AbstractBox(64, 64, false, 0, 0, 0, 0, 0, 29, 1, 1, 0.015625F, 0.0F, 0.0F, 0.0F)

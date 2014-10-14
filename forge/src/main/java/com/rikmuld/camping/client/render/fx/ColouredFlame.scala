@@ -13,7 +13,7 @@ import cpw.mods.fml.relauncher.SideOnly
 import cpw.mods.fml.relauncher.Side
 
 @SideOnly(Side.CLIENT)
-class ColoredFlame(world: World, x: Double, y: Double, z: Double, mX: Double, mY: Double, mZ: Double, color: Int) extends EntityFX(world, x, y, z, mX, mY, mZ) {  
+class ColoredFlame(world: World, x: Double, y: Double, z: Double, mX: Double, mY: Double, mZ: Double, color: Int) extends EntityFX(world, x, y, z, mX, mY, mZ) {
   motionX = (motionX * 0.009999999776482582D) + mX
   motionY = (motionY * 0.009999999776482582D) + mY
   motionZ = (motionZ * 0.009999999776482582D) + mZ
@@ -45,11 +45,11 @@ class ColoredFlame(world: World, x: Double, y: Double, z: Double, mX: Double, mY
     prevPosX = posX
     prevPosY = posY
     prevPosZ = posZ
-    particleAge+=1;
-  
+    particleAge += 1;
+
     if (particleAge >= particleMaxAge) setDead()
     moveEntity(motionX, motionY, motionZ)
-    
+
     motionX *= 0.9599999785423279D
     motionY *= 0.9599999785423279D
     motionZ *= 0.9599999785423279D

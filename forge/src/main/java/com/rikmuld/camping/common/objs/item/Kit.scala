@@ -31,7 +31,7 @@ import com.rikmuld.camping.core.TextInfo
 import org.lwjgl.input.Keyboard
 import net.minecraft.util.IIcon
 
-class Kit(infoClass: Class[ObjInfo]) extends ItemMain(infoClass, false) {
+class Kit(infoClass: Class[_]) extends ItemMain(infoClass, false) {
   maxStackSize = 1
   setHasSubtypes(true)
 

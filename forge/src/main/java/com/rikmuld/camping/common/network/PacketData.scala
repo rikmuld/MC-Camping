@@ -116,7 +116,7 @@ class Map(var scale: Int, var x: Int, var z: Int, var colours: Array[Byte]) exte
   }
 }
 
-class Items(var slot: Int, var x: Int, var y: Int, var z: Int, var stack: ItemStack) extends BasicPacketData{
+class Items(var slot: Int, var x: Int, var y: Int, var z: Int, var stack: ItemStack) extends BasicPacketData {
   def this() = this(0, 0, 0, 0, null)
   override def setData(stream: PacketBuffer) {
     stream.writeInt(slot)

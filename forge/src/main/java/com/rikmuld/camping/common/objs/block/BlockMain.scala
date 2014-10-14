@@ -22,9 +22,10 @@ import com.rikmuld.camping.core.Objs
 import com.rikmuld.camping.core.ModInfo
 import com.rikmuld.camping.core.ObjInfo
 import com.rikmuld.camping.common.objs.tile.TileEntityWithRotation
+import net.minecraft.block.BlockFlower
 
-class BlockMain(infoClass: Class[ObjInfo], material: Material, itemBlock: Class[ItemBlock], useSides: Boolean, icon: Boolean) extends BlockContainer(material) {
-  val info = infoClass.newInstance
+class BlockMain(infoClass: Class[_], material: Material, itemBlock: Class[ItemBlock], useSides: Boolean, icon: Boolean) extends BlockContainer(material) {
+  val info = infoClass.asInstanceOf[Class[ObjInfo]].newInstance
   val metadata: Array[String] = info.NAME_META
 
   var iconBuffer: Array[Array[IIcon]] = null
@@ -33,8 +34,8 @@ class BlockMain(infoClass: Class[ObjInfo], material: Material, itemBlock: Class[
   setCreativeTab(Objs.tab)
   if (metadata != null) ObjRegistry.register(this, info.NAME, itemBlock) else ObjRegistry.register(this, info.NAME)
 
-  def this(infoClass: Class[ObjInfo], material: Material) = this(infoClass, material, null, false, true)
-  def this(infoClass: Class[ObjInfo], material: Material, useSides: Boolean, icon: Boolean) = this(infoClass, material, null, useSides, icon)
+  def this(infoClass: Class[_], material: Material) = this(infoClass, material, null, false, true)
+  def this(infoClass: Class[_], material: Material, useSides: Boolean, icon: Boolean) = this(infoClass, material, null, useSides, icon)
   override def createNewTileEntity(world: World, meta: Int): TileEntity = null
   override def getIcon(side: Int, meta: Int): IIcon = {
     if (useSides == true && icon) blockIcon = iconBuffer(meta)(side)
@@ -65,7 +66,7 @@ class BlockMain(infoClass: Class[ObjInfo], material: Material, itemBlock: Class[
   }
 }
 
-trait BlockWithModel extends BlockContainer {
+trait BlockWithModel extends Block {
   override def getRenderType() = -1
   override def isReplaceable(world: IBlockAccess, x: Int, y: Int, z: Int): Boolean = false
   override def isOpaqueCube() = false
@@ -87,7 +88,7 @@ trait BlockWithRotation extends BlockContainer {
   }
 }
 
-trait BlockWithInstability extends BlockContainer {
+trait BlockWithInstability extends Block {
   override def canPlaceBlockAt(world: World, x: Int, y: Int, z: Int) = ((world.getBlock(x, y, z) == null) || world.getBlock(x, y, z).isReplaceable(world, x, y, z)) && World.doesBlockHaveSolidTopSurface(world, x, y - 1, z)
   def dropIfCantStay(world: World, x: Int, y: Int, z: Int) {
     if ((!World.doesBlockHaveSolidTopSurface(world, x, y - 1, z))) {

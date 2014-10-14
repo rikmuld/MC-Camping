@@ -46,9 +46,9 @@ class GuiCampfireCook(player: EntityPlayer, tile: IInventory) extends GuiContain
       for (i <- 0 until fire.equipment.maxFood) {
         val scale2 = fire.getScaledcookProgress(10, i).toInt
         val isNotCooked = if (fire.getStackInSlot(i + 2) != null) fire.equipment.canCook(fire.getStackInSlot(i + 2)) else false
-        drawTexturedModalRect(guiLeft + fire.equipment.slots(0)(i) + 16, guiTop + fire.equipment.slots(1)(i) + 2, 
+        drawTexturedModalRect(guiLeft + fire.equipment.slots(0)(i) + 16, guiTop + fire.equipment.slots(1)(i) + 2,
           223, 0, 3, 12)
-        drawTexturedModalRect(guiLeft + fire.equipment.slots(0)(i) + 17, (guiTop + fire.equipment.slots(1)(i) + 13) - scale2, 
+        drawTexturedModalRect(guiLeft + fire.equipment.slots(0)(i) + 17, (guiTop + fire.equipment.slots(1)(i) + 13) - scale2,
           if (isNotCooked) 226 else 227, 11 - scale2, 1, scale2)
       }
     }

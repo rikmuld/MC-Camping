@@ -17,7 +17,7 @@ import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemStack
 import net.minecraft.world.World
 
-class Backpack(infoClass: Class[ObjInfo]) extends ItemMain(infoClass) {
+class Backpack(infoClass: Class[_]) extends ItemMain(infoClass) {
   maxStackSize = 1
   setHasSubtypes(true)
 
