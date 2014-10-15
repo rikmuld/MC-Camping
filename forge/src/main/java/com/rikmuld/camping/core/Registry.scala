@@ -81,6 +81,9 @@ import com.rikmuld.camping.common.world.WorldGenerator
 import com.rikmuld.camping.common.objs.block.SleepingBag
 import com.rikmuld.camping.common.objs.block.Hemp
 import com.rikmuld.camping.common.objs.tile.TileEntityWithRotation
+import com.rikmuld.camping.common.objs.tile.TileEntitySleepingBag
+import com.rikmuld.camping.client.render.objs.SleepingBagRender
+import com.rikmuld.camping.common.objs.block.BoundsHelper
 
 object Objs {
   var tab: CreativeTabs = _
@@ -88,7 +91,7 @@ object Objs {
   var events: Events = _
   var eventsClient: EventsClient = _
   var knife, parts, backpack, kit, marshmallow, hempItem: Item = _
-  var lantern, light, campfire, campfireCook, log, hemp, sleepingBag: Block = _
+  var lantern, light, campfire, campfireCook, log, hemp, sleepingBag, bounds: Block = _
   var spit, grill, pan: CookingEquipment = _
   var config: Config = _
   var modelLoader: TechneModelLoader = _
@@ -108,6 +111,7 @@ object MiscRegistry {
     GameRegistry.registerTileEntity(classOf[TileEntityWithRotation], ModInfo.MOD_ID + "_withRotation")
     GameRegistry.registerTileEntity(classOf[TileEntityCampfireCook], ModInfo.MOD_ID + "_campfireCook")
     GameRegistry.registerTileEntity(classOf[TileEntityLog], ModInfo.MOD_ID + "_log")
+    GameRegistry.registerTileEntity(classOf[TileEntitySleepingBag], ModInfo.MOD_ID + "_sleepingBag")
     GameRegistry.registerWorldGenerator(new WorldGenerator(), 9999)
     
     val stick = new ItemStack(Items.stick)
@@ -163,6 +167,7 @@ object MiscRegistry {
     ClientRegistry.bindTileEntitySpecialRenderer(classOf[TileEntityCampfireCook], new CampfireCookRender())
     MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(Objs.log), new LogItemRender())
     ClientRegistry.bindTileEntitySpecialRenderer(classOf[TileEntityLog], new LogRender())
+    ClientRegistry.bindTileEntitySpecialRenderer(classOf[TileEntitySleepingBag], new SleepingBagRender())
   }
   def initServer {
     CampingMod.proxy.registerGui(GuiInfo.GUI_CAMPFIRE_COOK, classOf[ContainerCampfireCook], null)
@@ -189,6 +194,7 @@ object ObjRegistry {
     Objs.hemp = new Hemp(classOf[HempInfo])
     Objs.hempItem = new HempItem(Objs.hemp, classOf[HempItemInfo])
     Objs.sleepingBag  = new SleepingBag(classOf[SleepingBagInfo])
+    Objs.bounds = new BoundsHelper(classOf[BoundsHelperInfo])
     
     Objs.grill = new Grill(new ItemStack(Objs.kit, 1, KitInfo.KIT_GRILL))
     Objs.spit = new Spit(new ItemStack(Objs.kit, 1, KitInfo.KIT_SPIT))

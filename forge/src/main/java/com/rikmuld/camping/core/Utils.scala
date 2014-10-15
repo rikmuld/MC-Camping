@@ -227,4 +227,12 @@ object Utils {
       if (returnStack.getItemDamage >= item.getMaxDamage) returnStack2 else returnStack
     }
   }
+
+  implicit class IntArrayUtils(numbers: Array[Int]) {
+    def inverse(): Array[Int] = {
+      val returnNumbers = Array.ofDim[Int](numbers.length)
+      for (i <- 0 until numbers.length) returnNumbers(i) = -numbers(i)
+      returnNumbers
+    }
+  }
 }

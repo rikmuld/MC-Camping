@@ -21,3 +21,4 @@ lanternOff.name=Lantern Off
 item.hempItem.name=Hemp
 tile.hemp.name=Hemp
 sleepingBag.name=Sleeping Bag
+tile.boundsHelper.name=Bounds Helper Block

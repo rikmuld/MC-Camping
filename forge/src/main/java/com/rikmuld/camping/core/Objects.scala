@@ -22,6 +22,15 @@ class HempItemInfo extends ObjInfo {
   override def NAME = "hempItem"
 }
 
+class BoundsHelperInfo extends ObjInfo {
+  override def NAME = "boundsHelper"
+}
+
+object SleepingBagInfo {
+  final val HEAD = 0
+  final val FOOT = 1
+}
+
 class SleepingBagInfo extends ObjInfo {
   override def NAME = "sleepingBag"
   override def NAME_META = Array("sleepingBag", "sleepingBag")

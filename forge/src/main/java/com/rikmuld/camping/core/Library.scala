@@ -68,6 +68,8 @@ object TextureInfo {
   final val RED_DOT = GUI_LOCATION + "GuiMapRed.png"
   final val BLUE_DOT = GUI_LOCATION + "GuiMapBlue.png"
   final val GUI_UTILS = GUI_LOCATION + "GuiUtils.png"
+  final val MODEL_SLEEPING_TOP = MODEL_LOCATION + "ModelSleepingBagTop.png";
+  final val MODEL_SLEEPING_DOWN = MODEL_LOCATION + "ModelSleepingBagDown.png";
 }
 
 object TextInfo {
