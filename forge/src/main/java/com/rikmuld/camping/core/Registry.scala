@@ -84,6 +84,14 @@ import com.rikmuld.camping.common.objs.tile.TileEntityWithRotation
 import com.rikmuld.camping.common.objs.tile.TileEntitySleepingBag
 import com.rikmuld.camping.client.render.objs.SleepingBagRender
 import com.rikmuld.camping.common.objs.block.BoundsHelper
+import com.rikmuld.camping.misc.BoundsStructure
+import com.rikmuld.camping.common.objs.tile.TileEntityTent
+import com.rikmuld.camping.client.render.objs.TentItemRender
+import com.rikmuld.camping.client.render.objs.TentRender
+import com.rikmuld.camping.common.objs.block.Tent
+import com.rikmuld.camping.common.objs.tile.TileEntityWithBounds
+import com.rikmuld.camping.common.network.PlayerSleepInTent
+import com.rikmuld.camping.common.network.BoundsData
 
 object Objs {
   var tab: CreativeTabs = _
@@ -91,11 +99,12 @@ object Objs {
   var events: Events = _
   var eventsClient: EventsClient = _
   var knife, parts, backpack, kit, marshmallow, hempItem: Item = _
-  var lantern, light, campfire, campfireCook, log, hemp, sleepingBag, bounds: Block = _
+  var lantern, light, campfire, campfireCook, log, hemp, sleepingBag, bounds, tent: Block = _
   var spit, grill, pan: CookingEquipment = _
   var config: Config = _
   var modelLoader: TechneModelLoader = _
-  var campfireM, logM: TechneModel = _
+  var campfireM, logM, tentM: TechneModel = _
+  var tentStructure: Array[BoundsStructure] = _
 }
 
 object MiscRegistry {
@@ -105,6 +114,9 @@ object MiscRegistry {
     PacketDataManager.registerPacketData(classOf[OpenGui].asInstanceOf[Class[BasicPacketData]])
     PacketDataManager.registerPacketData(classOf[NBTPlayer].asInstanceOf[Class[BasicPacketData]])
     PacketDataManager.registerPacketData(classOf[com.rikmuld.camping.common.network.Items].asInstanceOf[Class[BasicPacketData]])
+    PacketDataManager.registerPacketData(classOf[PlayerSleepInTent].asInstanceOf[Class[BasicPacketData]])
+    PacketDataManager.registerPacketData(classOf[BoundsData].asInstanceOf[Class[BasicPacketData]])
+
     GameRegistry.registerTileEntity(classOf[TileEntityLantern], ModInfo.MOD_ID + "_lantern")
     GameRegistry.registerTileEntity(classOf[TileEntityLight], ModInfo.MOD_ID + "_light")
     GameRegistry.registerTileEntity(classOf[TileEntityCampfire], ModInfo.MOD_ID + "_campfire")
@@ -112,6 +124,8 @@ object MiscRegistry {
     GameRegistry.registerTileEntity(classOf[TileEntityCampfireCook], ModInfo.MOD_ID + "_campfireCook")
     GameRegistry.registerTileEntity(classOf[TileEntityLog], ModInfo.MOD_ID + "_log")
     GameRegistry.registerTileEntity(classOf[TileEntitySleepingBag], ModInfo.MOD_ID + "_sleepingBag")
+    GameRegistry.registerTileEntity(classOf[TileEntityWithBounds], ModInfo.MOD_ID + "_bounds")
+    GameRegistry.registerTileEntity(classOf[TileEntityTent], ModInfo.MOD_ID + "_tent")
     GameRegistry.registerWorldGenerator(new WorldGenerator(), 9999)
     
     val stick = new ItemStack(Items.stick)
@@ -120,17 +134,17 @@ object MiscRegistry {
     CookingEquipment.addEquipmentRecipe(Objs.spit, stick, stick, ironStick)
     CookingEquipment.addEquipmentRecipe(Objs.grill, stick, stick, stick, stick, ironStick, ironStick, new ItemStack(Blocks.iron_bars))
     CookingEquipment.addEquipmentRecipe(Objs.pan, stick, stick, ironStick, new ItemStack(Items.string), new ItemStack(Objs.parts, 1, PartInfo.PAN))
-    CookingEquipment.addGrillFood(new ItemStack(Items.fish, 1, 0), new ItemStack(Items.cooked_fished, 1, 0));
-    CookingEquipment.addGrillFood(new ItemStack(Items.fish, 1, 1), new ItemStack(Items.cooked_fished, 1, 1));
-    CookingEquipment.addGrillFood(new ItemStack(Items.beef, 1, 0), new ItemStack(Items.cooked_beef, 1, 0));
-    CookingEquipment.addGrillFood(new ItemStack(Items.porkchop, 1, 0), new ItemStack(Items.cooked_porkchop, 1, 0));
-    //CookingEquipment.addGrillFood(ModItems.venisonRaw, 0, new ItemStack(ModItems.venisonCooked, 1, 0));
-    CookingEquipment.addPanFood(new ItemStack(Items.potato, 1, 0), new ItemStack(Items.baked_potato, 1, 0));
-    CookingEquipment.addPanFood(new ItemStack(Items.rotten_flesh, 1, 0), new ItemStack(Items.leather, 1, 0));
-    //CookingEquipment.addSpitFood(ModItems.hareRaw, 0, new ItemStack(ModItems.hareCooked, 1, 0));
-    CookingEquipment.addSpitFood(new ItemStack(Items.chicken, 1, 0), new ItemStack(Items.cooked_chicken, 1, 0));
-    CookingEquipment.addSpitFood(new ItemStack(Items.fish, 1, 0), new ItemStack(Items.cooked_fished, 1, 0));
-    CookingEquipment.addSpitFood(new ItemStack(Items.fish, 1, 1), new ItemStack(Items.cooked_fished, 1, 1));
+    CookingEquipment.addGrillFood(new ItemStack(Items.fish, 1, 0), new ItemStack(Items.cooked_fished, 1, 0))
+    CookingEquipment.addGrillFood(new ItemStack(Items.fish, 1, 1), new ItemStack(Items.cooked_fished, 1, 1))
+    CookingEquipment.addGrillFood(new ItemStack(Items.beef, 1, 0), new ItemStack(Items.cooked_beef, 1, 0))
+    CookingEquipment.addGrillFood(new ItemStack(Items.porkchop, 1, 0), new ItemStack(Items.cooked_porkchop, 1, 0))
+    //CookingEquipment.addGrillFood(ModItems.venisonRaw, 0, new ItemStack(ModItems.venisonCooked, 1, 0))
+    CookingEquipment.addPanFood(new ItemStack(Items.potato, 1, 0), new ItemStack(Items.baked_potato, 1, 0))
+    CookingEquipment.addPanFood(new ItemStack(Items.rotten_flesh, 1, 0), new ItemStack(Items.leather, 1, 0))
+    //CookingEquipment.addSpitFood(ModItems.hareRaw, 0, new ItemStack(ModItems.hareCooked, 1, 0))
+    CookingEquipment.addSpitFood(new ItemStack(Items.chicken, 1, 0), new ItemStack(Items.cooked_chicken, 1, 0))
+    CookingEquipment.addSpitFood(new ItemStack(Items.fish, 1, 0), new ItemStack(Items.cooked_fished, 1, 0))
+    CookingEquipment.addSpitFood(new ItemStack(Items.fish, 1, 1), new ItemStack(Items.cooked_fished, 1, 1))
   }
   def preInit(event: FMLPreInitializationEvent) {
     Objs.modelLoader = new TechneModelLoader();
@@ -160,6 +174,7 @@ object MiscRegistry {
 
     Objs.campfireM = Objs.modelLoader.loadInstance(new ResourceLocation(ModelInfo.CAMPFIRE)).asInstanceOf[TechneModel];
     Objs.logM = Objs.modelLoader.loadInstance(new ResourceLocation(ModelInfo.LOG)).asInstanceOf[TechneModel];
+    Objs.tentM = Objs.modelLoader.loadInstance(new ResourceLocation(ModelInfo.TENT)).asInstanceOf[TechneModel];
 
     MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(Objs.campfire), new CampfireItemRender())
     ClientRegistry.bindTileEntitySpecialRenderer(classOf[TileEntityCampfire], new CampfireRender())
@@ -168,6 +183,8 @@ object MiscRegistry {
     MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(Objs.log), new LogItemRender())
     ClientRegistry.bindTileEntitySpecialRenderer(classOf[TileEntityLog], new LogRender())
     ClientRegistry.bindTileEntitySpecialRenderer(classOf[TileEntitySleepingBag], new SleepingBagRender())
+    MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(Objs.tent), new TentItemRender())
+    ClientRegistry.bindTileEntitySpecialRenderer(classOf[TileEntityTent], new TentRender())
   }
   def initServer {
     CampingMod.proxy.registerGui(GuiInfo.GUI_CAMPFIRE_COOK, classOf[ContainerCampfireCook], null)
@@ -195,10 +212,16 @@ object ObjRegistry {
     Objs.hempItem = new HempItem(Objs.hemp, classOf[HempItemInfo])
     Objs.sleepingBag  = new SleepingBag(classOf[SleepingBagInfo])
     Objs.bounds = new BoundsHelper(classOf[BoundsHelperInfo])
+    Objs.tent = new Tent(classOf[TentInfo])
     
     Objs.grill = new Grill(new ItemStack(Objs.kit, 1, KitInfo.KIT_GRILL))
     Objs.spit = new Spit(new ItemStack(Objs.kit, 1, KitInfo.KIT_SPIT))
     Objs.pan = new Pan(new ItemStack(Objs.kit, 1, KitInfo.KIT_PAN))
+    
+    val xLine = Array(1, -1, 1, -1, 0, 1, -1, 0, 1, -1, 0, 1, -1, 0, 1, -1, 0)
+    val yLine = Array(0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1)
+    val zLine = Array(0, 0, 1, 1, 1, 2, 2, 2, 0, 0, 0, 1, 1, 1, 2, 2, 2)
+    Objs.tentStructure = BoundsStructure.regsisterStructure(xLine, yLine, zLine, true)
   }
   def register(block: Block, name: String) = GameRegistry.registerBlock(block, name)
   def register(item: Item, name: String) = GameRegistry.registerItem(item, name)

@@ -36,7 +36,10 @@ object CampingMod {
 }
 // TEST MULTIPLAYER
 
-// FASE 2 - Tents, Recipes so far
+// FASE 2 - Tents:GUIs, Recipes so far
 // FASE 3 - Campers, Animals, Traps, Armor
 
 // FASE 4 - Guide, New tent: shelter, Backpack when on back Model, Lantern when active wearing model.
+
+//FIX TENT TEXTURE WITN XUSTOM MODEL WITH CUSTOM TEXTURE SIZES
+//FIX BOUNDSBLOCK NO BOUNDS VIEW ONLY COLLISION

@@ -2,32 +2,29 @@ package com.rikmuld.camping.core
 
 import java.util.ArrayList
 import java.util.Random
+
+import scala.collection.JavaConversions.asScalaBuffer
+
 import cpw.mods.fml.relauncher.ReflectionHelper
-import net.minecraft.entity.Entity
 import net.minecraft.entity.item.EntityItem
 import net.minecraft.entity.player.EntityPlayer
+import net.minecraft.entity.player.EntityPlayerMP
 import net.minecraft.init.Blocks
+import net.minecraft.init.Items
 import net.minecraft.inventory.Container
 import net.minecraft.inventory.IInventory
 import net.minecraft.inventory.Slot
+import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
+import net.minecraft.nbt.NBTTagList
+import net.minecraft.util.MathHelper
+import net.minecraft.util.MovingObjectPosition
+import net.minecraft.util.Vec3
 import net.minecraft.world.World
+import net.minecraft.world.storage.MapData
 import net.minecraftforge.common.util.Constants
 import net.minecraftforge.common.util.ForgeDirection
-import net.minecraft.world.storage.MapData
-import net.minecraft.init.Items
-import net.minecraft.item.Item
-import com.rikmuld.camping.common.objs.block.LanternItem
-import com.rikmuld.camping.common.objs.block.LanternItem
-import com.rikmuld.camping.common.objs.block.LanternItem
-import net.minecraft.nbt.NBTTagList
-import scala.collection.JavaConversions._
-import net.minecraft.nbt.NBTUtil
-import net.minecraft.util.MovingObjectPosition
-import net.minecraft.util.MathHelper
-import net.minecraft.entity.player.EntityPlayerMP
-import net.minecraft.util.Vec3
 
 object Utils {
   implicit class ContainerUtils(container: Container) {
@@ -36,7 +33,6 @@ object Utils {
       for (row <- 0 until rowMax; collom <- 0 until collomMax) container.addSlot(new Slot(inv, collom + (row * collomMax) + slotID, xStart + (collom * 18), yStart + (row * 18)))
     }
   }
-
   implicit class WorldUtils(world: World) {
     def dropItemInWorld(itemStack: ItemStack, x: Int, y: Int, z: Int, rand: Random) {
       if (!world.isRemote) {
@@ -55,6 +51,14 @@ object Utils {
           entityItem.motionZ = rand.nextGaussian() * factor
           world.spawnEntityInWorld(entityItem)
           itemStack.stackSize = 0
+        }
+      }
+    }
+    def dropItemsInWorld(stacks: ArrayList[ItemStack], x: Int, y: Int, z: Int, rand: Random) {
+      if (!world.isRemote) {
+        for (i <- 0 until stacks.size) {
+          val itemStack = stacks(i)
+          dropItemInWorld(itemStack, x, y, z, rand)
         }
       }
     }
@@ -234,5 +238,9 @@ object Utils {
       for (i <- 0 until numbers.length) returnNumbers(i) = -numbers(i)
       returnNumbers
     }
+  }
+  
+  implicit class IntegerUtils(currNumber:Int){
+    def getScaledNumber(maxNumber: Int, scaledNumber: Int): Float = (currNumber.toFloat / maxNumber.toFloat) * scaledNumber
   }
 }

@@ -31,20 +31,15 @@ class Bounds(var xMin: Float, var yMin: Float, var zMin: Float, var xMax: Float,
 }
 
 object BoundsStructure {
-  var structures: HashMap[String, BoundsStructure] = new HashMap[String, BoundsStructure]()
-  var rotatedStructures: HashMap[String, Array[BoundsStructure]] = new HashMap[String, Array[BoundsStructure]]()
- 
-  def getRotatedStructure(name: String): Array[BoundsStructure] = rotatedStructures(name)
-  def getStructure(name: String): BoundsStructure = structures(name)
-  def regsisterStructure(name: String, xCoords: Array[Int], yCoords: Array[Int], zCoords: Array[Int], rotation: Boolean) {
-    if (!rotation) structures.put(name, new BoundsStructure(Array(xCoords, yCoords, zCoords)))
+  def regsisterStructure(xCoords: Array[Int], yCoords: Array[Int], zCoords: Array[Int], rotation: Boolean):Array[BoundsStructure] = {
+    if (!rotation) Array(new BoundsStructure(Array(xCoords, yCoords, zCoords)))
     else {
       val structure = Array.ofDim[BoundsStructure](4)
       structure(0) = new BoundsStructure(Array(xCoords, yCoords, zCoords))
       structure(1) = new BoundsStructure(Array(zCoords.inverse, yCoords, xCoords.inverse))
       structure(2) = new BoundsStructure(Array(zCoords.inverse, yCoords, xCoords.inverse))
       structure(3) = new BoundsStructure(Array(zCoords, yCoords, xCoords))
-      rotatedStructures.put(name, structure)
+      structure
     }
   }
 }

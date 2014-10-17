@@ -27,6 +27,7 @@ import net.minecraft.util.ChatComponentText
 import cpw.mods.fml.relauncher.Side
 import com.rikmuld.camping.common.objs.tile.TileEntitySleepingBag
 import net.minecraft.init.Blocks
+import net.minecraft.util.ChatComponentTranslation
 
 object SleepingBag {
   def isBlockHeadOfBed(meta: Int): Boolean = meta == 0
@@ -67,9 +68,9 @@ class SleepingBag(infoClass: Class[_]) extends BlockMain(infoClass, Material.clo
           return true
         } else {
           if (state == EnumStatus.NOT_POSSIBLE_NOW) {
-            player.addChatMessage(new ChatComponentText("tile.bed.noSleep"))
+            player.addChatMessage(new ChatComponentTranslation("tile.bed.noSleep", new java.lang.Object))
           } else if (state == EnumStatus.NOT_SAFE) {
-            player.addChatMessage(new ChatComponentText("tile.bed.noSafe"))
+            player.addChatMessage(new ChatComponentTranslation("tile.bed.noSafe", new java.lang.Object))
           }
           return true
         }

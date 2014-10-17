@@ -61,7 +61,7 @@ class TileEntityWithRotation extends TileEntityMain {
   }
 }
 
-abstract class TileEntityWithInventory extends TileEntityMain with IInventory with ISidedInventory {
+abstract trait TileEntityWithInventory extends TileEntity with IInventory with ISidedInventory {
   var inventoryContents: Array[ItemStack] = new Array[ItemStack](getSizeInventory)
 
   override def canExtractItem(slot: Int, ItemStack: ItemStack, side: Int): Boolean = false

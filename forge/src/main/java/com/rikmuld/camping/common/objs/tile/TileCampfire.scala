@@ -20,7 +20,7 @@ import com.rikmuld.camping.common.inventory.SlotCooking
 import com.rikmuld.camping.core.Utils._
 import com.rikmuld.camping.core.Config
 
-class TileEntityCampfire extends TileEntityWithInventory {
+class TileEntityCampfire extends TileEntityMain with TileEntityWithInventory {
   var color: Int = 16
   var oldTime: Int = _
   var time: Int = _
@@ -63,12 +63,13 @@ class TileEntityCampfire extends TileEntityWithInventory {
   override def getRenderBoundingBox(): AxisAlignedBB = AxisAlignedBB.getBoundingBox(xCoord, yCoord, zCoord, xCoord + 1, yCoord + 1, zCoord + 1)
   override def getSizeInventory(): Int = 1
   override def readFromNBT(tag: NBTTagCompound) {
+    super.readFromNBT(tag)
     color = tag.getInteger("color")
     time = tag.getInteger("time")
     for (i <- 0 until coals.length; j <- 0 until coals(i).length) {
       coals(i)(j) = tag.getFloat("coals" + i + j)
     }
-    super.readFromNBT(tag)
+    super[TileEntityWithInventory].readFromNBT(tag)
   }
   override def setTileData(id: Int, data: Array[Int]) {
     if (id == 0) colorFlame(data(0))
@@ -96,14 +97,15 @@ class TileEntityCampfire extends TileEntityWithInventory {
     }
   }
   override def writeToNBT(tag: NBTTagCompound) {
+    super.writeToNBT(tag)
     tag.setInteger("color", color)
     tag.setInteger("time", time)
     for (i <- 0 until coals.length; j <- 0 until coals(i).length) tag.setFloat("coals" + i + j, coals(i)(j))
-    super.writeToNBT(tag)
+    super[TileEntityWithInventory].writeToNBT(tag)
   }
 }
 
-class TileEntityCampfireCook extends TileEntityWithInventory {
+class TileEntityCampfireCook extends TileEntityMain with TileEntityWithInventory {
   var maxFeul: Int = Objs.config.campfireMaxFuel
   var fuelForCoal: Int = Objs.config.campfireCoalFuel
   var fuel: Int = _
@@ -210,6 +212,7 @@ class TileEntityCampfireCook extends TileEntityWithInventory {
     for (i <- 0 until coals.length; j <- 0 until coals(i).length) {
       coals(i)(j) = tag.getFloat("coals" + i + j)
     }
+    super[TileEntityWithInventory].readFromNBT(tag)
   }
   def setSlots(slots: ArrayList[SlotCooking]) = {
     this.slots = slots
@@ -235,5 +238,6 @@ class TileEntityCampfireCook extends TileEntityWithInventory {
     for (i <- 0 until coals.length; j <- 0 until coals(i).length) {
       tag.setFloat("coals" + i + j, coals(i)(j))
     }
+    super[TileEntityWithInventory].writeToNBT(tag)
   }
 }

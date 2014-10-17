@@ -1,20 +1,21 @@
 package com.rikmuld.camping.common.network
 
 import java.nio.ByteBuffer
-import scala.collection.JavaConversions._
+
 import com.rikmuld.camping.CampingMod
 import com.rikmuld.camping.common.objs.tile.TileEntityMain
+import com.rikmuld.camping.common.objs.tile.TileEntityTent
+import com.rikmuld.camping.common.objs.tile.TileEntityWithBounds
 import com.rikmuld.camping.common.objs.tile.TileEntityWithInventory
-import com.rikmuld.camping.core.Events
 import com.rikmuld.camping.core.NBTInfo
 import com.rikmuld.camping.core.Objs
+import com.rikmuld.camping.misc.Bounds
+
 import cpw.mods.fml.common.network.simpleimpl.MessageContext
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.network.PacketBuffer
-import com.rikmuld.camping.misc.Bounds
-import com.rikmuld.camping.common.objs.tile.TileEntityWithBounds
 
 class TileData(var id: Int, var x: Int, var y: Int, var z: Int, tileData: Seq[Int]) extends BasicPacketData {
   var length: Int = if (tileData == null) 0 else tileData.length * 4
@@ -175,5 +176,21 @@ class BoundsData(var bounds: Bounds, var x: Int, var y: Int, var z: Int) extends
     if (player.worldObj.getTileEntity(x, y, z) != null) {
       player.worldObj.getTileEntity(x, y, z).asInstanceOf[TileEntityWithBounds].bounds = new Bounds(xMin, yMin, zMin, xMax, yMax, zMax)
     }
+  }
+}
+
+class PlayerSleepInTent(var x: Int, var y: Int, var z: Int) extends BasicPacketData{
+  def this() = this(0, 0, 0)
+  
+  override def handlePacket(player: EntityPlayer, ctx: MessageContext) = player.worldObj.getTileEntity(x, y, z).asInstanceOf[TileEntityTent].sleep(player)
+  override def getData(stream: PacketBuffer) {
+    x = stream.readInt
+    y = stream.readInt
+    z = stream.readInt
+  }
+  override def setData(stream: PacketBuffer) {
+    stream.writeInt(x)
+    stream.writeInt(y)
+    stream.writeInt(z)
   }
 }

@@ -85,3 +85,15 @@ class SlotCooking(par1iInventory: IInventory, id: Int, x: Int, y: Int) extends S
   override def getSlotStackLimit(): Int = 1
   override def isItemValid(stack: ItemStack): Boolean = if ((equipment != null) && (fire != null)) equipment.canCook(stack) else false
 }
+
+class SlotState(inv: IInventory, id: Int, x: Int, y: Int) extends SlotDisable(inv, id, x, y) {
+  var stateX: Int = _
+  var stateY: Int = _
+
+  override def enable() {
+    xDisplayPosition = stateX
+    yDisplayPosition = stateY
+  }
+  def setStateX(state: Int) = stateX = xFlag - (18 * state)
+  def setStateY(state: Int) = stateY = yFlag - (18 * state)
+}

@@ -26,6 +26,10 @@ class BoundsHelperInfo extends ObjInfo {
   override def NAME = "boundsHelper"
 }
 
+class TentInfo extends ObjInfo {
+  override def NAME = "tent"
+}
+
 object SleepingBagInfo {
   final val HEAD = 0
   final val FOOT = 1

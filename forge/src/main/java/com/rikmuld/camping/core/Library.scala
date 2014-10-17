@@ -39,8 +39,10 @@ object ConfigInfo {
 
 object ModelInfo {
   final val MODEL_LOCATION = ModInfo.MOD_ID + ":misc/models/"
+  
   final val CAMPFIRE = MODEL_LOCATION + "ModelCampfireDeco.tcn"
   final val LOG = MODEL_LOCATION + "ModelLog.tcn"
+  final val TENT = MODEL_LOCATION + "ModelTent.tcn";
 }
 
 object TextureInfo {
@@ -70,6 +72,22 @@ object TextureInfo {
   final val GUI_UTILS = GUI_LOCATION + "GuiUtils.png"
   final val MODEL_SLEEPING_TOP = MODEL_LOCATION + "ModelSleepingBagTop.png";
   final val MODEL_SLEEPING_DOWN = MODEL_LOCATION + "ModelSleepingBagDown.png";
+  final val MODEL_TENT_WHITE = MODEL_LOCATION + "ModelTentWhite.png";
+  final val MODEL_TENT_YELLOW = MODEL_LOCATION + "ModelTentYellow.png";
+  final val MODEL_TENT_RED = MODEL_LOCATION + "ModelTentRed.png";
+  final val MODEL_TENT_PURPLE = MODEL_LOCATION + "ModelTentPurple.png";
+  final val MODEL_TENT_PINK = MODEL_LOCATION + "ModelTentPink.png";
+  final val MODEL_TENT_ORANGE = MODEL_LOCATION + "ModelTentOrange.png";
+  final val MODEL_TENT_MAGENTA = MODEL_LOCATION + "ModelTentMagenta.png";
+  final val MODEL_TENT_LIME = MODEL_LOCATION + "ModelTentLime.png";
+  final val MODEL_TENT_LIGHTGRAY = MODEL_LOCATION + "ModelTentLightGray.png";
+  final val MODEL_TENT_LIGHTBLUE = MODEL_LOCATION + "ModelTentLightBlue.png";
+  final val MODEL_TENT_GREEN = MODEL_LOCATION + "ModelTentGreen.png";
+  final val MODEL_TENT_GRAY = MODEL_LOCATION + "ModelTentGray.png";
+  final val MODEL_TENT_CYAN = MODEL_LOCATION + "ModelTentCyan.png";
+  final val MODEL_TENT_BROWN = MODEL_LOCATION + "ModelTentBrown.png";
+  final val MODEL_TENT_BLUE = MODEL_LOCATION + "ModelTentBlue.png";
+  final val MODEL_TENT_BLACK = MODEL_LOCATION + "ModelTentBlack.png";
 }
 
 object TextInfo {
