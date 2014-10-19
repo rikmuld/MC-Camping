@@ -87,8 +87,8 @@ class SlotCooking(par1iInventory: IInventory, id: Int, x: Int, y: Int) extends S
 }
 
 class SlotState(inv: IInventory, id: Int, x: Int, y: Int) extends SlotDisable(inv, id, x, y) {
-  var stateX: Int = _
-  var stateY: Int = _
+  var stateX: Int = xFlag 
+  var stateY: Int = yFlag 
 
   override def enable() {
     xDisplayPosition = stateX

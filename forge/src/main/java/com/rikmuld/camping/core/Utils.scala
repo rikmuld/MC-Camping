@@ -2,9 +2,7 @@ package com.rikmuld.camping.core
 
 import java.util.ArrayList
 import java.util.Random
-
 import scala.collection.JavaConversions.asScalaBuffer
-
 import cpw.mods.fml.relauncher.ReflectionHelper
 import net.minecraft.entity.item.EntityItem
 import net.minecraft.entity.player.EntityPlayer
@@ -25,8 +23,40 @@ import net.minecraft.world.World
 import net.minecraft.world.storage.MapData
 import net.minecraftforge.common.util.Constants
 import net.minecraftforge.common.util.ForgeDirection
+import net.minecraftforge.oredict.ShapelessOreRecipe
+import net.minecraftforge.oredict.ShapedOreRecipe
+import cpw.mods.fml.common.registry.GameRegistry
+import net.minecraft.item.crafting.FurnaceRecipes
+import net.minecraft.block.Block
+import net.minecraftforge.oredict.OreDictionary
 
 object Utils {
+  implicit class ObjectUtils(`object`: AnyRef) {
+    def toStack(): ItemStack = {
+      var stack: ItemStack = null
+      if (`object`.isInstanceOf[Block]) {
+        val block = `object`.asInstanceOf[Block]
+        stack = new ItemStack(block)
+      } else if (`object`.isInstanceOf[Item]) {
+        val item = `object`.asInstanceOf[Item]
+        stack = new ItemStack(item)
+      } else if (`object`.isInstanceOf[ItemStack]) stack = `object`.asInstanceOf[ItemStack]
+      stack
+    }
+    def toStack(count:Int): ItemStack = {
+      val stack = toStack
+      stack.stackSize = count
+      stack
+    }
+    def getMetaCycle(maxMetadata: Int): Array[ItemStack] = {
+      val stack = Array.ofDim[ItemStack](maxMetadata)
+      for (i <- 0 until maxMetadata) {
+        if (`object`.isInstanceOf[Block]) stack(i) = new ItemStack(`object`.asInstanceOf[Block], 1, i)
+        if (`object`.isInstanceOf[Item]) stack(i) = new ItemStack(`object`.asInstanceOf[Item], 1, i)
+      }
+      stack
+    }
+  }
   implicit class ContainerUtils(container: Container) {
     def addSlot(slot: Slot) = ReflectionHelper.findMethod(classOf[Container], container, Array("addSlotToContainer"), classOf[Slot]).invoke(container, slot);
     def addSlots(inv: IInventory, slotID: Int, rowMax: Int, collomMax: Int, xStart: Int, yStart: Int) {
@@ -186,7 +216,6 @@ object Utils {
       val stacks2 = new ArrayList[ItemStack];
 
       for (i <- 0 until 4) {
-        println(i)
         if (slots.contains(i.toByte)) {
           var stack = stacks.get(slots.indexOf(i.toByte))
           if ((stack.getItem().equals(Item.getItemFromBlock(Objs.lantern))) && (stack.getItemDamage() == LanternInfo.LANTERN_ON)) {
@@ -224,6 +253,7 @@ object Utils {
       val returnStack = new ItemStack(item.getItem, 1, (item.getItemDamage + damage))
       player.inventory.setInventorySlotContents(player.inventory.currentItem, if ((returnStack.getItemDamage >= item.getMaxDamage)) null else returnStack)
     }
+    def getWildValue = new ItemStack(item.getItem(), 1, OreDictionary.WILDCARD_VALUE)
     def addDamage(damage: Int): ItemStack = {
       val returnStack = new ItemStack(item.getItem, 1, (item.getItemDamage + damage))
       val returnStack2 = returnStack.copy()
@@ -239,8 +269,8 @@ object Utils {
       returnNumbers
     }
   }
-  
-  implicit class IntegerUtils(currNumber:Int){
+
+  implicit class IntegerUtils(currNumber: Int) {
     def getScaledNumber(maxNumber: Int, scaledNumber: Int): Float = (currNumber.toFloat / maxNumber.toFloat) * scaledNumber
   }
 }

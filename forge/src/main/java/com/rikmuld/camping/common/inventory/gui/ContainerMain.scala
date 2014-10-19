@@ -15,7 +15,6 @@ abstract class ContainerItemMain(player: EntityPlayer) extends Container {
   val invPlayer: InventoryPlayer = player.inventory;
   val inv = getItemInv
 
-  addContainer
   inv.openInventory()
 
   override def canInteractWith(player: EntityPlayer): Boolean = !player.isDead && inv.isUseableByPlayer(player)
@@ -39,13 +38,10 @@ abstract class ContainerItemMain(player: EntityPlayer) extends Container {
     itemstack;
   }
   def getItemInv: InventoryItemMain
-  def addContainer
   def getItem: Item
 }
 
 abstract class ContainerTileMain(player: EntityPlayer, tile: IInventory) extends Container {
-  addContainer
-
   override def canInteractWith(player: EntityPlayer): Boolean = !player.isDead && tile.isUseableByPlayer(player)
   override def onContainerClosed(player: EntityPlayer) {
     super.onContainerClosed(player)
@@ -68,5 +64,4 @@ abstract class ContainerTileMain(player: EntityPlayer, tile: IInventory) extends
     }
     itemstack
   }
-  def addContainer
 }

@@ -10,14 +10,13 @@ import com.rikmuld.camping.common.inventory.SlotItemsNot
 import com.rikmuld.camping.common.inventory.SlotNoPickup
 
 class ContainerBackpack(player: EntityPlayer) extends ContainerItemMain(player) {
-  override def getItemInv = new InventoryItemMain(player.getCurrentEquippedItem, player, 27, 64);
-  override def addContainer {
-    for (row <- 0 until 3; collom <- 0 until 9) this.addSlot(new SlotItemsNot(inv, collom + (row * 9), 8 + (collom * 18), 26 + (row * 18), Objs.backpack))
-    this.addSlots(invPlayer, 9, 3, 9, 8, 84)
-    for (row <- 0 until 9) {
-      if (row == invPlayer.currentItem) addSlotToContainer(new SlotNoPickup(invPlayer, row, 8 + (row * 18), 142))
-      else addSlotToContainer(new Slot(invPlayer, row, 8 + (row * 18), 142))
-    }
+  for (row <- 0 until 3; collom <- 0 until 9) this.addSlot(new SlotItemsNot(inv, collom + (row * 9), 8 + (collom * 18), 26 + (row * 18), Objs.backpack))
+  this.addSlots(invPlayer, 9, 3, 9, 8, 84)
+  for (row <- 0 until 9) {
+    if (row == invPlayer.currentItem) addSlotToContainer(new SlotNoPickup(invPlayer, row, 8 + (row * 18), 142))
+    else addSlotToContainer(new Slot(invPlayer, row, 8 + (row * 18), 142))
   }
+
+  override def getItemInv = new InventoryItemMain(player.getCurrentEquippedItem, player, 27, 64);
   override def getItem: Item = Objs.backpack
 }

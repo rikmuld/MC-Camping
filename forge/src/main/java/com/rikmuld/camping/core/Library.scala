@@ -26,6 +26,10 @@ object GuiInfo {
   final val GUI_CAMPINV = 4
   final val GUI_INVENTORY = 5
   final val GUI_CAMPINV_CRAFT = 6
+  final val GUI_TENT = 7
+  final val GUI_TENT_SLEEP = 8
+  final val GUI_TENT_CHESTS = 9
+  final val GUI_TENT_LANTERN = 10
 }
 
 object ConfigInfo {
@@ -88,6 +92,9 @@ object TextureInfo {
   final val MODEL_TENT_BROWN = MODEL_LOCATION + "ModelTentBrown.png";
   final val MODEL_TENT_BLUE = MODEL_LOCATION + "ModelTentBlue.png";
   final val MODEL_TENT_BLACK = MODEL_LOCATION + "ModelTentBlack.png";
+  final val GUI_TENT = GUI_LOCATION + "GuiTent.png";
+  final val GUI_TENT_CONTENDS_1 = GUI_LOCATION + "GuiTentContend1.png";
+  final val GUI_TENT_CONTENDS_2 = GUI_LOCATION + "GuiTentContend2.png";
 }
 
 object TextInfo {

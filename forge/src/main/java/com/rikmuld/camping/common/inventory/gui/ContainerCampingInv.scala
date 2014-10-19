@@ -124,10 +124,10 @@ class ContainerCampinvCraft(var player: EntityPlayer) extends Container {
     campinv.closeInventory()
   }
   override def func_94530_a(par1ItemStack: ItemStack, par2Slot: Slot): Boolean = par2Slot.inventory != this.craftResult && super.func_94530_a(par1ItemStack, par2Slot)
+  override def transferStackInSlot(p: EntityPlayer, i: Int): ItemStack = return null
 }
 
 object InventoryCampinv {
-
   def dropItems(player: EntityPlayer) {
     if (player.getEntityData.hasKey("campInv") == false) return
     val tag = player.getEntityData.getCompoundTag("campInv")

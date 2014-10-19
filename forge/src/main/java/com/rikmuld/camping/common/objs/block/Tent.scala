@@ -1,46 +1,37 @@
 package com.rikmuld.camping.common.objs.block
 
-import com.rikmuld.camping.core.ObjInfo
-import net.minecraft.block.material.Material
-import net.minecraft.tileentity.TileEntity
-import net.minecraft.entity.player.EntityPlayer
-import net.minecraft.world.IBlockAccess
-import net.minecraft.entity.item.EntityItem
-import net.minecraft.item.ItemStack
-import net.minecraft.world.World
-import net.minecraft.block.Block
-import net.minecraft.nbt.NBTTagCompound
-import net.minecraft.init.Items
-import net.minecraft.init.Blocks
+import java.util.Random
+import scala.collection.JavaConversions.asScalaBuffer
+import com.rikmuld.camping.common.network.OpenGui
+import com.rikmuld.camping.common.network.PacketSender
 import com.rikmuld.camping.common.objs.item.ItemBlockMain
-import net.minecraft.item.ItemBlock
-import scala.collection.JavaConversions._
-import com.rikmuld.camping.core.Utils._
-import com.rikmuld.camping.core.LanternInfo
-import com.rikmuld.camping.common.objs.tile.TileEntityLantern
-import net.minecraft.creativetab.CreativeTabs
-import cpw.mods.fml.relauncher.SideOnly
-import net.minecraft.item.Item
-import cpw.mods.fml.relauncher.Side
+import com.rikmuld.camping.common.objs.tile.TileEntityMain
+import com.rikmuld.camping.common.objs.tile.TileEntityTent
+import com.rikmuld.camping.common.objs.tile.TileEntityWithRotation
+import com.rikmuld.camping.core.GuiInfo
+import com.rikmuld.camping.core.ObjInfo
 import com.rikmuld.camping.core.Objs
 import com.rikmuld.camping.core.TentInfo
-import net.minecraftforge.common.util.ForgeDirection
-import ibxm.Player
-import com.rikmuld.camping.common.objs.tile.TileEntityTent
-import net.minecraft.entity.EntityLivingBase
-import net.minecraft.util.AxisAlignedBB
-import com.rikmuld.camping.core.GuiInfo
-import javax.swing.Icon
-import net.minecraft.util.MathHelper
-import java.util.Random
-import net.minecraft.entity.Entity
-import java.util.ArrayList
+import com.rikmuld.camping.core.Utils.PlayerUtils
+import com.rikmuld.camping.core.Utils.WorldUtils
 import com.rikmuld.camping.misc.BoundsTracker
-import com.rikmuld.camping.common.objs.tile.TileEntityMain
-import com.rikmuld.camping.common.objs.tile.TileEntityWithRotation
+import net.minecraft.block.Block
+import net.minecraft.block.material.Material
+import net.minecraft.entity.Entity
+import net.minecraft.entity.EntityLivingBase
+import net.minecraft.entity.player.EntityPlayer
+import net.minecraft.init.Blocks
+import net.minecraft.init.Items
+import net.minecraft.item.ItemBlock
+import net.minecraft.item.ItemStack
+import net.minecraft.nbt.NBTTagCompound
+import net.minecraft.util.AxisAlignedBB
 import net.minecraft.util.IIcon
-import com.rikmuld.camping.common.network.PacketSender
-import com.rikmuld.camping.common.network.OpenGui
+import net.minecraft.util.MathHelper
+import net.minecraft.world.IBlockAccess
+import net.minecraft.world.World
+import net.minecraftforge.common.util.ForgeDirection
+import java.util.ArrayList
 
 object Tent {
   def isBlockHeadOfBed(meta: Int): Boolean = true
@@ -64,11 +55,10 @@ class Tent(infoClass: Class[_]) extends BlockMain(infoClass, Material.cloth, cla
       tile.structures(tile.rotation).destroyStructure(world, tile.tracker(tile.rotation))
       super.breakBlock(world, x, y, z, par5, par6)
       if (!tile.dropped) {
-        val stacks = getDrops(world, x, y, z, world.getBlockMetadata(x, y, z), 1)
+        val stacks = new ArrayList[ItemStack]
+        dropBlockAsItem(world, x, y, z, new ItemStack(this))
         stacks.addAll(tile.getContends)
-        for (stack <- stacks) {
-          dropBlockAsItem(world, x, y, z, stack)
-        }
+        world.dropItemsInWorld(stacks, x, y, z, new Random())
         tile.dropped = true
       }
     }
@@ -111,19 +101,16 @@ class Tent(infoClass: Class[_]) extends BlockMain(infoClass, Material.cloth, cla
   override def isBedFoot(world: IBlockAccess, x: Int, y: Int, z: Int): Boolean = !Tent.isBlockHeadOfBed(world.getBlockMetadata(x, y, z))
   override def onBlockActivated(world: World, x: Int, y: Int, z: Int, player: EntityPlayer, side: Int, par7: Float, par8: Float, par9: Float): Boolean = {
     if (!world.isRemote) {
-      if ((player.getCurrentEquippedItem != null) && 
-        world.getTileEntity(x, y, z).asInstanceOf[TileEntityTent].addContends(player.getCurrentEquippedItem)) {
+      if ((player.getCurrentEquippedItem != null) && world.getTileEntity(x, y, z).asInstanceOf[TileEntityTent].addContends(player.getCurrentEquippedItem)) {
         player.getCurrentEquippedItem.stackSize -= 1
-        if (player.getCurrentEquippedItem.stackSize < 0) {
-          player.setCurrentItem(null)
-        }
+        if (player.getCurrentEquippedItem.stackSize < 0) player.setCurrentItem(null)
         return true
       } else if ((player.getCurrentEquippedItem != null) && (player.getCurrentEquippedItem.getItem() == Items.dye) && (world.getTileEntity(x, y, z).asInstanceOf[TileEntityTent].color != player.getCurrentEquippedItem.getItemDamage)) {
         world.getTileEntity(x, y, z).asInstanceOf[TileEntityTent].setColor(player.getCurrentEquippedItem.getItemDamage)
         player.getCurrentEquippedItem.stackSize -= 1
         return true
       } else {
-        //PacketSender.to(new OpenGui(GuiInfo.GUI_TENT, x, y, z), player.asInstanceOf[Player])
+        PacketSender.to(new OpenGui(GuiInfo.GUI_TENT, x, y, z), player)
         return true
       }
     }

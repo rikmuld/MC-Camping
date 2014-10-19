@@ -15,11 +15,10 @@ import java.util.ArrayList
 import com.rikmuld.camping.core.Objs
 
 class ContainerCampfire(player: EntityPlayer, tile: IInventory) extends ContainerTileMain(player, tile) {
-  override def addContainer {
-    addSlotToContainer(new SlotItemsOnly(tile, 0, 71, 12, Items.dye))
-    this.addSlots(player.inventory, 0, 1, 9, 8, 96)
-    this.addSlots(player.inventory, 9, 3, 9, 8, 38)
-  }
+  addSlotToContainer(new SlotItemsOnly(tile, 0, 71, 12, Items.dye))
+  this.addSlots(player.inventory, 0, 1, 9, 8, 96)
+  this.addSlots(player.inventory, 9, 3, 9, 8, 38)
+
   override def transferStackInSlot(player: EntityPlayer, slotNum: Int): ItemStack = {
     var itemstack: ItemStack = null
     val slot = inventorySlots.get(slotNum).asInstanceOf[Slot]
@@ -47,21 +46,20 @@ class ContainerCampfireCook(player: EntityPlayer, tile: IInventory) extends Cont
   private var fire: TileEntityCampfireCook = _
   var slots: ArrayList[SlotCooking] = _
 
-  override def addContainer {
-    fire = tile.asInstanceOf[TileEntityCampfireCook]
-    slots = new ArrayList[SlotCooking]()
+  fire = tile.asInstanceOf[TileEntityCampfireCook]
+  slots = new ArrayList[SlotCooking]()
 
-    addSlotToContainer(new SlotItemsOnly(tile, 0, 80, 84, new ItemStack(Items.coal)))
-    addSlotToContainer(new SlotItemsOnly(tile, 1, 150, 9, new ItemStack(Objs.kit, 1, 1), new ItemStack(Objs.kit, 1, 3), new ItemStack(Objs.kit, 1, 2)))
-    for (i <- 0 until 10) {
-      val slot = new SlotCooking(tile, i + 2, 0, 0)
-      slots.add(slot)
-      addSlotToContainer(slot)
-    }
-    fire.setSlots(slots)
-    this.addSlots(player.inventory, 0, 1, 9, 8, 164)
-    this.addSlots(player.inventory, 9, 3, 9, 8, 106)
+  addSlotToContainer(new SlotItemsOnly(tile, 0, 80, 84, new ItemStack(Items.coal)))
+  addSlotToContainer(new SlotItemsOnly(tile, 1, 150, 9, new ItemStack(Objs.kit, 1, 1), new ItemStack(Objs.kit, 1, 3), new ItemStack(Objs.kit, 1, 2)))
+  for (i <- 0 until 10) {
+    val slot = new SlotCooking(tile, i + 2, 0, 0)
+    slots.add(slot)
+    addSlotToContainer(slot)
   }
+  fire.setSlots(slots)
+  this.addSlots(player.inventory, 0, 1, 9, 8, 164)
+  this.addSlots(player.inventory, 9, 3, 9, 8, 106)
+
   override def addCraftingToCrafters(crafting: ICrafting) {
     super.addCraftingToCrafters(crafting)
     for (i <- 0 until fire.cookProgress.length) {

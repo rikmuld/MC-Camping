@@ -13,13 +13,19 @@ import com.rikmuld.camping.client.render.objs.CampfireItemRender
 import com.rikmuld.camping.client.render.objs.CampfireRender
 import com.rikmuld.camping.client.render.objs.LogItemRender
 import com.rikmuld.camping.client.render.objs.LogRender
+import com.rikmuld.camping.client.render.objs.SleepingBagRender
+import com.rikmuld.camping.client.render.objs.TentItemRender
+import com.rikmuld.camping.client.render.objs.TentRender
 import com.rikmuld.camping.common.inventory.gui.ContainerBackpack
 import com.rikmuld.camping.common.inventory.gui.ContainerCampfire
 import com.rikmuld.camping.common.inventory.gui.ContainerCampfireCook
 import com.rikmuld.camping.common.inventory.gui.ContainerCampinv
 import com.rikmuld.camping.common.inventory.gui.ContainerCampinvCraft
 import com.rikmuld.camping.common.inventory.gui.ContainerKit
+import com.rikmuld.camping.common.inventory.gui.ContainerTentChests
+import com.rikmuld.camping.common.inventory.gui.ContainerTentLanterns
 import com.rikmuld.camping.common.network.BasicPacketData
+import com.rikmuld.camping.common.network.BoundsData
 import com.rikmuld.camping.common.network.Handler
 import com.rikmuld.camping.common.network.Items
 import com.rikmuld.camping.common.network.Map
@@ -27,13 +33,21 @@ import com.rikmuld.camping.common.network.NBTPlayer
 import com.rikmuld.camping.common.network.OpenGui
 import com.rikmuld.camping.common.network.PacketDataManager
 import com.rikmuld.camping.common.network.PacketGlobal
+import com.rikmuld.camping.common.network.PlayerSleepInTent
 import com.rikmuld.camping.common.network.TileData
+import com.rikmuld.camping.common.objs.block.BoundsHelper
 import com.rikmuld.camping.common.objs.block.Campfire
 import com.rikmuld.camping.common.objs.block.CampfireCook
+import com.rikmuld.camping.common.objs.block.Hemp
+import com.rikmuld.camping.common.objs.block.Hemp
 import com.rikmuld.camping.common.objs.block.Lantern
 import com.rikmuld.camping.common.objs.block.Light
 import com.rikmuld.camping.common.objs.block.Log
+import com.rikmuld.camping.common.objs.block.SleepingBag
+import com.rikmuld.camping.common.objs.block.Tent
 import com.rikmuld.camping.common.objs.item.Backpack
+import com.rikmuld.camping.common.objs.item.HempItem
+import com.rikmuld.camping.common.objs.item.ItemBlockMain
 import com.rikmuld.camping.common.objs.item.ItemMain
 import com.rikmuld.camping.common.objs.item.Kit
 import com.rikmuld.camping.common.objs.item.Knife
@@ -43,14 +57,21 @@ import com.rikmuld.camping.common.objs.tile.TileEntityCampfireCook
 import com.rikmuld.camping.common.objs.tile.TileEntityLantern
 import com.rikmuld.camping.common.objs.tile.TileEntityLight
 import com.rikmuld.camping.common.objs.tile.TileEntityLog
+import com.rikmuld.camping.common.objs.tile.TileEntitySleepingBag
+import com.rikmuld.camping.common.objs.tile.TileEntityTent
+import com.rikmuld.camping.common.objs.tile.TileEntityWithBounds
+import com.rikmuld.camping.common.objs.tile.TileEntityWithRotation
+import com.rikmuld.camping.common.world.WorldGenerator
+import com.rikmuld.camping.core.Utils._
+import com.rikmuld.camping.misc.BoundsStructure
 import com.rikmuld.camping.misc.CookingEquipment
 import com.rikmuld.camping.misc.Grill
 import com.rikmuld.camping.misc.Pan
 import com.rikmuld.camping.misc.Spit
 import com.rikmuld.camping.misc.Tab
+
 import cpw.mods.fml.client.registry.ClientRegistry
 import cpw.mods.fml.common.FMLCommonHandler
-import cpw.mods.fml.common.Mod
 import cpw.mods.fml.common.event.FMLInitializationEvent
 import cpw.mods.fml.common.event.FMLPostInitializationEvent
 import cpw.mods.fml.common.event.FMLPreInitializationEvent
@@ -60,11 +81,9 @@ import cpw.mods.fml.common.registry.GameRegistry
 import cpw.mods.fml.relauncher.Side
 import cpw.mods.fml.relauncher.SideOnly
 import net.minecraft.block.Block
-import net.minecraft.client.gui.Gui
 import net.minecraft.creativetab.CreativeTabs
 import net.minecraft.init.Blocks
 import net.minecraft.init.Items
-import net.minecraft.inventory.Container
 import net.minecraft.item.Item
 import net.minecraft.item.ItemBlock
 import net.minecraft.item.ItemStack
@@ -74,24 +93,12 @@ import net.minecraftforge.client.model.techne.TechneModel
 import net.minecraftforge.client.model.techne.TechneModelLoader
 import net.minecraftforge.common.MinecraftForge
 import net.minecraftforge.common.config.Configuration
-import com.rikmuld.camping.common.objs.item.ItemBlockMain
-import com.rikmuld.camping.common.objs.item.HempItem
-import com.rikmuld.camping.common.objs.block.Hemp
-import com.rikmuld.camping.common.world.WorldGenerator
-import com.rikmuld.camping.common.objs.block.SleepingBag
-import com.rikmuld.camping.common.objs.block.Hemp
-import com.rikmuld.camping.common.objs.tile.TileEntityWithRotation
-import com.rikmuld.camping.common.objs.tile.TileEntitySleepingBag
-import com.rikmuld.camping.client.render.objs.SleepingBagRender
-import com.rikmuld.camping.common.objs.block.BoundsHelper
-import com.rikmuld.camping.misc.BoundsStructure
-import com.rikmuld.camping.common.objs.tile.TileEntityTent
-import com.rikmuld.camping.client.render.objs.TentItemRender
-import com.rikmuld.camping.client.render.objs.TentRender
-import com.rikmuld.camping.common.objs.block.Tent
-import com.rikmuld.camping.common.objs.tile.TileEntityWithBounds
-import com.rikmuld.camping.common.network.PlayerSleepInTent
-import com.rikmuld.camping.common.network.BoundsData
+import rikmuld.camping.client.gui.screen.GuiTent
+import rikmuld.camping.client.gui.screen.GuiTentChests
+import rikmuld.camping.client.gui.screen.GuiTentLanterns
+import rikmuld.camping.client.gui.screen.GuiTentSleeping
+import rikmuld.camping.misc.CustomModel
+import rikmuld.camping.misc.CustomModelLoader
 
 object Objs {
   var tab: CreativeTabs = _
@@ -103,7 +110,9 @@ object Objs {
   var spit, grill, pan: CookingEquipment = _
   var config: Config = _
   var modelLoader: TechneModelLoader = _
-  var campfireM, logM, tentM: TechneModel = _
+  var modelLoaderC: CustomModelLoader = _
+  var campfireM, logM: TechneModel = _
+  var tentM: CustomModel = _
   var tentStructure: Array[BoundsStructure] = _
 }
 
@@ -127,7 +136,7 @@ object MiscRegistry {
     GameRegistry.registerTileEntity(classOf[TileEntityWithBounds], ModInfo.MOD_ID + "_bounds")
     GameRegistry.registerTileEntity(classOf[TileEntityTent], ModInfo.MOD_ID + "_tent")
     GameRegistry.registerWorldGenerator(new WorldGenerator(), 9999)
-    
+
     val stick = new ItemStack(Items.stick)
     val ironStick = new ItemStack(Objs.parts, 1, PartInfo.STICK_IRON)
 
@@ -147,7 +156,8 @@ object MiscRegistry {
     CookingEquipment.addSpitFood(new ItemStack(Items.fish, 1, 1), new ItemStack(Items.cooked_fished, 1, 1))
   }
   def preInit(event: FMLPreInitializationEvent) {
-    Objs.modelLoader = new TechneModelLoader();
+    Objs.modelLoader = new TechneModelLoader()
+    Objs.modelLoaderC = new CustomModelLoader()
     Objs.config = new Config(new Configuration(event.getSuggestedConfigurationFile()))
     Objs.config.sync
     Objs.network = NetworkRegistry.INSTANCE.newSimpleChannel(ModInfo.PACKET_CHANEL)
@@ -167,6 +177,10 @@ object MiscRegistry {
     CampingMod.proxy.registerGui(GuiInfo.GUI_CAMPINV, classOf[ContainerCampinv], classOf[GuiCampinginv])
     CampingMod.proxy.registerGui(GuiInfo.GUI_CAMPINV_CRAFT, classOf[ContainerCampinvCraft], classOf[GuiCampingInvCraft])
     CampingMod.proxy.registerGui(GuiInfo.GUI_BACKPACK, classOf[ContainerBackpack], classOf[GuiBackpack])
+    CampingMod.proxy.registerGui(GuiInfo.GUI_TENT, null, classOf[GuiTent])
+    CampingMod.proxy.registerGui(GuiInfo.GUI_TENT_CHESTS, classOf[ContainerTentChests], classOf[GuiTentChests])
+    CampingMod.proxy.registerGui(GuiInfo.GUI_TENT_LANTERN, classOf[ContainerTentLanterns], classOf[GuiTentLanterns])
+    CampingMod.proxy.registerGui(GuiInfo.GUI_TENT_SLEEP, null, classOf[GuiTentSleeping])
 
     Objs.eventsClient = new EventsClient
     MinecraftForge.EVENT_BUS.register(Objs.eventsClient)
@@ -174,7 +188,7 @@ object MiscRegistry {
 
     Objs.campfireM = Objs.modelLoader.loadInstance(new ResourceLocation(ModelInfo.CAMPFIRE)).asInstanceOf[TechneModel];
     Objs.logM = Objs.modelLoader.loadInstance(new ResourceLocation(ModelInfo.LOG)).asInstanceOf[TechneModel];
-    Objs.tentM = Objs.modelLoader.loadInstance(new ResourceLocation(ModelInfo.TENT)).asInstanceOf[TechneModel];
+    Objs.tentM = Objs.modelLoaderC.loadInstance(128, 64, new ResourceLocation(ModelInfo.TENT)).asInstanceOf[CustomModel];
 
     MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(Objs.campfire), new CampfireItemRender())
     ClientRegistry.bindTileEntitySpecialRenderer(classOf[TileEntityCampfire], new CampfireRender())
@@ -193,6 +207,10 @@ object MiscRegistry {
     CampingMod.proxy.registerGui(GuiInfo.GUI_CAMPINV, classOf[ContainerCampinv], null)
     CampingMod.proxy.registerGui(GuiInfo.GUI_CAMPINV_CRAFT, classOf[ContainerCampinvCraft], null)
     CampingMod.proxy.registerGui(GuiInfo.GUI_BACKPACK, classOf[ContainerBackpack], null)
+    CampingMod.proxy.registerGui(GuiInfo.GUI_TENT, null, null)
+    CampingMod.proxy.registerGui(GuiInfo.GUI_TENT_CHESTS, classOf[ContainerTentChests], null)
+    CampingMod.proxy.registerGui(GuiInfo.GUI_TENT_LANTERN, classOf[ContainerTentLanterns], null)
+    CampingMod.proxy.registerGui(GuiInfo.GUI_TENT_SLEEP, null, null)
   }
 }
 
@@ -210,18 +228,44 @@ object ObjRegistry {
     Objs.log = new Log(classOf[LogInfo])
     Objs.hemp = new Hemp(classOf[HempInfo])
     Objs.hempItem = new HempItem(Objs.hemp, classOf[HempItemInfo])
-    Objs.sleepingBag  = new SleepingBag(classOf[SleepingBagInfo])
+    Objs.sleepingBag = new SleepingBag(classOf[SleepingBagInfo])
     Objs.bounds = new BoundsHelper(classOf[BoundsHelperInfo])
     Objs.tent = new Tent(classOf[TentInfo])
-    
+
     Objs.grill = new Grill(new ItemStack(Objs.kit, 1, KitInfo.KIT_GRILL))
     Objs.spit = new Spit(new ItemStack(Objs.kit, 1, KitInfo.KIT_SPIT))
     Objs.pan = new Pan(new ItemStack(Objs.kit, 1, KitInfo.KIT_PAN))
-    
+
     val xLine = Array(1, -1, 1, -1, 0, 1, -1, 0, 1, -1, 0, 1, -1, 0, 1, -1, 0)
     val yLine = Array(0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1)
     val zLine = Array(0, 0, 1, 1, 1, 2, 2, 2, 0, 0, 0, 1, 1, 1, 2, 2, 2)
     Objs.tentStructure = BoundsStructure.regsisterStructure(xLine, yLine, zLine, true)
+  }
+  def init {
+    val dye = Items.dye.getMetaCycle(16)
+    val parts = Objs.parts.getMetaCycle(Objs.parts.asInstanceOf[ItemMain].metadata.length)
+    val lantern = Objs.lantern.getMetaCycle(2)
+
+    GameRegistry.addRecipe(Objs.knife.toStack(1), "010", "010", "010", '0': Character, dye(1), '1': Character, Items.iron_ingot)
+    GameRegistry.addRecipe(Objs.campfireCook.toStack(1), " 0 ", "0 0", " 0 ", '0': Character, Blocks.cobblestone)
+    GameRegistry.addRecipe(Objs.campfire.toStack(1), " 0 ", "010", "020", '0': Character, Items.stick, '1': Character, Items.flint, '2': Character, Objs.campfireCook)
+    GameRegistry.addRecipe(Objs.kit.toStack(1), "000", "111", "000", '0': Character, Items.iron_ingot, '1': Character, dye(11))
+    GameRegistry.addRecipe(lantern(LanternInfo.LANTERN_ON).toStack(1), "000", "010", "222", '1': Character, Items.glowstone_dust, '0': Character, Blocks.glass_pane, '2': Character, Items.gold_ingot)
+    GameRegistry.addRecipe(lantern(LanternInfo.LANTERN_OFF).toStack(1), "000", "0 0", "111", '1': Character, Items.gold_ingot, '0': Character, Blocks.glass_pane)
+    GameRegistry.addRecipe(parts(PartInfo.STICK_IRON).toStack(1), " 0 ", " 0 ", '0': Character, Items.iron_ingot)
+    GameRegistry.addRecipe(parts(PartInfo.PAN).toStack(1), " 0 ", "121", " 1 ", '0': Character, dye(1), '1': Character, Items.iron_ingot, '2': Character, Items.bowl)
+    GameRegistry.addRecipe(parts(PartInfo.MARSHMALLOW).toStack(3), "010", "020", "030", '0': Character, Items.sugar, '1': Character, Items.potionitem, '2': Character, Items.egg, '3': Character, Items.bowl)
+    GameRegistry.addShapelessRecipe(Objs.log.toStack(1), new ItemStack(Blocks.log, 1, 0).getWildValue, new ItemStack(Objs.knife).getWildValue)
+    GameRegistry.addShapelessRecipe(Objs.log.toStack(1), new ItemStack(Blocks.log2, 1, 0).getWildValue, new ItemStack(Objs.knife).getWildValue)
+    GameRegistry.addShapelessRecipe(lantern(LanternInfo.LANTERN_ON).toStack(1), lantern(LanternInfo.LANTERN_OFF), Items.glowstone_dust)
+    GameRegistry.addShapelessRecipe(lantern(LanternInfo.LANTERN_ON).toStack(1), lantern(LanternInfo.LANTERN_ON), Items.glowstone_dust)
+    GameRegistry.addShapelessRecipe(parts(PartInfo.MARSHMALLOWSTICK).toStack(3), parts(PartInfo.MARSHMALLOW), parts(PartInfo.STICK_IRON), parts(PartInfo.STICK_IRON), parts(PartInfo.STICK_IRON))
+    GameRegistry.addRecipe(Objs.tent.toStack(1), "000", "0 0", "1 1", '0': Character, parts(PartInfo.CANVAS), '1': Character, parts(PartInfo.STICK_IRON));
+    GameRegistry.addRecipe(Objs.sleepingBag.toStack(1), "1  ", "000", '0': Character, new ItemStack(Blocks.wool, 1, 0).getWildValue, '1': Character, new ItemStack(Objs.knife).getWildValue)
+    GameRegistry.addRecipe(Objs.sleepingBag.toStack(1), " 1 ", "000", '0': Character, new ItemStack(Blocks.wool, 1, 0).getWildValue, '1': Character, new ItemStack(Objs.knife).getWildValue)
+    GameRegistry.addRecipe(Objs.sleepingBag.toStack(1), "  1", "000", '0': Character, new ItemStack(Blocks.wool, 1, 0).getWildValue, '1': Character, new ItemStack(Objs.knife).getWildValue)
+  	GameRegistry.addShapelessRecipe(parts(PartInfo.CANVAS).toStack(1), Objs.hemp, new ItemStack(Objs.knife).getWildValue);
+    GameRegistry.addShapelessRecipe(Objs.tent.toStack(1), Objs.tent, new ItemStack(Items.dye).getWildValue);
   }
   def register(block: Block, name: String) = GameRegistry.registerBlock(block, name)
   def register(item: Item, name: String) = GameRegistry.registerItem(item, name)

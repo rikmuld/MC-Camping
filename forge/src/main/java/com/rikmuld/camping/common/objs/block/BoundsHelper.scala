@@ -22,7 +22,7 @@ object BoundsHelper {
   def isBlockHeadOfBed(meta: Int): Boolean = true
 }
 
-class BoundsHelper(infoClass: Class[_]) extends BlockMain(infoClass, Material.air) with BlockWithModel {
+class BoundsHelper(infoClass: Class[_]) extends BlockMain(infoClass, Material.cloth, false, false) with BlockWithModel {
   setCreativeTab(null)
 
   override def addCollisionBoxesToList(world: World, x: Int, y: Int, z: Int, alignedBB: AxisAlignedBB, list: java.util.List[_], entity: Entity) {

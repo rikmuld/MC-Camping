@@ -22,6 +22,7 @@ object CampingMod {
   def Init(event: FMLInitializationEvent) {
     proxy.register
     MiscRegistry.init(event)
+    ObjRegistry.init
     NetworkRegistry.INSTANCE.registerGuiHandler(this, proxy);
   }
   @EventHandler
@@ -36,10 +37,5 @@ object CampingMod {
 }
 // TEST MULTIPLAYER
 
-// FASE 2 - Tents:GUIs, Recipes so far
-// FASE 3 - Campers, Animals, Traps, Armor
-
-// FASE 4 - Guide, New tent: shelter, Backpack when on back Model, Lantern when active wearing model.
-
-//FIX TENT TEXTURE WITN XUSTOM MODEL WITH CUSTOM TEXTURE SIZES
-//FIX BOUNDSBLOCK NO BOUNDS VIEW ONLY COLLISION
+// FASE 3 - Campers, Animals, Bear Trap, Armor
+// FASE 4 - Keep inv when keep inventory gamerule is on, Guide, New tent: shelter, Backpack when on back Model, Lantern when active wearing model.

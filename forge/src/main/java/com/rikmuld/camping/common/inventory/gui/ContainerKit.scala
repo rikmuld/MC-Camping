@@ -15,18 +15,17 @@ import net.minecraft.nbt.NBTTagCompound
 import com.rikmuld.camping.core.KitInfo
 
 class ContainerKit(player: EntityPlayer) extends ContainerItemMain(player) {
-  override def addContainer {
-    this.addSlots(inv, 0, 1, 5, 44, 16)
-    this.addSlots(inv, 5, 2, 1, 44, 34)
-    this.addSlots(inv, 7, 2, 1, 116, 34)
-    this.addSlots(inv, 9, 1, 5, 44, 70)
-    this.addSlots(player.inventory, 9, 3, 9, 8, 99)
+  this.addSlots(inv, 0, 1, 5, 44, 16)
+  this.addSlots(inv, 5, 2, 1, 44, 34)
+  this.addSlots(inv, 7, 2, 1, 116, 34)
+  this.addSlots(inv, 9, 1, 5, 44, 70)
+  this.addSlots(player.inventory, 9, 3, 9, 8, 99)
 
-    for (row <- 0 until 9) {
-      if (row == player.inventory.currentItem) addSlotToContainer(new SlotNoPickup(player.inventory, row, 8 + (row * 18), 157))
-      else addSlotToContainer(new Slot(player.inventory, row, 8 + (row * 18), 157))
-    }
+  for (row <- 0 until 9) {
+    if (row == player.inventory.currentItem) addSlotToContainer(new SlotNoPickup(player.inventory, row, 8 + (row * 18), 157))
+    else addSlotToContainer(new Slot(player.inventory, row, 8 + (row * 18), 157))
   }
+
   override def getItemInv = new InventoryItemMain(player.getCurrentEquippedItem, player, 14, 1)
   override def getItem = Objs.kit
   override def onContainerClosed(player: EntityPlayer) {

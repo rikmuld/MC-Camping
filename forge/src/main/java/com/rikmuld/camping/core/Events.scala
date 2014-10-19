@@ -38,25 +38,43 @@ import cpw.mods.fml.relauncher.Side
 import net.minecraftforge.event.entity.player.BonemealEvent
 import com.rikmuld.camping.common.objs.block.Hemp
 import cpw.mods.fml.common.eventhandler.Event
+import net.minecraft.nbt.NBTTagCompound
+import net.minecraft.item.Item
+import net.minecraft.init.Items
+import net.minecraftforge.event.entity.living.LivingDeathEvent
+import net.minecraft.entity.player.EntityPlayer
+import net.minecraft.client.Minecraft
+import net.minecraftforge.event.entity.living.LivingSpawnEvent
+import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerRespawnEvent
 
 class Events {
   var tickLight: Int = 0
   var marshupdate = 0
 
   @SubscribeEvent
-  def onBoneMealUsed(event:BonemealEvent){
-    if(event.block==Objs.hemp)event.setResult(if(event.block.asInstanceOf[Hemp].grow(event.world, event.x, event.y, event.z))Event.Result.ALLOW else Event.Result.DENY)
+  def onBoneMealUsed(event: BonemealEvent) {
+    if (event.block == Objs.hemp) event.setResult(if (event.block.asInstanceOf[Hemp].grow(event.world, event.x, event.y, event.z)) Event.Result.ALLOW else Event.Result.DENY)
   }
   @SubscribeEvent
   def onConfigChanged(eventArgs: ConfigChangedEvent.OnConfigChangedEvent) {
     if (eventArgs.modID.equals(ModInfo.MOD_ID)) Objs.config.sync
   }
   @SubscribeEvent
-  def onPlayerDead(event: PlayerDropsEvent) = InventoryCampinv.dropItems(event.entityPlayer)
+  def onPlayerDeath(event: PlayerDropsEvent) {
+    InventoryCampinv.dropItems(event.entityPlayer)
+  }
+  @SubscribeEvent
+  def onEntityDeath(event: LivingDeathEvent) {
+    if (event.entity.isInstanceOf[EntityPlayer]) {
+      if (event.entity.worldObj.getGameRules().getGameRuleBooleanValue("keepInventory")) {
+        InventoryCampinv.dropItems(event.entity.asInstanceOf[EntityPlayer])
+      }
+    }
+  }
   @SubscribeEvent
   def onPlayerLogin(event: PlayerLoggedInEvent) {
     if (event.player.getEntityData.getCompoundTag(NBTInfo.INV_CAMPING) != null) {
-      PacketSender.to(new NBTPlayer(event.player.getEntityData.getCompoundTag("campInv")), event.player.asInstanceOf[EntityPlayerMP])
+      PacketSender.to(new NBTPlayer(event.player.getEntityData.getCompoundTag(NBTInfo.INV_CAMPING)), event.player.asInstanceOf[EntityPlayerMP])
     }
   }
   @SubscribeEvent
@@ -69,6 +87,25 @@ class Events {
           returnStack.stackSize += 1
         }
         event.craftMatrix.setInventorySlotContents(slot, returnStack)
+      }
+      if ((itemInSlot.getItem != null) && (itemInSlot.getItem() == Items.bowl) && (event.crafting.getItem() == Objs.parts) && (event.crafting.getItemDamage == PartInfo.MARSHMALLOW)) {
+        val returnStack = new ItemStack(Items.bowl, itemInSlot.stackSize + 1, 0)
+        event.craftMatrix.setInventorySlotContents(slot, returnStack)
+      }
+      if ((itemInSlot.getItem != null) && (itemInSlot.getItem() == Items.potionitem) && (event.crafting.getItem() == Objs.parts) && (event.crafting.getItemDamage == PartInfo.MARSHMALLOW)) {
+        if (!event.player.inventory.addItemStackToInventory(new ItemStack(Items.glass_bottle))) {
+          event.player.dropPlayerItemWithRandomChoice(new ItemStack(Items.glass_bottle), false)
+        }
+      }
+      if ((event.crafting.getItem() == Item.getItemFromBlock(Objs.lantern)) && (event.crafting.getItemDamage == LanternInfo.LANTERN_ON)) {
+        event.crafting.setTagCompound(new NBTTagCompound())
+        event.crafting.getTagCompound.setInteger("time", 1500)
+      }
+      if (event.crafting.getItem() == Item.getItemFromBlock(Objs.tent)) {
+        if (event.craftMatrix.getStackInSlot(slot).getItem() == Items.dye) {
+          event.crafting.setTagCompound(new NBTTagCompound())
+          event.crafting.getTagCompound.setInteger("color", event.craftMatrix.getStackInSlot(slot).getItemDamage)
+        }
       }
     }
   }
