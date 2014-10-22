@@ -58,7 +58,14 @@ object Utils {
     }
   }
   implicit class ContainerUtils(container: Container) {
-    def addSlot(slot: Slot) = ReflectionHelper.findMethod(classOf[Container], container, Array("addSlotToContainer"), classOf[Slot]).invoke(container, slot);
+    def addSlot(slot: Slot) = {
+      for(m <- classOf[net.minecraft.inventory.Container].getDeclaredMethods()){
+        if(m.getParameterTypes().length==1&&m.getParameterTypes().apply(0) == classOf[Slot]&&m.getReturnType() == classOf[Slot]){
+          m.setAccessible(true)
+          m.invoke(container, slot)
+        }
+      }
+    }
     def addSlots(inv: IInventory, slotID: Int, rowMax: Int, collomMax: Int, xStart: Int, yStart: Int) {
       for (row <- 0 until rowMax; collom <- 0 until collomMax) container.addSlot(new Slot(inv, collom + (row * collomMax) + slotID, xStart + (collom * 18), yStart + (row * 18)))
     }

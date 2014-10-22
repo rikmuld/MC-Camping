@@ -1,4 +1,4 @@
-package rikmuld.camping.misc
+package com.rikmuld.camping.misc
 
 import java.net.URL
 import net.minecraftforge.client.model.IModelCustom

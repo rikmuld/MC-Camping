@@ -1,4 +1,4 @@
-package rikmuld.camping.client.gui.screen
+package com.rikmuld.camping.client.gui
 
 import net.minecraft.client.gui.FontRenderer
 import net.minecraft.client.gui.GuiButton
@@ -13,7 +13,6 @@ import com.rikmuld.camping.core.TextureInfo
 import com.rikmuld.camping.core.GuiInfo
 import net.minecraft.inventory.IInventory
 import net.minecraft.entity.player.EntityPlayer
-import com.rikmuld.camping.client.gui.GuiContainerMain
 import net.minecraft.entity.player.InventoryPlayer
 import net.minecraft.client.gui.inventory.GuiContainer
 import com.rikmuld.camping.common.network.PacketSender

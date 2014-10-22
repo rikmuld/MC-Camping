@@ -7,7 +7,7 @@ object ModInfo {
   final val MOD_NAME = "The Camping Mod 2.0"
   final val MOD_VERSION = "2.1"
   final val MOD_LANUAGE = "scala"
-  final val MOD_DEPENDENCIES = "required-after:Forge@[v10.13.0.1180,)"
+  final val MOD_DEPENDENCIES = "required-after:Forge@[v10.13.2.1231,)"
   final val MOD_SERVER_PROXY = "com.rikmuld.camping.core.ProxyServer"
   final val MOD_CLIENT_PROXY = "com.rikmuld.camping.core.ProxyClient"
   final val MOD_GUIFACTORY = "com.rikmuld.camping.core.GuiFactory"

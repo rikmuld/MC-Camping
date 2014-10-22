@@ -7,6 +7,10 @@ import com.rikmuld.camping.client.gui.GuiCampfireCook
 import com.rikmuld.camping.client.gui.GuiCampingInvCraft
 import com.rikmuld.camping.client.gui.GuiCampinginv
 import com.rikmuld.camping.client.gui.GuiKit
+import com.rikmuld.camping.client.gui.GuiTent
+import com.rikmuld.camping.client.gui.GuiTentChests
+import com.rikmuld.camping.client.gui.GuiTentLanterns
+import com.rikmuld.camping.client.gui.GuiTentSleeping
 import com.rikmuld.camping.client.render.objs.CampfireCookItemRender
 import com.rikmuld.camping.client.render.objs.CampfireCookRender
 import com.rikmuld.camping.client.render.objs.CampfireItemRender
@@ -39,7 +43,6 @@ import com.rikmuld.camping.common.objs.block.BoundsHelper
 import com.rikmuld.camping.common.objs.block.Campfire
 import com.rikmuld.camping.common.objs.block.CampfireCook
 import com.rikmuld.camping.common.objs.block.Hemp
-import com.rikmuld.camping.common.objs.block.Hemp
 import com.rikmuld.camping.common.objs.block.Lantern
 import com.rikmuld.camping.common.objs.block.Light
 import com.rikmuld.camping.common.objs.block.Log
@@ -47,7 +50,6 @@ import com.rikmuld.camping.common.objs.block.SleepingBag
 import com.rikmuld.camping.common.objs.block.Tent
 import com.rikmuld.camping.common.objs.item.Backpack
 import com.rikmuld.camping.common.objs.item.HempItem
-import com.rikmuld.camping.common.objs.item.ItemBlockMain
 import com.rikmuld.camping.common.objs.item.ItemMain
 import com.rikmuld.camping.common.objs.item.Kit
 import com.rikmuld.camping.common.objs.item.Knife
@@ -62,9 +64,12 @@ import com.rikmuld.camping.common.objs.tile.TileEntityTent
 import com.rikmuld.camping.common.objs.tile.TileEntityWithBounds
 import com.rikmuld.camping.common.objs.tile.TileEntityWithRotation
 import com.rikmuld.camping.common.world.WorldGenerator
-import com.rikmuld.camping.core.Utils._
+import com.rikmuld.camping.core.Utils.ItemStackUtils
+import com.rikmuld.camping.core.Utils.ObjectUtils
 import com.rikmuld.camping.misc.BoundsStructure
 import com.rikmuld.camping.misc.CookingEquipment
+import com.rikmuld.camping.misc.CustomModel
+import com.rikmuld.camping.misc.CustomModelLoader
 import com.rikmuld.camping.misc.Grill
 import com.rikmuld.camping.misc.Pan
 import com.rikmuld.camping.misc.Spit
@@ -72,6 +77,7 @@ import com.rikmuld.camping.misc.Tab
 
 import cpw.mods.fml.client.registry.ClientRegistry
 import cpw.mods.fml.common.FMLCommonHandler
+import cpw.mods.fml.common.Mod
 import cpw.mods.fml.common.event.FMLInitializationEvent
 import cpw.mods.fml.common.event.FMLPostInitializationEvent
 import cpw.mods.fml.common.event.FMLPreInitializationEvent
@@ -93,12 +99,6 @@ import net.minecraftforge.client.model.techne.TechneModel
 import net.minecraftforge.client.model.techne.TechneModelLoader
 import net.minecraftforge.common.MinecraftForge
 import net.minecraftforge.common.config.Configuration
-import rikmuld.camping.client.gui.screen.GuiTent
-import rikmuld.camping.client.gui.screen.GuiTentChests
-import rikmuld.camping.client.gui.screen.GuiTentLanterns
-import rikmuld.camping.client.gui.screen.GuiTentSleeping
-import rikmuld.camping.misc.CustomModel
-import rikmuld.camping.misc.CustomModelLoader
 
 object Objs {
   var tab: CreativeTabs = _
@@ -246,6 +246,7 @@ object ObjRegistry {
     val parts = Objs.parts.getMetaCycle(Objs.parts.asInstanceOf[ItemMain].metadata.length)
     val lantern = Objs.lantern.getMetaCycle(2)
 
+    GameRegistry.addRecipe(Objs.backpack.toStack(1), "000", "0 0", "000", '0': Character, parts(PartInfo.CANVAS))
     GameRegistry.addRecipe(Objs.knife.toStack(1), "010", "010", "010", '0': Character, dye(1), '1': Character, Items.iron_ingot)
     GameRegistry.addRecipe(Objs.campfireCook.toStack(1), " 0 ", "0 0", " 0 ", '0': Character, Blocks.cobblestone)
     GameRegistry.addRecipe(Objs.campfire.toStack(1), " 0 ", "010", "020", '0': Character, Items.stick, '1': Character, Items.flint, '2': Character, Objs.campfireCook)
@@ -264,7 +265,7 @@ object ObjRegistry {
     GameRegistry.addRecipe(Objs.sleepingBag.toStack(1), "1  ", "000", '0': Character, new ItemStack(Blocks.wool, 1, 0).getWildValue, '1': Character, new ItemStack(Objs.knife).getWildValue)
     GameRegistry.addRecipe(Objs.sleepingBag.toStack(1), " 1 ", "000", '0': Character, new ItemStack(Blocks.wool, 1, 0).getWildValue, '1': Character, new ItemStack(Objs.knife).getWildValue)
     GameRegistry.addRecipe(Objs.sleepingBag.toStack(1), "  1", "000", '0': Character, new ItemStack(Blocks.wool, 1, 0).getWildValue, '1': Character, new ItemStack(Objs.knife).getWildValue)
-  	GameRegistry.addShapelessRecipe(parts(PartInfo.CANVAS).toStack(1), Objs.hemp, new ItemStack(Objs.knife).getWildValue);
+  	GameRegistry.addShapelessRecipe(parts(PartInfo.CANVAS).toStack(1), Objs.hempItem, new ItemStack(Objs.knife).getWildValue);
     GameRegistry.addShapelessRecipe(Objs.tent.toStack(1), Objs.tent, new ItemStack(Items.dye).getWildValue);
   }
   def register(block: Block, name: String) = GameRegistry.registerBlock(block, name)
