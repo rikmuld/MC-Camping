@@ -3,7 +3,8 @@ package com.rikmuld.camping.core
 import java.util.ArrayList
 import java.util.Random
 import scala.collection.JavaConversions.asScalaBuffer
-import cpw.mods.fml.relauncher.ReflectionHelper
+import net.minecraft.block.Block
+import net.minecraft.entity.EntityList
 import net.minecraft.entity.item.EntityItem
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.entity.player.EntityPlayerMP
@@ -23,14 +24,16 @@ import net.minecraft.world.World
 import net.minecraft.world.storage.MapData
 import net.minecraftforge.common.util.Constants
 import net.minecraftforge.common.util.ForgeDirection
-import net.minecraftforge.oredict.ShapelessOreRecipe
-import net.minecraftforge.oredict.ShapedOreRecipe
-import cpw.mods.fml.common.registry.GameRegistry
-import net.minecraft.item.crafting.FurnaceRecipes
-import net.minecraft.block.Block
 import net.minecraftforge.oredict.OreDictionary
+import scala.collection.mutable.ListBuffer
 
 object Utils {
+  var startEntityId = 300
+
+  def getUniqueEntityId = {
+    while (EntityList.getStringFromID(startEntityId) != null) startEntityId += 1
+    startEntityId
+  }
   implicit class ObjectUtils(`object`: AnyRef) {
     def toStack(): ItemStack = {
       var stack: ItemStack = null
@@ -43,7 +46,7 @@ object Utils {
       } else if (`object`.isInstanceOf[ItemStack]) stack = `object`.asInstanceOf[ItemStack]
       stack
     }
-    def toStack(count:Int): ItemStack = {
+    def toStack(count: Int): ItemStack = {
       val stack = toStack
       stack.stackSize = count
       stack
@@ -59,8 +62,8 @@ object Utils {
   }
   implicit class ContainerUtils(container: Container) {
     def addSlot(slot: Slot) = {
-      for(m <- classOf[net.minecraft.inventory.Container].getDeclaredMethods()){
-        if(m.getParameterTypes().length==1&&m.getParameterTypes().apply(0) == classOf[Slot]&&m.getReturnType() == classOf[Slot]){
+      for (m <- classOf[net.minecraft.inventory.Container].getDeclaredMethods()) {
+        if (m.getParameterTypes().length == 1 && m.getParameterTypes().apply(0) == classOf[Slot] && m.getReturnType() == classOf[Slot]) {
           m.setAccessible(true)
           m.invoke(container, slot)
         }

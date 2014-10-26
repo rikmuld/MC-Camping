@@ -15,6 +15,8 @@ import com.rikmuld.camping.core.ObjInfo
 import net.minecraft.block.Block
 import net.minecraft.item.ItemBlock
 import net.minecraft.item.ItemFood
+import net.minecraft.item.ItemArmor
+import net.minecraft.item.ItemArmor.ArmorMaterial
 
 class ItemMain(infoClass: Class[_], icon: Boolean) extends Item {
   val info = infoClass.asInstanceOf[Class[ObjInfo]].newInstance
@@ -95,5 +97,21 @@ class ItemFoodMain(infoClass: Class[_], icon: Boolean, heal: Int, saturation: Fl
       iconBuffer = new Array[IIcon](metadata.length)
       for (x <- 0 to metadata.length - 1) iconBuffer(x) = register.registerIcon(ModInfo.MOD_ID + ":" + metadata(x).toString)
     }
+  }
+}
+
+class ItemArmorMain(infoClass: Class[_], material:ArmorMaterial, armorType:Int, icon: Boolean) extends ItemArmor(material, 0, armorType) {
+  val info = infoClass.asInstanceOf[Class[ObjInfo]].newInstance
+
+  var iconBuffer: Array[IIcon] = null
+
+  maxStackSize = 1
+  ObjRegistry.register(this, info.NAME)
+  setUnlocalizedName(info.NAME)
+  setCreativeTab(Objs.tab)
+
+  def this(infoClass: Class[_], material:ArmorMaterial, armorType:Int) = this(infoClass, material, armorType, true)
+  override def registerIcons(register: IIconRegister) {
+    if(icon)itemIcon = register.registerIcon(ModInfo.MOD_ID + ":" + getUnlocalizedName().substring(5))
   }
 }

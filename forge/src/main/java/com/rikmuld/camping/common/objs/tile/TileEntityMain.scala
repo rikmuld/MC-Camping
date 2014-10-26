@@ -72,12 +72,14 @@ abstract trait TileEntityWithInventory extends TileEntity with IInventory with I
       if (inventoryContents(slot).stackSize <= amount) {
         itemstack = inventoryContents(slot)
         inventoryContents(slot) = null
+        onInventoryChanged(slot)
         itemstack
       } else {
         itemstack = inventoryContents(slot).splitStack(amount)
         if (inventoryContents(slot).stackSize == 0) {
           inventoryContents(slot) = null
         }
+        onInventoryChanged(slot)
         itemstack
       }
     } else null
@@ -106,9 +108,13 @@ abstract trait TileEntityWithInventory extends TileEntity with IInventory with I
     }
     super.readFromNBT(tag)
   }
+  def onInventoryChanged(slot:Int){
+    
+  }
   override def setInventorySlotContents(slot: Int, stack: ItemStack) {
     inventoryContents(slot) = stack
     if ((stack != null) && (stack.stackSize > getInventoryStackLimit)) stack.stackSize = getInventoryStackLimit
+    onInventoryChanged(slot)
   }
   override def writeToNBT(tag: NBTTagCompound) {
     val inventory = new NBTTagList()

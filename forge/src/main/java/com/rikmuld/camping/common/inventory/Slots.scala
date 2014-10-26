@@ -9,6 +9,8 @@ import scala.collection.mutable.ListBuffer
 import net.minecraft.entity.player.EntityPlayer
 import com.rikmuld.camping.common.objs.tile.TileEntityCampfireCook
 import com.rikmuld.camping.misc.CookingEquipment
+import net.minecraft.block.Block
+import net.minecraft.init.Blocks
 
 class SlotDisable(inv: IInventory, id: Int, var xFlag: Int, var yFlag: Int) extends Slot(inv, id, xFlag, yFlag) {
   def disable = {
@@ -96,4 +98,12 @@ class SlotState(inv: IInventory, id: Int, x: Int, y: Int) extends SlotDisable(in
   }
   def setStateX(state: Int) = stateX = xFlag - (18 * state)
   def setStateY(state: Int) = stateY = yFlag - (18 * state)
+}
+
+class SlotItem(inv: IInventory, id: Int, x: Int, y: Int) extends Slot(inv, id, x, y){
+  override def isItemValid(stack: ItemStack): Boolean = Block.getBlockFromItem(stack.getItem())==Blocks.air
+}
+
+class SlotBlock(inv: IInventory, id: Int, x: Int, y: Int) extends Slot(inv, id, x, y){
+  override def isItemValid(stack: ItemStack): Boolean = Block.getBlockFromItem(stack.getItem())!=Blocks.air
 }

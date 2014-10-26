@@ -15,7 +15,7 @@ object ModInfo {
 }
 
 object NBTInfo {
-  final val INV_CAMPING = "campInv";
+  final val INV_CAMPING = "campInv"
 }
 
 object GuiInfo {
@@ -30,6 +30,20 @@ object GuiInfo {
   final val GUI_TENT_SLEEP = 8
   final val GUI_TENT_CHESTS = 9
   final val GUI_TENT_LANTERN = 10
+  final val GUI_TRAP = 11
+}
+
+object EntityInfo {
+  final val BEAR = 0
+  final val FOX = 1
+}
+
+object PotionInfo {
+  final val BLEEDING = "Bleeding"
+}
+
+object DamageInfo {
+  final val BLEEDING = "bleedingSource"
 }
 
 object ConfigInfo {
@@ -46,7 +60,9 @@ object ModelInfo {
   
   final val CAMPFIRE = MODEL_LOCATION + "ModelCampfireDeco.tcn"
   final val LOG = MODEL_LOCATION + "ModelLog.tcn"
-  final val TENT = MODEL_LOCATION + "ModelTent.tcn";
+  final val TENT = MODEL_LOCATION + "ModelTent.tcn"
+  final val TRAP_OPEN = MODEL_LOCATION + "ModelTrapOpen.tcn"
+  final val TRAP_CLOSED = MODEL_LOCATION + "ModelTrapClosed.tcn"
 }
 
 object TextureInfo {
@@ -68,37 +84,44 @@ object TextureInfo {
   final val MODEL_PAN = MODEL_LOCATION + "ModelPan.png"
   final val MODEL_LOG = MODEL_LOCATION + "ModelLog.png"
   final val MODEL_LOG2 = MODEL_LOCATION + "ModelLog2.png"
+  final val SPRITE_POTION = SPRITE_LOCATION + "SpritePotion.png"
   final val MODEL_SPIT = MODEL_LOCATION + "ModelSpit.png"
   final val GUI_CAMPINV = GUI_LOCATION + "GuiCampinv.png"
   final val GUI_CAMPINV_CRAFT = GUI_LOCATION + "GuiCampinvCraft.png"
   final val RED_DOT = GUI_LOCATION + "GuiMapRed.png"
   final val BLUE_DOT = GUI_LOCATION + "GuiMapBlue.png"
   final val GUI_UTILS = GUI_LOCATION + "GuiUtils.png"
-  final val MODEL_SLEEPING_TOP = MODEL_LOCATION + "ModelSleepingBagTop.png";
-  final val MODEL_SLEEPING_DOWN = MODEL_LOCATION + "ModelSleepingBagDown.png";
-  final val MODEL_TENT_WHITE = MODEL_LOCATION + "ModelTentWhite.png";
-  final val MODEL_TENT_YELLOW = MODEL_LOCATION + "ModelTentYellow.png";
-  final val MODEL_TENT_RED = MODEL_LOCATION + "ModelTentRed.png";
-  final val MODEL_TENT_PURPLE = MODEL_LOCATION + "ModelTentPurple.png";
-  final val MODEL_TENT_PINK = MODEL_LOCATION + "ModelTentPink.png";
-  final val MODEL_TENT_ORANGE = MODEL_LOCATION + "ModelTentOrange.png";
-  final val MODEL_TENT_MAGENTA = MODEL_LOCATION + "ModelTentMagenta.png";
-  final val MODEL_TENT_LIME = MODEL_LOCATION + "ModelTentLime.png";
-  final val MODEL_TENT_LIGHTGRAY = MODEL_LOCATION + "ModelTentLightGray.png";
-  final val MODEL_TENT_LIGHTBLUE = MODEL_LOCATION + "ModelTentLightBlue.png";
-  final val MODEL_TENT_GREEN = MODEL_LOCATION + "ModelTentGreen.png";
-  final val MODEL_TENT_GRAY = MODEL_LOCATION + "ModelTentGray.png";
-  final val MODEL_TENT_CYAN = MODEL_LOCATION + "ModelTentCyan.png";
-  final val MODEL_TENT_BROWN = MODEL_LOCATION + "ModelTentBrown.png";
-  final val MODEL_TENT_BLUE = MODEL_LOCATION + "ModelTentBlue.png";
-  final val MODEL_TENT_BLACK = MODEL_LOCATION + "ModelTentBlack.png";
-  final val GUI_TENT = GUI_LOCATION + "GuiTent.png";
-  final val GUI_TENT_CONTENDS_1 = GUI_LOCATION + "GuiTentContend1.png";
-  final val GUI_TENT_CONTENDS_2 = GUI_LOCATION + "GuiTentContend2.png";
+  final val GUI_TRAP = GUI_LOCATION + "GuiTrap.png"
+  final val MODEL_SLEEPING_TOP = MODEL_LOCATION + "ModelSleepingBagTop.png"
+  final val MODEL_SLEEPING_DOWN = MODEL_LOCATION + "ModelSleepingBagDown.png"
+  final val MODEL_TENT_WHITE = MODEL_LOCATION + "ModelTentWhite.png"
+  final val MODEL_TENT_YELLOW = MODEL_LOCATION + "ModelTentYellow.png"
+  final val MODEL_TENT_RED = MODEL_LOCATION + "ModelTentRed.png"
+  final val MODEL_TENT_PURPLE = MODEL_LOCATION + "ModelTentPurple.png"
+  final val MODEL_TENT_PINK = MODEL_LOCATION + "ModelTentPink.png"
+  final val MODEL_TENT_ORANGE = MODEL_LOCATION + "ModelTentOrange.png"
+  final val MODEL_TENT_MAGENTA = MODEL_LOCATION + "ModelTentMagenta.png"
+  final val MODEL_TENT_LIME = MODEL_LOCATION + "ModelTentLime.png"
+  final val MODEL_TENT_LIGHTGRAY = MODEL_LOCATION + "ModelTentLightGray.png"
+  final val MODEL_TENT_LIGHTBLUE = MODEL_LOCATION + "ModelTentLightBlue.png"
+  final val MODEL_TENT_GREEN = MODEL_LOCATION + "ModelTentGreen.png"
+  final val MODEL_TENT_GRAY = MODEL_LOCATION + "ModelTentGray.png"
+  final val MODEL_TENT_CYAN = MODEL_LOCATION + "ModelTentCyan.png"
+  final val MODEL_TENT_BROWN = MODEL_LOCATION + "ModelTentBrown.png"
+  final val MODEL_TENT_BLUE = MODEL_LOCATION + "ModelTentBlue.png"
+  final val MODEL_TENT_BLACK = MODEL_LOCATION + "ModelTentBlack.png"
+  final val GUI_TENT = GUI_LOCATION + "GuiTent.png"
+  final val GUI_TENT_CONTENDS_1 = GUI_LOCATION + "GuiTentContend1.png"
+  final val GUI_TENT_CONTENDS_2 = GUI_LOCATION + "GuiTentContend2.png"
+  final val ARMOR_FUR_LEG = MODEL_LOCATION + "ModelArmorFurLeg.png"
+  final val ARMOR_FUR_MAIN = MODEL_LOCATION + "ModelArmorFurMain.png"
+  final val MODEL_BEAR = MODEL_LOCATION + "ModelBear.png"
+  final val MODEL_FOX = MODEL_LOCATION + "ModelArcticFox.png"
+  final val MODEL_TRAP = MODEL_LOCATION + "ModelBearTrapOpen.png";
 }
 
 object TextInfo {
-  final val COLOURS_DYE = Array("0", "4", "2", "6", "1", "5", "3", "7", "8", "d", "a", "e", "9", "d", "6", "f");
+  final val COLOURS_DYE = Array("0", "4", "2", "6", "1", "5", "3", "7", "8", "d", "a", "e", "9", "d", "6", "f")
 
   final val COLOR_BLACK = "\u00a70"
   final val COLOR_BLUE_DARK = "\u00a71"

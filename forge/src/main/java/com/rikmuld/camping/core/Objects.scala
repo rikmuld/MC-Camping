@@ -30,6 +30,10 @@ class TentInfo extends ObjInfo {
   override def NAME = "tent"
 }
 
+class TrapInfo extends ObjInfo {
+  override def NAME = "trap"
+}
+
 object SleepingBagInfo {
   final val HEAD = 0
   final val FOOT = 1
@@ -53,6 +57,22 @@ class CampfireInfo extends ObjInfo {
   override def NAME = "campfire"
 }
 
+class ArmorFurBootsInfo extends ObjInfo {
+  override def NAME = "armorFurBoots"
+}
+
+class ArmorFurLegInfo extends ObjInfo {
+  override def NAME = "armorFurLeg"
+}
+
+class ArmorFurChestInfo extends ObjInfo {
+  override def NAME = "armorFurChest"
+}
+
+class ArmorFurHelmInfo extends ObjInfo {
+  override def NAME = "armorFurHelm"
+}
+
 class CampfireCookInfo extends ObjInfo {
   override def NAME = "campfireCook"
 }
@@ -72,6 +92,24 @@ class MarshMallowInfo extends ObjInfo {
 object LanternInfo {
   final val LANTERN_ON = 0
   final val LANTERN_OFF = 1
+}
+
+object AnimalPartInfo {
+  final val FUR_WHITE = 0
+  final val FUR_BROWN = 1
+}
+
+class AnimalPartInfo extends ObjInfo {
+  override def NAME = "animalParts"
+  override def NAME_META = Array("furWhite", "furBrown")
+}
+
+class VenisonRawInfo extends ObjInfo {
+    override def NAME = "venisonRaw"
+}
+
+class VenisonInfo extends ObjInfo {
+    override def NAME = "venisonCooked"
 }
 
 object KitInfo {

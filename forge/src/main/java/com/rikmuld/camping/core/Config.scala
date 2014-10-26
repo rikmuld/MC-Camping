@@ -13,17 +13,24 @@ import java.util.ArrayList
 
 class Config(val file: Configuration) {
   var toolUse = 200
+  var useBears = true
   var campfireMaxFuel = 20000
   var campfireCoalFuel = 1000
   var cookTimeSpit = 300
   var cookTimePan = 1000
   var cookTimeGrill = 600
-  var marshSaturation = 0.2f
+  var marshSaturation = 1f
   var marshHeal = 3
   var hempSpeed = 1f
   var hasWorldGen = true
   var worldGenHemp = true
-  var hempGenMulti = 2
+  var hempGenMulti = 3
+  var venisonSaturation = 14f
+  var venisonHeal = 10
+  var venisonRawSaturation = 2f
+  var venisonRawHeal = 4
+  var useFoxes = true
+  var trapPlayer = true
   
   var elements: java.util.List[IConfigElement[_]] = new ArrayList[IConfigElement[_]];
 
@@ -40,6 +47,13 @@ class Config(val file: Configuration) {
     hasWorldGen = getVar("Enable World generation", "Enable/Disable all of the world generation of this mod.", ConfigInfo.CAT_WORLD, hasWorldGen).asInstanceOf[Boolean]
     worldGenHemp = getVar("Enable Hemp generation", "Enable/Disable the world generation of Hemp plants.", ConfigInfo.CAT_WORLD, worldGenHemp).asInstanceOf[Boolean]
     hempGenMulti = getVar("Hemp Generation Multiplier", "Multiplier for the hemp world generaion.", ConfigInfo.CAT_WORLD, hempGenMulti).asInstanceOf[Integer]
+    venisonSaturation = getVar("Venison Saturation Amount", "The amount of saturation a cooked venison gives.", ConfigInfo.CAT_FOOD, venisonSaturation).asInstanceOf[Float]
+    venisonHeal = getVar("Venison Heal Amount", "The amount of lives a cooked venison heals (in half harts).", ConfigInfo.CAT_FOOD, venisonHeal).asInstanceOf[Integer]
+    venisonRawSaturation = getVar("Raw Venison Saturation Amount", "The amount of saturation a raw venison gives.", ConfigInfo.CAT_FOOD, venisonRawSaturation).asInstanceOf[Float]
+    venisonRawHeal = getVar("Raw Venison Heal Amount", "The amount of lives a raw venison heals (in half harts).", ConfigInfo.CAT_FOOD, venisonRawHeal).asInstanceOf[Integer]
+    useBears = getVar("Spawn Bears", "Spawn Grizzly Bears in forrests", ConfigInfo.CAT_WORLD, useBears).asInstanceOf[Boolean]
+    useFoxes = getVar("Spawn Foxes", "Spawn Arctic Foxes in snowy regions", ConfigInfo.CAT_WORLD, useFoxes).asInstanceOf[Boolean]
+    trapPlayer = getVar("Trap players in Bear Trap", "Bear traps can trap players.", ConfigInfo.CAT_TOOLS, trapPlayer).asInstanceOf[Boolean]
 
     if (file.hasChanged) file.save
     for (i <- 0 until file.getCategoryNames.size) elements.addAll(new ConfigElement(file.getCategory(file.getCategoryNames().toArray().apply(i).asInstanceOf[String])).getChildElements());

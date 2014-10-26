@@ -64,8 +64,7 @@ import com.rikmuld.camping.common.objs.tile.TileEntityTent
 import com.rikmuld.camping.common.objs.tile.TileEntityWithBounds
 import com.rikmuld.camping.common.objs.tile.TileEntityWithRotation
 import com.rikmuld.camping.common.world.WorldGenerator
-import com.rikmuld.camping.core.Utils.ItemStackUtils
-import com.rikmuld.camping.core.Utils.ObjectUtils
+import com.rikmuld.camping.core.Utils._
 import com.rikmuld.camping.misc.BoundsStructure
 import com.rikmuld.camping.misc.CookingEquipment
 import com.rikmuld.camping.misc.CustomModel
@@ -74,7 +73,6 @@ import com.rikmuld.camping.misc.Grill
 import com.rikmuld.camping.misc.Pan
 import com.rikmuld.camping.misc.Spit
 import com.rikmuld.camping.misc.Tab
-
 import cpw.mods.fml.client.registry.ClientRegistry
 import cpw.mods.fml.common.FMLCommonHandler
 import cpw.mods.fml.common.Mod
@@ -99,20 +97,58 @@ import net.minecraftforge.client.model.techne.TechneModel
 import net.minecraftforge.client.model.techne.TechneModelLoader
 import net.minecraftforge.common.MinecraftForge
 import net.minecraftforge.common.config.Configuration
+import net.minecraftforge.common.util.EnumHelper
+import net.minecraft.item.ItemArmor.ArmorMaterial
+import com.rikmuld.camping.common.objs.item.ArmorFur
+import com.rikmuld.camping.common.objs.item.ItemFoodMain
+import cpw.mods.fml.client.registry.RenderingRegistry
+import com.rikmuld.camping.common.objs.entity.Bear
+import net.minecraft.entity.Entity
+import cpw.mods.fml.common.registry.EntityRegistry
+import cpw.mods.fml.common.registry.LanguageRegistry
+import net.minecraft.entity.EntityList
+import net.minecraft.entity.EntityList.EntityEggInfo
+import scala.collection.JavaConversions._
+import com.rikmuld.camping.common.objs.entity.EntityMountableBlock
+import net.minecraftforge.common.BiomeDictionary
+import net.minecraftforge.common.BiomeDictionary.Type
+import net.minecraft.entity.EnumCreatureType
+import net.minecraft.world.biome.BiomeGenBase
+import com.rikmuld.camping.client.render.models.ModelBear
+import com.rikmuld.camping.client.render.models.ModelBear
+import com.rikmuld.camping.client.render.objs.BearRenderer
+import com.rikmuld.camping.common.objs.entity.Fox
+import com.rikmuld.camping.client.render.objs.FoxRenderer
+import com.rikmuld.camping.client.render.models.ModelFox
+import com.rikmuld.camping.client.render.models.ModelBear
+import com.rikmuld.camping.common.objs.block.Trap
+import net.minecraft.potion.Potion
+import com.rikmuld.camping.misc.PotionBleeding
+import net.minecraft.util.DamageSource
+import com.rikmuld.camping.misc.damagesources.DamageSourceBleeding
+import com.rikmuld.camping.common.objs.tile.TileEntityTrap
+import com.rikmuld.camping.client.render.objs.TrapItemRenderer
+import com.rikmuld.camping.client.render.objs.TrapRender
+import com.rikmuld.camping.client.gui.GuiTrap
+import com.rikmuld.camping.common.inventory.gui.ContainerKit
+import com.rikmuld.camping.common.inventory.gui.ContainerTrap
 
 object Objs {
   var tab: CreativeTabs = _
   var network: SimpleNetworkWrapper = _
   var events: Events = _
   var eventsClient: EventsClient = _
-  var knife, parts, backpack, kit, marshmallow, hempItem: Item = _
-  var lantern, light, campfire, campfireCook, log, hemp, sleepingBag, bounds, tent: Block = _
+  var knife, parts, backpack, kit, marshmallow, hempItem, animalParts, furBoot, furLeg, furChest, furHead, venisonCooked, venisonRaw: Item = _
+  var lantern, light, campfire, campfireCook, log, hemp, sleepingBag, bounds, tent, trap: Block = _
   var spit, grill, pan: CookingEquipment = _
+  var bleeding:Potion = _
+  var bleedingSource:DamageSource = _
   var config: Config = _
   var modelLoader: TechneModelLoader = _
   var modelLoaderC: CustomModelLoader = _
   var campfireM, logM: TechneModel = _
-  var tentM: CustomModel = _
+  var fur: ArmorMaterial = _
+  var tentM, trapOpen, trapClose: CustomModel = _
   var tentStructure: Array[BoundsStructure] = _
 }
 
@@ -135,6 +171,7 @@ object MiscRegistry {
     GameRegistry.registerTileEntity(classOf[TileEntitySleepingBag], ModInfo.MOD_ID + "_sleepingBag")
     GameRegistry.registerTileEntity(classOf[TileEntityWithBounds], ModInfo.MOD_ID + "_bounds")
     GameRegistry.registerTileEntity(classOf[TileEntityTent], ModInfo.MOD_ID + "_tent")
+    GameRegistry.registerTileEntity(classOf[TileEntityTrap], ModInfo.MOD_ID + "_trap")
     GameRegistry.registerWorldGenerator(new WorldGenerator(), 9999)
 
     val stick = new ItemStack(Items.stick)
@@ -147,10 +184,9 @@ object MiscRegistry {
     CookingEquipment.addGrillFood(new ItemStack(Items.fish, 1, 1), new ItemStack(Items.cooked_fished, 1, 1))
     CookingEquipment.addGrillFood(new ItemStack(Items.beef, 1, 0), new ItemStack(Items.cooked_beef, 1, 0))
     CookingEquipment.addGrillFood(new ItemStack(Items.porkchop, 1, 0), new ItemStack(Items.cooked_porkchop, 1, 0))
-    //CookingEquipment.addGrillFood(ModItems.venisonRaw, 0, new ItemStack(ModItems.venisonCooked, 1, 0))
+    CookingEquipment.addGrillFood(new ItemStack(Objs.venisonRaw, 1, 0), new ItemStack(Objs.venisonCooked, 1, 0))
     CookingEquipment.addPanFood(new ItemStack(Items.potato, 1, 0), new ItemStack(Items.baked_potato, 1, 0))
     CookingEquipment.addPanFood(new ItemStack(Items.rotten_flesh, 1, 0), new ItemStack(Items.leather, 1, 0))
-    //CookingEquipment.addSpitFood(ModItems.hareRaw, 0, new ItemStack(ModItems.hareCooked, 1, 0))
     CookingEquipment.addSpitFood(new ItemStack(Items.chicken, 1, 0), new ItemStack(Items.cooked_chicken, 1, 0))
     CookingEquipment.addSpitFood(new ItemStack(Items.fish, 1, 0), new ItemStack(Items.cooked_fished, 1, 0))
     CookingEquipment.addSpitFood(new ItemStack(Items.fish, 1, 1), new ItemStack(Items.cooked_fished, 1, 1))
@@ -181,14 +217,17 @@ object MiscRegistry {
     CampingMod.proxy.registerGui(GuiInfo.GUI_TENT_CHESTS, classOf[ContainerTentChests], classOf[GuiTentChests])
     CampingMod.proxy.registerGui(GuiInfo.GUI_TENT_LANTERN, classOf[ContainerTentLanterns], classOf[GuiTentLanterns])
     CampingMod.proxy.registerGui(GuiInfo.GUI_TENT_SLEEP, null, classOf[GuiTentSleeping])
+    CampingMod.proxy.registerGui(GuiInfo.GUI_TRAP, classOf[ContainerTrap], classOf[GuiTrap])
 
     Objs.eventsClient = new EventsClient
     MinecraftForge.EVENT_BUS.register(Objs.eventsClient)
     FMLCommonHandler.instance.bus.register(Objs.eventsClient)
 
-    Objs.campfireM = Objs.modelLoader.loadInstance(new ResourceLocation(ModelInfo.CAMPFIRE)).asInstanceOf[TechneModel];
-    Objs.logM = Objs.modelLoader.loadInstance(new ResourceLocation(ModelInfo.LOG)).asInstanceOf[TechneModel];
-    Objs.tentM = Objs.modelLoaderC.loadInstance(128, 64, new ResourceLocation(ModelInfo.TENT)).asInstanceOf[CustomModel];
+    Objs.campfireM = Objs.modelLoader.loadInstance(new ResourceLocation(ModelInfo.CAMPFIRE)).asInstanceOf[TechneModel]
+    Objs.logM = Objs.modelLoader.loadInstance(new ResourceLocation(ModelInfo.LOG)).asInstanceOf[TechneModel]
+    Objs.tentM = Objs.modelLoaderC.loadInstance(128, 64, new ResourceLocation(ModelInfo.TENT)).asInstanceOf[CustomModel]
+    Objs.trapOpen = Objs.modelLoaderC.loadInstance(32, 16, new ResourceLocation(ModelInfo.TRAP_OPEN)).asInstanceOf[CustomModel]
+	Objs.trapClose = Objs.modelLoaderC.loadInstance(32, 16,  new ResourceLocation(ModelInfo.TRAP_CLOSED)).asInstanceOf[CustomModel]
 
     MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(Objs.campfire), new CampfireItemRender())
     ClientRegistry.bindTileEntitySpecialRenderer(classOf[TileEntityCampfire], new CampfireRender())
@@ -199,6 +238,10 @@ object MiscRegistry {
     ClientRegistry.bindTileEntitySpecialRenderer(classOf[TileEntitySleepingBag], new SleepingBagRender())
     MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(Objs.tent), new TentItemRender())
     ClientRegistry.bindTileEntitySpecialRenderer(classOf[TileEntityTent], new TentRender())
+    MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(Objs.trap), new TrapItemRenderer())
+    ClientRegistry.bindTileEntitySpecialRenderer(classOf[TileEntityTrap], new TrapRender())
+    RenderingRegistry.registerEntityRenderingHandler(classOf[Bear], new BearRenderer(new ModelBear()))
+    RenderingRegistry.registerEntityRenderingHandler(classOf[Fox], new FoxRenderer(new ModelFox()))
   }
   def initServer {
     CampingMod.proxy.registerGui(GuiInfo.GUI_CAMPFIRE_COOK, classOf[ContainerCampfireCook], null)
@@ -211,11 +254,14 @@ object MiscRegistry {
     CampingMod.proxy.registerGui(GuiInfo.GUI_TENT_CHESTS, classOf[ContainerTentChests], null)
     CampingMod.proxy.registerGui(GuiInfo.GUI_TENT_LANTERN, classOf[ContainerTentLanterns], null)
     CampingMod.proxy.registerGui(GuiInfo.GUI_TENT_SLEEP, null, null)
+    CampingMod.proxy.registerGui(GuiInfo.GUI_TRAP, classOf[ContainerTrap], null)
   }
 }
 
 object ObjRegistry {
   def preInit {
+    Objs.fur = EnumHelper.addArmorMaterial("FUR", 20, Array(2, 5, 4, 2), 20)
+
     Objs.knife = new Knife(classOf[KnifeInfo])
     Objs.parts = new ItemMain(classOf[PartInfo])
     Objs.backpack = new Backpack(classOf[BackpackInfo])
@@ -227,11 +273,19 @@ object ObjRegistry {
     Objs.marshmallow = new Marshmallow(classOf[MarshMallowInfo])
     Objs.log = new Log(classOf[LogInfo])
     Objs.hemp = new Hemp(classOf[HempInfo])
-    Objs.hempItem = new HempItem(Objs.hemp, classOf[HempItemInfo])
     Objs.sleepingBag = new SleepingBag(classOf[SleepingBagInfo])
     Objs.bounds = new BoundsHelper(classOf[BoundsHelperInfo])
     Objs.tent = new Tent(classOf[TentInfo])
-
+    Objs.animalParts = new ItemMain(classOf[AnimalPartInfo])
+    Objs.hempItem = new HempItem(Objs.hemp, classOf[HempItemInfo])
+    Objs.venisonCooked = new ItemFoodMain(classOf[VenisonInfo], Objs.config.venisonHeal, Objs.config.venisonSaturation, true)
+    Objs.venisonRaw = new ItemFoodMain(classOf[VenisonRawInfo], Objs.config.venisonRawHeal, Objs.config.venisonRawSaturation, true)
+    Objs.furBoot = new ArmorFur(classOf[ArmorFurBootsInfo], 3)
+    Objs.furLeg = new ArmorFur(classOf[ArmorFurLegInfo], 2)
+    Objs.furChest = new ArmorFur(classOf[ArmorFurChestInfo], 1)
+    Objs.furHead = new ArmorFur(classOf[ArmorFurHelmInfo], 0)
+    Objs.trap = new Trap(classOf[TrapInfo])
+    
     Objs.grill = new Grill(new ItemStack(Objs.kit, 1, KitInfo.KIT_GRILL))
     Objs.spit = new Spit(new ItemStack(Objs.kit, 1, KitInfo.KIT_SPIT))
     Objs.pan = new Pan(new ItemStack(Objs.kit, 1, KitInfo.KIT_PAN))
@@ -265,10 +319,36 @@ object ObjRegistry {
     GameRegistry.addRecipe(Objs.sleepingBag.toStack(1), "1  ", "000", '0': Character, new ItemStack(Blocks.wool, 1, 0).getWildValue, '1': Character, new ItemStack(Objs.knife).getWildValue)
     GameRegistry.addRecipe(Objs.sleepingBag.toStack(1), " 1 ", "000", '0': Character, new ItemStack(Blocks.wool, 1, 0).getWildValue, '1': Character, new ItemStack(Objs.knife).getWildValue)
     GameRegistry.addRecipe(Objs.sleepingBag.toStack(1), "  1", "000", '0': Character, new ItemStack(Blocks.wool, 1, 0).getWildValue, '1': Character, new ItemStack(Objs.knife).getWildValue)
-  	GameRegistry.addShapelessRecipe(parts(PartInfo.CANVAS).toStack(1), Objs.hempItem, new ItemStack(Objs.knife).getWildValue);
-    GameRegistry.addShapelessRecipe(Objs.tent.toStack(1), Objs.tent, new ItemStack(Items.dye).getWildValue);
+    GameRegistry.addShapelessRecipe(parts(PartInfo.CANVAS).toStack(1), Objs.hempItem, new ItemStack(Objs.knife).getWildValue)
+    GameRegistry.addShapelessRecipe(Objs.tent.toStack(1), Objs.tent, new ItemStack(Items.dye).getWildValue)
+    
+    registerEntity(classOf[Bear].asInstanceOf[Class[Entity]], "bearGrizzly", EntityInfo.BEAR, true, 0x583B2D, 0xE2B572)
+    registerEntity(classOf[Fox].asInstanceOf[Class[Entity]], "foxArctic", EntityInfo.FOX, true, 0xE0EEEE, 0x362819)
+    
+    Objs.bleedingSource = new DamageSourceBleeding(DamageInfo.BLEEDING)
+    Objs.bleeding = new PotionBleeding(PotionInfo.BLEEDING)
+  }
+  def postInit {
+    val forests = BiomeDictionary.getBiomesForType(Type.FOREST)
+    val rivers = BiomeDictionary.getBiomesForType(Type.RIVER)
+	val snow = BiomeDictionary.getBiomesForType(Type.SNOWY)
+	
+	if(Objs.config.useBears){
+	  for (biome <- forests) EntityRegistry.addSpawn(classOf[Bear], 5, 2, 4, EnumCreatureType.creature, biome)
+	  for (biome <- rivers) EntityRegistry.addSpawn(classOf[Bear], 5, 2, 4, EnumCreatureType.creature, biome)
+	}
+    if(Objs.config.useFoxes) for (biome <- snow) EntityRegistry.addSpawn(classOf[Fox], 5, 2, 4, EnumCreatureType.creature, biome) 
   }
   def register(block: Block, name: String) = GameRegistry.registerBlock(block, name)
   def register(item: Item, name: String) = GameRegistry.registerItem(item, name)
   def register(block: Block, name: String, itemBlock: Class[ItemBlock]) = GameRegistry.registerBlock(block, itemBlock, name)
+  def registerEntity(entity: Class[Entity], name: String, id: Int, egg: Boolean, colour1: Int, colour2: Int) {
+    EntityRegistry.registerModEntity(entity, name, id, CampingMod, 80, 3, false);
+    if (egg) {
+      val id2 = Utils.getUniqueEntityId
+      EntityList.IDtoClassMapping.asInstanceOf[java.util.Map[Int, Class[Entity]]](id2) = entity;
+      EntityList.entityEggs.asInstanceOf[java.util.Map[Int, EntityEggInfo]](id2) = new EntityEggInfo(id2, colour1, colour2);
+      Objs.tab.asInstanceOf[Tab].eggIds.add(id2)
+    }
+  }
 }

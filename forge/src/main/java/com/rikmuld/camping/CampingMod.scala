@@ -11,6 +11,8 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent
 import cpw.mods.fml.common.event.FMLPreInitializationEvent
 import cpw.mods.fml.common.network.NetworkRegistry
 import com.rikmuld.camping.core.ModInfo
+import scala.runtime.ObjectRef
+import com.rikmuld.camping.core.ObjRegistry
 
 @Mod(modid = ModInfo.MOD_ID, name = ModInfo.MOD_NAME, version = ModInfo.MOD_VERSION, dependencies = ModInfo.MOD_DEPENDENCIES, modLanguage = ModInfo.MOD_LANUAGE, guiFactory = ModInfo.MOD_GUIFACTORY)
 object CampingMod {
@@ -33,9 +35,12 @@ object CampingMod {
   @EventHandler
   def PosInit(event: FMLPostInitializationEvent) {
     MiscRegistry.postInit(event)
+    ObjRegistry.postInit
   }
 }
 // TEST MULTIPLAYER
 
-// FASE 3 - Campers, Animals, Bear Trap, Armor
+// FASE 3 - Campers
 // FASE 4 - Keep inv when keep inventory gamerule is on, Guide, New tent: shelter, Backpack when on back Model, Lantern when active wearing model.
+
+//improve fox model, make it more fox'ish

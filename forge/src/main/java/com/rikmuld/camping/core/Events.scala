@@ -1,18 +1,21 @@
 package com.rikmuld.camping.core
 
 import java.util.ArrayList
+import java.util.UUID
 import org.lwjgl.input.Mouse
 import com.rikmuld.camping.client.gui.GuiMapHUD
 import com.rikmuld.camping.common.inventory.gui.InventoryCampinv
 import com.rikmuld.camping.common.network.NBTPlayer
 import com.rikmuld.camping.common.network.OpenGui
 import com.rikmuld.camping.common.network.PacketSender
+import com.rikmuld.camping.common.objs.block.Hemp
 import com.rikmuld.camping.common.objs.item.IKnife
 import com.rikmuld.camping.common.objs.tile.TileEntityCampfireCook
 import com.rikmuld.camping.core.Utils.ItemStackUtils
 import com.rikmuld.camping.core.Utils.PlayerUtils
 import cpw.mods.fml.client.FMLClientHandler
 import cpw.mods.fml.client.event.ConfigChangedEvent
+import cpw.mods.fml.common.eventhandler.Event
 import cpw.mods.fml.common.eventhandler.SubscribeEvent
 import cpw.mods.fml.common.gameevent.PlayerEvent.ItemCraftedEvent
 import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent
@@ -21,35 +24,39 @@ import cpw.mods.fml.common.gameevent.TickEvent.ClientTickEvent
 import cpw.mods.fml.common.gameevent.TickEvent.PlayerTickEvent
 import cpw.mods.fml.relauncher.ReflectionHelper
 import cpw.mods.fml.relauncher.SideOnly
+import cpw.mods.fml.relauncher.Side
+import net.minecraft.client.Minecraft
 import net.minecraft.client.gui.GuiButton
 import net.minecraft.client.gui.GuiScreen
 import net.minecraft.client.gui.inventory.GuiContainerCreative
 import net.minecraft.client.gui.inventory.GuiInventory
 import net.minecraft.creativetab.CreativeTabs
+import net.minecraft.entity.SharedMonsterAttributes
+import net.minecraft.entity.ai.attributes.AttributeModifier
+import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.entity.player.EntityPlayerMP
 import net.minecraft.init.Blocks
+import net.minecraft.init.Items
+import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
+import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.Vec3
 import net.minecraftforge.client.event.GuiOpenEvent
 import net.minecraftforge.client.event.RenderGameOverlayEvent
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType
-import net.minecraftforge.event.entity.player.PlayerDropsEvent
-import cpw.mods.fml.relauncher.Side
-import net.minecraftforge.event.entity.player.BonemealEvent
-import com.rikmuld.camping.common.objs.block.Hemp
-import cpw.mods.fml.common.eventhandler.Event
-import net.minecraft.nbt.NBTTagCompound
-import net.minecraft.item.Item
-import net.minecraft.init.Items
 import net.minecraftforge.event.entity.living.LivingDeathEvent
-import net.minecraft.entity.player.EntityPlayer
-import net.minecraft.client.Minecraft
-import net.minecraftforge.event.entity.living.LivingSpawnEvent
-import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerRespawnEvent
+import net.minecraftforge.event.entity.player.BonemealEvent
+import net.minecraftforge.event.entity.player.PlayerDropsEvent
+import java.util.Random
+import net.minecraft.item.ItemArmor
+import com.rikmuld.camping.common.objs.item.ArmorFur
+import cpw.mods.fml.common.gameevent.TickEvent.Phase
+import com.rikmuld.camping.common.objs.tile.TileEntityTrap
 
 class Events {
   var tickLight: Int = 0
   var marshupdate = 0
+  val UUIDSpeedCamping = new UUID(new Random(83746763).nextLong, new Random(28647556).nextLong)
 
   @SubscribeEvent
   def onBoneMealUsed(event: BonemealEvent) {
@@ -111,8 +118,14 @@ class Events {
   }
   @SubscribeEvent
   def onPlayerTick(event: PlayerTickEvent) {
-    val player = event.player
+    val player = event.player    
     val world = player.worldObj
+    
+    if(event.phase.equals(Phase.START)){
+      if(player.getEntityData().getInteger("isInTrap")<=0){
+        player.getEntityData().setInteger("isInTrap", player.getEntityData().getInteger("isInTrap")-1)
+      } else if(player.getEntityAttribute(SharedMonsterAttributes.movementSpeed).getModifier(TileEntityTrap.UUIDSpeedTrap)!=null)player.getEntityAttribute(SharedMonsterAttributes.movementSpeed).removeModifier(player.getEntityAttribute(SharedMonsterAttributes.movementSpeed).getModifier(TileEntityTrap.UUIDSpeedTrap))
+    }
     if (!world.isRemote && player.hasLantarn()) {
       tickLight += 1
       if (tickLight >= 10) {
@@ -153,6 +166,11 @@ class Events {
         }
       }
     }
+    
+    var campNum = 0.0f
+    for(i <- 0 until 4 if(player.inventory.armorInventory(i)!=null&&player.inventory.armorInventory(i).getItem.isInstanceOf[ArmorFur])) campNum+=0.25f
+    if(player.getEntityAttribute(SharedMonsterAttributes.movementSpeed).getModifier(UUIDSpeedCamping)!=null)player.getEntityAttribute(SharedMonsterAttributes.movementSpeed).removeModifier(player.getEntityAttribute(SharedMonsterAttributes.movementSpeed).getModifier(UUIDSpeedCamping))
+    player.getEntityAttribute(SharedMonsterAttributes.movementSpeed).applyModifier(new AttributeModifier(UUIDSpeedCamping, "camping.speedBoost", 0.04*campNum, 0))
   }
 }
 
