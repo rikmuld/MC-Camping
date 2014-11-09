@@ -1,0 +1,18 @@
+{
+  "mob.bear.say": {
+  	"category": "hostile", 
+  	"sounds": ["bear-1", "bear-2", "bear-3", "bear-4"]
+  }, 
+  "mob.bear.dead": {
+  	"category": "hostile", 
+  	"sounds": ["bear-attack"]
+  },
+  "mob.fox.say": {
+  	"category": "neutral", 
+  	"sounds": ["fox"]
+  },
+  "mob.fox.dead": {
+  	"category": "neutral", 
+  	"sounds": ["fox-attack"]
+  }
+}
