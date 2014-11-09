@@ -79,7 +79,7 @@ class CustomModel(resource: ResourceLocation, var width: Int, var height: Int) e
         var i = 0
         while (zipInput.available() > 0 && i < data.length) {
           data(i) = zipInput.read().toByte
-          i+=1
+          i += 1
         }
         zipContents.put(entry.getName, data)
         entry = zipInput.getNextEntry

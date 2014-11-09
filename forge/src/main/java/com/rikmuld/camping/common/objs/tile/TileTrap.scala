@@ -38,7 +38,7 @@ class TileEntityTrap extends TileEntityMain with TileEntityWithInventory {
   override def getSizeInventory(): Int = 1
   var monsterItemAttr = Array(Items.rotten_flesh, Items.chicken, Items.beef, Items.porkchop, Objs.venisonRaw)
 
-  override def onInventoryChanged(slot:Int) {
+  override def onInventoryChanged(slot: Int) {
     super[TileEntityWithInventory].onInventoryChanged(slot)
     if (!worldObj.isRemote) PacketSender.toClient(new com.rikmuld.camping.common.network.Items(0, xCoord, yCoord, zCoord, getStackInSlot(0)))
   }
@@ -87,11 +87,11 @@ class TileEntityTrap extends TileEntityMain with TileEntityWithInventory {
         trappedEntity.setInWeb()
         if (trappedEntity.isInstanceOf[EntityPlayer]) {
           trappedEntity.getEntityData().setInteger("isInTrap", 20)
-          if(trappedEntity.getEntityAttribute(SharedMonsterAttributes.movementSpeed).getModifier(TileEntityTrap.UUIDSpeedTrap)!=null)trappedEntity.getEntityAttribute(SharedMonsterAttributes.movementSpeed).removeModifier(trappedEntity.getEntityAttribute(SharedMonsterAttributes.movementSpeed).getModifier(TileEntityTrap.UUIDSpeedTrap))
+          if (trappedEntity.getEntityAttribute(SharedMonsterAttributes.movementSpeed).getModifier(TileEntityTrap.UUIDSpeedTrap) != null) trappedEntity.getEntityAttribute(SharedMonsterAttributes.movementSpeed).removeModifier(trappedEntity.getEntityAttribute(SharedMonsterAttributes.movementSpeed).getModifier(TileEntityTrap.UUIDSpeedTrap))
           trappedEntity.getEntityAttribute(SharedMonsterAttributes.movementSpeed).applyModifier(new AttributeModifier(TileEntityTrap.UUIDSpeedTrap, "trap.speedNeg", -0.95f, 2))
         }
         if (random.nextInt(50) == 0) {
-          if (!(trappedEntity.isInstanceOf[EntityPlayer]) || 
+          if (!(trappedEntity.isInstanceOf[EntityPlayer]) ||
             !trappedEntity.asInstanceOf[EntityPlayer].capabilities.isCreativeMode) {
             trappedEntity.attackEntityFrom(Objs.bleedingSource, trappedEntity.getMaxHealth / 20F)
           }
@@ -111,8 +111,8 @@ class TileEntityTrap extends TileEntityMain with TileEntityWithInventory {
               entity.asInstanceOf[EntityAnimal].getMoveHelper.setMoveTo(xCoord + 0.5F, yCoord, zCoord + 0.5F, 1)
             }
           }
-          if(entity.isInstanceOf[Bear]||entity.isInstanceOf[EntityZombie]||entity.isInstanceOf[EntityCreeper]||entity.isInstanceOf[EntitySkeleton]||entity.isInstanceOf[EntityEnderman]||entity.isInstanceOf[EntitySpider]){
-            if(monsterItemAttr.contains(getStackInSlot(0).getItem())){
+          if (entity.isInstanceOf[Bear] || entity.isInstanceOf[EntityZombie] || entity.isInstanceOf[EntityCreeper] || entity.isInstanceOf[EntitySkeleton] || entity.isInstanceOf[EntityEnderman] || entity.isInstanceOf[EntitySpider]) {
+            if (monsterItemAttr.contains(getStackInSlot(0).getItem())) {
               entity.asInstanceOf[EntityLiving].getMoveHelper.setMoveTo(xCoord + 0.5F, yCoord, zCoord + 0.5F, 1)
             }
           }

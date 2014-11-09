@@ -118,13 +118,13 @@ class Events {
   }
   @SubscribeEvent
   def onPlayerTick(event: PlayerTickEvent) {
-    val player = event.player    
+    val player = event.player
     val world = player.worldObj
-    
-    if(event.phase.equals(Phase.START)){
-      if(player.getEntityData().getInteger("isInTrap")<=0){
-        player.getEntityData().setInteger("isInTrap", player.getEntityData().getInteger("isInTrap")-1)
-      } else if(player.getEntityAttribute(SharedMonsterAttributes.movementSpeed).getModifier(TileEntityTrap.UUIDSpeedTrap)!=null)player.getEntityAttribute(SharedMonsterAttributes.movementSpeed).removeModifier(player.getEntityAttribute(SharedMonsterAttributes.movementSpeed).getModifier(TileEntityTrap.UUIDSpeedTrap))
+
+    if (event.phase.equals(Phase.START)) {
+      if (player.getEntityData().getInteger("isInTrap") <= 0) {
+        player.getEntityData().setInteger("isInTrap", player.getEntityData().getInteger("isInTrap") - 1)
+      } else if (player.getEntityAttribute(SharedMonsterAttributes.movementSpeed).getModifier(TileEntityTrap.UUIDSpeedTrap) != null) player.getEntityAttribute(SharedMonsterAttributes.movementSpeed).removeModifier(player.getEntityAttribute(SharedMonsterAttributes.movementSpeed).getModifier(TileEntityTrap.UUIDSpeedTrap))
     }
     if (!world.isRemote && player.hasLantarn()) {
       tickLight += 1
@@ -166,11 +166,11 @@ class Events {
         }
       }
     }
-    
+
     var campNum = 0.0f
-    for(i <- 0 until 4 if(player.inventory.armorInventory(i)!=null&&player.inventory.armorInventory(i).getItem.isInstanceOf[ArmorFur])) campNum+=0.25f
-    if(player.getEntityAttribute(SharedMonsterAttributes.movementSpeed).getModifier(UUIDSpeedCamping)!=null)player.getEntityAttribute(SharedMonsterAttributes.movementSpeed).removeModifier(player.getEntityAttribute(SharedMonsterAttributes.movementSpeed).getModifier(UUIDSpeedCamping))
-    player.getEntityAttribute(SharedMonsterAttributes.movementSpeed).applyModifier(new AttributeModifier(UUIDSpeedCamping, "camping.speedBoost", 0.04*campNum, 0))
+    for (i <- 0 until 4 if (player.inventory.armorInventory(i) != null && player.inventory.armorInventory(i).getItem.isInstanceOf[ArmorFur])) campNum += 0.25f
+    if (player.getEntityAttribute(SharedMonsterAttributes.movementSpeed).getModifier(UUIDSpeedCamping) != null) player.getEntityAttribute(SharedMonsterAttributes.movementSpeed).removeModifier(player.getEntityAttribute(SharedMonsterAttributes.movementSpeed).getModifier(UUIDSpeedCamping))
+    player.getEntityAttribute(SharedMonsterAttributes.movementSpeed).applyModifier(new AttributeModifier(UUIDSpeedCamping, "camping.speedBoost", 0.04 * campNum, 0))
   }
 }
 

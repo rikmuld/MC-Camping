@@ -2,7 +2,6 @@ package com.rikmuld.camping.core
 
 import java.util.ArrayList
 import java.util.Random
-import scala.collection.JavaConversions.asScalaBuffer
 import net.minecraft.block.Block
 import net.minecraft.entity.EntityList
 import net.minecraft.entity.item.EntityItem
@@ -22,10 +21,10 @@ import net.minecraft.util.MovingObjectPosition
 import net.minecraft.util.Vec3
 import net.minecraft.world.World
 import net.minecraft.world.storage.MapData
-import net.minecraftforge.common.util.Constants
 import net.minecraftforge.common.util.ForgeDirection
 import net.minecraftforge.oredict.OreDictionary
-import scala.collection.mutable.ListBuffer
+import scala.collection.JavaConversions._
+import net.minecraftforge.common.util.Constants
 
 object Utils {
   var startEntityId = 300
@@ -34,16 +33,12 @@ object Utils {
     while (EntityList.getStringFromID(startEntityId) != null) startEntityId += 1
     startEntityId
   }
-  implicit class ObjectUtils(`object`: AnyRef) {
+  implicit class ItemUtils(obj: AnyRef) {
     def toStack(): ItemStack = {
       var stack: ItemStack = null
-      if (`object`.isInstanceOf[Block]) {
-        val block = `object`.asInstanceOf[Block]
-        stack = new ItemStack(block)
-      } else if (`object`.isInstanceOf[Item]) {
-        val item = `object`.asInstanceOf[Item]
-        stack = new ItemStack(item)
-      } else if (`object`.isInstanceOf[ItemStack]) stack = `object`.asInstanceOf[ItemStack]
+      if (obj.isInstanceOf[Block]) stack = new ItemStack(obj.asInstanceOf[Block])
+      else if (obj.isInstanceOf[Item]) stack = new ItemStack(obj.asInstanceOf[Item])
+      else if (obj.isInstanceOf[ItemStack]) stack = obj.asInstanceOf[ItemStack]
       stack
     }
     def toStack(count: Int): ItemStack = {
@@ -54,8 +49,8 @@ object Utils {
     def getMetaCycle(maxMetadata: Int): Array[ItemStack] = {
       val stack = Array.ofDim[ItemStack](maxMetadata)
       for (i <- 0 until maxMetadata) {
-        if (`object`.isInstanceOf[Block]) stack(i) = new ItemStack(`object`.asInstanceOf[Block], 1, i)
-        if (`object`.isInstanceOf[Item]) stack(i) = new ItemStack(`object`.asInstanceOf[Item], 1, i)
+        if (obj.isInstanceOf[Block]) stack(i) = new ItemStack(obj.asInstanceOf[Block], 1, i)
+        if (obj.isInstanceOf[Item]) stack(i) = new ItemStack(obj.asInstanceOf[Item], 1, i)
       }
       stack
     }

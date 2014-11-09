@@ -89,8 +89,8 @@ class SlotCooking(par1iInventory: IInventory, id: Int, x: Int, y: Int) extends S
 }
 
 class SlotState(inv: IInventory, id: Int, x: Int, y: Int) extends SlotDisable(inv, id, x, y) {
-  var stateX: Int = xFlag 
-  var stateY: Int = yFlag 
+  var stateX: Int = xFlag
+  var stateY: Int = yFlag
 
   override def enable() {
     xDisplayPosition = stateX
@@ -100,10 +100,10 @@ class SlotState(inv: IInventory, id: Int, x: Int, y: Int) extends SlotDisable(in
   def setStateY(state: Int) = stateY = yFlag - (18 * state)
 }
 
-class SlotItem(inv: IInventory, id: Int, x: Int, y: Int) extends Slot(inv, id, x, y){
-  override def isItemValid(stack: ItemStack): Boolean = Block.getBlockFromItem(stack.getItem())==Blocks.air
+class SlotItem(inv: IInventory, id: Int, x: Int, y: Int) extends Slot(inv, id, x, y) {
+  override def isItemValid(stack: ItemStack): Boolean = Block.getBlockFromItem(stack.getItem()) == Blocks.air
 }
 
-class SlotBlock(inv: IInventory, id: Int, x: Int, y: Int) extends Slot(inv, id, x, y){
-  override def isItemValid(stack: ItemStack): Boolean = Block.getBlockFromItem(stack.getItem())!=Blocks.air
+class SlotBlock(inv: IInventory, id: Int, x: Int, y: Int) extends Slot(inv, id, x, y) {
+  override def isItemValid(stack: ItemStack): Boolean = Block.getBlockFromItem(stack.getItem()) != Blocks.air
 }

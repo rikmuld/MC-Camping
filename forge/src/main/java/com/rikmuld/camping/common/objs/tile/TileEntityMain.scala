@@ -108,8 +108,8 @@ abstract trait TileEntityWithInventory extends TileEntity with IInventory with I
     }
     super.readFromNBT(tag)
   }
-  def onInventoryChanged(slot:Int){
-    
+  def onInventoryChanged(slot: Int) {
+
   }
   override def setInventorySlotContents(slot: Int, stack: ItemStack) {
     inventoryContents(slot) = stack

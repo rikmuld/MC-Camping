@@ -32,7 +32,7 @@ object TileEntityTent {
   var BEDS: Int = 2
 }
 
-class TileEntityTent extends TileEntityWithRotation with TileEntityWithInventory{
+class TileEntityTent extends TileEntityWithRotation with TileEntityWithInventory {
   var slots: Array[Array[SlotState]] = _
   var structures: Array[BoundsStructure] = _
   var tracker: Array[BoundsTracker] = new Array[BoundsTracker](4)
@@ -220,7 +220,7 @@ class TileEntityTent extends TileEntityWithRotation with TileEntityWithInventory
     contends = (beds * bedCost) + (chests * chestCost) + (lanterns * lanternCost)
     sendTileData(2, !worldObj.isRemote, contends)
     worldObj.markBlockForUpdate(xCoord, yCoord, zCoord)
-    worldObj.markBlockRangeForRenderUpdate(xCoord-1, yCoord-1, zCoord-1, xCoord+1, yCoord+1, zCoord+1)
+    worldObj.markBlockRangeForRenderUpdate(xCoord - 1, yCoord - 1, zCoord - 1, xCoord + 1, yCoord + 1, zCoord + 1)
   }
   override def setRotation(rotation: Int) {
     if (!worldObj.isRemote) {
@@ -240,13 +240,12 @@ class TileEntityTent extends TileEntityWithRotation with TileEntityWithInventory
   override def setTileData(id: Int, data: Array[Int]) {
     super.setTileData(id, data)
     if (id == 1) setContends(data(0), data(1), false, data(2))
-    else if (id == 2) contends = data(0)   
-    else if (id == 3) lanternDamage = data(0)   
+    else if (id == 2) contends = data(0)
+    else if (id == 3) lanternDamage = data(0)
     else if (id == 4) {
       slide = data(0)
       manageSlots()
-    }
-    else if (id == 5) time = data(0)
+    } else if (id == 5) time = data(0)
     else if (id == 6) color = data(0)
   }
   def sleep(player: EntityPlayer) {
@@ -289,7 +288,7 @@ class TileEntityTent extends TileEntityWithRotation with TileEntityWithInventory
       }
       if (needLightUpdate) {
         worldObj.markBlockForUpdate(xCoord, yCoord, zCoord)
-        worldObj.markBlockRangeForRenderUpdate(xCoord-1, yCoord-1, zCoord-1, xCoord+1, yCoord+1, zCoord+1)
+        worldObj.markBlockRangeForRenderUpdate(xCoord - 1, yCoord - 1, zCoord - 1, xCoord + 1, yCoord + 1, zCoord + 1)
         if (lanternUpdateTick == 0) needLightUpdate = false
         else if (lanternUpdateTick > 0) lanternUpdateTick -= 1
       }
@@ -304,7 +303,7 @@ class TileEntityTent extends TileEntityWithRotation with TileEntityWithInventory
         lanternDamage = 1
         sendTileData(3, true, lanternDamage)
         worldObj.markBlockForUpdate(xCoord, yCoord, zCoord)
-        worldObj.markBlockRangeForRenderUpdate(xCoord-1, yCoord-1, zCoord-1, xCoord+1, yCoord+1, zCoord+1)
+        worldObj.markBlockRangeForRenderUpdate(xCoord - 1, yCoord - 1, zCoord - 1, xCoord + 1, yCoord + 1, zCoord + 1)
       }
       if ((sleepingPlayer != null) && !sleepingPlayer.isPlayerSleeping) {
         sleepingPlayer = null
@@ -315,7 +314,7 @@ class TileEntityTent extends TileEntityWithRotation with TileEntityWithInventory
         lanternDamage = 0
         sendTileData(3, true, lanternDamage)
         worldObj.markBlockForUpdate(xCoord, yCoord, zCoord)
-        worldObj.markBlockRangeForRenderUpdate(xCoord-1, yCoord-1, zCoord-1, xCoord+1, yCoord+1, zCoord+1)
+        worldObj.markBlockRangeForRenderUpdate(xCoord - 1, yCoord - 1, zCoord - 1, xCoord + 1, yCoord + 1, zCoord + 1)
       }
       if (time != oldTime) {
         sendTileData(5, true, time)

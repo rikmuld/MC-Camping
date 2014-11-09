@@ -15,7 +15,7 @@ import net.minecraft.client.renderer.ItemRenderer
 import net.minecraft.tileentity.TileEntity
 import com.rikmuld.camping.common.objs.tile.TileEntityTrap
 
-class TrapRender extends TileEntitySpecialRenderer{
+class TrapRender extends TileEntitySpecialRenderer {
   var renderer: ItemRenderer = new ItemRenderer(Minecraft.getMinecraft)
   override def renderTileEntityAt(tileentity: TileEntity, x: Double, y: Double, z: Double, f: Float) {
     val tile = tileentity.asInstanceOf[TileEntityTrap]

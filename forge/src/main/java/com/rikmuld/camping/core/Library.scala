@@ -36,6 +36,7 @@ object GuiInfo {
 object EntityInfo {
   final val BEAR = 0
   final val FOX = 1
+  final val CAMPER = 2
 }
 
 object PotionInfo {
@@ -57,7 +58,7 @@ object ConfigInfo {
 
 object ModelInfo {
   final val MODEL_LOCATION = ModInfo.MOD_ID + ":misc/models/"
-  
+
   final val CAMPFIRE = MODEL_LOCATION + "ModelCampfireDeco.tcn"
   final val LOG = MODEL_LOCATION + "ModelLog.tcn"
   final val TENT = MODEL_LOCATION + "ModelTent.tcn"
@@ -117,7 +118,9 @@ object TextureInfo {
   final val ARMOR_FUR_MAIN = MODEL_LOCATION + "ModelArmorFurMain.png"
   final val MODEL_BEAR = MODEL_LOCATION + "ModelBear.png"
   final val MODEL_FOX = MODEL_LOCATION + "ModelArcticFox.png"
-  final val MODEL_TRAP = MODEL_LOCATION + "ModelBearTrapOpen.png";
+  final val MODEL_TRAP = MODEL_LOCATION + "ModelBearTrapOpen.png"
+  final val MODEL_CAMPER_FEMALE = MODEL_LOCATION + "ModelCamperFemale.png"
+  final val MODEL_CAMPER_MALE = MODEL_LOCATION + "ModelCamperMale.png"
 }
 
 object TextInfo {

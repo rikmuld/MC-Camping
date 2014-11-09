@@ -1,4 +1,4 @@
-package com.rikmuld.camping.misc.damagesources
+package com.rikmuld.camping.misc
 
 import java.util.Random
 

@@ -9,6 +9,6 @@ import com.rikmuld.camping.core.TextureInfo
 import net.minecraft.entity.player.EntityPlayer
 import com.rikmuld.camping.core.TextInfo
 
-class ArmorFur(infoClass:Class[_], armorType:Int) extends ItemArmorMain(infoClass, Objs.fur, armorType) {
-  override def getArmorTexture(stack:ItemStack, entity:Entity, slot:Int, layer:String):String = if(this==Objs.furLeg)TextureInfo.ARMOR_FUR_LEG else TextureInfo.ARMOR_FUR_MAIN
+class ArmorFur(infoClass: Class[_], armorType: Int) extends ItemArmorMain(infoClass, Objs.fur, armorType) {
+  override def getArmorTexture(stack: ItemStack, entity: Entity, slot: Int, layer: String): String = if (this == Objs.furLeg) TextureInfo.ARMOR_FUR_LEG else TextureInfo.ARMOR_FUR_MAIN
 }

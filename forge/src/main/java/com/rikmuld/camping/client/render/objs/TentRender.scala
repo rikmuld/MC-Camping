@@ -92,8 +92,7 @@ class TentItemRender extends IItemRenderer {
     else if (`type` == ItemRenderType.EQUIPPED) {
       GL11.glRotatef(45, 0, -1, 0)
       GL11.glTranslatef(0.0F, 0.0F, -0.3F)
-    }
-    else if (`type` == ItemRenderType.EQUIPPED_FIRST_PERSON) {
+    } else if (`type` == ItemRenderType.EQUIPPED_FIRST_PERSON) {
       GL11.glRotatef(45, 0, 1, 0)
       GL11.glTranslatef(0.0F, 0.3F, 0.6F)
     }

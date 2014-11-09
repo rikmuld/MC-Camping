@@ -1,88 +1,25 @@
 package com.rikmuld.camping.core
 
-import com.rikmuld.camping.CampingMod
-import com.rikmuld.camping.client.gui.GuiBackpack
-import com.rikmuld.camping.client.gui.GuiCampfire
-import com.rikmuld.camping.client.gui.GuiCampfireCook
-import com.rikmuld.camping.client.gui.GuiCampingInvCraft
-import com.rikmuld.camping.client.gui.GuiCampinginv
-import com.rikmuld.camping.client.gui.GuiKit
-import com.rikmuld.camping.client.gui.GuiTent
-import com.rikmuld.camping.client.gui.GuiTentChests
-import com.rikmuld.camping.client.gui.GuiTentLanterns
-import com.rikmuld.camping.client.gui.GuiTentSleeping
-import com.rikmuld.camping.client.render.objs.CampfireCookItemRender
-import com.rikmuld.camping.client.render.objs.CampfireCookRender
-import com.rikmuld.camping.client.render.objs.CampfireItemRender
-import com.rikmuld.camping.client.render.objs.CampfireRender
-import com.rikmuld.camping.client.render.objs.LogItemRender
-import com.rikmuld.camping.client.render.objs.LogRender
-import com.rikmuld.camping.client.render.objs.SleepingBagRender
-import com.rikmuld.camping.client.render.objs.TentItemRender
-import com.rikmuld.camping.client.render.objs.TentRender
-import com.rikmuld.camping.common.inventory.gui.ContainerBackpack
-import com.rikmuld.camping.common.inventory.gui.ContainerCampfire
-import com.rikmuld.camping.common.inventory.gui.ContainerCampfireCook
-import com.rikmuld.camping.common.inventory.gui.ContainerCampinv
-import com.rikmuld.camping.common.inventory.gui.ContainerCampinvCraft
-import com.rikmuld.camping.common.inventory.gui.ContainerKit
-import com.rikmuld.camping.common.inventory.gui.ContainerTentChests
-import com.rikmuld.camping.common.inventory.gui.ContainerTentLanterns
-import com.rikmuld.camping.common.network.BasicPacketData
-import com.rikmuld.camping.common.network.BoundsData
-import com.rikmuld.camping.common.network.Handler
-import com.rikmuld.camping.common.network.Items
-import com.rikmuld.camping.common.network.Map
-import com.rikmuld.camping.common.network.NBTPlayer
-import com.rikmuld.camping.common.network.OpenGui
-import com.rikmuld.camping.common.network.PacketDataManager
-import com.rikmuld.camping.common.network.PacketGlobal
-import com.rikmuld.camping.common.network.PlayerSleepInTent
-import com.rikmuld.camping.common.network.TileData
 import com.rikmuld.camping.common.objs.block.BoundsHelper
-import com.rikmuld.camping.common.objs.block.Campfire
-import com.rikmuld.camping.common.objs.block.CampfireCook
-import com.rikmuld.camping.common.objs.block.Hemp
 import com.rikmuld.camping.common.objs.block.Lantern
 import com.rikmuld.camping.common.objs.block.Light
-import com.rikmuld.camping.common.objs.block.Log
 import com.rikmuld.camping.common.objs.block.SleepingBag
-import com.rikmuld.camping.common.objs.block.Tent
 import com.rikmuld.camping.common.objs.item.Backpack
-import com.rikmuld.camping.common.objs.item.HempItem
-import com.rikmuld.camping.common.objs.item.ItemMain
-import com.rikmuld.camping.common.objs.item.Kit
-import com.rikmuld.camping.common.objs.item.Knife
-import com.rikmuld.camping.common.objs.item.Marshmallow
-import com.rikmuld.camping.common.objs.tile.TileEntityCampfire
-import com.rikmuld.camping.common.objs.tile.TileEntityCampfireCook
 import com.rikmuld.camping.common.objs.tile.TileEntityLantern
 import com.rikmuld.camping.common.objs.tile.TileEntityLight
 import com.rikmuld.camping.common.objs.tile.TileEntityLog
-import com.rikmuld.camping.common.objs.tile.TileEntitySleepingBag
-import com.rikmuld.camping.common.objs.tile.TileEntityTent
 import com.rikmuld.camping.common.objs.tile.TileEntityWithBounds
 import com.rikmuld.camping.common.objs.tile.TileEntityWithRotation
-import com.rikmuld.camping.common.world.WorldGenerator
-import com.rikmuld.camping.core.Utils._
-import com.rikmuld.camping.misc.BoundsStructure
-import com.rikmuld.camping.misc.CookingEquipment
 import com.rikmuld.camping.misc.CustomModel
 import com.rikmuld.camping.misc.CustomModelLoader
-import com.rikmuld.camping.misc.Grill
-import com.rikmuld.camping.misc.Pan
-import com.rikmuld.camping.misc.Spit
-import com.rikmuld.camping.misc.Tab
 import cpw.mods.fml.client.registry.ClientRegistry
 import cpw.mods.fml.common.FMLCommonHandler
-import cpw.mods.fml.common.Mod
 import cpw.mods.fml.common.event.FMLInitializationEvent
 import cpw.mods.fml.common.event.FMLPostInitializationEvent
 import cpw.mods.fml.common.event.FMLPreInitializationEvent
 import cpw.mods.fml.common.network.NetworkRegistry
 import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper
 import cpw.mods.fml.common.registry.GameRegistry
-import cpw.mods.fml.relauncher.Side
 import cpw.mods.fml.relauncher.SideOnly
 import net.minecraft.block.Block
 import net.minecraft.creativetab.CreativeTabs
@@ -90,48 +27,118 @@ import net.minecraft.init.Blocks
 import net.minecraft.init.Items
 import net.minecraft.item.Item
 import net.minecraft.item.ItemBlock
+import com.rikmuld.camping.core.Utils._
 import net.minecraft.item.ItemStack
 import net.minecraft.util.ResourceLocation
 import net.minecraftforge.client.MinecraftForgeClient
 import net.minecraftforge.client.model.techne.TechneModel
 import net.minecraftforge.client.model.techne.TechneModelLoader
 import net.minecraftforge.common.MinecraftForge
-import net.minecraftforge.common.config.Configuration
 import net.minecraftforge.common.util.EnumHelper
 import net.minecraft.item.ItemArmor.ArmorMaterial
-import com.rikmuld.camping.common.objs.item.ArmorFur
-import com.rikmuld.camping.common.objs.item.ItemFoodMain
 import cpw.mods.fml.client.registry.RenderingRegistry
-import com.rikmuld.camping.common.objs.entity.Bear
 import net.minecraft.entity.Entity
 import cpw.mods.fml.common.registry.EntityRegistry
-import cpw.mods.fml.common.registry.LanguageRegistry
 import net.minecraft.entity.EntityList
 import net.minecraft.entity.EntityList.EntityEggInfo
 import scala.collection.JavaConversions._
-import com.rikmuld.camping.common.objs.entity.EntityMountableBlock
 import net.minecraftforge.common.BiomeDictionary
 import net.minecraftforge.common.BiomeDictionary.Type
-import net.minecraft.entity.EnumCreatureType
-import net.minecraft.world.biome.BiomeGenBase
-import com.rikmuld.camping.client.render.models.ModelBear
-import com.rikmuld.camping.client.render.models.ModelBear
-import com.rikmuld.camping.client.render.objs.BearRenderer
-import com.rikmuld.camping.common.objs.entity.Fox
-import com.rikmuld.camping.client.render.objs.FoxRenderer
-import com.rikmuld.camping.client.render.models.ModelFox
-import com.rikmuld.camping.client.render.models.ModelBear
 import com.rikmuld.camping.common.objs.block.Trap
 import net.minecraft.potion.Potion
-import com.rikmuld.camping.misc.PotionBleeding
 import net.minecraft.util.DamageSource
-import com.rikmuld.camping.misc.damagesources.DamageSourceBleeding
-import com.rikmuld.camping.common.objs.tile.TileEntityTrap
-import com.rikmuld.camping.client.render.objs.TrapItemRenderer
-import com.rikmuld.camping.client.render.objs.TrapRender
+import com.rikmuld.camping.misc.DamageSourceBleeding
+import com.rikmuld.camping.common.objs.tile.TileEntityLantern
+import com.rikmuld.camping.common.objs.tile.TileEntityLight
+import com.rikmuld.camping.common.objs.tile.TileEntityLog
+import com.rikmuld.camping.common.objs.tile.TileEntityWithBounds
+import com.rikmuld.camping.common.objs.tile.TileEntityWithRotation
+import com.rikmuld.camping.common.objs.tile.TileEntityLantern
+import com.rikmuld.camping.common.objs.tile.TileEntityLight
+import com.rikmuld.camping.common.objs.tile.TileEntityLog
+import com.rikmuld.camping.common.objs.tile.TileEntityWithBounds
+import com.rikmuld.camping.common.objs.tile.TileEntityWithRotation
+import com.rikmuld.camping.common.inventory.gui.ContainerTentChests
+import com.rikmuld.camping.client.render.objs.LogItemRender
+import com.rikmuld.camping.client.gui.GuiCampfireCook
+import com.rikmuld.camping.common.objs.item.ItemMain
+import com.rikmuld.camping.common.inventory.gui.ContainerCampfireCook
+import net.minecraft.entity.EnumCreatureType
+import com.rikmuld.camping.client.gui.GuiKit
+import com.rikmuld.camping.client.render.objs.FoxRenderer
 import com.rikmuld.camping.client.gui.GuiTrap
-import com.rikmuld.camping.common.inventory.gui.ContainerKit
+import com.rikmuld.camping.common.objs.tile.TileEntityTent
+import com.rikmuld.camping.common.objs.tile.TileEntityCampfireCook
+import com.rikmuld.camping.client.gui.GuiCampinginv
+import com.rikmuld.camping.client.render.objs.CampfireCookItemRender
+import com.rikmuld.camping.client.gui.GuiTentLanterns
+import com.rikmuld.camping.client.gui.GuiTent
+import com.rikmuld.camping.common.network.TileData
+import com.rikmuld.camping.client.gui.GuiTentChests
+import com.rikmuld.camping.client.render.objs.BearRenderer
+import com.rikmuld.camping.common.objs.item.ArmorFur
+import com.rikmuld.camping.common.objs.entity.Fox
+import com.rikmuld.camping.common.objs.item.Marshmallow
+import com.rikmuld.camping.common.inventory.gui.ContainerCampfire
+import com.rikmuld.camping.common.objs.entity.Bear
+import com.rikmuld.camping.common.objs.item.HempItem
+import com.rikmuld.camping.misc.PotionBleeding
+import com.rikmuld.camping.common.network.PacketGlobal
 import com.rikmuld.camping.common.inventory.gui.ContainerTrap
+import com.rikmuld.camping.client.render.objs.CampfireItemRender
+import com.rikmuld.camping.common.objs.block.Hemp
+import com.rikmuld.camping.client.render.objs.CampfireRender
+import com.rikmuld.camping.common.objs.tile.TileEntitySleepingBag
+import com.rikmuld.camping.common.objs.item.Kit
+import com.rikmuld.camping.common.inventory.gui.ContainerTentLanterns
+import com.rikmuld.camping.common.objs.tile.TileEntityTrap
+import com.rikmuld.camping.common.network.BasicPacketData
+import com.rikmuld.camping.common.objs.block.CampfireCook
+import com.rikmuld.camping.misc.BoundsStructure
+import com.rikmuld.camping.client.render.objs.CampfireCookRender
+import com.rikmuld.camping.client.render.objs.SleepingBagRender
+import com.rikmuld.camping.client.render.objs.TrapItemRenderer
+import com.rikmuld.camping.common.inventory.gui.ContainerBackpack
+import com.rikmuld.camping.client.render.models.ModelFox
+import com.rikmuld.camping.client.render.objs.TrapRender
+import com.rikmuld.camping.client.render.models.ModelBear
+import com.rikmuld.camping.common.objs.item.Knife
+import com.rikmuld.camping.misc.Spit
+import com.rikmuld.camping.common.inventory.gui.ContainerCampinv
+import com.rikmuld.camping.CampingMod
+import com.rikmuld.camping.client.render.objs.TentRender
+import com.rikmuld.camping.common.objs.item.ItemFoodMain
+import com.rikmuld.camping.common.network.PacketDataManager
+import com.rikmuld.camping.common.network.NBTPlayer
+import com.rikmuld.camping.common.inventory.gui.ContainerCampinvCraft
+import com.rikmuld.camping.common.inventory.gui.ContainerKit
+import com.rikmuld.camping.client.gui.GuiCampfire
+import com.rikmuld.camping.common.network.PlayerSleepInTent
+import com.rikmuld.camping.client.render.objs.LogRender
+import com.rikmuld.camping.common.network.BoundsData
+import com.rikmuld.camping.common.objs.block.Tent
+import com.rikmuld.camping.common.objs.block.Campfire
+import com.rikmuld.camping.client.render.objs.TentItemRender
+import com.rikmuld.camping.client.gui.GuiCampingInvCraft
+import com.rikmuld.camping.misc.Grill
+import com.rikmuld.camping.client.gui.GuiTentSleeping
+import com.rikmuld.camping.client.gui.GuiBackpack
+import com.rikmuld.camping.common.objs.tile.TileEntityCampfire
+import com.rikmuld.camping.misc.Tab
+import com.rikmuld.camping.common.network.Handler
+import net.minecraftforge.common.config.Configuration
+import cpw.mods.fml.relauncher.Side
+import com.rikmuld.camping.common.world.WorldGenerator
+import com.rikmuld.camping.common.network.OpenGui
+import com.rikmuld.camping.misc.CookingEquipment
+import com.rikmuld.camping.misc.Pan
+import com.rikmuld.camping.common.objs.block.Log
+import net.minecraft.item.crafting.FurnaceRecipes
+import net.minecraft.item.ItemFood
+import net.minecraft.client.model.ModelWolf
+import com.rikmuld.camping.common.objs.entity.Camper
+import net.minecraft.client.model.ModelBiped
+import com.rikmuld.camping.client.render.objs.CamperRender
 
 object Objs {
   var tab: CreativeTabs = _
@@ -141,8 +148,8 @@ object Objs {
   var knife, parts, backpack, kit, marshmallow, hempItem, animalParts, furBoot, furLeg, furChest, furHead, venisonCooked, venisonRaw: Item = _
   var lantern, light, campfire, campfireCook, log, hemp, sleepingBag, bounds, tent, trap: Block = _
   var spit, grill, pan: CookingEquipment = _
-  var bleeding:Potion = _
-  var bleedingSource:DamageSource = _
+  var bleeding: Potion = _
+  var bleedingSource: DamageSource = _
   var config: Config = _
   var modelLoader: TechneModelLoader = _
   var modelLoaderC: CustomModelLoader = _
@@ -180,16 +187,16 @@ object MiscRegistry {
     CookingEquipment.addEquipmentRecipe(Objs.spit, stick, stick, ironStick)
     CookingEquipment.addEquipmentRecipe(Objs.grill, stick, stick, stick, stick, ironStick, ironStick, new ItemStack(Blocks.iron_bars))
     CookingEquipment.addEquipmentRecipe(Objs.pan, stick, stick, ironStick, new ItemStack(Items.string), new ItemStack(Objs.parts, 1, PartInfo.PAN))
-    CookingEquipment.addGrillFood(new ItemStack(Items.fish, 1, 0), new ItemStack(Items.cooked_fished, 1, 0))
-    CookingEquipment.addGrillFood(new ItemStack(Items.fish, 1, 1), new ItemStack(Items.cooked_fished, 1, 1))
-    CookingEquipment.addGrillFood(new ItemStack(Items.beef, 1, 0), new ItemStack(Items.cooked_beef, 1, 0))
-    CookingEquipment.addGrillFood(new ItemStack(Items.porkchop, 1, 0), new ItemStack(Items.cooked_porkchop, 1, 0))
-    CookingEquipment.addGrillFood(new ItemStack(Objs.venisonRaw, 1, 0), new ItemStack(Objs.venisonCooked, 1, 0))
-    CookingEquipment.addPanFood(new ItemStack(Items.potato, 1, 0), new ItemStack(Items.baked_potato, 1, 0))
-    CookingEquipment.addPanFood(new ItemStack(Items.rotten_flesh, 1, 0), new ItemStack(Items.leather, 1, 0))
-    CookingEquipment.addSpitFood(new ItemStack(Items.chicken, 1, 0), new ItemStack(Items.cooked_chicken, 1, 0))
-    CookingEquipment.addSpitFood(new ItemStack(Items.fish, 1, 0), new ItemStack(Items.cooked_fished, 1, 0))
-    CookingEquipment.addSpitFood(new ItemStack(Items.fish, 1, 1), new ItemStack(Items.cooked_fished, 1, 1))
+    CookingEquipment.addGrillFood(new ItemStack(Items.fish, 1, 0), new ItemStack(Items.cooked_fished, 1, 0), false)
+    CookingEquipment.addGrillFood(new ItemStack(Items.fish, 1, 1), new ItemStack(Items.cooked_fished, 1, 1), false)
+    CookingEquipment.addGrillFood(new ItemStack(Items.beef, 1, 0), new ItemStack(Items.cooked_beef, 1, 0), false)
+    CookingEquipment.addGrillFood(new ItemStack(Items.porkchop, 1, 0), new ItemStack(Items.cooked_porkchop, 1, 0), false)
+    CookingEquipment.addGrillFood(new ItemStack(Objs.venisonRaw, 1, 0), new ItemStack(Objs.venisonCooked, 1, 0), false)
+    CookingEquipment.addPanFood(new ItemStack(Items.potato, 1, 0), new ItemStack(Items.baked_potato, 1, 0), false)
+    CookingEquipment.addPanFood(new ItemStack(Items.rotten_flesh, 1, 0), new ItemStack(Items.leather, 1, 0), false)
+    CookingEquipment.addSpitFood(new ItemStack(Items.chicken, 1, 0), new ItemStack(Items.cooked_chicken, 1, 0), false)
+    CookingEquipment.addSpitFood(new ItemStack(Items.fish, 1, 0), new ItemStack(Items.cooked_fished, 1, 0), false)
+    CookingEquipment.addSpitFood(new ItemStack(Items.fish, 1, 1), new ItemStack(Items.cooked_fished, 1, 1), false)
   }
   def preInit(event: FMLPreInitializationEvent) {
     Objs.modelLoader = new TechneModelLoader()
@@ -227,7 +234,7 @@ object MiscRegistry {
     Objs.logM = Objs.modelLoader.loadInstance(new ResourceLocation(ModelInfo.LOG)).asInstanceOf[TechneModel]
     Objs.tentM = Objs.modelLoaderC.loadInstance(128, 64, new ResourceLocation(ModelInfo.TENT)).asInstanceOf[CustomModel]
     Objs.trapOpen = Objs.modelLoaderC.loadInstance(32, 16, new ResourceLocation(ModelInfo.TRAP_OPEN)).asInstanceOf[CustomModel]
-	Objs.trapClose = Objs.modelLoaderC.loadInstance(32, 16,  new ResourceLocation(ModelInfo.TRAP_CLOSED)).asInstanceOf[CustomModel]
+    Objs.trapClose = Objs.modelLoaderC.loadInstance(32, 16, new ResourceLocation(ModelInfo.TRAP_CLOSED)).asInstanceOf[CustomModel]
 
     MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(Objs.campfire), new CampfireItemRender())
     ClientRegistry.bindTileEntitySpecialRenderer(classOf[TileEntityCampfire], new CampfireRender())
@@ -242,6 +249,7 @@ object MiscRegistry {
     ClientRegistry.bindTileEntitySpecialRenderer(classOf[TileEntityTrap], new TrapRender())
     RenderingRegistry.registerEntityRenderingHandler(classOf[Bear], new BearRenderer(new ModelBear()))
     RenderingRegistry.registerEntityRenderingHandler(classOf[Fox], new FoxRenderer(new ModelFox()))
+    RenderingRegistry.registerEntityRenderingHandler(classOf[Camper], new CamperRender(new ModelBiped()))
   }
   def initServer {
     CampingMod.proxy.registerGui(GuiInfo.GUI_CAMPFIRE_COOK, classOf[ContainerCampfireCook], null)
@@ -285,7 +293,7 @@ object ObjRegistry {
     Objs.furChest = new ArmorFur(classOf[ArmorFurChestInfo], 1)
     Objs.furHead = new ArmorFur(classOf[ArmorFurHelmInfo], 0)
     Objs.trap = new Trap(classOf[TrapInfo])
-    
+
     Objs.grill = new Grill(new ItemStack(Objs.kit, 1, KitInfo.KIT_GRILL))
     Objs.spit = new Spit(new ItemStack(Objs.kit, 1, KitInfo.KIT_SPIT))
     Objs.pan = new Pan(new ItemStack(Objs.kit, 1, KitInfo.KIT_PAN))
@@ -299,6 +307,7 @@ object ObjRegistry {
     val dye = Items.dye.getMetaCycle(16)
     val parts = Objs.parts.getMetaCycle(Objs.parts.asInstanceOf[ItemMain].metadata.length)
     val lantern = Objs.lantern.getMetaCycle(2)
+    val partsAnimal = Objs.animalParts.getMetaCycle(Objs.animalParts.asInstanceOf[ItemMain].metadata.length)
 
     GameRegistry.addRecipe(Objs.backpack.toStack(1), "000", "0 0", "000", '0': Character, parts(PartInfo.CANVAS))
     GameRegistry.addRecipe(Objs.knife.toStack(1), "010", "010", "010", '0': Character, dye(1), '1': Character, Items.iron_ingot)
@@ -321,23 +330,37 @@ object ObjRegistry {
     GameRegistry.addRecipe(Objs.sleepingBag.toStack(1), "  1", "000", '0': Character, new ItemStack(Blocks.wool, 1, 0).getWildValue, '1': Character, new ItemStack(Objs.knife).getWildValue)
     GameRegistry.addShapelessRecipe(parts(PartInfo.CANVAS).toStack(1), Objs.hempItem, new ItemStack(Objs.knife).getWildValue)
     GameRegistry.addShapelessRecipe(Objs.tent.toStack(1), Objs.tent, new ItemStack(Items.dye).getWildValue)
-    
+    GameRegistry.addSmelting(Objs.venisonRaw.toStack(1), Objs.venisonCooked.toStack(1), 3)
+    GameRegistry.addRecipe(Objs.trap.toStack(1), " 1 ", "101", " 1 ", '0': Character, Items.iron_ingot, '1': Character, parts(PartInfo.STICK_IRON))
+    GameRegistry.addRecipe(Objs.furHead.toStack(1), "000", "010", '0': Character, partsAnimal(AnimalPartInfo.FUR_WHITE), '1': Character, Items.leather_helmet)
+    GameRegistry.addRecipe(Objs.furChest.toStack(1), "0 0", "010", "222", '0': Character, partsAnimal(AnimalPartInfo.FUR_WHITE), '1': Character, Items.leather_chestplate, '2': Character, partsAnimal(AnimalPartInfo.FUR_BROWN))
+    GameRegistry.addRecipe(Objs.furLeg.toStack(1), "000", "010", "0 0", '0': Character, partsAnimal(AnimalPartInfo.FUR_BROWN), '1': Character, Items.leather_leggings)
+    GameRegistry.addRecipe(Objs.furBoot.toStack(1), "0 0", "010", '0': Character, partsAnimal(AnimalPartInfo.FUR_BROWN), '1': Character, Items.leather_boots)
+
     registerEntity(classOf[Bear].asInstanceOf[Class[Entity]], "bearGrizzly", EntityInfo.BEAR, true, 0x583B2D, 0xE2B572)
     registerEntity(classOf[Fox].asInstanceOf[Class[Entity]], "foxArctic", EntityInfo.FOX, true, 0xE0EEEE, 0x362819)
-    
+    registerEntity(classOf[Camper].asInstanceOf[Class[Entity]], "camper", EntityInfo.CAMPER, true, 0x747B51, 0x70471B)
+
     Objs.bleedingSource = new DamageSourceBleeding(DamageInfo.BLEEDING)
     Objs.bleeding = new PotionBleeding(PotionInfo.BLEEDING)
   }
   def postInit {
     val forests = BiomeDictionary.getBiomesForType(Type.FOREST)
     val rivers = BiomeDictionary.getBiomesForType(Type.RIVER)
-	val snow = BiomeDictionary.getBiomesForType(Type.SNOWY)
-	
-	if(Objs.config.useBears){
-	  for (biome <- forests) EntityRegistry.addSpawn(classOf[Bear], 5, 2, 4, EnumCreatureType.creature, biome)
-	  for (biome <- rivers) EntityRegistry.addSpawn(classOf[Bear], 5, 2, 4, EnumCreatureType.creature, biome)
-	}
-    if(Objs.config.useFoxes) for (biome <- snow) EntityRegistry.addSpawn(classOf[Fox], 5, 2, 4, EnumCreatureType.creature, biome) 
+    val snow = BiomeDictionary.getBiomesForType(Type.SNOWY)
+
+    if (Objs.config.useBears) {
+      for (biome <- forests) EntityRegistry.addSpawn(classOf[Bear], 5, 2, 4, EnumCreatureType.creature, biome)
+      for (biome <- rivers) EntityRegistry.addSpawn(classOf[Bear], 5, 2, 4, EnumCreatureType.creature, biome)
+    }
+    if (Objs.config.useFoxes) for (biome <- snow) EntityRegistry.addSpawn(classOf[Fox], 5, 2, 4, EnumCreatureType.creature, biome)
+
+    FurnaceRecipes.smelting.getSmeltingList.asInstanceOf[java.util.Map[ItemStack, ItemStack]].foreach(stacks => {
+      if (stacks._1.getItem.isInstanceOf[ItemFood] && stacks._1.getItem.getUnlocalizedName != null) {
+        if (stacks._1.getItem.asInstanceOf[ItemFood].isWolfsFavoriteMeat()) CookingEquipment.addGrillFood(stacks._1, stacks._2, true)
+        else CookingEquipment.addPanFood(stacks._1, stacks._2, true)
+      }
+    })
   }
   def register(block: Block, name: String) = GameRegistry.registerBlock(block, name)
   def register(item: Item, name: String) = GameRegistry.registerItem(item, name)

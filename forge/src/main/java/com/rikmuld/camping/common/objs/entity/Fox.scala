@@ -25,6 +25,7 @@ import com.rikmuld.camping.core.AnimalPartInfo
 import com.rikmuld.camping.core.Objs
 import net.minecraft.entity.ai.EntityAITempt
 import net.minecraft.entity.EnumCreatureAttribute
+import com.rikmuld.camping.core.ModInfo
 
 class Fox(world: World) extends EntityAnimal(world) {
 
@@ -56,8 +57,8 @@ class Fox(world: World) extends EntityAnimal(world) {
   override def isAIEnabled(): Boolean = true
   override protected def applyEntityAttributes() {
     super.applyEntityAttributes();
-    this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(10.0D);
-    this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.30000001192092896D);
+    this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(10.0D)
+    this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.30000001192092896D)
   }
   override def attackEntityAsMob(entity: Entity): Boolean = entity.attackEntityFrom(DamageSource.causeMobDamage(this), 3.0F)
   override protected def dropFewItems(playerAttack: Boolean, loot: Int) {
@@ -77,4 +78,7 @@ class Fox(world: World) extends EntityAnimal(world) {
   }
   override def createChild(entity: EntityAgeable): EntityAgeable = new Fox(this.worldObj)
   override def isBreedingItem(stack: ItemStack): Boolean = stack.getItem() == Items.chicken
+  override def getLivingSound:String = ModInfo.MOD_ID+":mob.fox.say"
+  override def getHurtSound:String = ModInfo.MOD_ID+":mob.fox.dead"
+  override def getDeathSound:String = ModInfo.MOD_ID+":mob.fox.dead"
 }

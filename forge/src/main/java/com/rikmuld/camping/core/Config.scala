@@ -31,6 +31,8 @@ class Config(val file: Configuration) {
   var venisonRawHeal = 4
   var useFoxes = true
   var trapPlayer = true
+  var worldGenCampsite = true
+  var campsiteRareness = 5
   
   var elements: java.util.List[IConfigElement[_]] = new ArrayList[IConfigElement[_]];
 
@@ -45,7 +47,7 @@ class Config(val file: Configuration) {
     marshHeal = getVar("Marshmallow Heal Amount", "The amount of lives a marshmallow heals (in half harts).", ConfigInfo.CAT_FOOD, marshHeal).asInstanceOf[Integer]
     hempSpeed = getVar("Hemp Growth Speed", "The growth rate of the hemp plant.", ConfigInfo.CAT_WORLD, hempSpeed).asInstanceOf[Float]
     hasWorldGen = getVar("Enable World generation", "Enable/Disable all of the world generation of this mod.", ConfigInfo.CAT_WORLD, hasWorldGen).asInstanceOf[Boolean]
-    worldGenHemp = getVar("Enable Hemp generation", "Enable/Disable the world generation of Hemp plants.", ConfigInfo.CAT_WORLD, worldGenHemp).asInstanceOf[Boolean]
+    worldGenHemp = getVar("Enable Hemp generation", "Enable/Disable the world generation for Hemp plants.", ConfigInfo.CAT_WORLD, worldGenHemp).asInstanceOf[Boolean]
     hempGenMulti = getVar("Hemp Generation Multiplier", "Multiplier for the hemp world generaion.", ConfigInfo.CAT_WORLD, hempGenMulti).asInstanceOf[Integer]
     venisonSaturation = getVar("Venison Saturation Amount", "The amount of saturation a cooked venison gives.", ConfigInfo.CAT_FOOD, venisonSaturation).asInstanceOf[Float]
     venisonHeal = getVar("Venison Heal Amount", "The amount of lives a cooked venison heals (in half harts).", ConfigInfo.CAT_FOOD, venisonHeal).asInstanceOf[Integer]
@@ -54,7 +56,9 @@ class Config(val file: Configuration) {
     useBears = getVar("Spawn Bears", "Spawn Grizzly Bears in forrests", ConfigInfo.CAT_WORLD, useBears).asInstanceOf[Boolean]
     useFoxes = getVar("Spawn Foxes", "Spawn Arctic Foxes in snowy regions", ConfigInfo.CAT_WORLD, useFoxes).asInstanceOf[Boolean]
     trapPlayer = getVar("Trap players in Bear Trap", "Bear traps can trap players.", ConfigInfo.CAT_TOOLS, trapPlayer).asInstanceOf[Boolean]
-
+    worldGenHemp = getVar("Enable Campsite generation", "Enable/Disable the world generation for Campsites.", ConfigInfo.CAT_WORLD, worldGenCampsite).asInstanceOf[Boolean]  
+    campsiteRareness = getVar("Campsite Rareness", "Rareness of the campsite world generation", ConfigInfo.CAT_WORLD, campsiteRareness).asInstanceOf[Integer]
+    
     if (file.hasChanged) file.save
     for (i <- 0 until file.getCategoryNames.size) elements.addAll(new ConfigElement(file.getCategory(file.getCategoryNames().toArray().apply(i).asInstanceOf[String])).getChildElements());
   }

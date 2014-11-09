@@ -30,9 +30,9 @@ import com.rikmuld.camping.CampingMod
 import com.rikmuld.camping.core.GuiInfo
 import com.rikmuld.camping.common.objs.tile.TileEntityTrap
 
-class Trap(infoClass: Class[_]) extends BlockMain(infoClass, Material.iron, false, false) with BlockWithModel with BlockWithInstability{
+class Trap(infoClass: Class[_]) extends BlockMain(infoClass, Material.iron, false, false) with BlockWithModel with BlockWithInstability {
   setBlockBounds(0.21875F, 0, 0.21875F, 0.78125F, 0.1875F, 0.78125F)
-  
+
   override def getIcon(side: Int, metadata: Int): IIcon = Blocks.iron_block.getIcon(0, 0)
   override def createTileEntity(world: World, meta: Int): TileEntity = new TileEntityTrap()
   override def getCollisionBoundingBoxFromPool(world: World, x: Int, y: Int, z: Int): AxisAlignedBB = null

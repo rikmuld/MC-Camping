@@ -105,11 +105,11 @@ class AnimalPartInfo extends ObjInfo {
 }
 
 class VenisonRawInfo extends ObjInfo {
-    override def NAME = "venisonRaw"
+  override def NAME = "venisonRaw"
 }
 
 class VenisonInfo extends ObjInfo {
-    override def NAME = "venisonCooked"
+  override def NAME = "venisonCooked"
 }
 
 object KitInfo {

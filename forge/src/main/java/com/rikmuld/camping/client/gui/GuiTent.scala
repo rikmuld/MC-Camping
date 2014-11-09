@@ -22,11 +22,11 @@ import com.rikmuld.camping.common.inventory.gui.ContainerTentChests
 import com.rikmuld.camping.common.inventory.gui.ContainerTentLanterns
 import java.util.ArrayList
 
-class GuiTent(player:EntityPlayer, tile: IInventory) extends GuiScreen {
+class GuiTent(player: EntityPlayer, tile: IInventory) extends GuiScreen {
   var tent: TileEntityTent = tile.asInstanceOf[TileEntityTent]
   var canClick: Array[Boolean] = Array(false, false, false)
 
-  protected override def actionPerformed(button: GuiButton):Unit = button.id match {
+  protected override def actionPerformed(button: GuiButton): Unit = button.id match {
     case 0 => tent.removeAll()
     case 1 => tent.removeBed()
     case 2 => tent.removeLantern()
@@ -53,10 +53,10 @@ class GuiTent(player:EntityPlayer, tile: IInventory) extends GuiScreen {
     drawCenteredString(fontRendererObj, "Chests: " + tent.chests + "/" + tent.maxChests, (width / 2) - 45, guiTop + 50, 0)
     GL11.glScalef(0.8F, 0.8F, 0.8F)
     drawCenteredString(fontRendererObj, "Manage Inventory", ((width / 2) * 1.25F).toInt, (guiTop * 1.25F).toInt + (142 * 1.25F).toInt, 0)
-    drawCenteredString(fontRendererObj, "Manage Lantern", ((width / 2) * 1.25F).toInt - (80 * 1.25F).toInt,(guiTop * 1.25F).toInt + (142 * 1.25F).toInt, 0)
+    drawCenteredString(fontRendererObj, "Manage Lantern", ((width / 2) * 1.25F).toInt - (80 * 1.25F).toInt, (guiTop * 1.25F).toInt + (142 * 1.25F).toInt, 0)
     drawCenteredString(fontRendererObj, "Manage Sleeping", ((width / 2) * 1.25F).toInt + (80 * 1.25F).toInt, (guiTop * 1.25F).toInt + (142 * 1.25F).toInt, 0)
     GL11.glPopMatrix()
-    if (isPointInRegion(172, 78, 51, 53, mouseX, mouseY, guiLeft, guiTop) && 
+    if (isPointInRegion(172, 78, 51, 53, mouseX, mouseY, guiLeft, guiTop) &&
       (tent.beds > 0)) {
       if (Mouse.isButtonDown(0) && canClick(0)) {
         mc.thePlayer.openGui(CampingMod, GuiInfo.GUI_TENT_SLEEP, tent.getWorldObj(), tent.xCoord, tent.yCoord, tent.zCoord)
@@ -65,7 +65,7 @@ class GuiTent(player:EntityPlayer, tile: IInventory) extends GuiScreen {
     } else {
       canClick(0) = false
     }
-    if (isPointInRegion(102, 78, 51, 53, mouseX, mouseY, guiLeft, guiTop) && 
+    if (isPointInRegion(102, 78, 51, 53, mouseX, mouseY, guiLeft, guiTop) &&
       (tent.chests > 0)) {
       if (Mouse.isButtonDown(0) && canClick(1)) {
         PacketSender.toServer(new OpenGui(GuiInfo.GUI_TENT_CHESTS, tent.xCoord, tent.yCoord, tent.zCoord))
@@ -76,7 +76,7 @@ class GuiTent(player:EntityPlayer, tile: IInventory) extends GuiScreen {
     } else canClick(1) = false
     if (isPointInRegion(32, 78, 51, 53, mouseX, mouseY, guiLeft, guiTop) && (tent.lanterns > 0)) {
       if (Mouse.isButtonDown(0) && canClick(2)) {
-        PacketSender.toServer(new OpenGui(GuiInfo.GUI_TENT_LANTERN, tent.xCoord, tent.yCoord,tent.zCoord))
+        PacketSender.toServer(new OpenGui(GuiInfo.GUI_TENT_LANTERN, tent.xCoord, tent.yCoord, tent.zCoord))
       }
       if (!Mouse.isButtonDown(0)) canClick(2) = true
     } else canClick(2) = false
@@ -101,11 +101,11 @@ class GuiTent(player:EntityPlayer, tile: IInventory) extends GuiScreen {
   }
 }
 
-class GuiTentSleeping(player:EntityPlayer, tile: IInventory) extends GuiScreen {
+class GuiTentSleeping(player: EntityPlayer, tile: IInventory) extends GuiScreen {
   var tent: TileEntityTent = tile.asInstanceOf[TileEntityTent]
   var canClick: Boolean = _
 
-  protected override def actionPerformed(button: GuiButton):Unit = button.id match {
+  protected override def actionPerformed(button: GuiButton): Unit = button.id match {
     case 0 => tent.sleep(mc.thePlayer)
   }
   override def doesGuiPauseGame(): Boolean = false

@@ -37,7 +37,7 @@ class BoundsHelper(infoClass: Class[_]) extends BlockMain(infoClass, Material.cl
     }
     super.breakBlock(world, x, y, z, par5, par6)
   }
-  override def createNewTileEntity(world: World, meta:Int): TileEntity = new TileEntityWithBounds()
+  override def createNewTileEntity(world: World, meta: Int): TileEntity = new TileEntityWithBounds()
   override def getBedDirection(world: IBlockAccess, x: Int, y: Int, z: Int): Int = {
     val tile = world.getTileEntity(x, y, z).asInstanceOf[TileEntityWithBounds]
     world.getTileEntity(tile.baseX, tile.baseY, tile.baseZ).asInstanceOf[TileEntityWithRotation].rotation

@@ -21,7 +21,7 @@ import cpw.mods.fml.relauncher.Side
 
 class Hemp(infoClass: Class[_]) extends BlockMain(infoClass, Material.plants) with IPlantable with BlockWithModel {
   setTickRandomly(true)
-  
+
   override def canPlaceBlockAt(world: World, x: Int, y: Int, z: Int): Boolean = {
     val block = world.getBlock(x, y - 1, z)
     block.canSustainPlant(world, x, y - 1, z, ForgeDirection.UP, this)
@@ -71,29 +71,29 @@ class Hemp(infoClass: Class[_]) extends BlockMain(infoClass, Material.plants) wi
       }
     }
   }
-  def getGrowthRate(world:World, x:Int, y:Int, z:Int):Float = {
-    var water = if(world.getBlock(x+1, y-1, z).getMaterial()==Material.water) 1 else 0
-    water += (if(world.getBlock(x-1, y-1, z).getMaterial()==Material.water) 1 else 0)
-    water += (if(world.getBlock(x, y-1, z+1).getMaterial()==Material.water) 1 else 0)
-    water += (if(world.getBlock(x, y-1, z-1).getMaterial()==Material.water) 1 else 0)
-    var light = Math.max(1, (world.getBlockLightValue(x, y + 1, z)-9)/3f)
-    var ground = if(world.getBlock(x, y-1, z)==Blocks.grass||world.getBlock(x, y-1, z)==Blocks.dirt) 2 else 1 
+  def getGrowthRate(world: World, x: Int, y: Int, z: Int): Float = {
+    var water = if (world.getBlock(x + 1, y - 1, z).getMaterial() == Material.water) 1 else 0
+    water += (if (world.getBlock(x - 1, y - 1, z).getMaterial() == Material.water) 1 else 0)
+    water += (if (world.getBlock(x, y - 1, z + 1).getMaterial() == Material.water) 1 else 0)
+    water += (if (world.getBlock(x, y - 1, z - 1).getMaterial() == Material.water) 1 else 0)
+    var light = Math.max(1, (world.getBlockLightValue(x, y + 1, z) - 9) / 3f)
+    var ground = if (world.getBlock(x, y - 1, z) == Blocks.grass || world.getBlock(x, y - 1, z) == Blocks.dirt) 2 else 1
     ground * water * light * Objs.config.hempSpeed;
   }
-  override def getDrops(world:World, x:Int, y:Int, z:Int, meta:Int, fortune:Int):ArrayList[ItemStack] = {
-	val retVal = super.getDrops(world, x, y, z, meta, fortune)
-	if(meta>3)retVal else new ArrayList[ItemStack];
+  override def getDrops(world: World, x: Int, y: Int, z: Int, meta: Int, fortune: Int): ArrayList[ItemStack] = {
+    val retVal = super.getDrops(world, x, y, z, meta, fortune)
+    if (meta > 3) retVal else new ArrayList[ItemStack];
   }
-  def grow(world:World, x:Int, y:Int, z:Int):Boolean = {
+  def grow(world: World, x: Int, y: Int, z: Int): Boolean = {
     var grow = 0
-    if(world.getBlockMetadata(x, y, z)<3){
-      grow = new Random().nextInt(3-world.getBlockMetadata(x, y, z))+1
-      world.setBlockMetadataWithNotify(x, y, z, world.getBlockMetadata(x, y, z)+grow, 2)
+    if (world.getBlockMetadata(x, y, z) < 3) {
+      grow = new Random().nextInt(3 - world.getBlockMetadata(x, y, z)) + 1
+      world.setBlockMetadataWithNotify(x, y, z, world.getBlockMetadata(x, y, z) + grow, 2)
       true
-    } else if(world.getBlockMetadata(x, y, z)==3){
-      if(new Random().nextInt(3)==0){
+    } else if (world.getBlockMetadata(x, y, z) == 3) {
+      if (new Random().nextInt(3) == 0) {
         world.setBlock(x, y + 1, z, this, 5, 2)
-        world.setBlockMetadataWithNotify(x, y, z, 4, 2) 
+        world.setBlockMetadataWithNotify(x, y, z, 4, 2)
       }
       true
     } else false

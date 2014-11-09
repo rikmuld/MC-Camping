@@ -28,11 +28,11 @@ class Bounds(var xMin: Float, var yMin: Float, var zMin: Float, var xMax: Float,
     tag.setFloat("yMax", yMax)
     tag.setFloat("zMax", zMax)
   }
-  override def toString() = super.toString+":"+xMin+":"+yMin+":"+zMin+":"+xMax+":"+yMax+":"+zMax;
+  override def toString() = super.toString + ":" + xMin + ":" + yMin + ":" + zMin + ":" + xMax + ":" + yMax + ":" + zMax;
 }
 
 object BoundsStructure {
-  def regsisterStructure(xCoords: Array[Int], yCoords: Array[Int], zCoords: Array[Int], rotation: Boolean):Array[BoundsStructure] = {
+  def regsisterStructure(xCoords: Array[Int], yCoords: Array[Int], zCoords: Array[Int], rotation: Boolean): Array[BoundsStructure] = {
     if (!rotation) Array(new BoundsStructure(Array(xCoords, yCoords, zCoords)))
     else {
       val structure = Array.ofDim[BoundsStructure](4)

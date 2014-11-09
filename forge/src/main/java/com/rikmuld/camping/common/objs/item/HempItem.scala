@@ -8,22 +8,22 @@ import net.minecraft.init.Blocks
 import net.minecraft.item.ItemStack
 import net.minecraft.world.World
 
-class HempItem(block:Block, infoClass: Class[_]) extends ItemMain(infoClass) {
+class HempItem(block: Block, infoClass: Class[_]) extends ItemMain(infoClass) {
   override def onItemUse(stack: ItemStack, player: EntityPlayer, world: World, xx: Int, yy: Int, zz: Int, sideside: Int, partClickX: Float, partClickY: Float, partClickZ: Float): Boolean = {
-   var x = xx
-   var y = yy
-   var z = zz
-   var side = sideside
-   
-   val block = world.getBlock(x, y, z)
+    var x = xx
+    var y = yy
+    var z = zz
+    var side = sideside
+
+    val block = world.getBlock(x, y, z)
     if (block == Blocks.snow_layer && (world.getBlockMetadata(x, y, z) & 7) < 1) side = 1
     else if (block != Blocks.vine && block != Blocks.tallgrass && block != Blocks.deadbush && !block.isReplaceable(world, x, y, y)) {
-      if (side == 0) y-=1
-      if (side == 1) y+=1      
-      if (side == 2) z-=1      
-      if (side == 3) z+=1      
-      if (side == 4) x-=1      
-      if (side == 5) x+=1
+      if (side == 0) y -= 1
+      if (side == 1) y += 1
+      if (side == 2) z -= 1
+      if (side == 3) z += 1
+      if (side == 4) x -= 1
+      if (side == 5) x += 1
     }
     if (stack.stackSize == 0) false
     else if (!player.canPlayerEdit(x, y, z, side, stack)) false

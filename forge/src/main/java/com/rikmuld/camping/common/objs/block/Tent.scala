@@ -74,7 +74,7 @@ class Tent(infoClass: Class[_]) extends BlockMain(infoClass, Material.cloth, cla
     else if (facing == 3) direction = ForgeDirection.EAST.ordinal() - 2
     ((block == null) || block.isReplaceable(world, x, y, z)) && Objs.tentStructure(direction).canBePlaced(world, new BoundsTracker(x, y, z, TileEntityTent.bounds(direction)))
   }
-  override def createNewTileEntity(world: World, meta:Int): TileEntityMain = new TileEntityTent()
+  override def createNewTileEntity(world: World, meta: Int): TileEntityMain = new TileEntityTent()
   protected override def dropBlockAsItem(world: World, x: Int, y: Int, z: Int, stack: ItemStack) {
     if (stack != null) {
       stack.setTagCompound(new NBTTagCompound())
@@ -84,7 +84,7 @@ class Tent(infoClass: Class[_]) extends BlockMain(infoClass, Material.cloth, cla
   }
   override def dropIfCantStay(world: World, x: Int, y: Int, z: Int) {
     val tile = world.getTileEntity(x, y, z).asInstanceOf[TileEntityTent]
-    if ((tile.structures != null) && 
+    if ((tile.structures != null) &&
       !tile.structures(tile.rotation).hadSolidUnderGround(world, tile.tracker(tile.rotation))) {
       breakBlock(world, x, y, z, this, 0)
     }
@@ -131,5 +131,5 @@ class TentItem(block: Block) extends ItemBlockMain(block, classOf[TentInfo].asIn
   override def onItemUse(stack: ItemStack, player: EntityPlayer, world: World, x: Int, y: Int, z: Int, side: Int, xPartHit: Float, yPartHit: Float, zPartHit: Float): Boolean = {
     Objs.tent.asInstanceOf[Tent].rotationYaw = player.rotationYaw
     super.onItemUse(stack, player, world, x, y, z, side, xPartHit, yPartHit, zPartHit)
-  } 
+  }
 }

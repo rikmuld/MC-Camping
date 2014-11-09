@@ -5,111 +5,97 @@ import net.minecraft.client.model.ModelRenderer
 import net.minecraft.util.MathHelper
 import org.lwjgl.opengl.GL11
 import net.minecraft.entity.Entity
+import net.minecraft.client.model.ModelWolf
+import net.minecraft.entity.EntityLivingBase
+import net.minecraft.entity.passive.EntityWolf
 
 class ModelFox extends ModelBase {
-  textureWidth = 64
-  textureHeight = 32
+    val f = 0.0F
+    val f1 = 13.5F
+    
+    val wolfHeadMain = new ModelRenderer(this, 0, 0)
+    val wolfBody = new ModelRenderer(this, 18, 14)
+    val wolfLeg1 = new ModelRenderer(this, 0, 18)
+    val wolfLeg2 = new ModelRenderer(this, 0, 18)
+    val wolfLeg3 = new ModelRenderer(this, 0, 18)
+    val wolfLeg4 = new ModelRenderer(this, 0, 18)
+    val wolfTail = new ModelRenderer(this, 9, 18)
+    val wolfMane = new ModelRenderer(this, 21, 0)
+  
+    this.wolfHeadMain.addBox(-3.0F, -3.0F, -2.0F, 6, 6, 4, f)
+    this.wolfHeadMain.setRotationPoint(-1.0F, f1, -7.0F)
+    this.wolfBody.addBox(-4.0F, -2.0F, -3.0F, 6, 9, 6, f)
+    this.wolfBody.setRotationPoint(0.0F, 14.0F, 2.0F)
+    this.wolfMane.addBox(-4.0F, -3.0F, -3.0F, 8, 6, 7, f)
+    this.wolfMane.setRotationPoint(-1.0F, 14.0F, 2.0F)
+    this.wolfLeg1.addBox(-1.0F, 0.0F, -1.0F, 2, 8, 2, f)
+    this.wolfLeg1.setRotationPoint(-2.5F, 16.0F, 7.0F)
+    this.wolfLeg2.addBox(-1.0F, 0.0F, -1.0F, 2, 8, 2, f)
+    this.wolfLeg2.setRotationPoint(0.5F, 16.0F, 7.0F)
+    this.wolfLeg3.addBox(-1.0F, 0.0F, -1.0F, 2, 8, 2, f)
+    this.wolfLeg3.setRotationPoint(-2.5F, 16.0F, -4.0F)
+    this.wolfLeg4.addBox(-1.0F, 0.0F, -1.0F, 2, 8, 2, f)
+    this.wolfLeg4.setRotationPoint(0.5F, 16.0F, -4.0F)
+    this.wolfTail.addBox(-1.0F, 0.0F, -1.0F, 2, 8, 2, f)
+    this.wolfTail.setRotationPoint(-1.0F, 12.0F, 8.0F)
+    this.wolfHeadMain.setTextureOffset(16, 14).addBox(-3.0F, -5.0F, 0.0F, 2, 2, 1, f)
+    this.wolfHeadMain.setTextureOffset(16, 14).addBox(1.0F, -5.0F, 0.0F, 2, 2, 1, f)
+    this.wolfHeadMain.setTextureOffset(0, 10).addBox(-1.5F, 0.0F, -5.0F, 3, 3, 4, f)
+    
+    override def render(entity:Entity, f2:Float, f3:Float, f4:Float, f5:Float, f6:Float, f7:Float) {
+        super.render(entity, f2, f3, f4, f5, f6, f7)
+        this.setRotationAngles(f2, f3, f4, f5, f6, f7, entity)
 
-  var leg1 = new ModelRenderer(this, 4, 27);
-  leg1.addBox(0F, 0F, 0F, 1, 4, 1);
-  leg1.setRotationPoint(-1.4F, 20F, -4.5F);
-  leg1.setTextureSize(64, 32);
-  leg1.mirror = true;
-  setRotation(leg1, 0F, 0F, 0F);
-  var leg2 = new ModelRenderer(this, 8, 27);
-  leg2.addBox(0F, 0F, 0F, 1, 4, 1);
-  leg2.setRotationPoint(0.4F, 20F, -4.5F);
-  leg2.setTextureSize(64, 32);
-  leg2.mirror = true;
-  setRotation(leg2, 0F, 0F, 0F);
-  var tail = new ModelRenderer(this, 30, 0);
-  tail.addBox(0F, 0F, 0F, 1, 1, 6);
-  tail.setRotationPoint(-0.5F, 18F, 4.5F);
-  tail.setTextureSize(64, 32);
-  tail.mirror = true;
-  setRotation(tail, -0.5576851F, 0F, 0F);
-  var leg3 = new ModelRenderer(this, 0, 27);
-  leg3.addBox(0F, 0F, 0F, 1, 4, 1);
-  leg3.setRotationPoint(-1.4F, 20F, 4.5F);
-  leg3.setTextureSize(64, 32);
-  leg3.mirror = true;
-  setRotation(leg3, 0F, 0F, 0F);
-  var ear1 = new ModelRenderer(this, 12, 25);
-  ear1.addBox(0F, 0F, 0F, 1, 1, 1);
-  ear1.setRotationPoint(-1.2F, 16.6F, -7F);
-  ear1.setTextureSize(64, 32);
-  ear1.mirror = true;
-  setRotation(ear1, 0F, 0F, 0F);
-  var leg4 = new ModelRenderer(this, 12, 27);
-  leg4.addBox(0F, 0F, 0F, 1, 4, 1);
-  leg4.setRotationPoint(0.4F, 20F, 4.5F);
-  leg4.setTextureSize(64, 32);
-  leg4.mirror = true;
-  setRotation(leg4, 0F, 0F, 0F);
-  var body = new ModelRenderer(this, 0, 0);
-  body.addBox(0F, 0F, 0F, 3, 3, 12);
-  body.setRotationPoint(-1.5F, 18F, -6F);
-  body.setTextureSize(64, 32);
-  body.mirror = true;
-  setRotation(body, 0F, 0F, 0F);
-  var head = new ModelRenderer(this, 0, 21);
-  head.addBox(0F, 0F, 0F, 3, 3, 3);
-  head.setRotationPoint(-1.5F, 17F, -8.2F);
-  head.setTextureSize(64, 32);
-  head.mirror = true;
-  setRotation(head, 0F, 0F, 0F);
-  var eye = new ModelRenderer(this, 0, 20);
-  eye.addBox(0F, 0F, 0F, 1, 1, 0);
-  eye.setRotationPoint(-1.2F, 17.7F, -8.2F);
-  eye.setTextureSize(64, 32);
-  eye.mirror = true;
-  setRotation(eye, 0F, 0F, 0F);
-  var ear2 = new ModelRenderer(this, 12, 23);
-  ear2.addBox(0F, 0F, 0F, 1, 1, 1);
-  ear2.setRotationPoint(0.3F, 16.6F, -7F);
-  ear2.setTextureSize(64, 32);
-  ear2.mirror = true;
-  setRotation(ear2, 0F, 0F, 0F);
-  var nouse = new ModelRenderer(this, 12, 20);
-  nouse.addBox(0F, 0F, 0F, 1, 1, 2);
-  nouse.setRotationPoint(-0.5F, 18.5F, -9.5F);
-  nouse.setTextureSize(64, 32);
-  nouse.mirror = true;
-  setRotation(nouse, 0F, 0F, 0F);
-  var eye2 = new ModelRenderer(this, 0, 20);
-  eye2.addBox(0F, 0F, 0F, 1, 1, 0);
-  eye2.setRotationPoint(0.2F, 17.7F, -8.2F);
-  eye2.setTextureSize(64, 32);
-  eye2.mirror = true;
-  setRotation(eye2, 0F, 0F, 0F);
-
-  override def render(entity: Entity, f: Float, f1: Float, f2: Float, f3: Float, f4: Float, f5: Float) {
-    super.render(entity, f, f1, f2, f3, f4, f5)
-    setRotationAngles(entity, f, f1, f2, f3, f4, f5)
-    if (isChild) GL11.glScalef(0.5F, 0.5F, 0.5F)
-    leg1.render(f5)
-    leg3.render(f5)
-    leg2.render(f5)
-    leg4.render(f5)
-    eye.render(f5)
-    body.render(f5)
-    nouse.render(f5)
-    ear2.render(f5)
-    ear1.render(f5)
-    eye2.render(f5)
-    head.render(f5)
-    tail.render(f5)
-  }
-  private def setRotation(model: ModelRenderer, x: Float, y: Float, z: Float) {
-    model.rotateAngleX = x
-    model.rotateAngleY = y
-    model.rotateAngleZ = z
-  }
-  def setRotationAngles(entity: Entity, f: Float, f1: Float, f2: Float, f3: Float, f4: Float, f5: Float) {
-    super.setRotationAngles(f, f1, f2, f3, f4, f5, entity)
-    leg1.rotateAngleX = MathHelper.cos(f * 0.6662F) * 1.4F * f1
-    leg2.rotateAngleX = MathHelper.cos((f * 0.6662F) + Math.PI.toFloat) * 1.4F * f1
-    leg3.rotateAngleX = MathHelper.cos((f * 0.6662F) + Math.PI.toFloat) * 1.4F * f1
-    leg4.rotateAngleX = MathHelper.cos(f * 0.6662F) * 1.4F * f1
-  }
+        GL11.glPushMatrix
+        GL11.glTranslatef(0, 0.6f, 0)
+        GL11.glScalef(0.6f, 0.6f, 0.9f)
+        if (this.isChild){
+            val f6 = 2.0F
+            GL11.glTranslatef(0, -1.2f, 0)
+            GL11.glPushMatrix
+            GL11.glScalef(1.0F / f6, 1.0F / f6, 1.0F / f6)
+            GL11.glTranslatef(0.0F, 24.0F * f7, 0.0F)
+            this.wolfHeadMain.renderWithRotation(f7)
+            this.wolfBody.render(f7)
+            this.wolfLeg1.render(f7)
+            this.wolfLeg2.render(f7)
+            this.wolfLeg3.render(f7)
+            this.wolfLeg4.render(f7)
+            this.wolfTail.renderWithRotation(f7)
+            this.wolfMane.render(f7)
+            GL11.glPopMatrix
+        } else {
+            this.wolfHeadMain.renderWithRotation(f7)
+            this.wolfBody.render(f7)
+            this.wolfLeg1.render(f7)
+            this.wolfLeg2.render(f7)
+            this.wolfLeg3.render(f7)
+            this.wolfLeg4.render(f7)
+            this.wolfTail.renderWithRotation(f7)
+            this.wolfMane.render(f7)
+        }
+        GL11.glPopMatrix
+    }
+    override def setLivingAnimations(entity:EntityLivingBase, f2:Float, f3:Float, f4:Float){
+        this.wolfTail.rotateAngleY = MathHelper.cos(f2 * 0.6662F) * 1.4F * f3
+        this.wolfBody.setRotationPoint(0.0F, 14.0F, 2.0F)
+        this.wolfBody.rotateAngleX = (Math.PI.asInstanceOf[Float] / 2F)
+        this.wolfMane.setRotationPoint(-1.0F, 14.0F, -3.0F)
+        this.wolfMane.rotateAngleX = this.wolfBody.rotateAngleX
+        this.wolfTail.setRotationPoint(-1.0F, 12.0F, 8.0F)
+        this.wolfLeg1.setRotationPoint(-2.5F, 16.0F, 7.0F)
+        this.wolfLeg2.setRotationPoint(0.5F, 16.0F, 7.0F)
+        this.wolfLeg3.setRotationPoint(-2.5F, 16.0F, -4.0F)
+        this.wolfLeg4.setRotationPoint(0.5F, 16.0F, -4.0F)
+        this.wolfLeg1.rotateAngleX = MathHelper.cos(f2 * 0.6662F) * 1.4F * f3
+        this.wolfLeg2.rotateAngleX = MathHelper.cos(f2 * 0.6662F + Math.PI.asInstanceOf[Float]) * 1.4F * f3
+        this.wolfLeg3.rotateAngleX = MathHelper.cos(f2 * 0.6662F + Math.PI.asInstanceOf[Float]) * 1.4F * f3
+        this.wolfLeg4.rotateAngleX = MathHelper.cos(f2 * 0.6662F) * 1.4F * f3
+    }
+    override def setRotationAngles(f1:Float, f2:Float, f3:Float, f4:Float, f5:Float, f6:Float, entity:Entity){
+        super.setRotationAngles(f1, f2, f3, f4, f5, f6, entity)
+        this.wolfHeadMain.rotateAngleX = f5 / (180F / Math.PI.asInstanceOf[Float])
+        this.wolfHeadMain.rotateAngleY = f4 / (180F / Math.PI.asInstanceOf[Float])
+        this.wolfTail.rotateAngleX = (Math.PI/3f).asInstanceOf[Float]
+    }
 }

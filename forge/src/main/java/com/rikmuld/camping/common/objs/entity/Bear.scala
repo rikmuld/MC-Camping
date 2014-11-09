@@ -30,13 +30,14 @@ import net.minecraft.init.Items
 import com.rikmuld.camping.core.Objs
 import com.rikmuld.camping.core.AnimalPartInfo
 import net.minecraft.entity.player.EntityPlayerMP
+import com.rikmuld.camping.core.ModInfo
 
 class Bear(world: World) extends EntityAnimal(world) {
   setSize(1F, 1.125F)
   tasks.addTask(1, new EntityAIAttackOnCollide(this, classOf[EntityPlayer], 1.0D, false));
   tasks.addTask(1, new EntityAIAttackOnCollide(this, classOf[EntityZombie], 1.0D, false))
   tasks.addTask(1, new EntityAIAttackOnCollide(this, classOf[EntityVillager], 1.0D, false))
-  //tasks.addTask(1, new EntityAIAttackOnCollide(this, classOf[EntityCamper], 1.0D, false))
+  tasks.addTask(1, new EntityAIAttackOnCollide(this, classOf[Camper], 1.0D, false))
   tasks.addTask(2, new EntityAIWander(this, 1.0D))
   tasks.addTask(3, new EntityAIWatchClosest(this, classOf[EntityPlayer], 8.0F))
   tasks.addTask(4, new EntityAILookIdle(this))
@@ -47,7 +48,7 @@ class Bear(world: World) extends EntityAnimal(world) {
   targetTasks.addTask(1, new EntityAINearestAttackableTarget(this, classOf[EntityPlayer], 0, true))
   targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, classOf[EntityZombie], 0, false))
   targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, classOf[EntityVillager], 0, false))
-  //targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, classOf[EntityCamper], 0, false))
+  targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, classOf[Camper], 0, false))
 
   protected override def applyEntityAttributes() {
     super.applyEntityAttributes()
@@ -62,14 +63,14 @@ class Bear(world: World) extends EntityAnimal(world) {
     var drops: Int = 0
     while (drops < (dropChance * 2)) {
       entityDropItem(new ItemStack(Objs.animalParts, 1, AnimalPartInfo.FUR_BROWN), 0)
-      drops+=1
+      drops += 1
     }
     dropChance = rand.nextInt(5) + 1 + rand.nextInt(1 + par2)
     drops = 0
     while (drops < dropChance) {
       if (isBurning) entityDropItem(new ItemStack(Objs.venisonCooked), 0)
       else entityDropItem(new ItemStack(Objs.venisonRaw), 0)
-      drops+=1
+      drops += 1
     }
   }
   override def getCanSpawnHere(): Boolean = (worldObj.difficultySetting.getDifficultyId() > 0) && super.getCanSpawnHere
@@ -78,7 +79,7 @@ class Bear(world: World) extends EntityAnimal(world) {
   override def isAIEnabled(): Boolean = true
   override def isBreedingItem(stack: ItemStack): Boolean = stack.getItem() == Items.fish
   override def onUpdate() {
-    super.onUpdate()    
+    super.onUpdate()
     if (!worldObj.isRemote && (worldObj.difficultySetting.getDifficultyId() == 0)) setDead()
   }
   override def attackEntityAsMob(entity: Entity): Boolean = {
@@ -108,7 +109,7 @@ class Bear(world: World) extends EntityAnimal(world) {
       this.attackEntityAsMob(entity)
     }
   }
-  //override def getLivingSound:String = "mob.bear.say"
-  //override def getHurtSound:String = "mob.bear.say"
-  //override def getDeathSound:String = "mob.bear.dead"
+  override def getLivingSound:String = ModInfo.MOD_ID+":mob.bear.say"
+  override def getHurtSound:String = ModInfo.MOD_ID+":mob.bear.say"
+  override def getDeathSound:String = ModInfo.MOD_ID+":mob.bear.dead"
 }

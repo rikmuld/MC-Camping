@@ -100,7 +100,7 @@ class ItemFoodMain(infoClass: Class[_], icon: Boolean, heal: Int, saturation: Fl
   }
 }
 
-class ItemArmorMain(infoClass: Class[_], material:ArmorMaterial, armorType:Int, icon: Boolean) extends ItemArmor(material, 0, armorType) {
+class ItemArmorMain(infoClass: Class[_], material: ArmorMaterial, armorType: Int, icon: Boolean) extends ItemArmor(material, 0, armorType) {
   val info = infoClass.asInstanceOf[Class[ObjInfo]].newInstance
 
   var iconBuffer: Array[IIcon] = null
@@ -110,8 +110,8 @@ class ItemArmorMain(infoClass: Class[_], material:ArmorMaterial, armorType:Int, 
   setUnlocalizedName(info.NAME)
   setCreativeTab(Objs.tab)
 
-  def this(infoClass: Class[_], material:ArmorMaterial, armorType:Int) = this(infoClass, material, armorType, true)
+  def this(infoClass: Class[_], material: ArmorMaterial, armorType: Int) = this(infoClass, material, armorType, true)
   override def registerIcons(register: IIconRegister) {
-    if(icon)itemIcon = register.registerIcon(ModInfo.MOD_ID + ":" + getUnlocalizedName().substring(5))
+    if (icon) itemIcon = register.registerIcon(ModInfo.MOD_ID + ":" + getUnlocalizedName().substring(5))
   }
 }

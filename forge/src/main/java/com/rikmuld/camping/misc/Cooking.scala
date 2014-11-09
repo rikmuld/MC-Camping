@@ -21,6 +21,7 @@ import com.rikmuld.camping.core.Objs
 import com.rikmuld.camping.core.TextureInfo
 import com.rikmuld.camping.core.PartInfo
 import com.rikmuld.camping.client.gui.GuiCampfireCook
+import scala.collection.mutable.ListBuffer
 
 abstract class CookingEquipment(var cookTime: Int, var cookableFoood: HashMap[ItemStack, ItemStack], var maxFood: Int, var itemInfo: ItemStack) {
   var slots: Array[Array[Int]] = Array.ofDim[Int](2, maxFood)
@@ -48,11 +49,12 @@ abstract class CookingEquipment(var cookTime: Int, var cookableFoood: HashMap[It
 }
 
 object CookingEquipment {
-  var grillFood: HashMap[ItemStack, ItemStack] = new HashMap[ItemStack, ItemStack]()
-  var spitFood: HashMap[ItemStack, ItemStack] = new HashMap[ItemStack, ItemStack]()
-  var panFood: HashMap[ItemStack, ItemStack] = new HashMap[ItemStack, ItemStack]()
-  var equipment: HashMap[ItemStack, CookingEquipment] = new HashMap[ItemStack, CookingEquipment]()
-  var equipmentRecipes: HashMap[ArrayList[ItemStack], CookingEquipment] = new HashMap[ArrayList[ItemStack], CookingEquipment]()
+  var registerd = new ListBuffer[ItemStack]
+  var grillFood = new HashMap[ItemStack, ItemStack]
+  var spitFood = new HashMap[ItemStack, ItemStack]
+  var panFood = new HashMap[ItemStack, ItemStack]
+  var equipment = new HashMap[ItemStack, CookingEquipment]
+  var equipmentRecipes = new HashMap[ArrayList[ItemStack], CookingEquipment]
 
   def addCooking(item: ItemStack, cookEquipment: CookingEquipment) = equipment.put(item, cookEquipment)
   def addEquipmentRecipe(equipment: CookingEquipment, items: ItemStack*) {
@@ -60,9 +62,14 @@ object CookingEquipment {
     for (item <- items) key.add(item)
     equipmentRecipes.put(key, equipment)
   }
-  def addGrillFood(stack: ItemStack, item: ItemStack) = grillFood.put(stack, item)
-  def addPanFood(stack: ItemStack, item: ItemStack) = panFood.put(stack, item)
-  def addSpitFood(stack: ItemStack, item: ItemStack) = spitFood.put(stack, item)
+  def addGrillFood(stack: ItemStack, item: ItemStack, check:Boolean) = if(canAdd(stack, check))grillFood.put(stack, item)
+  def addPanFood(stack: ItemStack, item: ItemStack, check:Boolean) = if(canAdd(stack, check))panFood.put(stack, item)
+  def addSpitFood(stack: ItemStack, item: ItemStack, check:Boolean) = if(canAdd(stack, check))spitFood.put(stack, item)
+  def canAdd(item:ItemStack, check:Boolean):Boolean = {
+    if(check&&(registerd contains item))return false
+    registerd += item
+    true
+  }
   def getCooking(item: ItemStack): CookingEquipment = equipment.keySet.find(_.isItemEqual(item)).map(equipment.get(_)).getOrElse(null)
   def getCookingForRecipe(items: ArrayList[ItemStack]): CookingEquipment = {
     var i = 0

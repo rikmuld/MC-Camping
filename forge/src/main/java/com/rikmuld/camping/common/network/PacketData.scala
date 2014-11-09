@@ -141,13 +141,13 @@ class Items(var slot: Int, var x: Int, var y: Int, var z: Int, var stack: ItemSt
   }
 }
 
-class BoundsData(var bounds: Bounds, var x: Int, var y: Int, var z: Int) extends BasicPacketData{
-  var xMin = if(bounds!=null) bounds.xMin else 0
-  var yMin = if(bounds!=null) bounds.yMin else 0
-  var zMin = if(bounds!=null) bounds.zMin else 0
-  var xMax = if(bounds!=null) bounds.xMax else 0
-  var yMax = if(bounds!=null) bounds.yMax else 0
-  var zMax = if(bounds!=null) bounds.zMax else 0
+class BoundsData(var bounds: Bounds, var x: Int, var y: Int, var z: Int) extends BasicPacketData {
+  var xMin = if (bounds != null) bounds.xMin else 0
+  var yMin = if (bounds != null) bounds.yMin else 0
+  var zMin = if (bounds != null) bounds.zMin else 0
+  var xMax = if (bounds != null) bounds.xMax else 0
+  var yMax = if (bounds != null) bounds.yMax else 0
+  var zMax = if (bounds != null) bounds.zMax else 0
 
   def this() = this(null, 0, 0, 0)
   override def getData(stream: PacketBuffer) {
@@ -179,9 +179,9 @@ class BoundsData(var bounds: Bounds, var x: Int, var y: Int, var z: Int) extends
   }
 }
 
-class PlayerSleepInTent(var x: Int, var y: Int, var z: Int) extends BasicPacketData{
+class PlayerSleepInTent(var x: Int, var y: Int, var z: Int) extends BasicPacketData {
   def this() = this(0, 0, 0)
-  
+
   override def handlePacket(player: EntityPlayer, ctx: MessageContext) = player.worldObj.getTileEntity(x, y, z).asInstanceOf[TileEntityTent].sleep(player)
   override def getData(stream: PacketBuffer) {
     x = stream.readInt

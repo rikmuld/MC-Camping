@@ -110,7 +110,7 @@ class ContainerCampinvCraft(var player: EntityPlayer) extends Container {
   this.onCraftMatrixChanged(this.craftMatrix)
 
   override def onCraftMatrixChanged(par1IInventory: IInventory) = this.craftResult.setInventorySlotContents(0, CraftingManager.getInstance.findMatchingRecipe(this.craftMatrix, this.player.worldObj))
-  override def canInteractWith(player: EntityPlayer): Boolean = !player.isDead
+  override def canInteractWith(player: EntityPlayer): Boolean = !player.isDead 
   override def onContainerClosed(player: EntityPlayer) {
     super.onContainerClosed(player)
     if (!this.player.worldObj.isRemote) {
