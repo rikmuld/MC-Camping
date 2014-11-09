@@ -1,0 +1,22 @@
+[
+{
+  "modid": "camping",
+  "name": "The Camping Mod 2.0",
+  "description": "This mod adds a some camping elements to minecraft",
+  "version": "dev",
+  "mcversion": "1.7.10",
+  "url": "rikmuld.com",
+  "updateUrl": "",
+  "authors": [
+    "RikMuld"
+  ],
+  "credits": "",
+  "logoFile": "/assets/camping/textures/ArtLogo.jpg",
+  "screenshots": [
+  ],
+  "parent":"",
+  "dependencies": [
+ "mod_MinecraftForge"
+  ]
+}
+]
