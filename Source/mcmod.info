@@ -1,9 +1,9 @@
 [
 {
   "modid": "camping",
-  "name": "The Camping Mod 2.0",
+  "name": "The Camping Mod 2",
   "description": "This mod adds a some camping elements to minecraft",
-  "version": "dev",
+  "version": "2.1",
   "mcversion": "1.7.10",
   "url": "rikmuld.com",
   "updateUrl": "",
