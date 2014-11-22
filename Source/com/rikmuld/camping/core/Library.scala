@@ -24,7 +24,6 @@ object GuiInfo {
   final val GUI_KIT = 2
   final val GUI_CAMPFIRE_COOK = 3
   final val GUI_CAMPINV = 4
-  final val GUI_INVENTORY = 5
   final val GUI_CAMPINV_CRAFT = 6
   final val GUI_TENT = 7
   final val GUI_TENT_SLEEP = 8

@@ -33,7 +33,8 @@ class Config(val file: Configuration) {
   var trapPlayer = true
   var worldGenCampsite = true
   var campsiteRareness = 5
-  
+  var coreOnly = false
+
   var elements: java.util.List[IConfigElement[_]] = new ArrayList[IConfigElement[_]];
 
   def sync = {
@@ -58,7 +59,8 @@ class Config(val file: Configuration) {
     trapPlayer = getVar("Trap players in Bear Trap", "Bear traps can trap players.", ConfigInfo.CAT_TOOLS, trapPlayer).asInstanceOf[Boolean]
     worldGenHemp = getVar("Enable Campsite generation", "Enable/Disable the world generation for Campsites.", ConfigInfo.CAT_WORLD, worldGenCampsite).asInstanceOf[Boolean]  
     campsiteRareness = getVar("Campsite Rareness", "Rareness of the campsite world generation", ConfigInfo.CAT_WORLD, campsiteRareness).asInstanceOf[Integer]
-    
+    coreOnly = getVar("Core Features Only", "Only use the core features of the camping mod. WARNING! use carfully!", ConfigInfo.CAT_GENERAL, coreOnly).asInstanceOf[Boolean]
+
     if (file.hasChanged) file.save
     for (i <- 0 until file.getCategoryNames.size) elements.addAll(new ConfigElement(file.getCategory(file.getCategoryNames().toArray().apply(i).asInstanceOf[String])).getChildElements());
   }

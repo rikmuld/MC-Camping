@@ -23,24 +23,18 @@ class ProxyServer extends IGuiHandler {
   val guis = HashMap[Integer, List[Class[_]]]();
 
   def getServerGuiElement(id: Int, player: EntityPlayer, world: World, x: Int, y: Int, z: Int): Object = {
-    if (id == GuiInfo.GUI_INVENTORY) new ContainerPlayer(player.inventory, false, player);
-    else {
-      try {
-        guis(id).apply(0).getConstructor(classOf[EntityPlayer], classOf[IInventory]).newInstance(player, world.getTileEntity(x, y, z)).asInstanceOf[Container];
-      } catch {
-        case e: NoSuchMethodException => guis(id).apply(0).getConstructor(classOf[EntityPlayer]).newInstance(player).asInstanceOf[Container];
-      }
+    try {
+      guis(id).apply(0).getConstructor(classOf[EntityPlayer], classOf[IInventory]).newInstance(player, world.getTileEntity(x, y, z)).asInstanceOf[Container];
+    } catch {
+      case e: NoSuchMethodException => guis(id).apply(0).getConstructor(classOf[EntityPlayer]).newInstance(player).asInstanceOf[Container];
     }
   }
   @SideOnly(Side.CLIENT)
   def getClientGuiElement(id: Int, player: EntityPlayer, world: World, x: Int, y: Int, z: Int): Object = {
-    if (id == GuiInfo.GUI_INVENTORY) if (player.capabilities.isCreativeMode) new GuiContainerCreative(player) else new GuiInventory(player)
-    else {
-      try {
-        guis(id).apply(1).getConstructor(classOf[EntityPlayer], classOf[IInventory]).newInstance(player, world.getTileEntity(x, y, z)).asInstanceOf[Gui];
-      } catch {
-        case e: NoSuchMethodException => guis(id).apply(1).getConstructor(classOf[EntityPlayer]).newInstance(player).asInstanceOf[Gui];
-      }
+    try {
+      guis(id).apply(1).getConstructor(classOf[EntityPlayer], classOf[IInventory]).newInstance(player, world.getTileEntity(x, y, z)).asInstanceOf[Gui];
+    } catch {
+      case e: NoSuchMethodException => guis(id).apply(1).getConstructor(classOf[EntityPlayer]).newInstance(player).asInstanceOf[Gui];
     }
   }
   def register = MiscRegistry.initServer

@@ -38,10 +38,7 @@ object CampingMod {
     ObjRegistry.postInit
   }
 }
-//Improve fox model, make it more fox'ish -- 3
-//Keep inv gamerule keep inv add -- 5
-//Add basic campers -- 6
-//Add backpacl/lantern model when wearing
+//Add backpack/lantern model when wearing
 //Add shelter
-//Complete advanced campers + spawn
+//More advanced campers
 //Add Guide

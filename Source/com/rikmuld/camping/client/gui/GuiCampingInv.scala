@@ -39,11 +39,9 @@ class GuiCampinginv(var player: EntityPlayer) extends GuiContainer(new Container
     super.initGui()
     craftButton = new GuiButton(1, guiLeft + xSize / 2 - 50, guiTop + 6, 100, 10, "Open Crafting Grit")
     craftButton.enabled = false
-    if (!player.capabilities.isCreativeMode) this.buttonList.asInstanceOf[java.util.List[GuiButton]].add(new GuiButton(0, 5, 5, 100, 10, "Minecraft Inventory"))
     this.buttonList.asInstanceOf[java.util.List[GuiButton]].add(craftButton)
   }
   override def actionPerformed(button: GuiButton) {
-    if (button.id == 0 && timer <= 0) PacketSender.toServer(new OpenGui(GuiInfo.GUI_INVENTORY))
     if (button.id == 1 && timer <= 0) PacketSender.toServer(new OpenGui(GuiInfo.GUI_CAMPINV_CRAFT))
   }
   protected override def drawGuiContainerBackgroundLayer(partTick: Float, mouseX: Int, mouseY: Int) {
@@ -70,11 +68,9 @@ class GuiCampingInvCraft(var player: EntityPlayer) extends GuiContainer(new Cont
 
   override def initGui() {
     super.initGui()
-    this.buttonList.asInstanceOf[java.util.List[GuiButton]].add(new GuiButton(0, 5, 5, 100, 10, "Minecraft Inventory"))
     this.buttonList.asInstanceOf[java.util.List[GuiButton]].add(new GuiButton(1, guiLeft + xSize / 2 - 50, guiTop + 6, 100, 10, "Camping Inventory"))
   }
   override def actionPerformed(button: GuiButton) {
-    if (button.id == 0 && timer <= 0) PacketSender.toServer(new OpenGui(GuiInfo.GUI_INVENTORY))
     if (button.id == 1 && timer <= 0) PacketSender.toServer(new OpenGui(GuiInfo.GUI_CAMPINV))
   }
   protected override def drawGuiContainerBackgroundLayer(partTick: Float, mouseX: Int, mouseY: Int) {

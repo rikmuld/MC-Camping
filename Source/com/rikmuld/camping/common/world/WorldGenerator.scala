@@ -35,7 +35,7 @@ class WorldGenerator extends IWorldGenerator {
         hemp.generate(world, random, xBlock, yBlock, zBlock)
       }
     }
-    if(BiomeDictionary.isBiomeOfType(world.getBiomeGenForCoords(blockX, blockZ), BiomeDictionary.Type.FOREST) && (world.getBiomeGenForCoords(xBlock, zBlock).getTempCategory == TempCategory.MEDIUM)){
+    if(!Objs.config.coreOnly&&BiomeDictionary.isBiomeOfType(world.getBiomeGenForCoords(blockX, blockZ), BiomeDictionary.Type.FOREST) && (world.getBiomeGenForCoords(xBlock, zBlock).getTempCategory == TempCategory.MEDIUM)){
       if(random.nextInt(Objs.config.campsiteRareness)==0){
         if (Objs.config.worldGenCampsite) {
           xBlock = blockX + random.nextInt(16)

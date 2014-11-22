@@ -56,7 +56,7 @@ class PacketGlobal(var data: BasicPacketData) extends IMessage {
 }
 
 class Handler extends IMessageHandler[PacketGlobal, IMessage] {
-  override def onMessage(message: PacketGlobal, ctx: MessageContext): IMessage = {
+  override def onMessage(message: PacketGlobal, ctx: MessageContext): IMessage = {    
     if (ctx.side.equals(Side.SERVER)) message.handlePacketServer(ctx)
     else message.handlePacketClient(ctx)
     null

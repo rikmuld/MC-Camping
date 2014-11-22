@@ -28,6 +28,7 @@ import com.rikmuld.camping.common.inventory.SlotDisable
 import com.rikmuld.camping.common.inventory.inventory.InventoryItemMain
 import com.rikmuld.camping.common.inventory.SlotItemsOnly
 import com.rikmuld.camping.common.inventory.inventory.InventoryPlayerMain
+import net.minecraft.nbt.NBTTagList
 
 class ContainerCampinv(var player: EntityPlayer) extends Container {
   var backpackInv: InventoryItemMain = new InventoryItemMain(new ItemStack(Objs.backpack, 1, 0), player, 27, 64)
@@ -54,9 +55,9 @@ class ContainerCampinv(var player: EntityPlayer) extends Container {
 
   override def canInteractWith(player: EntityPlayer): Boolean = !player.isDead
   override def onContainerClosed(player: EntityPlayer) {
+    campinv.closeInventory
+    backpackInv.closeInventory
     super.onContainerClosed(player)
-    campinv.closeInventory()
-    backpackInv.closeInventory()
   }
   override def transferStackInSlot(p: EntityPlayer, i: Int): ItemStack = {
     var itemstack: ItemStack = null

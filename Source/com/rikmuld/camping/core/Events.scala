@@ -52,6 +52,7 @@ import net.minecraft.item.ItemArmor
 import com.rikmuld.camping.common.objs.item.ArmorFur
 import cpw.mods.fml.common.gameevent.TickEvent.Phase
 import com.rikmuld.camping.common.objs.tile.TileEntityTrap
+import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerRespawnEvent
 
 class Events {
   var tickLight: Int = 0
@@ -68,19 +69,30 @@ class Events {
   }
   @SubscribeEvent
   def onPlayerDeath(event: PlayerDropsEvent) {
-    InventoryCampinv.dropItems(event.entityPlayer)
+    if(!Objs.config.coreOnly)InventoryCampinv.dropItems(event.entityPlayer)
   }
   @SubscribeEvent
   def onEntityDeath(event: LivingDeathEvent) {
     if (event.entity.isInstanceOf[EntityPlayer]) {
       if (event.entity.worldObj.getGameRules().getGameRuleBooleanValue("keepInventory")) {
-        InventoryCampinv.dropItems(event.entity.asInstanceOf[EntityPlayer])
+        val tag = event.entity.asInstanceOf[EntityPlayer].getEntityData.getCompoundTag("campInv")
+        if(!event.entity.asInstanceOf[EntityPlayer].getEntityData.hasKey(EntityPlayer.PERSISTED_NBT_TAG))event.entity.asInstanceOf[EntityPlayer].getEntityData.setTag(EntityPlayer.PERSISTED_NBT_TAG, new NBTTagCompound())
+        event.entity.asInstanceOf[EntityPlayer].getEntityData.getCompoundTag(EntityPlayer.PERSISTED_NBT_TAG).setTag("campInv", tag)
+      }
+    }
+  }  
+  @SubscribeEvent
+  def onPlayerRespawn(event:PlayerRespawnEvent){
+    if(!Objs.config.coreOnly){
+      if(event.player.getEntityData.getCompoundTag(EntityPlayer.PERSISTED_NBT_TAG).hasKey("campInv")){
+        event.player.getEntityData.setTag("campInv", event.player.getEntityData.getCompoundTag(EntityPlayer.PERSISTED_NBT_TAG).getCompoundTag("campInv"))
+        event.player.getEntityData.getCompoundTag(EntityPlayer.PERSISTED_NBT_TAG).removeTag("campInv")
       }
     }
   }
   @SubscribeEvent
   def onPlayerLogin(event: PlayerLoggedInEvent) {
-    if (event.player.getEntityData.getCompoundTag(NBTInfo.INV_CAMPING) != null) {
+    if (!Objs.config.coreOnly&&event.player.getEntityData.getCompoundTag(NBTInfo.INV_CAMPING) != null) {
       PacketSender.to(new NBTPlayer(event.player.getEntityData.getCompoundTag(NBTInfo.INV_CAMPING)), event.player.asInstanceOf[EntityPlayerMP])
     }
   }
@@ -121,28 +133,30 @@ class Events {
     val player = event.player
     val world = player.worldObj
 
-    if (event.phase.equals(Phase.START)) {
-      if (player.getEntityData().getInteger("isInTrap") <= 0) {
-        player.getEntityData().setInteger("isInTrap", player.getEntityData().getInteger("isInTrap") - 1)
-      } else if (player.getEntityAttribute(SharedMonsterAttributes.movementSpeed).getModifier(TileEntityTrap.UUIDSpeedTrap) != null) player.getEntityAttribute(SharedMonsterAttributes.movementSpeed).removeModifier(player.getEntityAttribute(SharedMonsterAttributes.movementSpeed).getModifier(TileEntityTrap.UUIDSpeedTrap))
-    }
-    if (!world.isRemote && player.hasLantarn()) {
-      tickLight += 1
-      if (tickLight >= 10) {
-        tickLight = 0
-        player.lanternTick()
-        if (player.worldObj.getBlock(player.posX.toInt, player.posY.toInt - 1, player.posZ.toInt) == Blocks.air) {
-          player.worldObj.setBlock(player.posX.toInt, player.posY.toInt - 1, player.posZ.toInt, Objs.light)
-        } else if (player.worldObj.getBlock(player.posX.toInt, player.posY.toInt, player.posZ.toInt) == Blocks.air) {
-          player.worldObj.setBlock(player.posX.toInt, player.posY.toInt, player.posZ.toInt, Objs.light)
-        } else if (player.worldObj.getBlock(player.posX.toInt, player.posY.toInt + 1, player.posZ.toInt) == Blocks.air) {
-          player.worldObj.setBlock(player.posX.toInt, player.posY.toInt + 1, player.posZ.toInt, Objs.light)
+    if(!Objs.config.coreOnly){
+      if (event.phase.equals(Phase.START)) {
+        if (player.getEntityData().getInteger("isInTrap") <= 0) {
+          player.getEntityData().setInteger("isInTrap", player.getEntityData().getInteger("isInTrap") - 1)
+        } else if (player.getEntityAttribute(SharedMonsterAttributes.movementSpeed).getModifier(TileEntityTrap.UUIDSpeedTrap) != null) player.getEntityAttribute(SharedMonsterAttributes.movementSpeed).removeModifier(player.getEntityAttribute(SharedMonsterAttributes.movementSpeed).getModifier(TileEntityTrap.UUIDSpeedTrap))
+      }
+      if (!world.isRemote && player.hasLantarn()) {
+        tickLight += 1
+        if (tickLight >= 10) {
+          tickLight = 0
+          player.lanternTick()
+          if (player.worldObj.getBlock(player.posX.toInt, player.posY.toInt - 1, player.posZ.toInt) == Blocks.air) {
+            player.worldObj.setBlock(player.posX.toInt, player.posY.toInt - 1, player.posZ.toInt, Objs.light)
+          } else if (player.worldObj.getBlock(player.posX.toInt, player.posY.toInt, player.posZ.toInt) == Blocks.air) {
+            player.worldObj.setBlock(player.posX.toInt, player.posY.toInt, player.posZ.toInt, Objs.light)
+          } else if (player.worldObj.getBlock(player.posX.toInt, player.posY.toInt + 1, player.posZ.toInt) == Blocks.air) {
+            player.worldObj.setBlock(player.posX.toInt, player.posY.toInt + 1, player.posZ.toInt, Objs.light)
+          }
         }
       }
-    }
-    if (!world.isRemote && player.hasMap()) {
-      val data = player.getCurrentMapData()
-      PacketSender.to(new com.rikmuld.camping.common.network.Map(data.scale, data.xCenter, data.zCenter, data.colors), player.asInstanceOf[EntityPlayerMP])
+      if (!world.isRemote && player.hasMap()) {
+        val data = player.getCurrentMapData()
+        PacketSender.to(new com.rikmuld.camping.common.network.Map(data.scale, data.xCenter, data.zCenter, data.colors), player.asInstanceOf[EntityPlayerMP])
+      }
     }
     if (!world.isRemote && (player.getCurrentEquippedItem != null) &&
       player.getCurrentEquippedItem.getItem == Objs.parts && (player.getCurrentEquippedItem.getItemDamage == PartInfo.MARSHMALLOWSTICK)) {
@@ -166,11 +180,12 @@ class Events {
         }
       }
     }
-
-    var campNum = 0.0f
-    for (i <- 0 until 4 if (player.inventory.armorInventory(i) != null && player.inventory.armorInventory(i).getItem.isInstanceOf[ArmorFur])) campNum += 0.25f
-    if (player.getEntityAttribute(SharedMonsterAttributes.movementSpeed).getModifier(UUIDSpeedCamping) != null) player.getEntityAttribute(SharedMonsterAttributes.movementSpeed).removeModifier(player.getEntityAttribute(SharedMonsterAttributes.movementSpeed).getModifier(UUIDSpeedCamping))
-    player.getEntityAttribute(SharedMonsterAttributes.movementSpeed).applyModifier(new AttributeModifier(UUIDSpeedCamping, "camping.speedBoost", 0.04 * campNum, 0))
+    if(!Objs.config.coreOnly){
+      var campNum = 0.0f
+      for (i <- 0 until 4 if (player.inventory.armorInventory(i) != null && player.inventory.armorInventory(i).getItem.isInstanceOf[ArmorFur])) campNum += 0.25f
+      if (player.getEntityAttribute(SharedMonsterAttributes.movementSpeed).getModifier(UUIDSpeedCamping) != null) player.getEntityAttribute(SharedMonsterAttributes.movementSpeed).removeModifier(player.getEntityAttribute(SharedMonsterAttributes.movementSpeed).getModifier(UUIDSpeedCamping))
+      player.getEntityAttribute(SharedMonsterAttributes.movementSpeed).applyModifier(new AttributeModifier(UUIDSpeedCamping, "camping.speedBoost", 0.04 * campNum, 0))
+    }
   }
 }
 
@@ -181,36 +196,42 @@ class EventsClient {
 
   @SubscribeEvent
   def guiOpenClient(event: GuiOpenEvent) {
-    if (event.gui.isInstanceOf[GuiContainerCreative]) {
-      ReflectionHelper.setPrivateValue(classOf[GuiContainerCreative], event.gui.asInstanceOf[GuiContainerCreative], CreativeTabs.tabInventory.getTabIndex, 2)
+    if(!Objs.config.coreOnly){
+      if (event.gui.isInstanceOf[GuiContainerCreative]) {
+        ReflectionHelper.setPrivateValue(classOf[GuiContainerCreative], event.gui.asInstanceOf[GuiContainerCreative], CreativeTabs.tabInventory.getTabIndex, 2)
+      }
     }
   }
   @SubscribeEvent
   def onClientTick(event: ClientTickEvent) {
     if (event.phase != TickEvent.Phase.END) return
-    val mc = FMLClientHandler.instance().getClient
-    if (mc.currentScreen.isInstanceOf[GuiInventory] || mc.currentScreen.isInstanceOf[GuiContainerCreative]) {
-      val list: ArrayList[Any] = ReflectionHelper.getPrivateValue(classOf[GuiScreen], mc.currentScreen, 4)
-      list.asInstanceOf[java.util.List[GuiButton]].add(new GuiButton(10, 5, 5, 100, 10, "Camping Inventory"))
-      ReflectionHelper.setPrivateValue(classOf[GuiScreen], mc.currentScreen, list, 4)
+    if(!Objs.config.coreOnly){
+      val mc = FMLClientHandler.instance().getClient
+      if (mc.currentScreen.isInstanceOf[GuiInventory] || mc.currentScreen.isInstanceOf[GuiContainerCreative]) {
+        val list: ArrayList[Any] = ReflectionHelper.getPrivateValue(classOf[GuiScreen], mc.currentScreen, 4)
+        list.asInstanceOf[java.util.List[GuiButton]].add(new GuiButton(10, 5, 5, 100, 10, "Camping Inventory"))
+        ReflectionHelper.setPrivateValue(classOf[GuiScreen], mc.currentScreen, list, 4)
+      }
     }
   }
   @SubscribeEvent
   def onOverlayRender(event: RenderGameOverlayEvent) {
-    if (event.`type` != ElementType.HOTBAR) return
-    val mc = FMLClientHandler.instance().getClient
-    if (mc.currentScreen.isInstanceOf[GuiInventory] || mc.currentScreen.isInstanceOf[GuiContainerCreative]) {
-      if (Mouse.isButtonDown(0) && event.mouseX >= 5 && event.mouseX <= 105 && event.mouseY >= 5 && event.mouseY <= 15) {
-        if (pressFlag(0)) {
-          PacketSender.toServer(new OpenGui(GuiInfo.GUI_CAMPINV))
-          pressFlag(0) = false
-        }
-      } else pressFlag(0) = true
-    }
-    if (map == null) map = new GuiMapHUD()
-    if (mc.thePlayer.hasMap()) {
-      map.setWorldAndResolution(mc, event.resolution.getScaledWidth, event.resolution.getScaledHeight)
-      map.drawScreen(event.mouseX, event.mouseY, event.partialTicks)
+    if (event.`type` != ElementType.HOTBAR) return 
+    if(!Objs.config.coreOnly){
+      val mc = FMLClientHandler.instance().getClient
+      if (mc.currentScreen.isInstanceOf[GuiInventory] || mc.currentScreen.isInstanceOf[GuiContainerCreative]) {
+        if (Mouse.isButtonDown(0) && event.mouseX >= 5 && event.mouseX <= 105 && event.mouseY >= 5 && event.mouseY <= 15) {
+          if (pressFlag(0)) {
+            PacketSender.toServer(new OpenGui(GuiInfo.GUI_CAMPINV))
+            pressFlag(0) = false
+          }
+        } else pressFlag(0) = true
+      }
+      if (map == null) map = new GuiMapHUD()
+      if (mc.thePlayer.hasMap()) {
+        map.setWorldAndResolution(mc, event.resolution.getScaledWidth, event.resolution.getScaledHeight)
+        map.drawScreen(event.mouseX, event.mouseY, event.partialTicks)
+      } 
     }
   }
 }
