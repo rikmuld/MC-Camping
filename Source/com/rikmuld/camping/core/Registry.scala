@@ -283,11 +283,11 @@ object ObjRegistry {
     Objs.light = new Light(classOf[LightInfo]);
     Objs.campfire = new Campfire(classOf[CampfireInfo])
     Objs.campfireCook = new CampfireCook(classOf[CampfireCookInfo])
-    Objs.hempItem = new HempItem(Objs.hemp, classOf[HempItemInfo])
     Objs.kit = new Kit(classOf[KitInfo])
     Objs.marshmallow = new Marshmallow(classOf[MarshMallowInfo])
     Objs.log = new Log(classOf[LogInfo])
     Objs.hemp = new Hemp(classOf[HempInfo])
+    Objs.hempItem = new HempItem(Objs.hemp, classOf[HempItemInfo])
     Objs.sleepingBag = new SleepingBag(classOf[SleepingBagInfo])
     Objs.bounds = new BoundsHelper(classOf[BoundsHelperInfo])
     Objs.tent = new Tent(classOf[TentInfo])

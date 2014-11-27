@@ -50,7 +50,7 @@ class HempInfo extends ObjInfo {
 }
 
 class LogInfo extends ObjInfo {
-  override def NAME = "log"
+  override def NAME = "logSeat"
 }
 
 class CampfireInfo extends ObjInfo {

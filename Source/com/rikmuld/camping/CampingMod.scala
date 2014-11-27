@@ -38,6 +38,8 @@ object CampingMod {
     ObjRegistry.postInit
   }
 }
+//RESOLVED: LOG SEAT NAMING/HEMP ERROR/
+
 //Add backpack/lantern model when wearing
 //Add shelter
 //More advanced campers
