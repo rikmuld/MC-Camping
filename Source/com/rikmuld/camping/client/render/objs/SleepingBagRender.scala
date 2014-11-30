@@ -5,7 +5,7 @@ import net.minecraft.util.ResourceLocation
 import com.rikmuld.camping.core.TextureInfo
 import net.minecraft.tileentity.TileEntity
 import com.rikmuld.camping.common.objs.tile.TileEntitySleepingBag
-import com.rikmuld.camping.misc.AbstractBox
+import com.rikmuld.corerm.misc.AbstractBox
 import org.lwjgl.opengl.GL11
 import org.lwjgl.opengl.GL12
 import net.minecraft.client.renderer.Tessellator

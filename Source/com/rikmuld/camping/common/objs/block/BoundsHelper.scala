@@ -15,14 +15,18 @@ import net.minecraft.entity.Entity
 import net.minecraft.block.Block
 import com.rikmuld.camping.common.objs.tile.TileEntityWithBounds
 import net.minecraft.init.Blocks
-import com.rikmuld.camping.common.objs.tile.TileEntityWithRotation
 import net.minecraft.util.IIcon
+import com.rikmuld.corerm.common.objs.tile.TileEntityWithRotation
+import com.rikmuld.corerm.common.objs.block.BlockMain
+import com.rikmuld.corerm.common.objs.block.BlockWithModel
+import com.rikmuld.camping.core.Objs
+import com.rikmuld.camping.core.ModInfo
 
 object BoundsHelper {
   def isBlockHeadOfBed(meta: Int): Boolean = true
 }
 
-class BoundsHelper(infoClass: Class[_]) extends BlockMain(infoClass, Material.cloth, false, false) with BlockWithModel {
+class BoundsHelper(infoClass: Class[_]) extends BlockMain(infoClass, Objs.tab, ModInfo.MOD_ID, Material.cloth, false, false) with BlockWithModel {
   setCreativeTab(null)
 
   override def addCollisionBoxesToList(world: World, x: Int, y: Int, z: Int, alignedBB: AxisAlignedBB, list: java.util.List[_], entity: Entity) {
@@ -44,7 +48,7 @@ class BoundsHelper(infoClass: Class[_]) extends BlockMain(infoClass, Material.cl
   }
   override def getBlockHardness(world: World, x: Int, y: Int, z: Int): Float = {
     val tile = world.getTileEntity(x, y, z).asInstanceOf[TileEntityWithBounds]
-    if (world.getBlock(tile.baseX, tile.baseY, tile.baseZ) != Blocks.air) return world.getBlock(tile.baseX, tile.baseY, tile.baseZ).getBlockHardness(world, x, y, z)
+    if (tile!=null&&(!world.isAirBlock(tile.baseX, tile.baseY, tile.baseZ))) return world.getBlock(tile.baseX, tile.baseY, tile.baseZ).getBlockHardness(world, x, y, z)
     blockHardness
   }
   override def getIcon(side: Int, metadata: Int): IIcon = Blocks.wool.getIcon(0, 0)

@@ -1,13 +1,12 @@
 package com.rikmuld.camping.common.objs.block
 
 import java.util.Random
-import com.rikmuld.camping.common.objs.item.ItemBlockMain
+import com.rikmuld.corerm.common.objs.item.ItemBlockMain
 import com.rikmuld.camping.common.objs.tile.TileEntityLantern
-import com.rikmuld.camping.common.objs.tile.TileEntityWithRotation
 import com.rikmuld.camping.common.objs.tile.TileEntitySleepingBag
 import com.rikmuld.camping.core.SleepingBagInfo
 import com.rikmuld.camping.core.Utils._
-import com.rikmuld.camping.core.Utils._
+import com.rikmuld.corerm.core.CoreUtils._
 import cpw.mods.fml.relauncher.SideOnly
 import net.minecraft.block.Block
 import net.minecraft.block.material.Material
@@ -28,12 +27,19 @@ import cpw.mods.fml.relauncher.Side
 import com.rikmuld.camping.common.objs.tile.TileEntitySleepingBag
 import net.minecraft.init.Blocks
 import net.minecraft.util.ChatComponentTranslation
+import com.rikmuld.corerm.common.objs.tile.TileEntityWithRotation
+import com.rikmuld.corerm.common.objs.block.BlockWithInstability
+import com.rikmuld.corerm.common.objs.block.BlockWithRotation
+import com.rikmuld.corerm.common.objs.block.BlockMain
+import com.rikmuld.corerm.common.objs.block.BlockWithModel
+import com.rikmuld.camping.core.Objs
+import com.rikmuld.camping.core.ModInfo
 
 object SleepingBag {
   def isBlockHeadOfBed(meta: Int): Boolean = meta == 0
 }
 
-class SleepingBag(infoClass: Class[_]) extends BlockMain(infoClass, Material.cloth, classOf[SleepigBagItem].asInstanceOf[Class[ItemBlock]], false, true) with BlockWithModel with BlockWithInstability with BlockWithRotation {
+class SleepingBag(infoClass: Class[_]) extends BlockMain(infoClass, Objs.tab, ModInfo.MOD_ID, Material.cloth, classOf[SleepigBagItem].asInstanceOf[Class[ItemBlock]], false, true) with BlockWithModel with BlockWithInstability with BlockWithRotation {
   setBlockBounds(0, 0, 0, 1, 0.0625f, 1)
   setStepSound(Block.soundTypeCloth)
   setHardness(0.5F)

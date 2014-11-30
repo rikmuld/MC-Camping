@@ -1,6 +1,5 @@
 package com.rikmuld.camping.common.objs.block
 
-import com.rikmuld.camping.core.ObjInfo
 import net.minecraft.block.material.Material
 import net.minecraft.tileentity.TileEntity
 import net.minecraft.entity.player.EntityPlayer
@@ -8,6 +7,7 @@ import com.rikmuld.camping.core.ObjRegistry
 import com.rikmuld.camping.CampingMod
 import net.minecraft.util.IIcon
 import net.minecraft.item.ItemStack
+import com.rikmuld.corerm.core.CoreUtils._
 import net.minecraft.world.World
 import net.minecraft.init.Blocks
 import cpw.mods.fml.relauncher.SideOnly
@@ -22,8 +22,12 @@ import com.rikmuld.camping.core.Objs
 import com.rikmuld.camping.common.objs.tile.TileEntityCampfire
 import net.minecraft.world.IBlockAccess
 import com.rikmuld.camping.common.objs.tile.TileEntityCampfireCook
+import com.rikmuld.corerm.common.objs.block.BlockWithInstability
+import com.rikmuld.corerm.common.objs.block.BlockMain
+import com.rikmuld.corerm.common.objs.block.BlockWithModel
+import com.rikmuld.camping.core.ModInfo
 
-class Campfire(infoClass: Class[_]) extends BlockMain(infoClass, Material.fire, false, false) with BlockWithModel with BlockWithInstability {
+class Campfire(infoClass: Class[_]) extends BlockMain(infoClass, Objs.tab, ModInfo.MOD_ID, Material.fire, false, false) with BlockWithModel with BlockWithInstability {
   setHardness(3.0F)
   setLightLevel(1.0F)
   setStepSound(Block.soundTypeStone)
@@ -71,7 +75,7 @@ class Campfire(infoClass: Class[_]) extends BlockMain(infoClass, Material.fire, 
   }
 }
 
-class CampfireCook(infoClass: Class[_]) extends BlockMain(infoClass, Material.fire, false, false) with BlockWithModel with BlockWithInstability {
+class CampfireCook(infoClass: Class[_]) extends BlockMain(infoClass, Objs.tab, ModInfo.MOD_ID, Material.fire, false, false) with BlockWithModel with BlockWithInstability {
   setHardness(2.0F)
   setStepSound(Block.soundTypeStone)
   setBlockBounds(0.125F, 0.0F, 0.125F, 0.875F, 0.125F, 0.875F)

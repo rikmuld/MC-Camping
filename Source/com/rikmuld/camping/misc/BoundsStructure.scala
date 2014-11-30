@@ -7,7 +7,7 @@ import scala.collection.mutable.HashMap
 import net.minecraft.block.Block
 import com.rikmuld.camping.core.Objs
 import net.minecraft.init.Blocks
-import com.rikmuld.camping.core.Utils._
+import com.rikmuld.corerm.core.CoreUtils._
 
 object Bounds {
   def readBoundsToNBT(tag: NBTTagCompound): Bounds = {

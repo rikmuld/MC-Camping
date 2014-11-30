@@ -7,6 +7,7 @@ import cpw.mods.fml.relauncher.SideOnly
 import net.minecraft.entity.EntityLivingBase
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.potion.PotionEffect
+import com.rikmuld.corerm.core.CoreUtils._
 import net.minecraft.util.AxisAlignedBB
 import cpw.mods.fml.relauncher.Side
 import com.rikmuld.camping.core.ObjRegistry
@@ -15,10 +16,12 @@ import net.minecraft.init.Items
 import com.rikmuld.camping.misc.CookingEquipment
 import com.rikmuld.camping.core.Objs
 import com.rikmuld.camping.core.PartInfo
-import com.rikmuld.camping.common.network.PacketSender
+import com.rikmuld.corerm.common.network.PacketSender
 import com.rikmuld.camping.common.inventory.SlotCooking
 import com.rikmuld.camping.core.Utils._
 import com.rikmuld.camping.core.Config
+import com.rikmuld.corerm.common.objs.tile.TileEntityWithInventory
+import com.rikmuld.corerm.common.objs.tile.TileEntityMain
 
 class TileEntityCampfire extends TileEntityMain with TileEntityWithInventory {
   var color: Int = 16

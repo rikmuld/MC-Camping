@@ -6,6 +6,7 @@ import net.minecraft.init.Blocks
 import com.rikmuld.camping.core.SleepingBagInfo
 import com.rikmuld.camping.core.SleepingBagInfo
 import net.minecraft.world.World
+import com.rikmuld.corerm.common.objs.tile.TileEntityWithRotation
 
 class TileEntitySleepingBag extends TileEntityWithRotation {
   private var update: Int = _

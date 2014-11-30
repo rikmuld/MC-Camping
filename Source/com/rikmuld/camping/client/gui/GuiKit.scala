@@ -3,6 +3,7 @@ package com.rikmuld.camping.client.gui
 import net.minecraft.entity.player.EntityPlayer
 import com.rikmuld.camping.core.TextureInfo
 import com.rikmuld.camping.common.inventory.gui.ContainerKit
+import com.rikmuld.corerm.client.gui.GuiContainerMain
 
 class GuiKit(player: EntityPlayer) extends GuiContainerMain(new ContainerKit(player)) {
   ySize = 181

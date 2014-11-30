@@ -2,6 +2,7 @@ package com.rikmuld.camping.common.objs.tile
 
 import com.rikmuld.camping.core.LanternInfo
 import net.minecraft.nbt.NBTTagCompound
+import com.rikmuld.corerm.common.objs.tile.TileEntityMain
 
 class TileEntityLantern extends TileEntityMain {
   var burnTime: Int = _

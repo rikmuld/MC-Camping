@@ -22,6 +22,7 @@ import com.rikmuld.camping.core.TextureInfo
 import com.rikmuld.camping.core.PartInfo
 import com.rikmuld.camping.client.gui.GuiCampfireCook
 import scala.collection.mutable.ListBuffer
+import com.rikmuld.corerm.misc.AbstractBox
 
 abstract class CookingEquipment(var cookTime: Int, var cookableFoood: HashMap[ItemStack, ItemStack], var maxFood: Int, var itemInfo: ItemStack) {
   var slots: Array[Array[Int]] = Array.ofDim[Int](2, maxFood)

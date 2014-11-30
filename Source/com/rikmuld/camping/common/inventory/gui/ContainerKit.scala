@@ -1,18 +1,21 @@
 package com.rikmuld.camping.common.inventory.gui
 
-import net.minecraft.entity.player.EntityPlayer
-import com.rikmuld.camping.core.Objs
-import com.rikmuld.camping.common.inventory.inventory.InventoryItemMain
-import com.rikmuld.camping.core.Utils._
-import com.rikmuld.camping.common.inventory.SlotNoPickup
-import net.minecraft.inventory.Slot
-import net.minecraft.nbt.NBTTagList
-import com.rikmuld.camping.core.ObjRegistry
-import net.minecraft.item.ItemStack
-import com.rikmuld.camping.misc.CookingEquipment
 import java.util.ArrayList
-import net.minecraft.nbt.NBTTagCompound
+
 import com.rikmuld.camping.core.KitInfo
+import com.rikmuld.camping.core.Objs
+import com.rikmuld.camping.misc.CookingEquipment
+import com.rikmuld.corerm.common.inventory.SlotNoPickup
+import com.rikmuld.corerm.common.inventory.gui.ContainerItemMain
+import com.rikmuld.corerm.common.inventory.inventory.InventoryItemMain
+import com.rikmuld.corerm.core.CoreUtils.ContainerUtils
+import com.rikmuld.corerm.core.CoreUtils.PlayerUtils
+
+import net.minecraft.entity.player.EntityPlayer
+import net.minecraft.inventory.Slot
+import net.minecraft.item.ItemStack
+import net.minecraft.nbt.NBTTagCompound
+import net.minecraft.nbt.NBTTagList
 
 class ContainerKit(player: EntityPlayer) extends ContainerItemMain(player) {
   this.addSlots(inv, 0, 1, 5, 44, 16)

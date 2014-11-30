@@ -12,7 +12,7 @@ import org.lwjgl.opengl.GL12
 import com.rikmuld.camping.common.inventory.gui.ContainerCampinv
 import com.rikmuld.camping.common.inventory.gui.ContainerCampinvCraft
 import com.rikmuld.camping.common.network.OpenGui
-import com.rikmuld.camping.common.network.PacketSender
+import com.rikmuld.corerm.common.network.PacketSender
 import com.rikmuld.camping.core.GuiInfo
 import com.rikmuld.camping.core.Objs
 import com.rikmuld.camping.core.TextureInfo

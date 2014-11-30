@@ -3,17 +3,14 @@ package com.rikmuld.camping.common.objs.block
 import java.util.Random
 import scala.collection.JavaConversions.asScalaBuffer
 import com.rikmuld.camping.common.network.OpenGui
-import com.rikmuld.camping.common.network.PacketSender
-import com.rikmuld.camping.common.objs.item.ItemBlockMain
-import com.rikmuld.camping.common.objs.tile.TileEntityMain
+import com.rikmuld.corerm.common.network.PacketSender
+import com.rikmuld.corerm.common.objs.item.ItemBlockMain
 import com.rikmuld.camping.common.objs.tile.TileEntityTent
-import com.rikmuld.camping.common.objs.tile.TileEntityWithRotation
 import com.rikmuld.camping.core.GuiInfo
-import com.rikmuld.camping.core.ObjInfo
 import com.rikmuld.camping.core.Objs
 import com.rikmuld.camping.core.TentInfo
-import com.rikmuld.camping.core.Utils.PlayerUtils
-import com.rikmuld.camping.core.Utils.WorldUtils
+import com.rikmuld.camping.core.Utils.CampInvUtils
+import com.rikmuld.corerm.core.CoreUtils._
 import com.rikmuld.camping.misc.BoundsTracker
 import net.minecraft.block.Block
 import net.minecraft.block.material.Material
@@ -32,12 +29,20 @@ import net.minecraft.world.IBlockAccess
 import net.minecraft.world.World
 import net.minecraftforge.common.util.ForgeDirection
 import java.util.ArrayList
+import com.rikmuld.corerm.common.objs.tile.TileEntityMain
+import com.rikmuld.corerm.common.objs.tile.TileEntityWithRotation
+import com.rikmuld.corerm.core.ObjInfo
+import com.rikmuld.corerm.common.objs.block.BlockWithInstability
+import com.rikmuld.corerm.common.objs.block.BlockWithRotation
+import com.rikmuld.corerm.common.objs.block.BlockMain
+import com.rikmuld.corerm.common.objs.block.BlockWithModel
+import com.rikmuld.camping.core.ModInfo
 
 object Tent {
   def isBlockHeadOfBed(meta: Int): Boolean = true
 }
 
-class Tent(infoClass: Class[_]) extends BlockMain(infoClass, Material.cloth, classOf[TentItem].asInstanceOf[Class[ItemBlock]], false, false) with BlockWithModel with BlockWithRotation with BlockWithInstability {
+class Tent(infoClass: Class[_]) extends BlockMain(infoClass, Objs.tab, ModInfo.MOD_ID, Material.cloth, classOf[TentItem].asInstanceOf[Class[ItemBlock]], false, false) with BlockWithModel with BlockWithRotation with BlockWithInstability {
   var color: Int = _
   var rotationYaw: Float = 0
   setHardness(0.2F)

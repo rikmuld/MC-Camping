@@ -1,23 +1,15 @@
 package com.rikmuld.camping.common.objs.item
 
 import com.rikmuld.camping.CampingMod
-import com.rikmuld.camping.CampingMod
-import com.rikmuld.camping.common.inventory.inventory.InventoryItemMain
-import com.rikmuld.camping.common.inventory.inventory.InventoryItemMain
-import com.rikmuld.camping.common.inventory.SlotItemsNot
-import com.rikmuld.camping.common.inventory.SlotItemsNot
-import com.rikmuld.camping.common.inventory.SlotNoPickup
-import com.rikmuld.camping.common.inventory.SlotNoPickup
-import com.rikmuld.camping.core.GuiInfo
-import com.rikmuld.camping.core.GuiInfo
-import com.rikmuld.camping.core.ObjInfo
-import com.rikmuld.camping.core.ObjInfo
-
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemStack
 import net.minecraft.world.World
+import com.rikmuld.camping.core.GuiInfo
+import com.rikmuld.corerm.common.objs.item.ItemMain
+import com.rikmuld.camping.core.Objs
+import com.rikmuld.camping.core.ModInfo
 
-class Backpack(infoClass: Class[_]) extends ItemMain(infoClass) {
+class Backpack(infoClass: Class[_]) extends ItemMain(infoClass, Objs.tab, ModInfo.MOD_ID) {
   maxStackSize = 1
   setHasSubtypes(true)
 

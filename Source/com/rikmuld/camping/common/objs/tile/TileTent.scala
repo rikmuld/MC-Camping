@@ -7,23 +7,26 @@ import net.minecraft.util.AxisAlignedBB
 import net.minecraft.entity.player.EntityPlayer
 import com.rikmuld.camping.misc.BoundsStructure
 import com.rikmuld.camping.misc.BoundsTracker
-import com.rikmuld.camping.common.inventory.SlotState
 import net.minecraft.entity.player.EntityPlayer.EnumStatus
 import net.minecraft.item.ItemStack
 import cpw.mods.fml.relauncher.SideOnly
 import com.rikmuld.camping.misc.Bounds
 import java.util.ArrayList
+import com.rikmuld.corerm.core.CoreUtils._
 import net.minecraft.block.Block
 import cpw.mods.fml.relauncher.Side
 import com.rikmuld.camping.core.Objs
 import net.minecraft.init.Blocks
 import com.rikmuld.camping.core.Utils._
 import java.util.Random
-import com.rikmuld.camping.common.network.PacketSender
+import com.rikmuld.corerm.common.network.PacketSender
 import net.minecraft.util.ChatComponentTranslation
 import net.minecraft.util.ChatComponentText
 import com.rikmuld.camping.common.network.PlayerSleepInTent
 import net.minecraft.tileentity.TileEntity
+import com.rikmuld.corerm.common.objs.tile.TileEntityWithInventory
+import com.rikmuld.corerm.common.objs.tile.TileEntityWithRotation
+import com.rikmuld.corerm.common.inventory.SlotState
 
 object TileEntityTent {
   var bounds: Array[Bounds] = Array(new Bounds(-0.5F, 0, 0, 1.5F, 1.5F, 3), new Bounds(-2, 0, -0.5F, 1, 1.5F, 1.5F), new Bounds(-0.5F, 0, -2, 1.5F, 1.5F, 1), new Bounds(0, 0, -0.5F, 3, 1.5F, 1.5F))

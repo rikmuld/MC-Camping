@@ -1,17 +1,6 @@
 package com.rikmuld.camping.common.objs.item
 
 import com.rikmuld.camping.CampingMod
-import com.rikmuld.camping.CampingMod
-import com.rikmuld.camping.common.inventory.inventory.InventoryItemMain
-import com.rikmuld.camping.common.inventory.inventory.InventoryItemMain
-import com.rikmuld.camping.common.inventory.SlotItemsNot
-import com.rikmuld.camping.common.inventory.SlotItemsNot
-import com.rikmuld.camping.common.inventory.SlotNoPickup
-import com.rikmuld.camping.common.inventory.SlotNoPickup
-import com.rikmuld.camping.core.GuiInfo
-import com.rikmuld.camping.core.GuiInfo
-import com.rikmuld.camping.core.ObjInfo
-import com.rikmuld.camping.core.ObjInfo
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemStack
 import net.minecraft.world.World
@@ -27,11 +16,14 @@ import net.minecraft.item.Item
 import cpw.mods.fml.relauncher.Side
 import com.rikmuld.camping.core.Objs
 import com.rikmuld.camping.core.PartInfo
-import com.rikmuld.camping.core.TextInfo
 import org.lwjgl.input.Keyboard
 import net.minecraft.util.IIcon
+import com.rikmuld.corerm.core.TextInfo
+import com.rikmuld.camping.core.GuiInfo
+import com.rikmuld.corerm.common.objs.item.ItemMain
+import com.rikmuld.camping.core.ModInfo
 
-class Kit(infoClass: Class[_]) extends ItemMain(infoClass, false) {
+class Kit(infoClass: Class[_]) extends ItemMain(infoClass, Objs.tab, ModInfo.MOD_ID, false) {
   maxStackSize = 1
   setHasSubtypes(true)
 

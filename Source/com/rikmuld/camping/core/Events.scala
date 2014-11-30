@@ -7,12 +7,10 @@ import com.rikmuld.camping.client.gui.GuiMapHUD
 import com.rikmuld.camping.common.inventory.gui.InventoryCampinv
 import com.rikmuld.camping.common.network.NBTPlayer
 import com.rikmuld.camping.common.network.OpenGui
-import com.rikmuld.camping.common.network.PacketSender
+import com.rikmuld.corerm.common.network.PacketSender
 import com.rikmuld.camping.common.objs.block.Hemp
 import com.rikmuld.camping.common.objs.item.IKnife
 import com.rikmuld.camping.common.objs.tile.TileEntityCampfireCook
-import com.rikmuld.camping.core.Utils.ItemStackUtils
-import com.rikmuld.camping.core.Utils.PlayerUtils
 import cpw.mods.fml.client.FMLClientHandler
 import cpw.mods.fml.client.event.ConfigChangedEvent
 import cpw.mods.fml.common.eventhandler.Event
@@ -53,6 +51,8 @@ import com.rikmuld.camping.common.objs.item.ArmorFur
 import cpw.mods.fml.common.gameevent.TickEvent.Phase
 import com.rikmuld.camping.common.objs.tile.TileEntityTrap
 import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerRespawnEvent
+import com.rikmuld.corerm.core.CoreUtils._
+import com.rikmuld.camping.core.Utils.CampInvUtils
 
 class Events {
   var tickLight: Int = 0

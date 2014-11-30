@@ -16,19 +16,14 @@ import net.minecraft.item.crafting.CraftingManager
 import net.minecraftforge.common.util.Constants
 import scala.collection.JavaConversions._
 import java.util.Random
-import com.rikmuld.camping.common.inventory.inventory.InventoryItemMain
-import com.rikmuld.camping.common.inventory.inventory.InventoryPlayerMain
-import com.rikmuld.camping.common.inventory.SlotDisable
-import com.rikmuld.camping.common.inventory.SlotItemsNot
-import com.rikmuld.camping.common.inventory.SlotItemsOnly
 import com.rikmuld.camping.core.Objs
-import com.rikmuld.camping.core.Objs
-import com.rikmuld.camping.common.inventory.SlotItemsNot
-import com.rikmuld.camping.common.inventory.SlotDisable
-import com.rikmuld.camping.common.inventory.inventory.InventoryItemMain
-import com.rikmuld.camping.common.inventory.SlotItemsOnly
-import com.rikmuld.camping.common.inventory.inventory.InventoryPlayerMain
 import net.minecraft.nbt.NBTTagList
+import com.rikmuld.corerm.core.CoreUtils._
+import com.rikmuld.corerm.common.inventory.SlotItemsNot
+import com.rikmuld.corerm.common.inventory.SlotDisable
+import com.rikmuld.corerm.common.inventory.SlotItemsOnly
+import com.rikmuld.corerm.common.inventory.inventory.InventoryPlayerMain
+import com.rikmuld.corerm.common.inventory.inventory.InventoryItemMain
 
 class ContainerCampinv(var player: EntityPlayer) extends Container {
   var backpackInv: InventoryItemMain = new InventoryItemMain(new ItemStack(Objs.backpack, 1, 0), player, 27, 64)

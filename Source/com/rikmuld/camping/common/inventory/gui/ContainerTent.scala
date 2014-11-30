@@ -1,16 +1,16 @@
 package com.rikmuld.camping.common.inventory.gui
 
-import com.rikmuld.camping.common.inventory.SlotItemsOnly
 import com.rikmuld.camping.common.objs.tile.TileEntityTent
-import com.rikmuld.camping.core.Utils._
+import com.rikmuld.corerm.common.inventory.SlotItemsOnly
+import com.rikmuld.corerm.common.inventory.SlotState
+import com.rikmuld.corerm.common.inventory.gui.ContainerTileMain
+import com.rikmuld.corerm.core.CoreUtils.ContainerUtils
+
 import net.minecraft.entity.player.EntityPlayer
-import net.minecraft.entity.player.InventoryPlayer
 import net.minecraft.init.Items
 import net.minecraft.inventory.IInventory
 import net.minecraft.inventory.Slot
-import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
-import com.rikmuld.camping.common.inventory.SlotState
 
 class ContainerTentLanterns(player: EntityPlayer, tile: IInventory) extends ContainerTileMain(player, tile) {
   private var tent: TileEntityTent = tile.asInstanceOf[TileEntityTent]

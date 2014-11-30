@@ -1,15 +1,14 @@
 package com.rikmuld.camping.common.inventory.gui
 
-import com.rikmuld.camping.common.inventory.SlotNoPickup
-import com.rikmuld.camping.common.inventory.inventory.InventoryItemMain
-import com.rikmuld.camping.core.Utils._
+import com.rikmuld.corerm.common.inventory.SlotItem
+import com.rikmuld.corerm.core.CoreUtils._
+import net.minecraft.block.Block
 import net.minecraft.entity.player.EntityPlayer
+import net.minecraft.init.Blocks
 import net.minecraft.inventory.IInventory
 import net.minecraft.inventory.Slot
 import net.minecraft.item.ItemStack
-import net.minecraft.block.Block
-import net.minecraft.init.Blocks
-import com.rikmuld.camping.common.inventory.SlotItem
+import com.rikmuld.corerm.common.inventory.gui.ContainerTileMain
 
 class ContainerTrap(player: EntityPlayer, inv: IInventory) extends ContainerTileMain(player, inv) {
   addSlotToContainer(new SlotItem(inv, 0, 80, 12))

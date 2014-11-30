@@ -1,5 +1,7 @@
 package com.rikmuld.camping.core
 
+import com.rikmuld.corerm.core.ObjInfo
+
 class KnifeInfo extends ObjInfo {
   override def NAME = "knife"
 }
@@ -128,9 +130,4 @@ class KitInfo extends ObjInfo {
 class LanternInfo extends ObjInfo {
   override def NAME = "lantern"
   override def NAME_META = Array("lanternOn", "lanternOff")
-}
-
-trait ObjInfo {
-  def NAME: String = null
-  def NAME_META: Array[String] = null
 }

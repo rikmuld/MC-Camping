@@ -1,14 +1,12 @@
 package com.rikmuld.camping.common.objs.tile
 
 import java.util.ArrayList
-
 import scala.collection.JavaConversions.asScalaBuffer
-
-import com.rikmuld.camping.core.Utils.PlayerUtils
-
+import com.rikmuld.camping.core.Utils.CampInvUtils
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.init.Blocks
 import net.minecraft.util.AxisAlignedBB
+import com.rikmuld.corerm.common.objs.tile.TileEntityMain
 
 class TileEntityLight extends TileEntityMain {
   var tick: Int = _

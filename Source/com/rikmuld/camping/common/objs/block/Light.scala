@@ -1,6 +1,5 @@
 package com.rikmuld.camping.common.objs.block
 
-import com.rikmuld.camping.core.ObjInfo
 import net.minecraft.block.material.Material
 import net.minecraft.tileentity.TileEntity
 import net.minecraft.entity.player.EntityPlayer
@@ -12,7 +11,6 @@ import net.minecraft.block.Block
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.init.Items
 import net.minecraft.init.Blocks
-import com.rikmuld.camping.common.objs.item.ItemBlockMain
 import net.minecraft.item.ItemBlock
 import scala.collection.JavaConversions._
 import com.rikmuld.camping.core.Utils._
@@ -24,8 +22,12 @@ import net.minecraft.item.Item
 import cpw.mods.fml.relauncher.Side
 import net.minecraft.util.AxisAlignedBB
 import com.rikmuld.camping.common.objs.tile.TileEntityLight
+import com.rikmuld.corerm.common.objs.block.BlockMain
+import com.rikmuld.corerm.common.objs.block.BlockWithModel
+import com.rikmuld.camping.core.Objs
+import com.rikmuld.camping.core.ModInfo
 
-class Light(infoClass: Class[_]) extends BlockMain(infoClass, Material.air) with BlockWithModel {
+class Light(infoClass: Class[_]) extends BlockMain(infoClass, Objs.tab, ModInfo.MOD_ID,  Material.air) with BlockWithModel {
   setLightLevel(1.0F)
   setBlockBounds(0F, 0F, 0F, 0F, 0F, 0F)
   setCreativeTab(null)

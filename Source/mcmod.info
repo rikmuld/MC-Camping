@@ -3,7 +3,7 @@
   "modid": "camping",
   "name": "The Camping Mod 2",
   "description": "This mod adds a some camping elements to minecraft",
-  "version": "2.1",
+  "version": "2.1c",
   "mcversion": "1.7.10",
   "url": "rikmuld.com",
   "updateUrl": "",
@@ -16,7 +16,8 @@
   ],
   "parent":"",
   "dependencies": [
- "mod_MinecraftForge"
+ "mod_MinecraftForge",
+ "corerm"
   ]
 }
 ]

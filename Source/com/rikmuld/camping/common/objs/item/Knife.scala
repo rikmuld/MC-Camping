@@ -1,6 +1,5 @@
 package com.rikmuld.camping.common.objs.item
 
-import com.rikmuld.camping.core.ObjInfo
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.util.MovingObjectPosition
 import net.minecraft.item.ItemStack
@@ -9,8 +8,10 @@ import net.minecraft.block.Block
 import net.minecraft.init.Blocks
 import com.rikmuld.camping.misc.Rotation
 import com.rikmuld.camping.core.Objs
+import com.rikmuld.corerm.common.objs.item.ItemMain
+import com.rikmuld.camping.core.ModInfo
 
-class Knife(infoClass: Class[_]) extends ItemMain(infoClass) with IKnife {
+class Knife(infoClass: Class[_]) extends ItemMain(infoClass, Objs.tab, ModInfo.MOD_ID) with IKnife {
   setHasSubtypes(true)
   setMaxDamage(Objs.config.toolUse)
   setMaxStackSize(1)

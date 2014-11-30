@@ -15,9 +15,9 @@ import net.minecraft.inventory.IInventory
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.entity.player.InventoryPlayer
 import net.minecraft.client.gui.inventory.GuiContainer
-import com.rikmuld.camping.common.network.PacketSender
+import com.rikmuld.corerm.common.network.PacketSender
 import com.rikmuld.camping.common.network.OpenGui
-import com.rikmuld.camping.core.Utils._
+import com.rikmuld.corerm.core.CoreUtils._
 import com.rikmuld.camping.common.inventory.gui.ContainerTentChests
 import com.rikmuld.camping.common.inventory.gui.ContainerTentLanterns
 import java.util.ArrayList

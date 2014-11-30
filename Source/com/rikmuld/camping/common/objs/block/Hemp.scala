@@ -18,8 +18,11 @@ import net.minecraftforge.common.EnumPlantType
 import net.minecraftforge.common.IPlantable
 import net.minecraftforge.common.util.ForgeDirection
 import cpw.mods.fml.relauncher.Side
+import com.rikmuld.corerm.common.objs.block.BlockMain
+import com.rikmuld.corerm.common.objs.block.BlockWithModel
+import com.rikmuld.camping.core.ModInfo
 
-class Hemp(infoClass: Class[_]) extends BlockMain(infoClass, Material.plants) with IPlantable with BlockWithModel {
+class Hemp(infoClass: Class[_]) extends BlockMain(infoClass, Objs.tab, ModInfo.MOD_ID, Material.plants) with IPlantable with BlockWithModel {
   setTickRandomly(true)
 
   override def canPlaceBlockAt(world: World, x: Int, y: Int, z: Int): Boolean = {

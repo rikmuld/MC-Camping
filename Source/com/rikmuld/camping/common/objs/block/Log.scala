@@ -1,6 +1,5 @@
 package com.rikmuld.camping.common.objs.block
 
-import com.rikmuld.camping.core.ObjInfo
 import net.minecraft.block.material.Material
 import net.minecraft.tileentity.TileEntity
 import net.minecraft.entity.player.EntityPlayer
@@ -12,7 +11,6 @@ import net.minecraft.block.Block
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.init.Items
 import net.minecraft.init.Blocks
-import com.rikmuld.camping.common.objs.item.ItemBlockMain
 import net.minecraft.item.ItemBlock
 import scala.collection.JavaConversions._
 import com.rikmuld.camping.core.Utils._
@@ -29,8 +27,12 @@ import net.minecraft.util.IIcon
 import net.minecraft.entity.Entity
 import com.rikmuld.camping.core.Objs
 import com.rikmuld.camping.common.objs.tile.TileEntityLog
+import com.rikmuld.corerm.common.objs.block.BlockWithRotation
+import com.rikmuld.corerm.common.objs.block.BlockMain
+import com.rikmuld.corerm.common.objs.block.BlockWithModel
+import com.rikmuld.camping.core.ModInfo
 
-class Log(infoClass: Class[_]) extends BlockMain(infoClass, Material.wood, false, false) with BlockWithModel with BlockWithRotation {
+class Log(infoClass: Class[_]) extends BlockMain(infoClass, Objs.tab, ModInfo.MOD_ID,  Material.wood, false, false) with BlockWithModel with BlockWithRotation {
   setStepSound(Block.soundTypeWood)
   setHardness(2.0F)
   setHarvestLevel("axe", 0)

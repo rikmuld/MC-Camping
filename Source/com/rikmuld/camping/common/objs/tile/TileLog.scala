@@ -5,6 +5,7 @@ import net.minecraft.util.AxisAlignedBB
 import cpw.mods.fml.relauncher.SideOnly
 import cpw.mods.fml.relauncher.Side
 import com.rikmuld.camping.common.objs.entity.EntityMountableBlock
+import com.rikmuld.corerm.common.objs.tile.TileEntityWithRotation
 
 class TileEntityLog extends TileEntityWithRotation {
   var update: Boolean = true

@@ -1,6 +1,5 @@
 package com.rikmuld.camping.common.objs.block
 
-import com.rikmuld.camping.core.ObjInfo
 import net.minecraft.block.material.Material
 import net.minecraft.tileentity.TileEntity
 import net.minecraft.entity.player.EntityPlayer
@@ -9,10 +8,11 @@ import net.minecraft.entity.item.EntityItem
 import net.minecraft.item.ItemStack
 import net.minecraft.world.World
 import net.minecraft.block.Block
+import com.rikmuld.corerm.core.CoreUtils._
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.init.Items
 import net.minecraft.init.Blocks
-import com.rikmuld.camping.common.objs.item.ItemBlockMain
+import com.rikmuld.corerm.common.objs.item.ItemBlockMain
 import net.minecraft.item.ItemBlock
 import scala.collection.JavaConversions._
 import com.rikmuld.camping.core.Utils._
@@ -22,8 +22,14 @@ import net.minecraft.creativetab.CreativeTabs
 import cpw.mods.fml.relauncher.SideOnly
 import net.minecraft.item.Item
 import cpw.mods.fml.relauncher.Side
+import com.rikmuld.corerm.core.ObjInfo
+import com.rikmuld.corerm.common.objs.block.BlockWithInstability
+import com.rikmuld.corerm.common.objs.block.BlockMain
+import com.rikmuld.corerm.common.objs.block.BlockWithModel
+import com.rikmuld.camping.core.Objs
+import com.rikmuld.camping.core.ModInfo
 
-class Lantern(infoClass: Class[_]) extends BlockMain(infoClass, Material.glass, classOf[LanternItem].asInstanceOf[Class[ItemBlock]], false, true) with BlockWithModel with BlockWithInstability {
+class Lantern(infoClass: Class[_]) extends BlockMain(infoClass, Objs.tab, ModInfo.MOD_ID, Material.glass, classOf[LanternItem].asInstanceOf[Class[ItemBlock]], false, true) with BlockWithModel with BlockWithInstability {
   var burnTime: Int = _
   setBlockBounds(0.3F, 0, 0.3F, 0.7F, 0.9F, 0.7F)
 

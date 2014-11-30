@@ -3,7 +3,6 @@ package com.rikmuld.camping.client.gui
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.inventory.IInventory
 import com.rikmuld.camping.core.TextureInfo
-import com.rikmuld.camping.core.TextInfo
 import net.minecraft.util.StatCollector
 import com.rikmuld.camping.common.inventory.gui.ContainerCampfire
 import com.rikmuld.camping.common.objs.tile.TileEntityCampfire
@@ -12,6 +11,8 @@ import org.lwjgl.opengl.GL11
 import net.minecraft.util.ResourceLocation
 import net.minecraft.client.gui.inventory.GuiContainer
 import com.rikmuld.camping.common.inventory.gui.ContainerCampfireCook
+import com.rikmuld.corerm.core.TextInfo
+import com.rikmuld.corerm.client.gui.GuiContainerMain
 
 class GuiCampfire(player: EntityPlayer, tile: IInventory) extends GuiContainerMain(new ContainerCampfire(player, tile)) {
   ySize = 120;

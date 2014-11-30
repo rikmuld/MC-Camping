@@ -1,6 +1,6 @@
 package com.rikmuld.camping.common.objs.tile
 
-import com.rikmuld.camping.common.network.PacketSender
+import com.rikmuld.corerm.common.network.PacketSender
 import net.minecraft.entity.EntityLivingBase
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.AxisAlignedBB
@@ -24,6 +24,8 @@ import com.rikmuld.camping.common.objs.entity.Bear
 import java.util.UUID
 import net.minecraft.entity.SharedMonsterAttributes
 import net.minecraft.entity.ai.attributes.AttributeModifier
+import com.rikmuld.corerm.common.objs.tile.TileEntityWithInventory
+import com.rikmuld.corerm.common.objs.tile.TileEntityMain
 
 object TileEntityTrap {
   val UUIDSpeedTrap = new UUID(new Random(242346763).nextLong, new Random(476456556).nextLong)

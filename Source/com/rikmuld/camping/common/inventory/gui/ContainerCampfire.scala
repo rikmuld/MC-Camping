@@ -4,15 +4,17 @@ import net.minecraft.item.ItemStack
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.inventory.IInventory
 import net.minecraft.inventory.Slot
+import com.rikmuld.corerm.core.CoreUtils._
 import net.minecraft.init.Items
 import com.rikmuld.camping.core.Utils._
-import com.rikmuld.camping.common.inventory.SlotItemsOnly
 import com.rikmuld.camping.common.objs.tile.TileEntityCampfireCook
 import com.rikmuld.camping.common.inventory.SlotCooking
 import net.minecraft.inventory.ICrafting
 import com.rikmuld.camping.core.ObjRegistry
 import java.util.ArrayList
 import com.rikmuld.camping.core.Objs
+import com.rikmuld.corerm.common.inventory.SlotItemsOnly
+import com.rikmuld.corerm.common.inventory.gui.ContainerTileMain
 
 class ContainerCampfire(player: EntityPlayer, tile: IInventory) extends ContainerTileMain(player, tile) {
   addSlotToContainer(new SlotItemsOnly(tile, 0, 71, 12, Items.dye))

@@ -1,14 +1,15 @@
 package com.rikmuld.camping.common.objs.item
 
 import com.rikmuld.camping.core.Objs
-
 import net.minecraft.block.Block
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.init.Blocks
 import net.minecraft.item.ItemStack
 import net.minecraft.world.World
+import com.rikmuld.corerm.common.objs.item.ItemMain
+import com.rikmuld.camping.core.ModInfo
 
-class HempItem(block: Block, infoClass: Class[_]) extends ItemMain(infoClass) {
+class HempItem(block: Block, infoClass: Class[_]) extends ItemMain(infoClass, Objs.tab, ModInfo.MOD_ID) {
   override def onItemUse(stack: ItemStack, player: EntityPlayer, world: World, xx: Int, yy: Int, zz: Int, sideside: Int, partClickX: Float, partClickY: Float, partClickZ: Float): Boolean = {
     var x = xx
     var y = yy
