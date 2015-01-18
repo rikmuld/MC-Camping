@@ -22,7 +22,7 @@ import com.rikmuld.corerm.common.objs.block.BlockMain
 import com.rikmuld.corerm.common.objs.block.BlockWithModel
 import com.rikmuld.camping.core.ModInfo
 
-class Hemp(infoClass: Class[_]) extends BlockMain(infoClass, Objs.tab, ModInfo.MOD_ID, Material.plants, null, false, false) with IPlantable with BlockWithModel {
+class Hemp(infoClass: Class[_]) extends BlockMain(infoClass, Objs.tab, ModInfo.MOD_ID, Material.plants) with IPlantable with BlockWithModel {
   setTickRandomly(true)
   setCreativeTab(null)
 

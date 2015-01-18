@@ -7,6 +7,7 @@ import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.world.World
 import org.lwjgl.input.Keyboard
 import com.rikmuld.camping.core.Objs
+import net.minecraft.client.settings.GameSettings
 
 class EntityMountableBlock(world: World, var xFlag: Int, var yFlag: Int, var zFlag: Int) extends Entity(world) {
   var plX: Double = _
@@ -33,8 +34,7 @@ class EntityMountableBlock(world: World, var xFlag: Int, var yFlag: Int, var zFl
     super.onUpdate()
     if (worldObj.getBlock(xFlag, yFlag, zFlag) != Objs.log) setDead()
     if (riddenByEntity != null) {
-      if (Keyboard.isCreated && Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) &&
-        Minecraft.getMinecraft.inGameHasFocus) {
+      if (Minecraft.getMinecraft.gameSettings.keyBindSneak.isPressed && Minecraft.getMinecraft.inGameHasFocus) {
         riddenByEntity.asInstanceOf[EntityPlayer].mountEntity(null)
         riddenByEntity = null
       }
