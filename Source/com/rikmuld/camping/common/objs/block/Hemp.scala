@@ -22,8 +22,9 @@ import com.rikmuld.corerm.common.objs.block.BlockMain
 import com.rikmuld.corerm.common.objs.block.BlockWithModel
 import com.rikmuld.camping.core.ModInfo
 
-class Hemp(infoClass: Class[_]) extends BlockMain(infoClass, Objs.tab, ModInfo.MOD_ID, Material.plants) with IPlantable with BlockWithModel {
+class Hemp(infoClass: Class[_]) extends BlockMain(infoClass, Objs.tab, ModInfo.MOD_ID, Material.plants, null, false, false) with IPlantable with BlockWithModel {
   setTickRandomly(true)
+  setCreativeTab(null)
 
   override def canPlaceBlockAt(world: World, x: Int, y: Int, z: Int): Boolean = {
     val block = world.getBlock(x, y - 1, z)

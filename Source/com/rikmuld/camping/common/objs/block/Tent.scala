@@ -9,7 +9,6 @@ import com.rikmuld.camping.common.objs.tile.TileEntityTent
 import com.rikmuld.camping.core.GuiInfo
 import com.rikmuld.camping.core.Objs
 import com.rikmuld.camping.core.TentInfo
-import com.rikmuld.camping.core.Utils.CampInvUtils
 import com.rikmuld.corerm.core.CoreUtils._
 import com.rikmuld.camping.misc.BoundsTracker
 import net.minecraft.block.Block
@@ -42,7 +41,7 @@ object Tent {
   def isBlockHeadOfBed(meta: Int): Boolean = true
 }
 
-class Tent(infoClass: Class[_]) extends BlockMain(infoClass, Objs.tab, ModInfo.MOD_ID, Material.cloth, classOf[TentItem].asInstanceOf[Class[ItemBlock]], false, false) with BlockWithModel with BlockWithRotation with BlockWithInstability {
+class Tent(infoClass: Class[_]) extends BlockMain(infoClass, Objs.tab, ModInfo.MOD_ID, Material.cloth, null, false, false) with BlockWithModel with BlockWithRotation with BlockWithInstability {
   var color: Int = _
   var rotationYaw: Float = 0
   setHardness(0.2F)
@@ -77,6 +76,7 @@ class Tent(infoClass: Class[_]) extends BlockMain(infoClass, Objs.tab, ModInfo.M
     else if (facing == 1) direction = ForgeDirection.SOUTH.ordinal() - 2
     else if (facing == 2) direction = ForgeDirection.WEST.ordinal() - 2
     else if (facing == 3) direction = ForgeDirection.EAST.ordinal() - 2
+    println(direction)
     ((block == null) || block.isReplaceable(world, x, y, z)) && Objs.tentStructure(direction).canBePlaced(world, new BoundsTracker(x, y, z, TileEntityTent.bounds(direction)))
   }
   override def createNewTileEntity(world: World, meta: Int): TileEntityMain = new TileEntityTent()
@@ -129,12 +129,5 @@ class Tent(infoClass: Class[_]) extends BlockMain(infoClass, Objs.tab, ModInfo.M
   override def setBlockBoundsBasedOnState(world: IBlockAccess, x: Int, y: Int, z: Int) {
     val tile = world.getTileEntity(x, y, z).asInstanceOf[TileEntityTent]
     TileEntityTent.bounds(tile.rotation).setBlockBounds(this)
-  }
-}
-
-class TentItem(block: Block) extends ItemBlockMain(block, classOf[TentInfo].asInstanceOf[Class[ObjInfo]]) {
-  override def onItemUse(stack: ItemStack, player: EntityPlayer, world: World, x: Int, y: Int, z: Int, side: Int, xPartHit: Float, yPartHit: Float, zPartHit: Float): Boolean = {
-    Objs.tent.asInstanceOf[Tent].rotationYaw = player.rotationYaw
-    super.onItemUse(stack, player, world, x, y, z, side, xPartHit, yPartHit, zPartHit)
   }
 }

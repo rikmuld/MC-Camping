@@ -2,7 +2,7 @@ package com.rikmuld.camping.common.objs.tile
 
 import java.util.ArrayList
 import scala.collection.JavaConversions.asScalaBuffer
-import com.rikmuld.camping.core.Utils.CampInvUtils
+import com.rikmuld.camping.core.Utils.CampingUtils
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.init.Blocks
 import net.minecraft.util.AxisAlignedBB

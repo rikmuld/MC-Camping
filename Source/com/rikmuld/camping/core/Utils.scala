@@ -28,7 +28,7 @@ import net.minecraftforge.common.util.Constants
 import com.rikmuld.corerm.core.CoreUtils._
 
 object Utils {
-  implicit class CampInvUtils(player: EntityPlayer) {
+  implicit class CampingUtils(player: EntityPlayer) {
     def loadCampInvItemsFromNBT(): ArrayList[ItemStack] = {
       val tag = player.getEntityData.getCompoundTag(NBTInfo.INV_CAMPING)
       if (tag == null) return null

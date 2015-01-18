@@ -25,6 +25,7 @@ class SleepingBagRender extends TileEntitySpecialRenderer {
       case 1 => GL11.glTranslatef(-1, 0, 0)
       case 2 => GL11.glTranslatef(-1, 0, -1)
       case 3 => GL11.glTranslatef(0, 0, -1)
+      case _ => ;
     }
     if (tile.getWorldObj().getBlockMetadata(tile.xCoord, tile.yCoord, tile.zCoord) == 0) {
       bindTexture(new ResourceLocation(TextureInfo.MODEL_SLEEPING_TOP))

@@ -52,7 +52,8 @@ import cpw.mods.fml.common.gameevent.TickEvent.Phase
 import com.rikmuld.camping.common.objs.tile.TileEntityTrap
 import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerRespawnEvent
 import com.rikmuld.corerm.core.CoreUtils._
-import com.rikmuld.camping.core.Utils.CampInvUtils
+import com.rikmuld.camping.core.Utils.CampingUtils
+import com.rikmuld.camping.common.objs.block.Tent
 
 class Events {
   var tickLight: Int = 0
@@ -132,6 +133,7 @@ class Events {
   def onPlayerTick(event: PlayerTickEvent) {
     val player = event.player
     val world = player.worldObj
+    Objs.tent.asInstanceOf[Tent].rotationYaw = player.rotationYaw
 
     if(!Objs.config.coreOnly){
       if (event.phase.equals(Phase.START)) {
