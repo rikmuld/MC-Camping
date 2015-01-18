@@ -28,7 +28,7 @@ import com.rikmuld.corerm.common.objs.block.BlockWithModel
 import com.rikmuld.camping.core.ModInfo
 
 class Campfire(infoClass: Class[_]) extends BlockMain(infoClass, Objs.tab, ModInfo.MOD_ID, Material.fire, false, false) with BlockWithModel with BlockWithInstability {
-  setHardness(3.0F)
+  setHardness(2.0F)
   setLightLevel(1.0F)
   setStepSound(Block.soundTypeStone)
   setBlockBounds(0.125F, 0.0F, 0.125F, 0.875F, 0.125F, 0.875F)
@@ -41,7 +41,7 @@ class Campfire(infoClass: Class[_]) extends BlockMain(infoClass, Objs.tab, ModIn
   override def getDrops(world: World, x: Int, y: Int, z: Int, metadata: Int, fortune: Int): ArrayList[ItemStack] = {
     val stacks = new ArrayList[ItemStack]()
     stacks.add(new ItemStack(Items.stick, world.rand.nextInt(4) + 1, 0))
-    //stacks.add(new ItemStack(Objs.campfireCook, 1, 0))
+    stacks.add(new ItemStack(Objs.campfireCook, 1, 0))
     stacks
   }
   override def getIcon(side: Int, metadata: Int): IIcon = Blocks.planks.getIcon(0, 0)
