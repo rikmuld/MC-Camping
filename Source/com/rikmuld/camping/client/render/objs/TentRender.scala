@@ -77,7 +77,7 @@ class TentRender extends TileEntitySpecialRenderer {
       GL11.glRotatef(-40, 0, 1, 0)
       GL11.glRotatef(-25, -1, 0, 1)
       GL11.glScalef(0.3F, -0.3F, -0.3F)
-      renderer.renderItem(tileentity.getWorldObj().getClosestPlayer(x, y, z, 2000), lanternStack, 0)
+      if(tileentity.getWorldObj().getClosestPlayer(x, y, z, -1)!=null&&lanternStack!=null)renderer.renderItem(tileentity.getWorldObj().getClosestPlayer(x, y, z, -1), lanternStack, 0)
     }
     GL11.glPopMatrix()
   }
