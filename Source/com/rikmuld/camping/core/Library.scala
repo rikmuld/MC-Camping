@@ -106,3 +106,14 @@ object TextureInfo {
   final val MODEL_CAMPER_FEMALE = MODEL_LOCATION + "ModelCamperFemale.png"
   final val MODEL_CAMPER_MALE = MODEL_LOCATION + "ModelCamperMale.png"
 }
+
+object KeyInfo {
+  final val CATAGORY_MOD = "The Camping Mod"
+  final val INVENTORY_KEY = 0
+
+  final val desc: Array[String] = Array(
+    "Camping Inventory Key")
+
+  final val values: Array[Integer] = Array(
+    Keyboard.KEY_C)
+}

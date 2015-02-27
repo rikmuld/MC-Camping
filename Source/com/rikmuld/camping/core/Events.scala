@@ -54,6 +54,11 @@ import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerRespawnEvent
 import com.rikmuld.corerm.core.CoreUtils._
 import com.rikmuld.camping.core.Utils.CampingUtils
 import com.rikmuld.camping.common.objs.block.Tent
+import cpw.mods.fml.common.gameevent.InputEvent.KeyInputEvent
+import net.minecraft.client.gui.GuiChat
+import com.rikmuld.camping.common.network.KeyData
+import com.rikmuld.camping.CampingMod
+import com.rikmuld.camping.CampingMod
 
 class Events {
   var tickLight: Int = 0
@@ -129,6 +134,9 @@ class Events {
       }
     }
   }
+  def keyPressedServer(player: EntityPlayer, id: Int) {
+    if(id==KeyInfo.values(KeyInfo.INVENTORY_KEY))player.openGui(CampingMod, GuiInfo.GUI_CAMPINV, player.worldObj, 0, 0, 0)
+  }
   @SubscribeEvent
   def onPlayerTick(event: PlayerTickEvent) {
     val player = event.player
@@ -196,6 +204,20 @@ class EventsClient {
   var map: GuiMapHUD = _
   var pressFlag: Array[Boolean] = new Array[Boolean](1)
 
+  @SubscribeEvent
+  def onKeyInput(event: KeyInputEvent) {
+    if (!FMLClientHandler.instance.isGUIOpen(classOf[GuiChat])) {
+      for (key <- 0 to Objs.keys.length - 1) {
+        if (Objs.keys(key).isPressed) {
+          keyPressedClient(Objs.keys(key).getKeyCode)
+          PacketSender.toServer(new KeyData(Objs.keys(key).getKeyCode))
+        }
+      }
+    }
+  }
+  def keyPressedClient(id: Int) {
+    val player = Minecraft.getMinecraft.thePlayer
+  }
   @SubscribeEvent
   def guiOpenClient(event: GuiOpenEvent) {
     if (!Objs.config.coreOnly) {

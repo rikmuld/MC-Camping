@@ -170,3 +170,12 @@ class PlayerExitLog(var x: Int, var y: Int, var z: Int) extends BasicPacketData 
     stream.writeInt(z)
   }
 }
+
+class KeyData(keyId: Int) extends BasicPacketData {
+  var id = keyId
+
+  def this() = this(0)
+  def setData(stream: PacketBuffer) = stream.writeInt(id)
+  def getData(stream: PacketBuffer) = id = stream.readInt
+  def handlePacket(player: EntityPlayer, ctx: MessageContext) = Objs.events.keyPressedServer(player, id)
+}

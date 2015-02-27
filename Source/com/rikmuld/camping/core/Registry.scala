@@ -131,6 +131,8 @@ import net.minecraftforge.common.MinecraftForge
 import net.minecraftforge.common.config.Configuration
 import net.minecraftforge.common.util.EnumHelper
 import cpw.mods.fml.relauncher.Side
+import net.minecraft.client.settings.KeyBinding
+import com.rikmuld.camping.common.network.KeyData
 
 object Objs {
   var tab: CreativeTabs = _
@@ -146,6 +148,7 @@ object Objs {
   var fur: ArmorMaterial = _
   var tentM, trapOpen, trapClose: CustomModel = _
   var tentStructure: Array[BoundsStructure] = _
+  var keys: Array[KeyBinding] = _
 }
 
 object MiscRegistry {
@@ -157,6 +160,7 @@ object MiscRegistry {
     PacketDataManager.registerPacketData(classOf[PlayerSleepInTent].asInstanceOf[Class[BasicPacketData]])
     PacketDataManager.registerPacketData(classOf[BoundsData].asInstanceOf[Class[BasicPacketData]])
     PacketDataManager.registerPacketData(classOf[PlayerExitLog].asInstanceOf[Class[BasicPacketData]])
+    PacketDataManager.registerPacketData(classOf[KeyData].asInstanceOf[Class[BasicPacketData]])
 
     GameRegistry.registerTileEntity(classOf[TileEntityLantern], ModInfo.MOD_ID + "_lantern")
     GameRegistry.registerTileEntity(classOf[TileEntityLight], ModInfo.MOD_ID + "_light")
@@ -198,6 +202,12 @@ object MiscRegistry {
   def postInit(event: FMLPostInitializationEvent) {}
   @SideOnly(Side.CLIENT)
   def initClient {
+    Objs.keys = new Array[KeyBinding](KeyInfo.desc.length);
+    for (i <- 0 to Objs.keys.length - 1) {
+      Objs.keys(i) = new KeyBinding(KeyInfo.desc(i), KeyInfo.values(i), KeyInfo.CATAGORY_MOD);
+      ClientRegistry.registerKeyBinding(Objs.keys(i));
+    }
+    
     CampingMod.proxy.registerGui(GuiInfo.GUI_CAMPFIRE_COOK, classOf[ContainerCampfireCook], classOf[GuiCampfireCook])
     CampingMod.proxy.registerGui(GuiInfo.GUI_KIT, classOf[ContainerKit], classOf[GuiKit])
     CampingMod.proxy.registerGui(GuiInfo.GUI_CAMPFIRE, classOf[ContainerCampfire], classOf[GuiCampfire])
