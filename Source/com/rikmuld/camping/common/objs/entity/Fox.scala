@@ -78,7 +78,7 @@ class Fox(world: World) extends EntityAnimal(world) {
   }
   override def createChild(entity: EntityAgeable): EntityAgeable = new Fox(this.worldObj)
   override def isBreedingItem(stack: ItemStack): Boolean = stack.getItem() == Items.chicken
-  override def getLivingSound:String = ModInfo.MOD_ID+":mob.fox.say"
-  override def getHurtSound:String = ModInfo.MOD_ID+":mob.fox.dead"
-  override def getDeathSound:String = ModInfo.MOD_ID+":mob.fox.dead"
+  override def getLivingSound: String = ModInfo.MOD_ID + ":mob.fox.say"
+  override def getHurtSound: String = ModInfo.MOD_ID + ":mob.fox.dead"
+  override def getDeathSound: String = ModInfo.MOD_ID + ":mob.fox.dead"
 }

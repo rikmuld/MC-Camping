@@ -63,11 +63,11 @@ object CookingEquipment {
     for (item <- items) key.add(item)
     equipmentRecipes.put(key, equipment)
   }
-  def addGrillFood(stack: ItemStack, item: ItemStack, check:Boolean) = if(canAdd(stack, check))grillFood.put(stack, item)
-  def addPanFood(stack: ItemStack, item: ItemStack, check:Boolean) = if(canAdd(stack, check))panFood.put(stack, item)
-  def addSpitFood(stack: ItemStack, item: ItemStack, check:Boolean) = if(canAdd(stack, check))spitFood.put(stack, item)
-  def canAdd(item:ItemStack, check:Boolean):Boolean = {
-    if(check&&(registerd contains item))return false
+  def addGrillFood(stack: ItemStack, item: ItemStack, check: Boolean) = if (canAdd(stack, check)) grillFood.put(stack, item)
+  def addPanFood(stack: ItemStack, item: ItemStack, check: Boolean) = if (canAdd(stack, check)) panFood.put(stack, item)
+  def addSpitFood(stack: ItemStack, item: ItemStack, check: Boolean) = if (canAdd(stack, check)) spitFood.put(stack, item)
+  def canAdd(item: ItemStack, check: Boolean): Boolean = {
+    if (check && (registerd contains item)) return false
     registerd += item
     true
   }
@@ -90,7 +90,6 @@ object CookingEquipment {
       }
       if (!flag) i += 1
     }
-    println(i)
     if (i < 3 && flag) equipmentRecipes.values().toArray()(i).asInstanceOf[CookingEquipment] else null
   }
 }

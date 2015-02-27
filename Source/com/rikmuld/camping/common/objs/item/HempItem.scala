@@ -44,7 +44,7 @@ class HempItem(block: Block, infoClass: Class[_]) extends ItemMain(infoClass, Ob
   def placeBlockAt(stack: ItemStack, player: EntityPlayer, world: World, x: Int, y: Int, z: Int, side: Int, hitX: Float, hitY: Float, hitZ: Float, metadata: Int): Boolean = {
     if (!world.setBlock(x, y, z, block, metadata, 3)) return false
     if (world.getBlock(x, y, z) == block) {
-      stack.stackSize-=1;
+      stack.stackSize -= 1;
       block.onBlockPlacedBy(world, x, y, z, player, stack)
       block.onPostBlockPlaced(world, x, y, z, metadata)
     }

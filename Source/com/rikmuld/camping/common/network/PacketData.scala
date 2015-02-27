@@ -14,6 +14,7 @@ import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.network.PacketBuffer
 import com.rikmuld.corerm.common.network.BasicPacketData
 import com.rikmuld.corerm.common.objs.tile.TileEntityWithInventory
+import com.rikmuld.camping.common.objs.tile.TileEntityLog
 
 class OpenGui(var id: Int) extends BasicPacketData {
   var x: Int = 0
@@ -89,9 +90,7 @@ class Items(var slot: Int, var x: Int, var y: Int, var z: Int, var stack: ItemSt
     stack = stream.readItemStackFromBuffer()
   }
   override def handlePacket(player: EntityPlayer, ctx: MessageContext) {
-    println(player.worldObj.isRemote, x, y, z)
     if (player.worldObj.getTileEntity(x, y, z) != null) {
-      println(player.worldObj.isRemote, slot, stack)
       player.worldObj.getTileEntity(x, y, z).asInstanceOf[TileEntityWithInventory].setInventorySlotContents(slot, stack)
     }
   }
@@ -139,6 +138,27 @@ class PlayerSleepInTent(var x: Int, var y: Int, var z: Int) extends BasicPacketD
   def this() = this(0, 0, 0)
 
   override def handlePacket(player: EntityPlayer, ctx: MessageContext) = player.worldObj.getTileEntity(x, y, z).asInstanceOf[TileEntityTent].sleep(player)
+  override def getData(stream: PacketBuffer) {
+    x = stream.readInt
+    y = stream.readInt
+    z = stream.readInt
+  }
+  override def setData(stream: PacketBuffer) {
+    stream.writeInt(x)
+    stream.writeInt(y)
+    stream.writeInt(z)
+  }
+}
+
+class PlayerExitLog(var x: Int, var y: Int, var z: Int) extends BasicPacketData {
+  def this() = this(0, 0, 0)
+  
+  override def handlePacket(player: EntityPlayer, ctx: MessageContext) {
+    if(!player.worldObj.isRemote&&player.worldObj.getBlock(x, y, z)==Objs.log&&player.worldObj.getTileEntity(x, y, z).asInstanceOf[TileEntityLog].mountable.riddenByEntity!=null){
+      player.worldObj.getTileEntity(x, y, z).asInstanceOf[TileEntityLog].mountable.riddenByEntity.mountEntity(null) 
+      player.worldObj.getTileEntity(x, y, z).asInstanceOf[TileEntityLog].mountable.player = null;
+    }
+  }
   override def getData(stream: PacketBuffer) {
     x = stream.readInt
     y = stream.readInt

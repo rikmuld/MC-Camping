@@ -109,7 +109,7 @@ class Bear(world: World) extends EntityAnimal(world) {
       this.attackEntityAsMob(entity)
     }
   }
-  override def getLivingSound:String = ModInfo.MOD_ID+":mob.bear.say"
-  override def getHurtSound:String = ModInfo.MOD_ID+":mob.bear.say"
-  override def getDeathSound:String = ModInfo.MOD_ID+":mob.bear.dead"
+  override def getLivingSound: String = ModInfo.MOD_ID + ":mob.bear.say"
+  override def getHurtSound: String = ModInfo.MOD_ID + ":mob.bear.say"
+  override def getDeathSound: String = ModInfo.MOD_ID + ":mob.bear.dead"
 }

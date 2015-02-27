@@ -49,7 +49,7 @@ class BoundsStructure(var blocks: Array[Array[Int]]) {
   def canBePlaced(world: World, tracker: BoundsTracker): Boolean = {
     for (i <- 0 until blocks(0).length) {
       val block = world.getBlock(tracker.baseX + blocks(0)(i), tracker.baseY + blocks(1)(i), tracker.baseZ + blocks(2)(i))
-      if ((block != Blocks.air) && block!=Objs.bounds && !(block.isReplaceable(world, tracker.baseX + blocks(0)(i), tracker.baseY + blocks(1)(i), tracker.baseZ + blocks(2)(i)))) return false
+      if ((block != Blocks.air) && block != Objs.bounds && !(block.isReplaceable(world, tracker.baseX + blocks(0)(i), tracker.baseY + blocks(1)(i), tracker.baseZ + blocks(2)(i)))) return false
     }
     if (hadSolidUnderGround(world, tracker)) true else false
   }

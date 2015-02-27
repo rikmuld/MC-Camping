@@ -33,19 +33,19 @@ import java.util.ArrayList
 import com.rikmuld.camping.core.PartInfo
 
 object Camper {
-    val recipeListRaw = new HashMap[Item, Tuple]()
+  val recipeListRaw = new HashMap[Item, Tuple]()
 
-    recipeListRaw(Objs.venisonCooked) =  new Tuple(Integer.valueOf(-4), Integer.valueOf(1))
-    recipeListRaw(Objs.knife) =  new Tuple(Integer.valueOf(1), Integer.valueOf(2))
-    recipeListRaw(Objs.backpack) =  new Tuple(Integer.valueOf(1), Integer.valueOf(2))
-    recipeListRaw(Objs.furLeg) =  new Tuple(Integer.valueOf(4), Integer.valueOf(6))
-    recipeListRaw(Objs.furHead) =  new Tuple(Integer.valueOf(3), Integer.valueOf(5))
-    recipeListRaw(Objs.furChest) =  new Tuple(Integer.valueOf(5), Integer.valueOf(8))
-    recipeListRaw(Objs.furBoot) =  new Tuple(Integer.valueOf(2), Integer.valueOf(4))
-    recipeListRaw(Objs.parts) =  new Tuple(Integer.valueOf(1), Integer.valueOf(2))
+  recipeListRaw(Objs.venisonCooked) = new Tuple(Integer.valueOf(-4), Integer.valueOf(1))
+  recipeListRaw(Objs.knife) = new Tuple(Integer.valueOf(1), Integer.valueOf(2))
+  recipeListRaw(Objs.backpack) = new Tuple(Integer.valueOf(1), Integer.valueOf(2))
+  recipeListRaw(Objs.furLeg) = new Tuple(Integer.valueOf(4), Integer.valueOf(6))
+  recipeListRaw(Objs.furHead) = new Tuple(Integer.valueOf(3), Integer.valueOf(5))
+  recipeListRaw(Objs.furChest) = new Tuple(Integer.valueOf(5), Integer.valueOf(8))
+  recipeListRaw(Objs.furBoot) = new Tuple(Integer.valueOf(2), Integer.valueOf(4))
+  recipeListRaw(Objs.parts) = new Tuple(Integer.valueOf(1), Integer.valueOf(2))
 }
 
-class Camper(world:World) extends EntityCreature(world) with IMerchant with INpc {
+class Camper(world: World) extends EntityCreature(world) with IMerchant with INpc {
   setGender(rand.nextInt(2))
   setSize(0.6F, 1.8F)
   getNavigator().setAvoidsWater(true)
@@ -56,24 +56,24 @@ class Camper(world:World) extends EntityCreature(world) with IMerchant with INpc
   tasks.addTask(6, new EntityAIWander(this, 0.6D))
   targetTasks.addTask(0, new EntityAINearestAttackableTarget(this, classOf[EntityMob], 0, false))
   targetTasks.addTask(0, new EntityAINearestAttackableTarget(this, classOf[Bear], 0, false))
-    
-  var xHome, yHome, zHome:Int = _
+
+  var xHome, yHome, zHome: Int = _
   var hasHomeCoords = false
-  var playerBuy:EntityPlayer = null
+  var playerBuy: EntityPlayer = null
   var recipeList: MerchantRecipeList = _
-    
-  def this(world:World, x:Double, y:Double, z:Double) {
+
+  def this(world: World, x: Double, y: Double, z: Double) {
     this(world)
     setPosition(x, y, z)
     xHome = x.toInt
     yHome = y.toInt
     zHome = z.toInt
-    
+
     hasHomeCoords = true
-  } 
-  def setGender(gender:Int) = dataWatcher.updateObject(16, Integer.valueOf(gender))
-  def getGender:Int = dataWatcher.getWatchableObjectInt(16)
-  override def writeEntityToNBT(tag:NBTTagCompound){
+  }
+  def setGender(gender: Int) = dataWatcher.updateObject(16, Integer.valueOf(gender))
+  def getGender: Int = dataWatcher.getWatchableObjectInt(16)
+  override def writeEntityToNBT(tag: NBTTagCompound) {
     super.writeEntityToNBT(tag)
     tag.setInteger("gender", getGender)
     tag.setInteger("xHome", xHome)
@@ -81,7 +81,7 @@ class Camper(world:World) extends EntityCreature(world) with IMerchant with INpc
     tag.setInteger("zHome", zHome)
     tag.setBoolean("hasHome", hasHomeCoords)
   }
-  override def readEntityFromNBT(tag:NBTTagCompound){
+  override def readEntityFromNBT(tag: NBTTagCompound) {
     super.writeEntityToNBT(tag)
     setGender(tag.getInteger("gender"))
     xHome = tag.getInteger("xHome")
@@ -130,10 +130,10 @@ class Camper(world:World) extends EntityCreature(world) with IMerchant with INpc
       this.attackEntityAsMob(entity)
     }
   }
-  override def onUpdate(){
-    super.onUpdate()    
-    if(rand.nextInt(500)==0&&(!worldObj.isRemote)){
-      getNavigator.tryMoveToXYZ(xHome-2+rand.nextInt(4), yHome, zHome-2+rand.nextInt(4), 0.4)
+  override def onUpdate() {
+    super.onUpdate()
+    if (rand.nextInt(500) == 0 && (!worldObj.isRemote)) {
+      getNavigator.tryMoveToXYZ(xHome - 2 + rand.nextInt(4), yHome, zHome - 2 + rand.nextInt(4), 0.4)
     }
   }
   override def interact(player: EntityPlayer): Boolean = {
@@ -149,21 +149,21 @@ class Camper(world:World) extends EntityCreature(world) with IMerchant with INpc
   }
   def setCustomer(player: EntityPlayer) = playerBuy = player
   def getCustomer(): EntityPlayer = playerBuy
-  def getRecipes(player: EntityPlayer): MerchantRecipeList = if(recipeList==null) setRecipeList else recipeList
+  def getRecipes(player: EntityPlayer): MerchantRecipeList = if (recipeList == null) setRecipeList else recipeList
   @SideOnly(Side.CLIENT)
   def setRecipes(recipes: MerchantRecipeList) {
-    
+
   }
   def useRecipe(resipes: MerchantRecipe) {
-    
+
   }
   def func_110297_a_(stack: ItemStack) {
-    
+
   }
-  def isTrading:Boolean = getCustomer!=null
-  def setRecipeList:MerchantRecipeList = {
+  def isTrading: Boolean = getCustomer != null
+  def setRecipeList: MerchantRecipeList = {
     recipeList = new MerchantRecipeList()
-    if(getGender == 0){
+    if (getGender == 0) {
       addBlacksmithItem(recipeList, Objs.furBoot, 0, rand, 0.4F)
       addBlacksmithItem(recipeList, Objs.furChest, 0, rand, 0.3F)
       addBlacksmithItem(recipeList, Objs.furHead, 0, rand, 0.4F)
@@ -174,7 +174,7 @@ class Camper(world:World) extends EntityCreature(world) with IMerchant with INpc
       addBlacksmithItem(recipeList, Objs.venisonCooked, 0, rand, 0.6F)
       addBlacksmithItem(recipeList, Objs.parts, PartInfo.PAN, rand, 0.6F)
     }
-    if(recipeList.isEmpty()){
+    if (recipeList.isEmpty()) {
       addBlacksmithItem(recipeList, Objs.knife, 0, rand, 0.6F)
     }
     recipeList

@@ -70,22 +70,22 @@ class Events {
   }
   @SubscribeEvent
   def onPlayerDeath(event: PlayerDropsEvent) {
-    if(!Objs.config.coreOnly)InventoryCampinv.dropItems(event.entityPlayer)
+    if (!Objs.config.coreOnly) InventoryCampinv.dropItems(event.entityPlayer)
   }
   @SubscribeEvent
   def onEntityDeath(event: LivingDeathEvent) {
     if (event.entity.isInstanceOf[EntityPlayer]) {
       if (event.entity.worldObj.getGameRules().getGameRuleBooleanValue("keepInventory")) {
         val tag = event.entity.asInstanceOf[EntityPlayer].getEntityData.getCompoundTag("campInv")
-        if(!event.entity.asInstanceOf[EntityPlayer].getEntityData.hasKey(EntityPlayer.PERSISTED_NBT_TAG))event.entity.asInstanceOf[EntityPlayer].getEntityData.setTag(EntityPlayer.PERSISTED_NBT_TAG, new NBTTagCompound())
+        if (!event.entity.asInstanceOf[EntityPlayer].getEntityData.hasKey(EntityPlayer.PERSISTED_NBT_TAG)) event.entity.asInstanceOf[EntityPlayer].getEntityData.setTag(EntityPlayer.PERSISTED_NBT_TAG, new NBTTagCompound())
         event.entity.asInstanceOf[EntityPlayer].getEntityData.getCompoundTag(EntityPlayer.PERSISTED_NBT_TAG).setTag("campInv", tag)
       }
     }
-  }  
+  }
   @SubscribeEvent
-  def onPlayerRespawn(event:PlayerRespawnEvent){
-    if(!Objs.config.coreOnly){
-      if(event.player.getEntityData.getCompoundTag(EntityPlayer.PERSISTED_NBT_TAG).hasKey("campInv")){
+  def onPlayerRespawn(event: PlayerRespawnEvent) {
+    if (!Objs.config.coreOnly) {
+      if (event.player.getEntityData.getCompoundTag(EntityPlayer.PERSISTED_NBT_TAG).hasKey("campInv")) {
         event.player.getEntityData.setTag("campInv", event.player.getEntityData.getCompoundTag(EntityPlayer.PERSISTED_NBT_TAG).getCompoundTag("campInv"))
         event.player.getEntityData.getCompoundTag(EntityPlayer.PERSISTED_NBT_TAG).removeTag("campInv")
       }
@@ -93,7 +93,7 @@ class Events {
   }
   @SubscribeEvent
   def onPlayerLogin(event: PlayerLoggedInEvent) {
-    if (!Objs.config.coreOnly&&event.player.getEntityData.getCompoundTag(NBTInfo.INV_CAMPING) != null) {
+    if (!Objs.config.coreOnly && event.player.getEntityData.getCompoundTag(NBTInfo.INV_CAMPING) != null) {
       PacketSender.to(new NBTPlayer(event.player.getEntityData.getCompoundTag(NBTInfo.INV_CAMPING)), event.player.asInstanceOf[EntityPlayerMP])
     }
   }
@@ -135,7 +135,7 @@ class Events {
     val world = player.worldObj
     Objs.tent.asInstanceOf[Tent].rotationYaw = player.rotationYaw
 
-    if(!Objs.config.coreOnly){
+    if (!Objs.config.coreOnly) {
       if (event.phase.equals(Phase.START)) {
         if (player.getEntityData().getInteger("isInTrap") <= 0) {
           player.getEntityData().setInteger("isInTrap", player.getEntityData().getInteger("isInTrap") - 1)
@@ -182,7 +182,7 @@ class Events {
         }
       }
     }
-    if(!Objs.config.coreOnly){
+    if (!Objs.config.coreOnly) {
       var campNum = 0.0f
       for (i <- 0 until 4 if (player.inventory.armorInventory(i) != null && player.inventory.armorInventory(i).getItem.isInstanceOf[ArmorFur])) campNum += 0.25f
       if (player.getEntityAttribute(SharedMonsterAttributes.movementSpeed).getModifier(UUIDSpeedCamping) != null) player.getEntityAttribute(SharedMonsterAttributes.movementSpeed).removeModifier(player.getEntityAttribute(SharedMonsterAttributes.movementSpeed).getModifier(UUIDSpeedCamping))
@@ -198,7 +198,7 @@ class EventsClient {
 
   @SubscribeEvent
   def guiOpenClient(event: GuiOpenEvent) {
-    if(!Objs.config.coreOnly){
+    if (!Objs.config.coreOnly) {
       if (event.gui.isInstanceOf[GuiContainerCreative]) {
         ReflectionHelper.setPrivateValue(classOf[GuiContainerCreative], event.gui.asInstanceOf[GuiContainerCreative], CreativeTabs.tabInventory.getTabIndex, 2)
       }
@@ -207,7 +207,7 @@ class EventsClient {
   @SubscribeEvent
   def onClientTick(event: ClientTickEvent) {
     if (event.phase != TickEvent.Phase.END) return
-    if(!Objs.config.coreOnly){
+    if (!Objs.config.coreOnly) {
       val mc = FMLClientHandler.instance().getClient
       if (mc.currentScreen.isInstanceOf[GuiInventory] || mc.currentScreen.isInstanceOf[GuiContainerCreative]) {
         val list: ArrayList[Any] = ReflectionHelper.getPrivateValue(classOf[GuiScreen], mc.currentScreen, 4)
@@ -218,8 +218,8 @@ class EventsClient {
   }
   @SubscribeEvent
   def onOverlayRender(event: RenderGameOverlayEvent) {
-    if (event.`type` != ElementType.HOTBAR) return 
-    if(!Objs.config.coreOnly){
+    if (event.`type` != ElementType.HOTBAR) return
+    if (!Objs.config.coreOnly) {
       val mc = FMLClientHandler.instance().getClient
       if (mc.currentScreen.isInstanceOf[GuiInventory] || mc.currentScreen.isInstanceOf[GuiContainerCreative]) {
         if (Mouse.isButtonDown(0) && event.mouseX >= 5 && event.mouseX <= 105 && event.mouseY >= 5 && event.mouseY <= 15) {
@@ -233,7 +233,7 @@ class EventsClient {
       if (mc.thePlayer.hasMap()) {
         map.setWorldAndResolution(mc, event.resolution.getScaledWidth, event.resolution.getScaledHeight)
         map.drawScreen(event.mouseX, event.mouseY, event.partialTicks)
-      } 
+      }
     }
   }
 }

@@ -16,24 +16,23 @@ import net.minecraftforge.client.IItemRenderer
 import net.minecraftforge.client.IItemRenderer.ItemRenderType
 
 object TentRender {
-  def getTentTexture(color: Int): ResourceLocation = color match {
-    case 0 => new ResourceLocation(TextureInfo.MODEL_TENT_BLACK)
-    case 1 => new ResourceLocation(TextureInfo.MODEL_TENT_RED)
-    case 2 => new ResourceLocation(TextureInfo.MODEL_TENT_GREEN)
-    case 3 => new ResourceLocation(TextureInfo.MODEL_TENT_BROWN)
-    case 4 => new ResourceLocation(TextureInfo.MODEL_TENT_BLUE)
-    case 5 => new ResourceLocation(TextureInfo.MODEL_TENT_PURPLE)
-    case 6 => new ResourceLocation(TextureInfo.MODEL_TENT_CYAN)
-    case 7 => new ResourceLocation(TextureInfo.MODEL_TENT_LIGHTGRAY)
-    case 8 => new ResourceLocation(TextureInfo.MODEL_TENT_GRAY)
-    case 9 => new ResourceLocation(TextureInfo.MODEL_TENT_PINK)
-    case 10 => new ResourceLocation(TextureInfo.MODEL_TENT_LIME)
-    case 11 => new ResourceLocation(TextureInfo.MODEL_TENT_YELLOW)
-    case 12 => new ResourceLocation(TextureInfo.MODEL_TENT_LIGHTBLUE)
-    case 13 => new ResourceLocation(TextureInfo.MODEL_TENT_MAGENTA)
-    case 14 => new ResourceLocation(TextureInfo.MODEL_TENT_ORANGE)
-    case 15 => new ResourceLocation(TextureInfo.MODEL_TENT_WHITE)
-    case _ => new ResourceLocation(TextureInfo.MODEL_TENT_WHITE)
+  def setTentColor(color: Int) {
+    if (color == 0) GL11.glColor3f(.2f, .2f, .2f);
+    if (color == 1) GL11.glColor3f(.67f, .16f, .16f);
+    if (color == 2) GL11.glColor3f(.2f, .27f, .08f);
+    if (color == 3) GL11.glColor3f(.3f, .2f, .1f);
+    if (color == 4) GL11.glColor3f(.16f, .2f, .63f);
+    if (color == 5) GL11.glColor3f(.55f, .24f, .7f);
+    if (color == 6) GL11.glColor3f(.16f, .45f, .59f);
+    if (color == 7) GL11.glColor3f(.63f, .63f, .63f);
+    if (color == 8) GL11.glColor3f(.35f, .35f, .35f);
+    if (color == 9) GL11.glColor3f(.86f, .5f, .6f);
+    if (color == 10) GL11.glColor3f(.6f, .75f, .17f);
+    if (color == 11) GL11.glColor3f(.78f, .75f, .12f);
+    if (color == 12) GL11.glColor3f(.31f, .51f, .70f);
+    if (color == 13) GL11.glColor3f(.75f, .18f, .75f);
+    if (color == 14) GL11.glColor3f(.71f, .43f, .16f);
+    if (color == 15) GL11.glColor3f(1, 1, 1);
   }
 }
 
@@ -49,8 +48,12 @@ class TentRender extends TileEntitySpecialRenderer {
     GL11.glScalef(1.0F, -1F, -1F)
     GL11.glScalef(0.0625F, 0.0625F, 0.0625F)
     GL11.glRotatef(if ((tile.rotation + 1) > 3) 90 * 0 else 90 * (tile.rotation + 1), 0, 1, 0)
-    bindTexture(TentRender.getTentTexture(tile.color))
-    Objs.tentM.renderAllExcept("bed1", "bed2", "chest1", "chest2", "chest3", "chest4", "chest5", "chest6", "chest7")
+    bindTexture(new ResourceLocation(TextureInfo.MODEL_TENT_WHITE))
+    TentRender.setTentColor(tile.color);
+    Objs.tentM.renderAllExcept("bed1", "bed2", "chest1", "chest2", "chest3", "chest4", "chest5", "chest6", "chest7", "shape1", "shape2", "shape3", "shape4")
+    GL11.glColor3f(1, 1, 1)
+    Objs.tentM.renderOnly("shape1", "shape2", "shape3", "shape4")
+
     if (tile.beds > 0) {
       if (tile.chests == 0) Objs.tentM.renderPart("bed1")
       else Objs.tentM.renderPart("bed2")
@@ -77,7 +80,7 @@ class TentRender extends TileEntitySpecialRenderer {
       GL11.glRotatef(-40, 0, 1, 0)
       GL11.glRotatef(-25, -1, 0, 1)
       GL11.glScalef(0.3F, -0.3F, -0.3F)
-      if(tileentity.getWorldObj().getClosestPlayer(x, y, z, -1)!=null&&lanternStack!=null)renderer.renderItem(tileentity.getWorldObj().getClosestPlayer(x, y, z, -1), lanternStack, 0)
+      if (tileentity.getWorldObj().getClosestPlayer(x, y, z, -1) != null && lanternStack != null) renderer.renderItem(tileentity.getWorldObj().getClosestPlayer(x, y, z, -1), lanternStack, 0)
     }
     GL11.glPopMatrix()
   }
@@ -97,8 +100,11 @@ class TentItemRender extends IItemRenderer {
       GL11.glTranslatef(0.0F, 0.3F, 0.6F)
     }
     GL11.glScalef(0.02625F, -0.02625F, -0.02625F)
-    Minecraft.getMinecraft.renderEngine.bindTexture(TentRender.getTentTexture(if (item.hasTagCompound()) item.getTagCompound.getInteger("color") else 15))
-    Objs.tentM.renderAllExcept("bed1", "bed2", "chest1", "chest2", "chest3", "chest4", "chest5", "chest6", "chest7")
+    Minecraft.getMinecraft.renderEngine.bindTexture(new ResourceLocation(TextureInfo.MODEL_TENT_WHITE))
+    TentRender.setTentColor(if (item.hasTagCompound()) item.getTagCompound.getInteger("color") else 15);
+    Objs.tentM.renderAllExcept("bed1", "bed2", "chest1", "chest2", "chest3", "chest4", "chest5", "chest6", "chest7", "shape1", "shape2", "shape3", "shape4")
+    GL11.glColor3f(1, 1, 1)
+    Objs.tentM.renderOnly("shape1", "shape2", "shape3", "shape4")
     GL11.glPopMatrix()
   }
   override def shouldUseRenderHelper(`type`: ItemRenderType, item: ItemStack, helper: ItemRendererHelper): Boolean = true

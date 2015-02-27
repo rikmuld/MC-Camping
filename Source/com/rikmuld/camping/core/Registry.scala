@@ -1,7 +1,6 @@
 package com.rikmuld.camping.core
 
 import scala.collection.JavaConversions._
-import com.rikmuld.corerm.core.CoreUtils._
 import com.rikmuld.camping.CampingMod
 import com.rikmuld.camping.client.gui.GuiBackpack
 import com.rikmuld.camping.client.gui.GuiCampfire
@@ -17,10 +16,13 @@ import com.rikmuld.camping.client.gui.GuiTrap
 import com.rikmuld.camping.client.render.models.ModelBear
 import com.rikmuld.camping.client.render.models.ModelFox
 import com.rikmuld.camping.client.render.objs.BearRenderer
-import com.rikmuld.camping.client.render.objs.CamperRender
+import com.rikmuld.camping.client.render.objs.CampfireCookItemRender
 import com.rikmuld.camping.client.render.objs.CampfireCookItemRender
 import com.rikmuld.camping.client.render.objs.CampfireCookRender
+import com.rikmuld.camping.client.render.objs.CampfireCookRender
 import com.rikmuld.camping.client.render.objs.CampfireItemRender
+import com.rikmuld.camping.client.render.objs.CampfireItemRender
+import com.rikmuld.camping.client.render.objs.CampfireRender
 import com.rikmuld.camping.client.render.objs.CampfireRender
 import com.rikmuld.camping.client.render.objs.FoxRenderer
 import com.rikmuld.camping.client.render.objs.LogItemRender
@@ -30,6 +32,7 @@ import com.rikmuld.camping.client.render.objs.TentItemRender
 import com.rikmuld.camping.client.render.objs.TentRender
 import com.rikmuld.camping.client.render.objs.TrapItemRenderer
 import com.rikmuld.camping.client.render.objs.TrapRender
+import com.rikmuld.camping.client.render.objs.CamperRender
 import com.rikmuld.camping.common.inventory.gui.ContainerBackpack
 import com.rikmuld.camping.common.inventory.gui.ContainerCampfire
 import com.rikmuld.camping.common.inventory.gui.ContainerCampfireCook
@@ -42,6 +45,7 @@ import com.rikmuld.camping.common.inventory.gui.ContainerTrap
 import com.rikmuld.camping.common.network.BoundsData
 import com.rikmuld.camping.common.network.NBTPlayer
 import com.rikmuld.camping.common.network.OpenGui
+import com.rikmuld.camping.common.network.PlayerExitLog
 import com.rikmuld.camping.common.network.PlayerSleepInTent
 import com.rikmuld.camping.common.objs.block.BoundsHelper
 import com.rikmuld.camping.common.objs.block.Campfire
@@ -59,8 +63,6 @@ import com.rikmuld.camping.common.objs.entity.Fox
 import com.rikmuld.camping.common.objs.item.ArmorFur
 import com.rikmuld.camping.common.objs.item.Backpack
 import com.rikmuld.camping.common.objs.item.HempItem
-import com.rikmuld.corerm.common.objs.item.ItemFoodMain
-import com.rikmuld.corerm.common.objs.item.ItemMain
 import com.rikmuld.camping.common.objs.item.Kit
 import com.rikmuld.camping.common.objs.item.Knife
 import com.rikmuld.camping.common.objs.item.Marshmallow
@@ -85,8 +87,12 @@ import com.rikmuld.camping.misc.Spit
 import com.rikmuld.camping.misc.Tab
 import com.rikmuld.corerm.common.network.BasicPacketData
 import com.rikmuld.corerm.common.network.PacketDataManager
+import com.rikmuld.corerm.common.objs.item.ItemFoodMain
+import com.rikmuld.corerm.common.objs.item.ItemMain
 import com.rikmuld.corerm.common.objs.tile.TileEntityWithRotation
 import com.rikmuld.corerm.core.CoreObjs
+import com.rikmuld.corerm.core.CoreUtils._
+import com.rikmuld.corerm.core.CoreUtils
 import com.rikmuld.corerm.misc.CustomModel
 import com.rikmuld.corerm.misc.CustomModelLoader
 import cpw.mods.fml.client.registry.ClientRegistry
@@ -125,7 +131,6 @@ import net.minecraftforge.common.MinecraftForge
 import net.minecraftforge.common.config.Configuration
 import net.minecraftforge.common.util.EnumHelper
 import cpw.mods.fml.relauncher.Side
-import com.rikmuld.corerm.core.CoreUtils
 
 object Objs {
   var tab: CreativeTabs = _
@@ -151,6 +156,7 @@ object MiscRegistry {
     PacketDataManager.registerPacketData(classOf[com.rikmuld.camping.common.network.Items].asInstanceOf[Class[BasicPacketData]])
     PacketDataManager.registerPacketData(classOf[PlayerSleepInTent].asInstanceOf[Class[BasicPacketData]])
     PacketDataManager.registerPacketData(classOf[BoundsData].asInstanceOf[Class[BasicPacketData]])
+    PacketDataManager.registerPacketData(classOf[PlayerExitLog].asInstanceOf[Class[BasicPacketData]])
 
     GameRegistry.registerTileEntity(classOf[TileEntityLantern], ModInfo.MOD_ID + "_lantern")
     GameRegistry.registerTileEntity(classOf[TileEntityLight], ModInfo.MOD_ID + "_light")
@@ -211,10 +217,10 @@ object MiscRegistry {
     Objs.campfireM = CoreObjs.modelLoader.loadInstance(new ResourceLocation(ModelInfo.CAMPFIRE)).asInstanceOf[TechneModel]
     Objs.logM = CoreObjs.modelLoader.loadInstance(new ResourceLocation(ModelInfo.LOG)).asInstanceOf[TechneModel]
     Objs.tentM = CoreObjs.modelLoaderC.loadInstance(128, 64, new ResourceLocation(ModelInfo.TENT)).asInstanceOf[CustomModel]
-    
-    if(!Objs.config.coreOnly){
+
+    if (!Objs.config.coreOnly) {
       Objs.trapOpen = CoreObjs.modelLoaderC.loadInstance(32, 16, new ResourceLocation(ModelInfo.TRAP_OPEN)).asInstanceOf[CustomModel]
-      Objs.trapClose = CoreObjs.modelLoaderC.loadInstance(32, 16, new ResourceLocation(ModelInfo.TRAP_CLOSED)).asInstanceOf[CustomModel]  
+      Objs.trapClose = CoreObjs.modelLoaderC.loadInstance(32, 16, new ResourceLocation(ModelInfo.TRAP_CLOSED)).asInstanceOf[CustomModel]
     }
 
     MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(Objs.campfire), new CampfireItemRender())
@@ -226,8 +232,8 @@ object MiscRegistry {
     ClientRegistry.bindTileEntitySpecialRenderer(classOf[TileEntitySleepingBag], new SleepingBagRender())
     MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(Objs.tent), new TentItemRender())
     ClientRegistry.bindTileEntitySpecialRenderer(classOf[TileEntityTent], new TentRender())
-    
-    if(!Objs.config.coreOnly){
+
+    if (!Objs.config.coreOnly) {
       MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(Objs.trap), new TrapItemRenderer())
       ClientRegistry.bindTileEntitySpecialRenderer(classOf[TileEntityTrap], new TrapRender())
       RenderingRegistry.registerEntityRenderingHandler(classOf[Bear], new BearRenderer(new ModelBear()))
@@ -270,7 +276,7 @@ object ObjRegistry {
     Objs.bounds = new BoundsHelper(classOf[BoundsHelperInfo])
     Objs.tent = new Tent(classOf[TentInfo])
 
-    if(!Objs.config.coreOnly){
+    if (!Objs.config.coreOnly) {
       Objs.animalParts = new ItemMain(classOf[AnimalPartInfo], Objs.tab, ModInfo.MOD_ID)
       Objs.venisonCooked = new ItemFoodMain(classOf[VenisonInfo], Objs.tab, ModInfo.MOD_ID, Objs.config.venisonHeal, Objs.config.venisonSaturation, true)
       Objs.venisonRaw = new ItemFoodMain(classOf[VenisonRawInfo], Objs.tab, ModInfo.MOD_ID, Objs.config.venisonRawHeal, Objs.config.venisonRawSaturation, true)
@@ -278,9 +284,9 @@ object ObjRegistry {
       Objs.furLeg = new ArmorFur(classOf[ArmorFurLegInfo], 2)
       Objs.furChest = new ArmorFur(classOf[ArmorFurChestInfo], 1)
       Objs.furHead = new ArmorFur(classOf[ArmorFurHelmInfo], 0)
-      Objs.trap = new Trap(classOf[TrapInfo]) 
+      Objs.trap = new Trap(classOf[TrapInfo])
     }
-  
+
     Objs.grill = new Grill(new ItemStack(Objs.kit, 1, KitInfo.KIT_GRILL))
     Objs.spit = new Spit(new ItemStack(Objs.kit, 1, KitInfo.KIT_SPIT))
     Objs.pan = new Pan(new ItemStack(Objs.kit, 1, KitInfo.KIT_PAN))
@@ -302,7 +308,7 @@ object ObjRegistry {
     GameRegistry.addRecipe(Objs.kit.toStack(1), "000", "111", "000", '0': Character, Items.iron_ingot, '1': Character, dye(11))
     GameRegistry.addRecipe(lantern(LanternInfo.LANTERN_ON).toStack(1), "000", "010", "222", '1': Character, Items.glowstone_dust, '0': Character, Blocks.glass_pane, '2': Character, Items.gold_ingot)
     GameRegistry.addRecipe(lantern(LanternInfo.LANTERN_OFF).toStack(1), "000", "0 0", "111", '1': Character, Items.gold_ingot, '0': Character, Blocks.glass_pane)
-    GameRegistry.addRecipe(parts(PartInfo.STICK_IRON).toStack(1), " 0 ", " 0 ", '0': Character, Items.iron_ingot)
+    GameRegistry.addRecipe(parts(PartInfo.STICK_IRON).toStack(1), "0", "0", '0': Character, Items.iron_ingot)
     GameRegistry.addRecipe(parts(PartInfo.PAN).toStack(1), " 0 ", "121", " 1 ", '0': Character, dye(1), '1': Character, Items.iron_ingot, '2': Character, Items.bowl)
     GameRegistry.addRecipe(parts(PartInfo.MARSHMALLOW).toStack(3), "010", "020", "030", '0': Character, Items.sugar, '1': Character, Items.potionitem, '2': Character, Items.egg, '3': Character, Items.bowl)
     GameRegistry.addShapelessRecipe(Objs.log.toStack(1), new ItemStack(Blocks.log, 1, 0).getWildValue, new ItemStack(Objs.knife).getWildValue)
@@ -317,7 +323,7 @@ object ObjRegistry {
     GameRegistry.addShapelessRecipe(parts(PartInfo.CANVAS).toStack(1), Objs.hempItem, new ItemStack(Objs.knife).getWildValue)
     GameRegistry.addShapelessRecipe(Objs.tent.toStack(1), Objs.tent, new ItemStack(Items.dye).getWildValue)
 
-    if(!Objs.config.coreOnly){
+    if (!Objs.config.coreOnly) {
       val partsAnimal = Objs.animalParts.getMetaCycle(Objs.animalParts.asInstanceOf[ItemMain].metadata.length)
 
       GameRegistry.addSmelting(Objs.venisonRaw.toStack(1), Objs.venisonCooked.toStack(1), 3)
@@ -326,7 +332,7 @@ object ObjRegistry {
       GameRegistry.addRecipe(Objs.furChest.toStack(1), "0 0", "010", "222", '0': Character, partsAnimal(AnimalPartInfo.FUR_WHITE), '1': Character, Items.leather_chestplate, '2': Character, partsAnimal(AnimalPartInfo.FUR_BROWN))
       GameRegistry.addRecipe(Objs.furLeg.toStack(1), "000", "010", "0 0", '0': Character, partsAnimal(AnimalPartInfo.FUR_BROWN), '1': Character, Items.leather_leggings)
       GameRegistry.addRecipe(Objs.furBoot.toStack(1), "0 0", "010", '0': Character, partsAnimal(AnimalPartInfo.FUR_BROWN), '1': Character, Items.leather_boots)
-      
+
       registerEntity(classOf[Bear].asInstanceOf[Class[Entity]], "bearGrizzly", EntityInfo.BEAR, true, 0x583B2D, 0xE2B572)
       registerEntity(classOf[Fox].asInstanceOf[Class[Entity]], "foxArctic", EntityInfo.FOX, true, 0xE0EEEE, 0x362819)
       registerEntity(classOf[Camper].asInstanceOf[Class[Entity]], "camper", EntityInfo.CAMPER, true, 0x747B51, 0x70471B)
@@ -336,18 +342,18 @@ object ObjRegistry {
     }
   }
   def postInit {
-    if(!Objs.config.coreOnly){
+    if (!Objs.config.coreOnly) {
       val forests = BiomeDictionary.getBiomesForType(Type.FOREST)
       val rivers = BiomeDictionary.getBiomesForType(Type.RIVER)
       val snow = BiomeDictionary.getBiomesForType(Type.SNOWY)
-  
+
       if (Objs.config.useBears) {
         for (biome <- forests) EntityRegistry.addSpawn(classOf[Bear], 5, 2, 4, EnumCreatureType.creature, biome)
         for (biome <- rivers) EntityRegistry.addSpawn(classOf[Bear], 5, 2, 4, EnumCreatureType.creature, biome)
       }
       if (Objs.config.useFoxes) for (biome <- snow) EntityRegistry.addSpawn(classOf[Fox], 5, 2, 4, EnumCreatureType.creature, biome)
     }
-   
+
     FurnaceRecipes.smelting.getSmeltingList.asInstanceOf[java.util.Map[ItemStack, ItemStack]].foreach(stacks => {
       if (stacks._1.getItem.isInstanceOf[ItemFood] && stacks._1.getItem.getUnlocalizedName != null) {
         if (stacks._1.getItem.asInstanceOf[ItemFood].isWolfsFavoriteMeat()) CookingEquipment.addGrillFood(stacks._1, stacks._2, true)

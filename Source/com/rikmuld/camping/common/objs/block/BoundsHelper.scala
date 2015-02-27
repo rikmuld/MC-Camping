@@ -48,7 +48,7 @@ class BoundsHelper(infoClass: Class[_]) extends BlockMain(infoClass, Objs.tab, M
   }
   override def getBlockHardness(world: World, x: Int, y: Int, z: Int): Float = {
     val tile = world.getTileEntity(x, y, z).asInstanceOf[TileEntityWithBounds]
-    if (tile!=null&&(!world.isAirBlock(tile.baseX, tile.baseY, tile.baseZ))) return world.getBlock(tile.baseX, tile.baseY, tile.baseZ).getBlockHardness(world, x, y, z)
+    if (tile != null && (!world.isAirBlock(tile.baseX, tile.baseY, tile.baseZ))) return world.getBlock(tile.baseX, tile.baseY, tile.baseZ).getBlockHardness(world, x, y, z)
     blockHardness
   }
   override def getIcon(side: Int, metadata: Int): IIcon = Blocks.wool.getIcon(0, 0)

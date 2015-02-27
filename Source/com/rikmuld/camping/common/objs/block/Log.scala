@@ -31,8 +31,10 @@ import com.rikmuld.corerm.common.objs.block.BlockWithRotation
 import com.rikmuld.corerm.common.objs.block.BlockMain
 import com.rikmuld.corerm.common.objs.block.BlockWithModel
 import com.rikmuld.camping.core.ModInfo
+import com.rikmuld.corerm.common.network.PacketSender
+import com.rikmuld.camping.common.network.PlayerExitLog
 
-class Log(infoClass: Class[_]) extends BlockMain(infoClass, Objs.tab, ModInfo.MOD_ID,  Material.wood, false, false) with BlockWithModel with BlockWithRotation {
+class Log(infoClass: Class[_]) extends BlockMain(infoClass, Objs.tab, ModInfo.MOD_ID, Material.wood, false, false) with BlockWithModel with BlockWithRotation {
   setStepSound(Block.soundTypeWood)
   setHardness(2.0F)
   setHarvestLevel("axe", 0)

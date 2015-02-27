@@ -27,7 +27,7 @@ import com.rikmuld.corerm.common.objs.block.BlockWithModel
 import com.rikmuld.camping.core.Objs
 import com.rikmuld.camping.core.ModInfo
 
-class Light(infoClass: Class[_]) extends BlockMain(infoClass, Objs.tab, ModInfo.MOD_ID,  Material.air) with BlockWithModel {
+class Light(infoClass: Class[_]) extends BlockMain(infoClass, Objs.tab, ModInfo.MOD_ID, Material.air) with BlockWithModel {
   setLightLevel(1.0F)
   setBlockBounds(0F, 0F, 0F, 0F, 0F, 0F)
   setCreativeTab(null)

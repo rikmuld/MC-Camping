@@ -57,7 +57,7 @@ class Config(val file: Configuration) {
     useBears = getVar("Spawn Bears", "Spawn Grizzly Bears in forrests", ConfigInfo.CAT_WORLD, useBears).asInstanceOf[Boolean]
     useFoxes = getVar("Spawn Foxes", "Spawn Arctic Foxes in snowy regions", ConfigInfo.CAT_WORLD, useFoxes).asInstanceOf[Boolean]
     trapPlayer = getVar("Trap players in Bear Trap", "Bear traps can trap players.", ConfigInfo.CAT_TOOLS, trapPlayer).asInstanceOf[Boolean]
-    worldGenHemp = getVar("Enable Campsite generation", "Enable/Disable the world generation for Campsites.", ConfigInfo.CAT_WORLD, worldGenCampsite).asInstanceOf[Boolean]  
+    worldGenHemp = getVar("Enable Campsite generation", "Enable/Disable the world generation for Campsites.", ConfigInfo.CAT_WORLD, worldGenCampsite).asInstanceOf[Boolean]
     campsiteRareness = getVar("Campsite Rareness", "Rareness of the campsite world generation", ConfigInfo.CAT_WORLD, campsiteRareness).asInstanceOf[Integer]
     coreOnly = getVar("Core Features Only", "Only use the core features of the camping mod. WARNING! use carfully!", ConfigInfo.CAT_GENERAL, coreOnly).asInstanceOf[Boolean]
 

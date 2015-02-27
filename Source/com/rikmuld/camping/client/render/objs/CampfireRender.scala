@@ -1,15 +1,12 @@
 package com.rikmuld.camping.client.render.objs
 
 import java.util.Random
-
 import org.lwjgl.opengl.GL11
 import org.lwjgl.opengl.GL12
-
 import com.rikmuld.camping.common.objs.tile.TileEntityCampfire
 import com.rikmuld.camping.common.objs.tile.TileEntityCampfireCook
 import com.rikmuld.camping.core.Objs
 import com.rikmuld.camping.core.TextureInfo
-
 import net.minecraft.client.Minecraft
 import net.minecraft.client.renderer.ItemRenderer
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer

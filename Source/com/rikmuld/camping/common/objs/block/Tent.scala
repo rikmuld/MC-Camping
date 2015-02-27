@@ -76,7 +76,6 @@ class Tent(infoClass: Class[_]) extends BlockMain(infoClass, Objs.tab, ModInfo.M
     else if (facing == 1) direction = ForgeDirection.SOUTH.ordinal() - 2
     else if (facing == 2) direction = ForgeDirection.WEST.ordinal() - 2
     else if (facing == 3) direction = ForgeDirection.EAST.ordinal() - 2
-    println(direction)
     ((block == null) || block.isReplaceable(world, x, y, z)) && Objs.tentStructure(direction).canBePlaced(world, new BoundsTracker(x, y, z, TileEntityTent.bounds(direction)))
   }
   override def createNewTileEntity(world: World, meta: Int): TileEntityMain = new TileEntityTent()

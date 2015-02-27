@@ -1,6 +1,6 @@
-itemGroup.camping=The Camping Mod 2.0
-tile.campfire.name=Campfire
-tile.campfireCook.name=Campfire Base
+itemGroup.camping=The Camping Mod
+tile.campfire.name=Decorative Campfire
+tile.campfireCook.name=Cooking Campfire
 item.knife.name=Knife
 canvas.name=Canvas
 stickIron.name=Iron Stick
