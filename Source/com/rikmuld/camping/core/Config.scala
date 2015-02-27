@@ -34,6 +34,8 @@ class Config(val file: Configuration) {
   var worldGenCampsite = true
   var campsiteRareness = 5
   var coreOnly = false
+  var prmInv = 0;
+  var secInv = 0;
 
   var elements: java.util.List[IConfigElement[_]] = new ArrayList[IConfigElement[_]];
 
@@ -60,6 +62,8 @@ class Config(val file: Configuration) {
     worldGenHemp = getVar("Enable Campsite generation", "Enable/Disable the world generation for Campsites.", ConfigInfo.CAT_WORLD, worldGenCampsite).asInstanceOf[Boolean]
     campsiteRareness = getVar("Campsite Rareness", "Rareness of the campsite world generation", ConfigInfo.CAT_WORLD, campsiteRareness).asInstanceOf[Integer]
     coreOnly = getVar("Core Features Only", "Only use the core features of the camping mod. WARNING! use carfully!", ConfigInfo.CAT_GENERAL, coreOnly).asInstanceOf[Boolean]
+    prmInv = getVar("Primary Inventory Option", "Primary inventory option, is settable in the Camping Inventory!", ConfigInfo.CAT_GENERAL, prmInv, 0, 2).asInstanceOf[Integer]
+    secInv = getVar("Secundairy Inventory Option", "Secundairy inventory option, is settable in the Camping Inventory!", ConfigInfo.CAT_GENERAL, secInv, 0, 3).asInstanceOf[Integer]
 
     if (file.hasChanged) file.save
     for (i <- 0 until file.getCategoryNames.size) elements.addAll(new ConfigElement(file.getCategory(file.getCategoryNames().toArray().apply(i).asInstanceOf[String])).getChildElements());
@@ -67,6 +71,12 @@ class Config(val file: Configuration) {
   def getVar(name: String, desc: String, cat: String, curr: Any): Any = {
     if (curr.isInstanceOf[Integer]) return file.getInt(name, cat, curr.asInstanceOf[Integer], 0, Integer.MAX_VALUE, desc)
     else if (curr.isInstanceOf[Float]) return file.getFloat(name, cat, curr.asInstanceOf[Float], 0, Float.MaxValue, desc)
+    else if (curr.isInstanceOf[Boolean]) return file.getBoolean(name, cat, curr.asInstanceOf[Boolean], desc)
+    else if (curr.isInstanceOf[String]) return file.getString(name, cat, curr.asInstanceOf[String], desc)
+  }
+  def getVar(name: String, desc: String, cat: String, curr: Any, min: Any, max: Any): Any = {
+    if (curr.isInstanceOf[Integer]) return file.getInt(name, cat, curr.asInstanceOf[Integer], min.asInstanceOf[Integer], max.asInstanceOf[Integer], desc)
+    else if (curr.isInstanceOf[Float]) return file.getFloat(name, cat, curr.asInstanceOf[Float], min.asInstanceOf[Float], max.asInstanceOf[Float], desc)
     else if (curr.isInstanceOf[Boolean]) return file.getBoolean(name, cat, curr.asInstanceOf[Boolean], desc)
     else if (curr.isInstanceOf[String]) return file.getString(name, cat, curr.asInstanceOf[String], desc)
   }

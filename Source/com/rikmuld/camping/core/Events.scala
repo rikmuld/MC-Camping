@@ -59,6 +59,7 @@ import net.minecraft.client.gui.GuiChat
 import com.rikmuld.camping.common.network.KeyData
 import com.rikmuld.camping.CampingMod
 import com.rikmuld.camping.CampingMod
+import scala.collection.JavaConversions._
 
 class Events {
   var tickLight: Int = 0
@@ -229,12 +230,17 @@ class EventsClient {
   @SubscribeEvent
   def onClientTick(event: ClientTickEvent) {
     if (event.phase != TickEvent.Phase.END) return
-    if (!Objs.config.coreOnly) {
+    if (!Objs.config.coreOnly&&Objs.config.prmInv==0) {
       val mc = FMLClientHandler.instance().getClient
       if (mc.currentScreen.isInstanceOf[GuiInventory] || mc.currentScreen.isInstanceOf[GuiContainerCreative]) {
         val list: ArrayList[Any] = ReflectionHelper.getPrivateValue(classOf[GuiScreen], mc.currentScreen, 4)
-        list.asInstanceOf[java.util.List[GuiButton]].add(new GuiButton(10, 5, 5, 100, 10, "Camping Inventory"))
-        ReflectionHelper.setPrivateValue(classOf[GuiScreen], mc.currentScreen, list, 4)
+        if(!list.asInstanceOf[java.util.List[GuiButton]].exists(_.id==10)){
+          if(Objs.config.secInv==1)list.asInstanceOf[java.util.List[GuiButton]].add(new GuiButton(10, mc.currentScreen.width-100-5, 5, 100, 10, "Camping Inventory"))
+          else if(Objs.config.secInv==2)list.asInstanceOf[java.util.List[GuiButton]].add(new GuiButton(10, mc.currentScreen.width-100-5, mc.currentScreen.height-10-5, 100, 10, "Camping Inventory"))
+          else if(Objs.config.secInv==3)list.asInstanceOf[java.util.List[GuiButton]].add(new GuiButton(10, 5, mc.currentScreen.height-10-5, 100, 10, "Camping Inventory"))
+          else list.asInstanceOf[java.util.List[GuiButton]].add(new GuiButton(10, 5, 5, 100, 10, "Camping Inventory"))
+          ReflectionHelper.setPrivateValue(classOf[GuiScreen], mc.currentScreen, list, 4) 
+        }
       }
     }
   }
