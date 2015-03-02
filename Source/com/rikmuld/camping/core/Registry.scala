@@ -5,7 +5,6 @@ import com.rikmuld.camping.CampingMod
 import com.rikmuld.camping.client.gui.GuiBackpack
 import com.rikmuld.camping.client.gui.GuiCampfire
 import com.rikmuld.camping.client.gui.GuiCampfireCook
-import com.rikmuld.camping.client.gui.GuiCampingInvCraft
 import com.rikmuld.camping.client.gui.GuiCampinginv
 import com.rikmuld.camping.client.gui.GuiKit
 import com.rikmuld.camping.client.gui.GuiTent
@@ -37,7 +36,6 @@ import com.rikmuld.camping.common.inventory.gui.ContainerBackpack
 import com.rikmuld.camping.common.inventory.gui.ContainerCampfire
 import com.rikmuld.camping.common.inventory.gui.ContainerCampfireCook
 import com.rikmuld.camping.common.inventory.gui.ContainerCampinv
-import com.rikmuld.camping.common.inventory.gui.ContainerCampinvCraft
 import com.rikmuld.camping.common.inventory.gui.ContainerKit
 import com.rikmuld.camping.common.inventory.gui.ContainerTentChests
 import com.rikmuld.camping.common.inventory.gui.ContainerTentLanterns
@@ -212,7 +210,6 @@ object MiscRegistry {
     CampingMod.proxy.registerGui(GuiInfo.GUI_KIT, classOf[ContainerKit], classOf[GuiKit])
     CampingMod.proxy.registerGui(GuiInfo.GUI_CAMPFIRE, classOf[ContainerCampfire], classOf[GuiCampfire])
     CampingMod.proxy.registerGui(GuiInfo.GUI_CAMPINV, classOf[ContainerCampinv], classOf[GuiCampinginv])
-    CampingMod.proxy.registerGui(GuiInfo.GUI_CAMPINV_CRAFT, classOf[ContainerCampinvCraft], classOf[GuiCampingInvCraft])
     CampingMod.proxy.registerGui(GuiInfo.GUI_BACKPACK, classOf[ContainerBackpack], classOf[GuiBackpack])
     CampingMod.proxy.registerGui(GuiInfo.GUI_TENT, null, classOf[GuiTent])
     CampingMod.proxy.registerGui(GuiInfo.GUI_TENT_CHESTS, classOf[ContainerTentChests], classOf[GuiTentChests])
@@ -256,7 +253,6 @@ object MiscRegistry {
     CampingMod.proxy.registerGui(GuiInfo.GUI_KIT, classOf[ContainerKit], null)
     CampingMod.proxy.registerGui(GuiInfo.GUI_CAMPFIRE, classOf[ContainerCampfire], null)
     CampingMod.proxy.registerGui(GuiInfo.GUI_CAMPINV, classOf[ContainerCampinv], null)
-    CampingMod.proxy.registerGui(GuiInfo.GUI_CAMPINV_CRAFT, classOf[ContainerCampinvCraft], null)
     CampingMod.proxy.registerGui(GuiInfo.GUI_BACKPACK, classOf[ContainerBackpack], null)
     CampingMod.proxy.registerGui(GuiInfo.GUI_TENT, null, null)
     CampingMod.proxy.registerGui(GuiInfo.GUI_TENT_CHESTS, classOf[ContainerTentChests], null)

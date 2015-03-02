@@ -34,8 +34,8 @@ class Config(val file: Configuration) {
   var worldGenCampsite = true
   var campsiteRareness = 5
   var coreOnly = false
-  var prmInv = 0;
-  var secInv = 0;
+  var prmInv = 0
+  var secInv = 0
 
   var elements: java.util.List[IConfigElement[_]] = new ArrayList[IConfigElement[_]];
 

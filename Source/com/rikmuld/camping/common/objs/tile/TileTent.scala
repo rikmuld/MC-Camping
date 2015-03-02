@@ -26,7 +26,7 @@ import com.rikmuld.camping.common.network.PlayerSleepInTent
 import net.minecraft.tileentity.TileEntity
 import com.rikmuld.corerm.common.objs.tile.TileEntityWithInventory
 import com.rikmuld.corerm.common.objs.tile.TileEntityWithRotation
-import com.rikmuld.corerm.common.inventory.SlotState
+import com.rikmuld.camping.common.inventory.SlotState
 
 object TileEntityTent {
   var bounds: Array[Bounds] = Array(new Bounds(-0.5F, 0, 0, 1.5F, 1.5F, 3), new Bounds(-2, 0, -0.5F, 1, 1.5F, 1.5F), new Bounds(-0.5F, 0, -2, 1.5F, 1.5F, 1), new Bounds(0, 0, -0.5F, 3, 1.5F, 1.5F))

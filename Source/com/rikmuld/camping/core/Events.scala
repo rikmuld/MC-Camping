@@ -1,31 +1,51 @@
 package com.rikmuld.camping.core
 
 import java.util.ArrayList
+import java.util.Random
 import java.util.UUID
+
+import scala.collection.JavaConversions._
+
 import org.lwjgl.input.Mouse
+
+import com.rikmuld.camping.CampingMod
+import com.rikmuld.camping.CampingMod
 import com.rikmuld.camping.client.gui.GuiMapHUD
+import com.rikmuld.camping.client.gui.button.ButtonItem
 import com.rikmuld.camping.common.inventory.gui.InventoryCampinv
+import com.rikmuld.camping.common.network.KeyData
 import com.rikmuld.camping.common.network.NBTPlayer
 import com.rikmuld.camping.common.network.OpenGui
-import com.rikmuld.corerm.common.network.PacketSender
 import com.rikmuld.camping.common.objs.block.Hemp
+import com.rikmuld.camping.common.objs.block.Tent
+import com.rikmuld.camping.common.objs.item.ArmorFur
 import com.rikmuld.camping.common.objs.item.IKnife
 import com.rikmuld.camping.common.objs.tile.TileEntityCampfireCook
+import com.rikmuld.camping.common.objs.tile.TileEntityTrap
+import com.rikmuld.camping.core.Utils.CampingUtils
+import com.rikmuld.corerm.common.network.PacketSender
+import com.rikmuld.corerm.core.CoreUtils._
+
 import cpw.mods.fml.client.FMLClientHandler
 import cpw.mods.fml.client.event.ConfigChangedEvent
 import cpw.mods.fml.common.eventhandler.Event
 import cpw.mods.fml.common.eventhandler.SubscribeEvent
+import cpw.mods.fml.common.gameevent.InputEvent.KeyInputEvent
 import cpw.mods.fml.common.gameevent.PlayerEvent.ItemCraftedEvent
 import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent
+import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerRespawnEvent
 import cpw.mods.fml.common.gameevent.TickEvent
 import cpw.mods.fml.common.gameevent.TickEvent.ClientTickEvent
+import cpw.mods.fml.common.gameevent.TickEvent.Phase
 import cpw.mods.fml.common.gameevent.TickEvent.PlayerTickEvent
 import cpw.mods.fml.relauncher.ReflectionHelper
 import cpw.mods.fml.relauncher.SideOnly
 import cpw.mods.fml.relauncher.Side
 import net.minecraft.client.Minecraft
 import net.minecraft.client.gui.GuiButton
+import net.minecraft.client.gui.GuiChat
 import net.minecraft.client.gui.GuiScreen
+import net.minecraft.client.gui.inventory.GuiContainer
 import net.minecraft.client.gui.inventory.GuiContainerCreative
 import net.minecraft.client.gui.inventory.GuiInventory
 import net.minecraft.creativetab.CreativeTabs
@@ -45,21 +65,6 @@ import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType
 import net.minecraftforge.event.entity.living.LivingDeathEvent
 import net.minecraftforge.event.entity.player.BonemealEvent
 import net.minecraftforge.event.entity.player.PlayerDropsEvent
-import java.util.Random
-import net.minecraft.item.ItemArmor
-import com.rikmuld.camping.common.objs.item.ArmorFur
-import cpw.mods.fml.common.gameevent.TickEvent.Phase
-import com.rikmuld.camping.common.objs.tile.TileEntityTrap
-import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerRespawnEvent
-import com.rikmuld.corerm.core.CoreUtils._
-import com.rikmuld.camping.core.Utils.CampingUtils
-import com.rikmuld.camping.common.objs.block.Tent
-import cpw.mods.fml.common.gameevent.InputEvent.KeyInputEvent
-import net.minecraft.client.gui.GuiChat
-import com.rikmuld.camping.common.network.KeyData
-import com.rikmuld.camping.CampingMod
-import com.rikmuld.camping.CampingMod
-import scala.collection.JavaConversions._
 
 class Events {
   var tickLight: Int = 0
@@ -204,6 +209,7 @@ class Events {
 class EventsClient {
   var map: GuiMapHUD = _
   var pressFlag: Array[Boolean] = new Array[Boolean](1)
+  var button:GuiButton = _
 
   @SubscribeEvent
   def onKeyInput(event: KeyInputEvent) {
@@ -230,15 +236,23 @@ class EventsClient {
   @SubscribeEvent
   def onClientTick(event: ClientTickEvent) {
     if (event.phase != TickEvent.Phase.END) return
-    if (!Objs.config.coreOnly&&Objs.config.prmInv==0) {
+    if (!Objs.config.coreOnly&&Objs.config.prmInv<2) {
       val mc = FMLClientHandler.instance().getClient
       if (mc.currentScreen.isInstanceOf[GuiInventory] || mc.currentScreen.isInstanceOf[GuiContainerCreative]) {
-        val list: ArrayList[Any] = ReflectionHelper.getPrivateValue(classOf[GuiScreen], mc.currentScreen, 4)
+        val list: ArrayList[GuiButton] = ReflectionHelper.getPrivateValue(classOf[GuiScreen], mc.currentScreen, 4)
         if(!list.asInstanceOf[java.util.List[GuiButton]].exists(_.id==10)){
-          if(Objs.config.secInv==1)list.asInstanceOf[java.util.List[GuiButton]].add(new GuiButton(10, mc.currentScreen.width-100-5, 5, 100, 10, "Camping Inventory"))
-          else if(Objs.config.secInv==2)list.asInstanceOf[java.util.List[GuiButton]].add(new GuiButton(10, mc.currentScreen.width-100-5, mc.currentScreen.height-10-5, 100, 10, "Camping Inventory"))
-          else if(Objs.config.secInv==3)list.asInstanceOf[java.util.List[GuiButton]].add(new GuiButton(10, 5, mc.currentScreen.height-10-5, 100, 10, "Camping Inventory"))
-          else list.asInstanceOf[java.util.List[GuiButton]].add(new GuiButton(10, 5, 5, 100, 10, "Camping Inventory"))
+          if(Objs.config.prmInv==1){
+            if(Objs.config.secInv==1)list.asInstanceOf[java.util.List[GuiButton]].add(new GuiButton(10, mc.currentScreen.width-100-5, 5, 100, 10, "Camping Inventory"))
+            else if(Objs.config.secInv==2)list.asInstanceOf[java.util.List[GuiButton]].add(new GuiButton(10, mc.currentScreen.width-100-5, mc.currentScreen.height-10-5, 100, 10, "Camping Inventory"))
+            else if(Objs.config.secInv==3)list.asInstanceOf[java.util.List[GuiButton]].add(new GuiButton(10, 5, mc.currentScreen.height-10-5, 100, 10, "Camping Inventory"))
+            else list.asInstanceOf[java.util.List[GuiButton]].add(new GuiButton(10, 5, 5, 100, 10, "Camping Inventory"))  
+          } else {
+            val left:Int = ReflectionHelper.getPrivateValue(classOf[GuiContainer], mc.currentScreen.asInstanceOf[GuiContainer], 4)
+            val top:Int = ReflectionHelper.getPrivateValue(classOf[GuiContainer], mc.currentScreen.asInstanceOf[GuiContainer], 5)
+            val width:Int = ReflectionHelper.getPrivateValue(classOf[GuiContainer], mc.currentScreen.asInstanceOf[GuiContainer], 1)
+            list.asInstanceOf[java.util.List[GuiButton]].add(new ButtonItem(10, left+width-22, top+5, new ItemStack(Objs.backpack)))
+          }
+          button = list.filter(_.id==10)(0)
           ReflectionHelper.setPrivateValue(classOf[GuiScreen], mc.currentScreen, list, 4) 
         }
       }
@@ -247,15 +261,16 @@ class EventsClient {
   @SubscribeEvent
   def onOverlayRender(event: RenderGameOverlayEvent) {
     if (event.`type` != ElementType.HOTBAR) return
-    if (!Objs.config.coreOnly) {
+    if (!Objs.config.coreOnly&&Objs.config.prmInv<2) {
       val mc = FMLClientHandler.instance().getClient
-      if (mc.currentScreen.isInstanceOf[GuiInventory] || mc.currentScreen.isInstanceOf[GuiContainerCreative]) {
-        if (Mouse.isButtonDown(0) && event.mouseX >= 5 && event.mouseX <= 105 && event.mouseY >= 5 && event.mouseY <= 15) {
-          if (pressFlag(0)) {
-            PacketSender.toServer(new OpenGui(GuiInfo.GUI_CAMPINV))
+      if (button!=null&&mc.currentScreen.isInstanceOf[GuiInventory] || mc.currentScreen.isInstanceOf[GuiContainerCreative]) {
+        if (event.mouseX >= button.xPosition && event.mouseX <= button.xPosition+button.width && event.mouseY >= button.yPosition && event.mouseY <= button.yPosition+button.height) {
+          if(!Mouse.isButtonDown(0))pressFlag(0) = true
+          if (Mouse.isButtonDown(0)&&pressFlag(0)) {
             pressFlag(0) = false
+            PacketSender.toServer(new OpenGui(GuiInfo.GUI_CAMPINV))
           }
-        } else pressFlag(0) = true
+        } else if (Mouse.isButtonDown(0))pressFlag(0) = false
       }
       if (map == null) map = new GuiMapHUD()
       if (mc.thePlayer.hasMap()) {

@@ -15,6 +15,7 @@ import net.minecraft.network.PacketBuffer
 import com.rikmuld.corerm.common.network.BasicPacketData
 import com.rikmuld.corerm.common.objs.tile.TileEntityWithInventory
 import com.rikmuld.camping.common.objs.tile.TileEntityLog
+import com.rikmuld.camping.common.inventory.gui.ContainerTabbed
 
 class OpenGui(var id: Int) extends BasicPacketData {
   var x: Int = 0
@@ -152,7 +153,7 @@ class PlayerSleepInTent(var x: Int, var y: Int, var z: Int) extends BasicPacketD
 
 class PlayerExitLog(var x: Int, var y: Int, var z: Int) extends BasicPacketData {
   def this() = this(0, 0, 0)
-  
+ 
   override def handlePacket(player: EntityPlayer, ctx: MessageContext) {
     if(!player.worldObj.isRemote&&player.worldObj.getBlock(x, y, z)==Objs.log&&player.worldObj.getTileEntity(x, y, z).asInstanceOf[TileEntityLog].mountable.riddenByEntity!=null){
       player.worldObj.getTileEntity(x, y, z).asInstanceOf[TileEntityLog].mountable.riddenByEntity.mountEntity(null) 
@@ -171,11 +172,9 @@ class PlayerExitLog(var x: Int, var y: Int, var z: Int) extends BasicPacketData 
   }
 }
 
-class KeyData(keyId: Int) extends BasicPacketData {
-  var id = keyId
-
+class KeyData(var id: Int) extends BasicPacketData {
   def this() = this(0)
-  def setData(stream: PacketBuffer) = stream.writeInt(id)
-  def getData(stream: PacketBuffer) = id = stream.readInt
-  def handlePacket(player: EntityPlayer, ctx: MessageContext) = Objs.events.keyPressedServer(player, id)
+  override def setData(stream: PacketBuffer) = stream.writeInt(id)
+  override def getData(stream: PacketBuffer) = id = stream.readInt
+  override def handlePacket(player: EntityPlayer, ctx: MessageContext) = Objs.events.keyPressedServer(player, id)
 }

@@ -69,7 +69,8 @@ object TextureInfo {
   final val GUI_LOCATION = ModInfo.MOD_ID + ":textures/gui/"
   final val MODEL_LOCATION = ModInfo.MOD_ID + ":textures/models/"
   final val SPRITE_LOCATION = ModInfo.MOD_ID + ":textures/sprite/"
-  final val MC_GUI_LOCATION = "minecraft:textures/gui/"
+  final val MC_LOCATION = "minecraft:textures/"
+  final val MC_GUI_LOCATION = MC_LOCATION + "gui/"
 
   final val MODEL_CAMPFIRE = MODEL_LOCATION + "ModelCampfireDeco.png"
   final val SPRITE_FX = SPRITE_LOCATION + "SpriteFX.png"
@@ -105,6 +106,7 @@ object TextureInfo {
   final val MODEL_TRAP = MODEL_LOCATION + "ModelBearTrapOpen.png"
   final val MODEL_CAMPER_FEMALE = MODEL_LOCATION + "ModelCamperFemale.png"
   final val MODEL_CAMPER_MALE = MODEL_LOCATION + "ModelCamperMale.png"
+  final val GUI_TAB_UTILS = GUI_LOCATION + "GuiTabUtils.png"
 }
 
 object KeyInfo {

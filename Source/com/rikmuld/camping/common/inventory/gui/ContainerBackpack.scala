@@ -2,13 +2,13 @@ package com.rikmuld.camping.common.inventory.gui
 
 import com.rikmuld.camping.core.Objs
 import com.rikmuld.corerm.core.CoreUtils.ContainerUtils
-import com.rikmuld.corerm.common.inventory.SlotItemsNot
-import com.rikmuld.corerm.common.inventory.SlotNoPickup
 import com.rikmuld.corerm.common.inventory.inventory.InventoryItemMain
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.inventory.Slot
 import net.minecraft.item.Item
 import com.rikmuld.corerm.common.inventory.gui.ContainerItemMain
+import com.rikmuld.corerm.common.inventory.SlotItemsNot
+import com.rikmuld.corerm.common.inventory.SlotNoPickup
 
 class ContainerBackpack(player: EntityPlayer) extends ContainerItemMain(player) {
   for (row <- 0 until 3; collom <- 0 until 9) this.addSlot(new SlotItemsNot(inv, collom + (row * 9), 8 + (collom * 18), 26 + (row * 18), Objs.backpack))

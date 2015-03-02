@@ -1,6 +1,5 @@
 package com.rikmuld.camping.common.inventory.gui
 
-import com.rikmuld.corerm.common.inventory.SlotItem
 import com.rikmuld.corerm.core.CoreUtils._
 import net.minecraft.block.Block
 import net.minecraft.entity.player.EntityPlayer
@@ -9,9 +8,10 @@ import net.minecraft.inventory.IInventory
 import net.minecraft.inventory.Slot
 import net.minecraft.item.ItemStack
 import com.rikmuld.corerm.common.inventory.gui.ContainerTileMain
+import com.rikmuld.corerm.common.inventory.SlotOnlyItems
 
 class ContainerTrap(player: EntityPlayer, inv: IInventory) extends ContainerTileMain(player, inv) {
-  addSlotToContainer(new SlotItem(inv, 0, 80, 12))
+  addSlotToContainer(new SlotOnlyItems(inv, 0, 80, 12))
 
   this.addSlots(player.inventory, 9, 3, 9, 8, 38)
   this.addSlots(player.inventory, 0, 1, 9, 8, 96)

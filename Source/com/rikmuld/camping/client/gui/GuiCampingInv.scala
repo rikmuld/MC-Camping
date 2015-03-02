@@ -1,22 +1,17 @@
 package com.rikmuld.camping.client.gui
 
 import java.awt.Color
-
-import scala.collection.JavaConversions._
 import scala.collection.mutable.HashMap
-
 import org.lwjgl.BufferUtils
 import org.lwjgl.opengl.GL11
 import org.lwjgl.opengl.GL12
-
+import com.rikmuld.camping.client.gui.button.ButtonItem
 import com.rikmuld.camping.common.inventory.gui.ContainerCampinv
-import com.rikmuld.camping.common.inventory.gui.ContainerCampinvCraft
 import com.rikmuld.camping.common.network.OpenGui
-import com.rikmuld.corerm.common.network.PacketSender
 import com.rikmuld.camping.core.GuiInfo
 import com.rikmuld.camping.core.Objs
 import com.rikmuld.camping.core.TextureInfo
-
+import com.rikmuld.corerm.common.network.PacketSender
 import net.minecraft.block.material.MapColor
 import net.minecraft.client.gui.GuiButton
 import net.minecraft.client.gui.GuiScreen
@@ -26,58 +21,65 @@ import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.init.Items
 import net.minecraft.item.ItemStack
 import net.minecraft.util.ResourceLocation
+import net.minecraft.block.Block
+import net.minecraft.init.Blocks
+import net.minecraft.item.Item
+import net.minecraft.client.gui.inventory.GuiInventory
+import net.minecraft.entity.player.InventoryPlayer
+import net.minecraft.client.resources.I18n
 
-class GuiCampinginv(var player: EntityPlayer) extends GuiContainer(new ContainerCampinv(player)) {
-  var timer: Int = 5
-  var itemRenderer: RenderItem = new RenderItem()
-  var craftButton: GuiButton = _
-
+class GuiCampinginv(var player: EntityPlayer) extends GuiTabbed(player, new ContainerCampinv(player)) {
   this.xSize = 220
-  this.ySize = 160
+  this.ySize = 166
+  
+  var hasBackpack = false;
+  var hasKnife = false;
+  var lastMouseX = 0;
+  var lastMouseY = 0;
+     
+  final val inventoryTexture = new ResourceLocation("textures/gui/container/inventory.png")
 
   override def initGui() {
-    super.initGui()
-    craftButton = new GuiButton(1, guiLeft + xSize / 2 - 50, guiTop + 6, 100, 10, "Open Crafting Grit")
-    craftButton.enabled = false
-    this.buttonList.asInstanceOf[java.util.List[GuiButton]].add(craftButton)
+    super.initGui    
+    addTopTab("Armor", xSize, ySize, guiLeft+24, guiTop, tabsTop.size, new ItemStack(Items.skull, 1, 3))
+    addTopTab("Backpack", xSize, ySize, guiLeft+24, guiTop, tabsTop.size, new ItemStack(Objs.backpack))
+    addTopTab("Crafting", xSize, ySize, guiLeft+24, guiTop, tabsTop.size, new ItemStack(Objs.knife))
+    addTopTab("Configuration", xSize, ySize, guiLeft+24, guiTop, tabsTop.size)
   }
-  override def actionPerformed(button: GuiButton) {
-    if (button.id == 1 && timer <= 0) PacketSender.toServer(new OpenGui(GuiInfo.GUI_CAMPINV_CRAFT))
+  def setContents(){
+    hasKnife = (this.inventorySlots.asInstanceOf[ContainerCampinv].campinv.getStackInSlot(1) != null)
+    hasBackpack = (this.inventorySlots.asInstanceOf[ContainerCampinv].campinv.getStackInSlot(0) != null)
   }
   protected override def drawGuiContainerBackgroundLayer(partTick: Float, mouseX: Int, mouseY: Int) {
-    if (this.inventorySlots.asInstanceOf[ContainerCampinv].campinv.getStackInSlot(1) != null) {
-      if (craftButton.enabled == false) craftButton.enabled = true
-    } else if (craftButton.enabled == true) {
-      craftButton.enabled = false
-    }
-    if (timer > 0) timer -= 1
+    setContents
+    tabsTop(1).enabled = hasBackpack
+    tabsTop(2).enabled = hasKnife
+    lastMouseX = mouseX
+    lastMouseY = mouseY
     GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F)
     mc.renderEngine.bindTexture(new ResourceLocation(TextureInfo.GUI_CAMPINV))
     drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize)
-    if (this.func_146978_c(8, 28, 16, 16, mouseX, mouseY)) itemRenderer.renderItemIntoGUI(fontRendererObj, mc.renderEngine, new ItemStack(Objs.backpack), guiLeft + 8, guiTop + 28)
-    if (this.func_146978_c(8, 46, 16, 16, mouseX, mouseY)) itemRenderer.renderItemIntoGUI(fontRendererObj, mc.renderEngine, new ItemStack(Objs.knife), guiLeft + 8, guiTop + 46)
-    if (this.func_146978_c(196, 28, 16, 16, mouseX, mouseY)) itemRenderer.renderItemIntoGUI(fontRendererObj, mc.renderEngine, new ItemStack(Objs.lantern), guiLeft + 196, guiTop + 28)
-    if (this.func_146978_c(196, 46, 16, 16, mouseX, mouseY)) itemRenderer.renderItemIntoGUI(fontRendererObj, mc.renderEngine, new ItemStack(Items.filled_map), guiLeft + 196, guiTop + 46)
+    if (this.func_146978_c(8, 35, 16, 16, mouseX, mouseY)) itemRender.renderItemIntoGUI(fontRendererObj, mc.renderEngine, new ItemStack(Objs.backpack), guiLeft + 8, guiTop + 35)
+    if (this.func_146978_c(8, 53, 16, 16, mouseX, mouseY)) itemRender.renderItemIntoGUI(fontRendererObj, mc.renderEngine, new ItemStack(Objs.knife), guiLeft + 8, guiTop + 53)
+    if (this.func_146978_c(196, 35, 16, 16, mouseX, mouseY)) itemRender.renderItemIntoGUI(fontRendererObj, mc.renderEngine, new ItemStack(Objs.lantern), guiLeft + 196, guiTop + 35)
+    if (this.func_146978_c(196, 53, 16, 16, mouseX, mouseY)) itemRender.renderItemIntoGUI(fontRendererObj, mc.renderEngine, new ItemStack(Items.filled_map), guiLeft + 196, guiTop + 53)
+    super.drawGuiContainerBackgroundLayer(partTick, mouseX, mouseY)
   }
-}
-class GuiCampingInvCraft(var player: EntityPlayer) extends GuiContainer(new ContainerCampinvCraft(player)) {
-  var timer: Int = 5
-
-  this.xSize = 176
-  this.ySize = 175
-
-  override def initGui() {
-    super.initGui()
-    this.buttonList.asInstanceOf[java.util.List[GuiButton]].add(new GuiButton(1, guiLeft + xSize / 2 - 50, guiTop + 6, 100, 10, "Camping Inventory"))
+  override def drawGuiContainerForegroundLayer(mouseX:Int, mouseY:Int) {
+    if(active(1)==0)this.fontRendererObj.drawString(I18n.format("container.crafting", new java.lang.Object), 108, 16, 4210752)
   }
-  override def actionPerformed(button: GuiButton) {
-    if (button.id == 1 && timer <= 0) PacketSender.toServer(new OpenGui(GuiInfo.GUI_CAMPINV))
-  }
-  protected override def drawGuiContainerBackgroundLayer(partTick: Float, mouseX: Int, mouseY: Int) {
-    if (timer > 0) timer -= 1
-    GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F)
-    mc.renderEngine.bindTexture(new ResourceLocation(TextureInfo.GUI_CAMPINV_CRAFT))
-    drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize)
+  def drawTab(left:Boolean, id:Int){
+    if(id==1||id==2)mc.renderEngine.bindTexture(new ResourceLocation(TextureInfo.GUI_CAMPINV))
+    getCleanGL
+    if(id==0){ 
+      this.mc.getTextureManager().bindTexture(inventoryTexture)
+      this.drawTexturedModalRect(guiLeft + 29, guiTop+7, 7, 7, 154, 72);
+      GuiInventory.func_147046_a(guiLeft + 51 + 22, guiTop + 75, 30, (guiLeft + 51 + 22 - lastMouseX).asInstanceOf[Float], (guiTop + 75 - 50 - lastMouseY).asInstanceOf[Float], this.mc.thePlayer);
+    } else if(id==1)drawTexturedModalRect(guiLeft+29, guiTop+16, 29, 83, 162, 54)
+    else if(id==2)drawTexturedModalRect(guiLeft+52, guiTop+16, 0, 166, 115, 54)
+    else {
+      
+    }
   }
 }
 

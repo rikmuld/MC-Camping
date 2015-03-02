@@ -1,75 +1,99 @@
 package com.rikmuld.camping.common.inventory.gui
 
+import java.util.ArrayList
+import java.util.Random
+import scala.collection.JavaConversions._
+import com.rikmuld.camping.core.Objs
+import com.rikmuld.camping.core.Utils._
+import com.rikmuld.corerm.common.inventory.SlotDisable
+import com.rikmuld.corerm.common.inventory.SlotItemsNot
+import com.rikmuld.corerm.common.inventory.SlotItemsOnly
+import com.rikmuld.corerm.common.inventory.inventory.InventoryItemMain
+import com.rikmuld.corerm.common.inventory.inventory.InventoryPlayerMain
+import com.rikmuld.corerm.core.CoreUtils._
 import net.minecraft.entity.player.EntityPlayer
-import net.minecraft.item.ItemStack
 import net.minecraft.init.Items
 import net.minecraft.inventory.Container
-import java.util.ArrayList
-import net.minecraft.inventory.Slot
-import com.rikmuld.camping.core.Utils._
-import net.minecraft.inventory.SlotCrafting
+import net.minecraft.inventory.IInventory
 import net.minecraft.inventory.InventoryCraftResult
 import net.minecraft.inventory.InventoryCrafting
-import net.minecraft.inventory.IInventory
-import net.minecraft.nbt.NBTTagCompound
+import net.minecraft.inventory.Slot
+import net.minecraft.inventory.SlotCrafting
+import net.minecraft.item.ItemStack
 import net.minecraft.item.crafting.CraftingManager
-import net.minecraftforge.common.util.Constants
-import scala.collection.JavaConversions._
-import java.util.Random
-import com.rikmuld.camping.core.Objs
+import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.nbt.NBTTagList
-import com.rikmuld.corerm.core.CoreUtils._
-import com.rikmuld.corerm.common.inventory.SlotItemsNot
-import com.rikmuld.corerm.common.inventory.SlotDisable
-import com.rikmuld.corerm.common.inventory.SlotItemsOnly
-import com.rikmuld.corerm.common.inventory.inventory.InventoryPlayerMain
-import com.rikmuld.corerm.common.inventory.inventory.InventoryItemMain
+import net.minecraftforge.common.util.Constants
+import com.rikmuld.camping.common.inventory.SlotTabbedItemsNot
+import net.minecraft.client.Minecraft
+import com.rikmuld.corerm.common.inventory.SlotWithDisable
+import com.rikmuld.camping.common.inventory.SlotTabbedCrafting
+import com.rikmuld.camping.common.inventory.SlotTabbed
 
-class ContainerCampinv(var player: EntityPlayer) extends Container {
+class ContainerCampinv(player:EntityPlayer) extends Container with ContainerTabbed {
   var backpackInv: InventoryItemMain = new InventoryItemMain(new ItemStack(Objs.backpack, 1, 0), player, 27, 64)
-  var slots: ArrayList[SlotDisable] = new ArrayList[SlotDisable]()
+  var slots: ArrayList[SlotWithDisable] = new ArrayList[SlotWithDisable]()
   var campinv: InventoryCampinv = new InventoryCampinv(player, slots, backpackInv)
-
+  var craftMatrix: InventoryCrafting = new InventoryCrafting(this, 3, 3)
+  var craftResult: IInventory = new InventoryCraftResult()
+ 
+  this.addSlots(player.inventory, 0, 1, 9, 30, 142)
+  this.addSlots(player.inventory, 9, 3, 9, 30, 84)
+  
+  addSlotToContainer(new SlotItemsOnly(campinv, 0, 8, 35, new ItemStack(Objs.backpack)))
+  addSlotToContainer(new SlotItemsOnly(campinv, 1, 8, 53, Objs.knife))
+  addSlotToContainer(new SlotItemsOnly(campinv, 2, 196, 35, new ItemStack(Objs.lantern)))
+  addSlotToContainer(new SlotItemsOnly(campinv, 3, 196, 53, Items.filled_map))
+  
   for (row <- 0 until 3; collom <- 0 until 9) {
-    val slot = new SlotItemsNot(backpackInv, collom + (row * 9), 30 + (collom * 18), 20 + (row * 18), Objs.backpack)
+    val slot = new SlotTabbedItemsNot(backpackInv, collom + (row * 9), 30 + (collom * 18), 17 + (row * 18), 1, 0, Objs.backpack)
     slot.disable
     addSlotToContainer(slot)
     slots.add(slot)
   }
 
-  addSlotToContainer(new SlotItemsOnly(campinv, 0, 8, 28, new ItemStack(Objs.backpack)))
-  addSlotToContainer(new SlotItemsOnly(campinv, 1, 8, 46, Objs.knife))
-  addSlotToContainer(new SlotItemsOnly(campinv, 2, 196, 28, new ItemStack(Objs.lantern)))
-  addSlotToContainer(new SlotItemsOnly(campinv, 3, 196, 46, Items.filled_map))
-
-  this.addSlots(player.inventory, 0, 1, 9, 30, 136)
-  this.addSlots(player.inventory, 9, 3, 9, 30, 78)
-
+  addSlotToContainer(new SlotTabbedCrafting(player, craftMatrix, craftResult, 0, 147, 35, 2, 0))  
+  for (row <- 0 until 3; collom <- 0 until 3) addSlotToContainer(new SlotTabbed(craftMatrix, collom + (row * 3), 53 + (collom * 18), 17 + (row * 18), 2, 0))
+    
+  updateTab(player, 0, 0)
+  onCraftMatrixChanged(this.craftMatrix)
   campinv.openInventory()
   backpackInv.openInventory()
-
-  override def canInteractWith(player: EntityPlayer): Boolean = !player.isDead
+  
+  override def onCraftMatrixChanged(par1IInventory: IInventory) = this.craftResult.setInventorySlotContents(0, CraftingManager.getInstance.findMatchingRecipe(this.craftMatrix, this.player.worldObj))
   override def onContainerClosed(player: EntityPlayer) {
+    if (!this.player.worldObj.isRemote) {
+      for (i <- 0 until 9) {
+        val itemstack = this.craftMatrix.getStackInSlotOnClosing(i)
+        if (itemstack != null) {
+          player.dropPlayerItemWithRandomChoice(itemstack, false)
+        }
+      }
+    }
     campinv.closeInventory
     backpackInv.closeInventory
     super.onContainerClosed(player)
   }
-  override def transferStackInSlot(p: EntityPlayer, i: Int): ItemStack = {
+  override def canInteractWith(player: EntityPlayer): Boolean = !player.isDead
+  override def transferStackInSlot(player: EntityPlayer, slotNum: Int): ItemStack = {
     var itemstack: ItemStack = null
-    val slot = inventorySlots.get(i).asInstanceOf[Slot]
+    val slot = inventorySlots.get(slotNum).asInstanceOf[Slot]
     if ((slot != null) && slot.getHasStack) {
       val itemstack1 = slot.getStack
       itemstack = itemstack1.copy()
-      if (i < 28) {
-        if (!mergeItemStack(itemstack1, 28, inventorySlots.size, true)) return null
+      if (slotNum >= 36) {
+        if (!mergeItemStack(itemstack1, 0, inventorySlots.size, false)) return null
       } else {
-        if (campinv.getStackInSlot(0) == null) {
-          if (itemstack1.getItem != Objs.backpack ||
-            !mergeItemStack(itemstack1, backpackInv.getSizeInventory, backpackInv.getSizeInventory + campinv.getSizeInventory,
-              false)) return null
-        } else {
-          if (!mergeItemStack(itemstack1, 0, backpackInv.getSizeInventory, false)) return null
+        if(itemstack.getItem==Objs.backpack){
+          if (!mergeItemStack(itemstack1, 36, 37, false)) return null
+        } else if(itemstack.getItem==Objs.knife){
+          if(!mergeItemStack(itemstack1, 37, 38, false)) return null
+        } else if(itemstack.isItemEqual(new ItemStack(Objs.lantern))){
+          if(!mergeItemStack(itemstack1, 38, 39, false)) return null
+        } else if(itemstack.getItem==Items.filled_map){
+          if(!mergeItemStack(itemstack1, 39, 40, false)) return null
         }
+        else return null
       }
       if (itemstack1.stackSize == 0) {
         slot.putStack(null)
@@ -79,48 +103,6 @@ class ContainerCampinv(var player: EntityPlayer) extends Container {
     }
     itemstack
   }
-}
-
-class ContainerCampinvCraft(var player: EntityPlayer) extends Container {
-  var backpackInv: InventoryItemMain = new InventoryItemMain(new ItemStack(Objs.backpack, 1, 0), player, 27, 64)
-  var slots: ArrayList[SlotDisable] = new ArrayList[SlotDisable]()
-  var campinv: InventoryCampinv = new InventoryCampinv(player, slots, backpackInv)
-  var craftMatrix: InventoryCrafting = new InventoryCrafting(this, 3, 3)
-  var craftResult: IInventory = new InventoryCraftResult()
-
-  for (row <- 0 until 3; collom <- 0 until 9) {
-    val slot = new SlotDisable(backpackInv, collom + (row * 9), 30 + (collom * 18), 20 + (row * 18))
-    slot.disable
-    slots.add(slot)
-  }
-
-  addSlotToContainer(new SlotCrafting(player, this.craftMatrix, this.craftResult, 0, 111, 44))
-  this.addSlots(craftMatrix, 0, 3, 3, 17, 26)
-  addSlotToContainer(new SlotItemsOnly(campinv, 1, 143, 44, Objs.knife))
-  this.addSlots(player.inventory, 0, 1, 9, 8, 151)
-  this.addSlots(player.inventory, 9, 3, 9, 8, 93)
-
-  campinv.openInventory()
-  backpackInv.openInventory()
-
-  this.onCraftMatrixChanged(this.craftMatrix)
-
-  override def onCraftMatrixChanged(par1IInventory: IInventory) = this.craftResult.setInventorySlotContents(0, CraftingManager.getInstance.findMatchingRecipe(this.craftMatrix, this.player.worldObj))
-  override def canInteractWith(player: EntityPlayer): Boolean = !player.isDead
-  override def onContainerClosed(player: EntityPlayer) {
-    super.onContainerClosed(player)
-    if (!this.player.worldObj.isRemote) {
-      for (i <- 0 until 9) {
-        val itemstack = this.craftMatrix.getStackInSlotOnClosing(i)
-        if (itemstack != null) {
-          player.dropPlayerItemWithRandomChoice(itemstack, false)
-        }
-      }
-    }
-    campinv.closeInventory()
-  }
-  override def func_94530_a(par1ItemStack: ItemStack, par2Slot: Slot): Boolean = par2Slot.inventory != this.craftResult && super.func_94530_a(par1ItemStack, par2Slot)
-  override def transferStackInSlot(p: EntityPlayer, i: Int): ItemStack = return null
 }
 
 object InventoryCampinv {
@@ -136,7 +118,7 @@ object InventoryCampinv {
   }
 }
 
-class InventoryCampinv(player: EntityPlayer, var slots: ArrayList[SlotDisable], var backpack: InventoryItemMain) extends InventoryPlayerMain(player, 4) {
+class InventoryCampinv(player: EntityPlayer, var slots: ArrayList[SlotWithDisable], var backpack: InventoryItemMain) extends InventoryPlayerMain(player, 4) {
   if (player.getEntityData.hasKey("campInv") == false) player.getEntityData.setTag("campInv", new NBTTagCompound())
   tag = player.getEntityData.getCompoundTag("campInv")
 
