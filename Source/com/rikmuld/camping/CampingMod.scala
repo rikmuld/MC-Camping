@@ -42,4 +42,9 @@ object CampingMod {
 //Add shelter
 //More advanced campers
 //Add Guide
-//Inventory Options Looks Position Key (Inventory Main: Nice GUI/Simple Button/Nothing; Inventory Secundary: LeftT/RighT/LeftB/RighB)
+//
+//TAB ->
+
+/*
+ * Button options
+ */

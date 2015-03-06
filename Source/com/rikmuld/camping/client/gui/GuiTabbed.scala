@@ -20,6 +20,8 @@ import scala.collection.mutable.ListBuffer
 import com.rikmuld.corerm.common.network.PacketSender
 import net.minecraft.entity.player.EntityPlayer
 import com.rikmuld.camping.common.inventory.gui.ContainerTabbed
+import com.rikmuld.camping.client.gui.button.ButtonWithTab
+import net.minecraft.client.renderer.InventoryEffectRenderer
 
 abstract class GuiTabbed(player:EntityPlayer, container: Container) extends GuiContainer(container) {
   var tabsLeft: ListBuffer[GuiTab] = new ListBuffer[GuiTab]()
@@ -36,7 +38,12 @@ abstract class GuiTabbed(player:EntityPlayer, container: Container) extends GuiC
     super.initGui()
     tabsLeft.clear()
     tabsTop.clear()
+    initTabbed  
+    updateButtons(0, 0)
+    setTabLeftActive(0)
+    setTabTopActive(0)
   }
+  def initTabbed
   def getFontRenderer = fontRendererObj
   def getRenderEngine = mc.renderEngine
   override def drawScreen(x: Int, y: Int, par3: Float) {
@@ -50,19 +57,23 @@ abstract class GuiTabbed(player:EntityPlayer, container: Container) extends GuiC
       this.drawHoveringText(tab.getHoveringText, x, y, fontRendererObj) 
     }
   }
+  def updateButtons(left:Int, top:Int) = buttonList.foreach(button => {if(button.isInstanceOf[ButtonWithTab]) button.asInstanceOf[ButtonWithTab].tabChanged(left, top)})
+  def updateContainer(left:Int, top:Int) = player.openContainer.asInstanceOf[ContainerTabbed].updateTab(player, left, top)
   def setTabTopActive(id: Int) {
-    player.openContainer.asInstanceOf[ContainerTabbed].updateTab(player, active(0), id)
+    updateContainer(active(0), id)
     tabsTop.foreach(tab => {
       tab.active = tab.id==id
       if(tab.active)active(1)=tab.id 
     })
+    updateButtons(active(0), id)
   }
   def setTabLeftActive(id: Int) {
-    player.openContainer.asInstanceOf[ContainerTabbed].updateTab(player, active(0), id)
+    updateContainer(id, active(1))
     tabsLeft.foreach(tab => {
       tab.active = tab.id==id
       if(tab.active)active(0)=tab.id 
     })
+    updateButtons(id, active(1))
   }
   def getCleanGL(){
     GL11.glColor4f(1, 1, 1, 1)
@@ -75,7 +86,7 @@ abstract class GuiTabbed(player:EntityPlayer, container: Container) extends GuiC
   private def getActiveLeftPage(): Int = tabsLeft.find(_.active).map(_.id).getOrElse(-1)
   private def getActiveTopPage(): Int = tabsTop.find(_.active).map(_.id).getOrElse(-1)
   protected override def drawGuiContainerBackgroundLayer(f: Float, i: Int, j: Int) {
-    for (tab <- tabsLeft) if(active(0)==tab.id)drawTab(true, tab.id)
+    for (tab <- tabsLeft)if(active(0)==tab.id)drawTab(true, tab.id)
     for (tab <- tabsTop)if(active(1)==tab.id)drawTab(false, tab.id)
     getCleanGL
     for (tab <- tabsLeft) tab.drawScreen(this)
@@ -97,6 +108,8 @@ abstract class GuiTabbed(player:EntityPlayer, container: Container) extends GuiC
 }
 
 class GuiTab(var name: String, var guiWidth: Int, var guiHeigth: Int, xStart: Int, yStart: Int, tabID: Int, var side: Int) {
+  final val TEXT_UTILS_TAB = new ResourceLocation(TextureInfo.GUI_TAB_UTILS)  
+ 
   private var zLevel: Float = 0
   var guiStartX: Int = xStart
   var guiStartY: Int = yStart
@@ -117,7 +130,7 @@ class GuiTab(var name: String, var guiWidth: Int, var guiHeigth: Int, xStart: In
   }
   def getHoveringText(): List[String] = scala.List(name)
   def drawScreen(guiTab:GuiTabbed) {
-    mc.renderEngine.bindTexture(new ResourceLocation(TextureInfo.GUI_TAB_UTILS))
+    mc.renderEngine.bindTexture(TEXT_UTILS_TAB)
     val xStart = if(side==0)guiStartX + guiWidth - 3 else guiStartX + 4
     val yStart = if(side==0)guiStartY + 10 else guiStartY + 3 - 23
     
@@ -135,13 +148,12 @@ class GuiTab(var name: String, var guiWidth: Int, var guiHeigth: Int, xStart: In
     GL11.glDisable(GL11.GL_LIGHTING)
     val xStart = if(side==0)guiStartX + guiWidth + 2 else guiStartX + 8
     val yStart = if(side==0)guiStartY + 15 else guiStartY - 17
-    
     if(stack!=null)guiTab.itemRender.renderItemAndEffectIntoGUI(guiTab.getFontRenderer, guiTab.getRenderEngine, stack, xStart + (if(side==0) 0 else (id * 26)), yStart + (if(side==0)(id * 28)else 0))
   }
   def drawBackgroundTexture(guiTab:GuiTabbed){
     val xStart = if(side==0)guiStartX + guiWidth + 2 else guiStartX + 8
     val yStart = if(side==0)guiStartY + 15 else guiStartY - 17
-      
-    if(textureInfo!=null) if(side==0)guiTab.drawTexturedModalRect(xStart + (if(side==0) 0 else (id * 26)), yStart + (if(side==0)(id * 28)else 0), textureInfo(0), textureInfo(1), textureInfo(2), textureInfo(3))
+        
+    if(textureInfo!=null) guiTab.drawTexturedModalRect(xStart + (if(side==0) 0 else (id * 26)), yStart + (if(side==0)(id * 28)else 0), textureInfo(0), textureInfo(1), textureInfo(2), textureInfo(3))
   }
 }

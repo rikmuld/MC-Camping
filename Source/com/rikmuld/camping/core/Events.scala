@@ -3,11 +3,8 @@ package com.rikmuld.camping.core
 import java.util.ArrayList
 import java.util.Random
 import java.util.UUID
-
 import scala.collection.JavaConversions._
-
 import org.lwjgl.input.Mouse
-
 import com.rikmuld.camping.CampingMod
 import com.rikmuld.camping.CampingMod
 import com.rikmuld.camping.client.gui.GuiMapHUD
@@ -25,7 +22,6 @@ import com.rikmuld.camping.common.objs.tile.TileEntityTrap
 import com.rikmuld.camping.core.Utils.CampingUtils
 import com.rikmuld.corerm.common.network.PacketSender
 import com.rikmuld.corerm.core.CoreUtils._
-
 import cpw.mods.fml.client.FMLClientHandler
 import cpw.mods.fml.client.event.ConfigChangedEvent
 import cpw.mods.fml.common.eventhandler.Event
@@ -65,6 +61,7 @@ import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType
 import net.minecraftforge.event.entity.living.LivingDeathEvent
 import net.minecraftforge.event.entity.player.BonemealEvent
 import net.minecraftforge.event.entity.player.PlayerDropsEvent
+import net.minecraft.inventory.ContainerPlayer
 
 class Events {
   var tickLight: Int = 0
@@ -230,23 +227,27 @@ class EventsClient {
     if (!Objs.config.coreOnly) {
       if (event.gui.isInstanceOf[GuiContainerCreative]) {
         ReflectionHelper.setPrivateValue(classOf[GuiContainerCreative], event.gui.asInstanceOf[GuiContainerCreative], CreativeTabs.tabInventory.getTabIndex, 2)
+      } else if(event.gui.isInstanceOf[GuiInventory]&&Objs.config.prmInv==0){
+        if(Minecraft.getMinecraft.thePlayer.capabilities.isCreativeMode) return;
+        event.setCanceled(true)
+        PacketSender.toServer(new OpenGui(GuiInfo.GUI_CAMPINV, 0, 0, 0))
       }
     }
   }
   @SubscribeEvent
   def onClientTick(event: ClientTickEvent) {
     if (event.phase != TickEvent.Phase.END) return
-    if (!Objs.config.coreOnly&&Objs.config.prmInv<2) {
+    if (!Objs.config.coreOnly&&Objs.config.prmInv==1) {
       val mc = FMLClientHandler.instance().getClient
-      if (mc.currentScreen.isInstanceOf[GuiInventory] || mc.currentScreen.isInstanceOf[GuiContainerCreative]) {
+      if (mc.currentScreen.isInstanceOf[GuiInventory]) {
+        if(mc.thePlayer.capabilities.isCreativeMode)return
         val list: ArrayList[GuiButton] = ReflectionHelper.getPrivateValue(classOf[GuiScreen], mc.currentScreen, 4)
         if(!list.asInstanceOf[java.util.List[GuiButton]].exists(_.id==10)){
-          if(Objs.config.prmInv==1){
-            if(Objs.config.secInv==1)list.asInstanceOf[java.util.List[GuiButton]].add(new GuiButton(10, mc.currentScreen.width-100-5, 5, 100, 10, "Camping Inventory"))
-            else if(Objs.config.secInv==2)list.asInstanceOf[java.util.List[GuiButton]].add(new GuiButton(10, mc.currentScreen.width-100-5, mc.currentScreen.height-10-5, 100, 10, "Camping Inventory"))
-            else if(Objs.config.secInv==3)list.asInstanceOf[java.util.List[GuiButton]].add(new GuiButton(10, 5, mc.currentScreen.height-10-5, 100, 10, "Camping Inventory"))
-            else list.asInstanceOf[java.util.List[GuiButton]].add(new GuiButton(10, 5, 5, 100, 10, "Camping Inventory"))  
-          } else {
+          if(Objs.config.secInv==2)list.asInstanceOf[java.util.List[GuiButton]].add(new GuiButton(10, mc.currentScreen.width-100-5, 5, 100, 10, "Camping Inventory"))
+          else if(Objs.config.secInv==4)list.asInstanceOf[java.util.List[GuiButton]].add(new GuiButton(10, mc.currentScreen.width-100-5, mc.currentScreen.height-10-5, 100, 10, "Camping Inventory"))
+          else if(Objs.config.secInv==3)list.asInstanceOf[java.util.List[GuiButton]].add(new GuiButton(10, 5, mc.currentScreen.height-10-5, 100, 10, "Camping Inventory"))
+          else if(Objs.config.secInv==1) list.asInstanceOf[java.util.List[GuiButton]].add(new GuiButton(10, 5, 5, 100, 10, "Camping Inventory"))  
+          else {
             val left:Int = ReflectionHelper.getPrivateValue(classOf[GuiContainer], mc.currentScreen.asInstanceOf[GuiContainer], 4)
             val top:Int = ReflectionHelper.getPrivateValue(classOf[GuiContainer], mc.currentScreen.asInstanceOf[GuiContainer], 5)
             val width:Int = ReflectionHelper.getPrivateValue(classOf[GuiContainer], mc.currentScreen.asInstanceOf[GuiContainer], 1)
@@ -261,16 +262,19 @@ class EventsClient {
   @SubscribeEvent
   def onOverlayRender(event: RenderGameOverlayEvent) {
     if (event.`type` != ElementType.HOTBAR) return
-    if (!Objs.config.coreOnly&&Objs.config.prmInv<2) {
+    if (!Objs.config.coreOnly) {
       val mc = FMLClientHandler.instance().getClient
-      if (button!=null&&mc.currentScreen.isInstanceOf[GuiInventory] || mc.currentScreen.isInstanceOf[GuiContainerCreative]) {
-        if (event.mouseX >= button.xPosition && event.mouseX <= button.xPosition+button.width && event.mouseY >= button.yPosition && event.mouseY <= button.yPosition+button.height) {
-          if(!Mouse.isButtonDown(0))pressFlag(0) = true
-          if (Mouse.isButtonDown(0)&&pressFlag(0)) {
-            pressFlag(0) = false
-            PacketSender.toServer(new OpenGui(GuiInfo.GUI_CAMPINV))
-          }
-        } else if (Mouse.isButtonDown(0))pressFlag(0) = false
+      if(Objs.config.prmInv==1){
+        if(mc.thePlayer.capabilities.isCreativeMode) return;
+        if (button!=null&&mc.currentScreen.isInstanceOf[GuiInventory] || mc.currentScreen.isInstanceOf[GuiContainerCreative]) {
+          if (event.mouseX >= button.xPosition && event.mouseX <= button.xPosition+button.width && event.mouseY >= button.yPosition && event.mouseY <= button.yPosition+button.height) {
+            if(!Mouse.isButtonDown(0))pressFlag(0) = true
+            if (Mouse.isButtonDown(0)&&pressFlag(0)) {
+              pressFlag(0) = false
+              PacketSender.toServer(new OpenGui(GuiInfo.GUI_CAMPINV))
+            }
+          } else if (Mouse.isButtonDown(0))pressFlag(0) = false
+        } 
       }
       if (map == null) map = new GuiMapHUD()
       if (mc.thePlayer.hasMap()) {

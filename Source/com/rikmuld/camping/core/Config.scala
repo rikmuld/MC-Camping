@@ -39,7 +39,7 @@ class Config(val file: Configuration) {
 
   var elements: java.util.List[IConfigElement[_]] = new ArrayList[IConfigElement[_]];
 
-  def sync = {
+  def sync = {    
     toolUse = getVar("Knife Durability", "The durability of the pocket knife.", ConfigInfo.CAT_TOOLS, toolUse).asInstanceOf[Integer]
     campfireMaxFuel = getVar("Campfire Max Fuel", "Max fuel of a campfire in ticks.", ConfigInfo.CAT_CAMPFIRE, campfireMaxFuel).asInstanceOf[Integer]
     campfireCoalFuel = getVar("Coal Fuel", "Fuel worth of 1 coal pice in ticks.", ConfigInfo.CAT_CAMPFIRE, campfireCoalFuel).asInstanceOf[Integer]
@@ -63,7 +63,7 @@ class Config(val file: Configuration) {
     campsiteRareness = getVar("Campsite Rareness", "Rareness of the campsite world generation", ConfigInfo.CAT_WORLD, campsiteRareness).asInstanceOf[Integer]
     coreOnly = getVar("Core Features Only", "Only use the core features of the camping mod. WARNING! use carfully!", ConfigInfo.CAT_GENERAL, coreOnly).asInstanceOf[Boolean]
     prmInv = getVar("Primary Inventory Option", "Primary inventory option, is settable in the Camping Inventory!", ConfigInfo.CAT_GENERAL, prmInv, 0, 2).asInstanceOf[Integer]
-    secInv = getVar("Secundairy Inventory Option", "Secundairy inventory option, is settable in the Camping Inventory!", ConfigInfo.CAT_GENERAL, secInv, 0, 3).asInstanceOf[Integer]
+    secInv = getVar("Secundairy Inventory Option", "Secundairy inventory option, is settable in the Camping Inventory!", ConfigInfo.CAT_GENERAL, secInv, 0, 4).asInstanceOf[Integer]
 
     if (file.hasChanged) file.save
     for (i <- 0 until file.getCategoryNames.size) elements.addAll(new ConfigElement(file.getCategory(file.getCategoryNames().toArray().apply(i).asInstanceOf[String])).getChildElements());
@@ -79,6 +79,14 @@ class Config(val file: Configuration) {
     else if (curr.isInstanceOf[Float]) return file.getFloat(name, cat, curr.asInstanceOf[Float], min.asInstanceOf[Float], max.asInstanceOf[Float], desc)
     else if (curr.isInstanceOf[Boolean]) return file.getBoolean(name, cat, curr.asInstanceOf[Boolean], desc)
     else if (curr.isInstanceOf[String]) return file.getString(name, cat, curr.asInstanceOf[String], desc)
+  }
+  def setInv(prm:Int, sec:Int){
+    prmInv = prm
+    secInv = sec
+    
+    file.getCategory(ConfigInfo.CAT_GENERAL).get("Primary Inventory Option").setValue(prm)
+    file.getCategory(ConfigInfo.CAT_GENERAL).get("Secundairy Inventory Option").setValue(sec)
+    file.save
   }
 }
 
