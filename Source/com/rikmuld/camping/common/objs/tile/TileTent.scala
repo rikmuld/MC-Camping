@@ -324,6 +324,7 @@ class TileEntityTent extends TileEntityWithRotation with TileEntityWithInventory
       }
     }
   }
+  override def getCanChangeRotation = false
   override def writeToNBT(tag: NBTTagCompound) {
     super.writeToNBT(tag)
     tag.setInteger("contends", contends)

@@ -5,7 +5,7 @@ import org.lwjgl.input.Keyboard
 object ModInfo {
   final val MOD_ID = "camping"
   final val MOD_NAME = "The Camping Mod 2"
-  final val MOD_VERSION = "2.1f"
+  final val MOD_VERSION = "2.1g"
   final val MOD_LANUAGE = "scala"
   final val MOD_DEPENDENCIES = "required-after:Forge@[v10.13.2.1231,);required-after:corerm@[1.0,)"
   final val MOD_SERVER_PROXY = "com.rikmuld.camping.core.ProxyServer"

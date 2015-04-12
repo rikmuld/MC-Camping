@@ -56,7 +56,7 @@ class Tent(infoClass: Class[_]) extends BlockMain(infoClass, Objs.tab, ModInfo.M
     if (tile != null) {
       color = tile.color
       world.dropBlockItems(x, y, z, new Random())
-      tile.structures(tile.rotation).destroyStructure(world, tile.tracker(tile.rotation))
+      if(tile.structures!=null&&tile.structures(tile.rotation)!=null)tile.structures(tile.rotation).destroyStructure(world, tile.tracker(tile.rotation))
       super.breakBlock(world, x, y, z, par5, par6)
       if (!tile.dropped) {
         val stacks = new ArrayList[ItemStack]

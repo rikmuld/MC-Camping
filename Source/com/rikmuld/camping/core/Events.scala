@@ -62,6 +62,7 @@ import net.minecraftforge.event.entity.living.LivingDeathEvent
 import net.minecraftforge.event.entity.player.BonemealEvent
 import net.minecraftforge.event.entity.player.PlayerDropsEvent
 import net.minecraft.inventory.ContainerPlayer
+import net.minecraftforge.client.event.GuiScreenEvent.ActionPerformedEvent
 
 class Events {
   var tickLight: Int = 0
@@ -205,8 +206,6 @@ class Events {
 @SideOnly(Side.CLIENT)
 class EventsClient {
   var map: GuiMapHUD = _
-  var pressFlag: Array[Boolean] = new Array[Boolean](1)
-  var button:GuiButton = _
 
   @SubscribeEvent
   def onKeyInput(event: KeyInputEvent) {
@@ -253,7 +252,6 @@ class EventsClient {
             val width:Int = ReflectionHelper.getPrivateValue(classOf[GuiContainer], mc.currentScreen.asInstanceOf[GuiContainer], 1)
             list.asInstanceOf[java.util.List[GuiButton]].add(new ButtonItem(10, left+width-22, top+5, new ItemStack(Objs.backpack)))
           }
-          button = list.filter(_.id==10)(0)
           ReflectionHelper.setPrivateValue(classOf[GuiScreen], mc.currentScreen, list, 4) 
         }
       }
@@ -264,23 +262,19 @@ class EventsClient {
     if (event.`type` != ElementType.HOTBAR) return
     if (!Objs.config.coreOnly) {
       val mc = FMLClientHandler.instance().getClient
-      if(Objs.config.prmInv==1){
-        if(mc.thePlayer.capabilities.isCreativeMode) return;
-        if (button!=null&&mc.currentScreen.isInstanceOf[GuiInventory] || mc.currentScreen.isInstanceOf[GuiContainerCreative]) {
-          if (event.mouseX >= button.xPosition && event.mouseX <= button.xPosition+button.width && event.mouseY >= button.yPosition && event.mouseY <= button.yPosition+button.height) {
-            if(!Mouse.isButtonDown(0))pressFlag(0) = true
-            if (Mouse.isButtonDown(0)&&pressFlag(0)) {
-              pressFlag(0) = false
-              PacketSender.toServer(new OpenGui(GuiInfo.GUI_CAMPINV))
-            }
-          } else if (Mouse.isButtonDown(0))pressFlag(0) = false
-        } 
-      }
       if (map == null) map = new GuiMapHUD()
-      if (mc.thePlayer.hasMap()) {
+      if (mc.thePlayer.hasMap) {
         map.setWorldAndResolution(mc, event.resolution.getScaledWidth, event.resolution.getScaledHeight)
         map.drawScreen(event.mouseX, event.mouseY, event.partialTicks)
       }
+    }
+  }
+  @SubscribeEvent
+  def buttonPressed(event: ActionPerformedEvent) {
+    if (!Objs.config.coreOnly&&Objs.config.prmInv==1){
+      if (event.gui.isInstanceOf[GuiInventory]&&event.button.id==10){
+          PacketSender.toServer(new OpenGui(GuiInfo.GUI_CAMPINV))
+      } 
     }
   }
 }

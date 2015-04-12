@@ -57,7 +57,7 @@ class ContainerTentChests(player: EntityPlayer, tile: IInventory) extends Contai
     if ((slot != null) && slot.getHasStack) {
       val itemstack1 = slot.getStack
       itemstack = itemstack1.copy()
-      if (i < tent.getSizeInventory) {
+      if (i < tent.getSizeInventory - 1) {
         if (!mergeItemStack(itemstack1, tent.getSizeInventory - 1, inventorySlots.size, true)) return null
       } else {
         if (!mergeItemStack(itemstack1, 0, tent.chests * 5 * 6, false)) return null

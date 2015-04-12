@@ -36,7 +36,7 @@ class BoundsHelper(infoClass: Class[_]) extends BlockMain(infoClass, Objs.tab, M
   }
   override def breakBlock(world: World, x: Int, y: Int, z: Int, par5: Block, par6: Int) {
     val tile = world.getTileEntity(x, y, z).asInstanceOf[TileEntityWithBounds]
-    if (world.getBlock(tile.baseX, tile.baseY, tile.baseZ) != Blocks.air) {
+    if (world.getBlock(tile.baseX, tile.baseY, tile.baseZ) == Objs.tent) {
       world.getBlock(tile.baseX, tile.baseY, tile.baseZ).breakBlock(world, tile.baseX, tile.baseY, tile.baseZ, par5, par6)
     }
     super.breakBlock(world, x, y, z, par5, par6)

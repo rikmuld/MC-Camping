@@ -16,6 +16,9 @@ import com.rikmuld.corerm.common.network.BasicPacketData
 import com.rikmuld.corerm.common.objs.tile.TileEntityWithInventory
 import com.rikmuld.camping.common.objs.tile.TileEntityLog
 import com.rikmuld.camping.common.inventory.gui.ContainerTabbed
+import net.minecraft.util.ResourceLocation
+import java.io.File
+import net.minecraft.client.Minecraft
 
 class OpenGui(var id: Int) extends BasicPacketData {
   var x: Int = 0

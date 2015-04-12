@@ -48,3 +48,10 @@ object CampingMod {
 /*
  * Button options
  */
+//
+//  def intersectX(part:ModelPart, y:Float, z:Float):Boolean = part.cubeList.exists(box => interX(getPartBoxCoordinates(part, box), y, z))
+//  def intersectY(part:ModelPart, x:Float, z:Float):Boolean = part.cubeList.exists(box => interY(getPartBoxCoordinates(part, box), x, z))
+//  def intersectZ(part:ModelPart, x:Float, y:Float):Boolean = part.cubeList.exists(box => interZ(getPartBoxCoordinates(part, box), x, y))
+//  def interX(coords, y, z) = isInBetween(y, coords._1.yCoord, coords._2.yCoord)&&isInBetween(z, coords._1.zCoord, coords._2.zCoord)
+//  def interY(coords, x, z) = isInBetween(x, coords._1.xCoord, coords._2.xCoord)&&isInBetween(z, coords._1.zCoord, coords._2.zCoord)
+//  def interZ(coords, x, y) = isInBetween(x, coords._1.xCoord, coords._2.xCoord)&7isInBetween(y, coords._1.yCoord, coords._2.yCoord)
