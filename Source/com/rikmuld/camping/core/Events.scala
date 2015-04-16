@@ -224,9 +224,7 @@ class EventsClient {
   @SubscribeEvent
   def guiOpenClient(event: GuiOpenEvent) {
     if (!Objs.config.coreOnly) {
-      if (event.gui.isInstanceOf[GuiContainerCreative]) {
-        ReflectionHelper.setPrivateValue(classOf[GuiContainerCreative], event.gui.asInstanceOf[GuiContainerCreative], CreativeTabs.tabInventory.getTabIndex, 2)
-      } else if(event.gui.isInstanceOf[GuiInventory]&&Objs.config.prmInv==0){
+      if(event.gui.isInstanceOf[GuiInventory]&&Objs.config.prmInv==0){
         if(Minecraft.getMinecraft.thePlayer.capabilities.isCreativeMode) return;
         event.setCanceled(true)
         PacketSender.toServer(new OpenGui(GuiInfo.GUI_CAMPINV, 0, 0, 0))

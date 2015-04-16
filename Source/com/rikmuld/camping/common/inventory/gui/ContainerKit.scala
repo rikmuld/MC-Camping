@@ -29,7 +29,7 @@ class ContainerKit(player: EntityPlayer) extends ContainerItemMain(player) {
     else addSlotToContainer(new Slot(player.inventory, row, 8 + (row * 18), 157))
   }
 
-  override def getItemInv = new InventoryItemMain(player.getCurrentEquippedItem, player, 14, 1)
+  override def getItemInv = new InventoryItemMain(player.getCurrentEquippedItem, player, 14, 1, true)
   override def getItem = Objs.kit
   override def onContainerClosed(player: EntityPlayer) {
     super.onContainerClosed(player)

@@ -18,6 +18,6 @@ class ContainerBackpack(player: EntityPlayer) extends ContainerItemMain(player) 
     else addSlotToContainer(new Slot(invPlayer, row, 8 + (row * 18), 142))
   }
 
-  override def getItemInv = new InventoryItemMain(player.getCurrentEquippedItem, player, 27, 64);
+  override def getItemInv = new InventoryItemMain(player.getCurrentEquippedItem, player, 27, 64, true);
   override def getItem: Item = Objs.backpack
 }

@@ -37,7 +37,7 @@ import cpw.mods.fml.relauncher.SideOnly
 import cpw.mods.fml.relauncher.Side
 
 class ContainerCampinv(player:EntityPlayer) extends Container with ContainerTabbed {
-  var backpackInv: InventoryItemMain = new InventoryItemMain(new ItemStack(Objs.backpack, 1, 0), player, 27, 64)
+  var backpackInv: InventoryItemMain = new InventoryItemMain(new ItemStack(Objs.backpack, 1, 0), player, 27, 64, false)
   var slots: ArrayList[SlotWithDisable] = new ArrayList[SlotWithDisable]()
   var campinv: InventoryCampinv = new InventoryCampinv(player, slots, backpackInv)
   var craftMatrix: InventoryCrafting = new InventoryCrafting(this, 3, 3)
