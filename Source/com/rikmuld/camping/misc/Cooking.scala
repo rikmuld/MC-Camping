@@ -5,33 +5,37 @@ import net.minecraft.client.Minecraft
 import net.minecraft.client.renderer.ItemRenderer
 import net.minecraft.entity.EntityLivingBase
 import net.minecraft.item.ItemStack
-import scala.collection.JavaConversions._
-import com.rikmuld.camping.core.Objs
-import com.rikmuld.camping.core.PartInfo
-import scala.collection.JavaConversions._
 import java.util.ArrayList
 import java.util.Arrays
-import com.rikmuld.camping.core.Objs
 import net.minecraft.client.renderer.Tessellator
 import net.minecraft.util.ResourceLocation
-import com.rikmuld.camping.core.TextureInfo
 import org.lwjgl.opengl.GL11
-import com.rikmuld.camping.core.PartInfo
-import com.rikmuld.camping.core.Objs
-import com.rikmuld.camping.core.TextureInfo
-import com.rikmuld.camping.core.PartInfo
-import com.rikmuld.camping.client.gui.GuiCampfireCook
 import scala.collection.mutable.ListBuffer
 import com.rikmuld.corerm.misc.AbstractBox
+import com.rikmuld.camping.objs.Objs
+import com.rikmuld.camping.objs.Objs.ModItems.MetaLookup._
+import com.rikmuld.camping.Lib._
+import com.rikmuld.camping.CampingMod
+import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType
+import com.rikmuld.camping.inventory.objs.GuiCampfireCook
+import scala.collection.JavaConversions._
 
-abstract class CookingEquipment(var cookTime: Int, var cookableFoood: HashMap[ItemStack, ItemStack], var maxFood: Int, var itemInfo: ItemStack) {
+abstract class CookingEquipment(var cookTime: Int, var maxFood: Int, var itemInfo: ItemStack) {
   var slots: Array[Array[Int]] = Array.ofDim[Int](2, maxFood)
+  var cookableFoood = new HashMap[ItemStack, ItemStack]()
+  var registerd = new ListBuffer[ItemStack]
   protected var renderer: ItemRenderer = _
 
   setSlots()
   CookingEquipment.addCooking(itemInfo, this)
 
+  def addFood(stack: ItemStack, item: ItemStack) = if (canAdd(stack)) cookableFoood.put(stack, item)
   def canCook(stack: ItemStack): Boolean = cookableFoood.keySet.find(_.isItemEqual(stack)).map(_ => true).getOrElse(false)
+  def canAdd(item: ItemStack): Boolean = {
+    if (registerd contains item) return false
+    registerd += item
+    true
+  }
   protected def doRenderFood(foodIndex: Int, stack: ItemStack, entity: EntityLivingBase): Unit
   def drawGuiTexture(container: GuiCampfireCook)
   def getBaseCookTime(): Int = cookTime
@@ -41,7 +45,7 @@ abstract class CookingEquipment(var cookTime: Int, var cookableFoood: HashMap[It
       renderer = new ItemRenderer(Minecraft.getMinecraft)
     }
     if (foodIndex < maxFood &&
-      (!(stack.getItem == Objs.parts) || (stack.getItemDamage != PartInfo.ASH))) {
+      (!(stack.getItem == Objs.parts) || (stack.getItemDamage != Parts.ASH))) {
       doRenderFood(foodIndex, stack, entity)
     }
   }
@@ -50,10 +54,6 @@ abstract class CookingEquipment(var cookTime: Int, var cookableFoood: HashMap[It
 }
 
 object CookingEquipment {
-  var registerd = new ListBuffer[ItemStack]
-  var grillFood = new HashMap[ItemStack, ItemStack]
-  var spitFood = new HashMap[ItemStack, ItemStack]
-  var panFood = new HashMap[ItemStack, ItemStack]
   var equipment = new HashMap[ItemStack, CookingEquipment]
   var equipmentRecipes = new HashMap[ArrayList[ItemStack], CookingEquipment]
 
@@ -62,14 +62,6 @@ object CookingEquipment {
     val key = new ArrayList[ItemStack]()
     for (item <- items) key.add(item)
     equipmentRecipes.put(key, equipment)
-  }
-  def addGrillFood(stack: ItemStack, item: ItemStack, check: Boolean) = if (canAdd(stack, check)) grillFood.put(stack, item)
-  def addPanFood(stack: ItemStack, item: ItemStack, check: Boolean) = if (canAdd(stack, check)) panFood.put(stack, item)
-  def addSpitFood(stack: ItemStack, item: ItemStack, check: Boolean) = if (canAdd(stack, check)) spitFood.put(stack, item)
-  def canAdd(item: ItemStack, check: Boolean): Boolean = {
-    if (check && (registerd contains item)) return false
-    registerd += item
-    true
   }
   def getCooking(item: ItemStack): CookingEquipment = equipment.keySet.find(_.isItemEqual(item)).map(equipment.get(_)).getOrElse(null)
   def getCookingForRecipe(items: ArrayList[ItemStack]): CookingEquipment = {
@@ -94,7 +86,7 @@ object CookingEquipment {
   }
 }
 
-class Grill(item: ItemStack) extends CookingEquipment(Objs.config.cookTimeGrill, CookingEquipment.grillFood, 4, item) {
+class Grill(item: ItemStack) extends CookingEquipment(CampingMod.config.cookTimeGrill, 4, item) {
   var pilar: AbstractBox = new AbstractBox(128, 32, false, 0, 2, 0, 0, 0, 1, 16, 1, 0.03125F, 0.0F, 0.0F, 0.0F)
   var line: AbstractBox = new AbstractBox(128, 32, false, 0, 0, 0, 0, 0, 60, 1, 1, 0.015625F, 0.0F, 0.0F, 0.0F)
   var line2: AbstractBox = new AbstractBox(128, 32, false, 0, 0, 0, 0, 0, 1, 1, 60, 0.015625F, 0.0F, 0.0F, 0.0F)
@@ -104,7 +96,7 @@ class Grill(item: ItemStack) extends CookingEquipment(Objs.config.cookTimeGrill,
   override def doRenderFood(foodIndex: Int, stack: ItemStack, entity: EntityLivingBase) {
     val item = new ItemStack(stack.getItem, 1, stack.getItemDamage)
     GL11.glPushMatrix()
-    GL11.glTranslatef(-0.09F, -0.4375F, 0.01525F)
+    GL11.glTranslatef(-0.0725F, -0.5f, 0.0225F)
     foodIndex match {
       case 0 => GL11.glTranslatef(-0.109375F, 0F, 0.046875F)
       case 1 => GL11.glTranslatef(0.109375F, 0F, 0.046875F)
@@ -113,9 +105,9 @@ class Grill(item: ItemStack) extends CookingEquipment(Objs.config.cookTimeGrill,
     }
     GL11.glScalef(0.15F, 0.25F, 0.15F)
     GL11.glRotatef(-90, 1, 0, 0)
-    GL11.glRotatef(41, 0, -1, 0)
+    GL11.glRotatef(45, 0, -1, 0)
     GL11.glRotatef(-155, 1, 0, 1)
-    renderer.renderItem(entity, item, 0)
+    renderer.renderItem(entity, item, TransformType.FIRST_PERSON)
     GL11.glPopMatrix()
   }
   override def drawGuiTexture(container: GuiCampfireCook) {
@@ -130,39 +122,39 @@ class Grill(item: ItemStack) extends CookingEquipment(Objs.config.cookTimeGrill,
     Minecraft.getMinecraft.renderEngine.bindTexture(new ResourceLocation(TextureInfo.MODEL_SPIT))
     GL11.glPushMatrix()
     GL11.glTranslatef(-0.4375F, -0.5F, -0.015625F)
-    pilar.render(Tessellator.instance)
+    pilar.render(Tessellator.getInstance.getWorldRenderer)
     GL11.glPopMatrix()
     GL11.glPushMatrix()
     GL11.glTranslatef(0.40625F, -0.5F, -0.015625F)
-    pilar.render(Tessellator.instance)
+    pilar.render(Tessellator.getInstance.getWorldRenderer)
     GL11.glPopMatrix()
     GL11.glPushMatrix()
     GL11.glTranslatef(-0.0234375F, -0.5F, -0.4375F)
-    pilar.render(Tessellator.instance)
+    pilar.render(Tessellator.getInstance.getWorldRenderer)
     GL11.glPopMatrix()
     GL11.glPushMatrix()
     GL11.glTranslatef(-0.0234375F, -0.5F, 0.40625F)
-    pilar.render(Tessellator.instance)
+    pilar.render(Tessellator.getInstance.getWorldRenderer)
     GL11.glPopMatrix()
     GL11.glPushMatrix()
     GL11.glTranslatef(-0.46875F, -0.4375F, -0.0078125F)
-    line.render(Tessellator.instance)
+    line.render(Tessellator.getInstance.getWorldRenderer)
     GL11.glPopMatrix()
     GL11.glPushMatrix()
     GL11.glTranslatef(-0.015625F, -0.4375F, -0.46875F)
-    line2.render(Tessellator.instance)
+    line2.render(Tessellator.getInstance.getWorldRenderer)
     GL11.glPopMatrix()
     Minecraft.getMinecraft.renderEngine.bindTexture(new ResourceLocation(TextureInfo.MODEL_GRILL))
     for (i <- 0 until 15) {
       GL11.glPushMatrix()
       GL11.glTranslatef(-0.2343675F, -0.4453125F, -0.2265625F + (i * 0.03125F))
-      sLine.render(Tessellator.instance)
+      sLine.render(Tessellator.getInstance.getWorldRenderer)
       GL11.glPopMatrix()
     }
     for (i <- 0 until 15) {
       GL11.glPushMatrix()
       GL11.glTranslatef(-0.2343675F + (i * 0.03125F), -0.4453125F, -0.2265625F)
-      sLine2.render(Tessellator.instance)
+      sLine2.render(Tessellator.getInstance.getWorldRenderer)
       GL11.glPopMatrix()
     }
     GL11.glPopMatrix()
@@ -179,7 +171,7 @@ class Grill(item: ItemStack) extends CookingEquipment(Objs.config.cookTimeGrill,
   }
 }
 
-class Pan(item: ItemStack) extends CookingEquipment(Objs.config.cookTimePan, CookingEquipment.panFood, 8, item) {
+class Pan(item: ItemStack) extends CookingEquipment(CampingMod.config.cookTimePan, 8, item) {
   var pilar: AbstractBox = new AbstractBox(64, 32, false, 0, 2, 0, 0, 0, 1, 28, 1, 0.03125F, 0.0F, 0.0F, 0.0F)
   var line: AbstractBox = new AbstractBox(64, 32, false, 0, 0, 0, 0, 0, 60, 1, 1, 0.015625F, 0.0F, 0.0F, 0.0F)
   var cable: AbstractBox = new AbstractBox(64, 32, false, 0, 0, 0, 0, 0, 1, 45, 1, 0.0078625F, 0.0F, 0.0F, 0.0F)
@@ -203,32 +195,32 @@ class Pan(item: ItemStack) extends CookingEquipment(Objs.config.cookTimePan, Coo
     Minecraft.getMinecraft.renderEngine.bindTexture(new ResourceLocation(TextureInfo.MODEL_PAN))
     GL11.glPushMatrix()
     GL11.glTranslatef(-0.4375F, -0.875F, -0.015625F)
-    pilar.render(Tessellator.instance)
+    pilar.render(Tessellator.getInstance.getWorldRenderer)
     GL11.glPopMatrix()
     GL11.glPushMatrix()
     GL11.glTranslatef(0.40625F, -0.875F, -0.015625F)
-    pilar.render(Tessellator.instance)
+    pilar.render(Tessellator.getInstance.getWorldRenderer)
     GL11.glPopMatrix()
     GL11.glPushMatrix()
     GL11.glTranslatef(-0.46875F, -0.859375F, -0.0078125F)
-    line.render(Tessellator.instance)
+    line.render(Tessellator.getInstance.getWorldRenderer)
     GL11.glPopMatrix()
     GL11.glPushMatrix()
     GL11.glTranslatef(-0.15625F, -0.53125F, -0.15625F)
-    pan.render(Tessellator.instance)
+    pan.render(Tessellator.getInstance.getWorldRenderer)
     GL11.glPopMatrix()
     GL11.glPushMatrix()
     GL11.glTranslatef(-0.09375F, -0.5625F, -0.09375F)
-    panCover.render(Tessellator.instance)
+    panCover.render(Tessellator.getInstance.getWorldRenderer)
     GL11.glPopMatrix()
     GL11.glPushMatrix()
     GL11.glTranslatef(-0.015625F, -0.578125F, -0.015625F)
-    panHandle.render(Tessellator.instance)
+    panHandle.render(Tessellator.getInstance.getWorldRenderer)
     GL11.glPopMatrix()
     Minecraft.getMinecraft.renderEngine.bindTexture(new ResourceLocation(TextureInfo.MODEL_GRILL))
     GL11.glPushMatrix()
     GL11.glTranslatef(-0.00393125F, -0.8515125F, -0.00393125F)
-    cable.render(Tessellator.instance)
+    cable.render(Tessellator.getInstance.getWorldRenderer)
     GL11.glPopMatrix()
     GL11.glPopMatrix()
   }
@@ -251,22 +243,22 @@ class Pan(item: ItemStack) extends CookingEquipment(Objs.config.cookTimePan, Coo
     slots(1)(7) = 22
   }
 }
-class Spit(item: ItemStack) extends CookingEquipment(Objs.config.cookTimeSpit, CookingEquipment.spitFood, 2, item) {
+class Spit(item: ItemStack) extends CookingEquipment(CampingMod.config.cookTimeSpit, 2, item) {
   var pilar: AbstractBox = new AbstractBox(128, 32, false, 0, 2, 0, 0, 0, 1, 16, 1, 0.03125F, 0.0F, 0.0F, 0.0F)
   var line: AbstractBox = new AbstractBox(128, 32, false, 0, 0, 0, 0, 0, 60, 1, 1, 0.015625F, 0.0F, 0.0F, 0.0F)
 
   override def doRenderFood(foodIndex: Int, stack: ItemStack, entity: EntityLivingBase) {
     val item = new ItemStack(stack.getItem, 1, stack.getItemDamage)
     GL11.glPushMatrix()
-    GL11.glTranslatef(-0.09F, -0.425F, 0.01525F)
+    GL11.glTranslatef(-0.0525F, -0.435f, -0.045F)
     foodIndex match {
       case 0 => GL11.glTranslatef(-0.125F, 0F, 0F)
       case 1 => GL11.glTranslatef(0.125F, 0F, 0)
     }
     GL11.glScalef(0.15F, 0.15F, 0.25F)
-    GL11.glRotatef(41, 0, -1, 0)
+    GL11.glRotatef(45, 0, -1, 0)
     GL11.glRotatef(-150, 1, 0, 1)
-    renderer.renderItem(entity, item, 0)
+    renderer.renderItem(entity, item, TransformType.FIRST_PERSON)
     GL11.glPopMatrix()
   }
   override def drawGuiTexture(container: GuiCampfireCook) {
@@ -276,15 +268,15 @@ class Spit(item: ItemStack) extends CookingEquipment(Objs.config.cookTimeSpit, C
     Minecraft.getMinecraft.renderEngine.bindTexture(new ResourceLocation(TextureInfo.MODEL_SPIT))
     GL11.glPushMatrix()
     GL11.glTranslatef(-0.4375F, -0.5F, -0.015625F)
-    pilar.render(Tessellator.instance)
+    pilar.render(Tessellator.getInstance.getWorldRenderer)
     GL11.glPopMatrix()
     GL11.glPushMatrix()
     GL11.glTranslatef(0.40625F, -0.5F, -0.015625F)
-    pilar.render(Tessellator.instance)
+    pilar.render(Tessellator.getInstance.getWorldRenderer)
     GL11.glPopMatrix()
     GL11.glPushMatrix()
     GL11.glTranslatef(-0.46875F, -0.484375F, -0.0078125F)
-    line.render(Tessellator.instance)
+    line.render(Tessellator.getInstance.getWorldRenderer)
     GL11.glPopMatrix()
   }
   override def setSlots() {
