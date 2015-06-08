@@ -14,6 +14,7 @@ import net.minecraft.util.BlockPos
 import com.rikmuld.camping.CampingMod
 import com.rikmuld.corerm.RMMod
 import com.rikmuld.camping.objs.tile.TileLogseat
+import com.rikmuld.camping.objs.tile.TileTent
 
 class OpenGui(var id: Int) extends BasicPacketData {
   var x: Int = 0
@@ -92,6 +93,22 @@ class ItemsData(var slot: Int, var x: Int, var y: Int, var z: Int, var stack: It
     if (player.worldObj.getTileEntity(new BlockPos(x, y, z)) != null) {
       player.worldObj.getTileEntity(new BlockPos(x, y, z)).asInstanceOf[WithTileInventory].setInventorySlotContents(slot, stack)
     }
+  }
+}
+
+class PlayerSleepInTent(var x: Int, var y: Int, var z: Int) extends BasicPacketData {
+  def this() = this(0, 0, 0)
+
+  override def handlePacket(player: EntityPlayer, ctx: MessageContext) = player.worldObj.getTileEntity(new BlockPos(x, y, z)).asInstanceOf[TileTent].sleep(player)
+  override def getData(stream: PacketBuffer) {
+    x = stream.readInt
+    y = stream.readInt
+    z = stream.readInt
+  }
+  override def setData(stream: PacketBuffer) {
+    stream.writeInt(x)
+    stream.writeInt(y)
+    stream.writeInt(z)
   }
 }
 

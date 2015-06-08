@@ -30,6 +30,8 @@ import com.rikmuld.corerm.bounds.BoundsTracker
 import com.rikmuld.corerm.bounds.BoundsStructure
 import com.rikmuld.corerm.bounds.Bounds
 import com.rikmuld.corerm.bounds.IBoundsBlock
+import com.rikmuld.camping.objs.misc.PlayerSleepInTent
+import com.rikmuld.camping.objs.block.TentBounds
 
 object TileEntityTent {
   var bounds: Array[Bounds] = Array(new Bounds(-0.5F, 0, 0, 1.5F, 1.5F, 3), new Bounds(-2, 0, -0.5F, 1, 1.5F, 1.5F), new Bounds(-0.5F, 0, -2, 1.5F, 1.5F, 1), new Bounds(0, 0, -0.5F, 3, 1.5F, 1.5F))
@@ -41,14 +43,14 @@ object TileEntityTent {
 class TileTent extends RMTile with WithTileInventory with IUpdatePlayerListBox {
   var slots: Array[Array[SlotState]] = _
   var structures: Array[BoundsStructure] = _
-  var tracker: Array[BoundsTracker] = new Array[BoundsTracker](4)
-  var isNew: Boolean = true
-  var dropped: Boolean = false
-  var contendList: Array[Block] = Array(Objs.lantern, Blocks.chest, Objs.sleepingBag)
-  var maxContends: Int = 10
-  var chestCost: Int = 2
-  var bedCost: Int = 5
-  var lanternCost: Int = 1
+  var tracker = new Array[BoundsTracker](4)
+  var isNew = true
+  var dropped = false
+  var contendList = Array(Objs.lantern, Blocks.chest, Objs.sleepingBag)
+  var maxContends = 10
+  var chestCost = 2
+  var bedCost = 5
+  var lanternCost = 1
   var chests: Int = _
   var beds: Int = _
   var lanterns: Int = _
@@ -58,16 +60,16 @@ class TileTent extends RMTile with WithTileInventory with IUpdatePlayerListBox {
   var contends: Int = _
   var time: Int = -1
   var oldTime: Int = _
-  var lanternDamage: Int = 0
+  var lanternDamage = 0
   var updateTick: Int = _
-  var sleepingPlayer: EntityPlayer = _
-  var needLightUpdate: Boolean = true
-  var lanternUpdateTick: Int = 3
+  var needLightUpdate = true
+  var lanternUpdateTick = 3
   var slide: Int = _
-  var maxSlide: Int = 144
+  var maxSlide = 144
   var chestTracker: Int = _
   var lanternTracker: Int = _
-  var color: Int = 15
+  var color = 15
+  var occupied = false
   
   def addBed(): Boolean = {
     if (((contends + bedCost) <= maxContends) && (beds < maxBeds)) {
@@ -151,6 +153,8 @@ class TileTent extends RMTile with WithTileInventory with IUpdatePlayerListBox {
       isNew = false
     }
   }
+  def isOccupied = occupied
+  def setOccupied(occupied:Boolean) = this.occupied = occupied
   def getRotation = if(bd.block.eq(Objs.tent)) bd.state.getValue(Tent.FACING).asInstanceOf[EnumFacing].getHorizontalIndex else 0
   def manageSlots() {
     if (slots != null) {
@@ -182,6 +186,7 @@ class TileTent extends RMTile with WithTileInventory with IUpdatePlayerListBox {
     lanternDamage = tag.getInteger("lanternDamage")
     time = tag.getInteger("time")
     color = tag.getInteger("color")
+    occupied = tag.getBoolean("occupied")
   }
   def removeAll() {
     setContends(0, 0, true, 2)
@@ -248,31 +253,19 @@ class TileTent extends RMTile with WithTileInventory with IUpdatePlayerListBox {
     else if (id == 6) color = data(0)
   }
   def sleep(player: EntityPlayer) {
-//    if (!worldObj.isRemote) {
-//      if (sleepingPlayer == null) {
-//        var state: EnumStatus = null
-//        if (getRotation == 0) state = player.sleepInBedAt(xCoord, yCoord, zCoord + 1)
-//        else if (getRotation == 1) state = player.sleepInBedAt(xCoord - 1, yCoord, zCoord)
-//        else if (getRotation == 2) state = player.sleepInBedAt(xCoord, yCoord, zCoord - 1)
-//        else if (getRotation == 3) state = player.sleepInBedAt(xCoord + 1, yCoord, zCoord)
-//        if (state != EnumStatus.OK) {
-//          if (state == EnumStatus.NOT_POSSIBLE_NOW) {
-//            player.addChatMessage(new ChatComponentTranslation("tile.bed.noSleep", new java.lang.Object))
-//          } else if (state == EnumStatus.NOT_SAFE) {
-//            player.addChatMessage(new ChatComponentTranslation("tile.bed.noSafe", new java.lang.Object))
-//          }
-//        }
-//      } else {
-//        player.addChatMessage(new ChatComponentText("This tent is occupied!"))
-//      }
-//    } else {
-//      PacketSender.toServer(new PlayerSleepInTent(xCoord, yCoord, zCoord))
-//    }
+    if(!worldObj.isRemote) {
+      if (getRotation == 0) bd.south.block.asInstanceOf[TentBounds].sleep(bd.south, player)
+      else if (getRotation == 1) bd.west.block.asInstanceOf[TentBounds].sleep(bd.west, player)
+      else if (getRotation == 2) bd.north.block.asInstanceOf[TentBounds].sleep(bd.north, player)
+      else if (getRotation == 3) bd.east.block.asInstanceOf[TentBounds].sleep(bd.east, player)
+    } else {
+      PacketSender.toServer(new PlayerSleepInTent(bd.x, bd.y, bd.z))
+    }
   }
   def createStructure {
     if (!worldObj.isRemote) {
       if (isNew) initalize()
-      structures(getRotation).createStructure(worldObj, tracker(getRotation), Objs.tentBounds.asInstanceOf[IBoundsBlock])
+      structures(getRotation).createStructure(worldObj, tracker(getRotation), Objs.tentBounds.getDefaultState.withProperty(TentBounds.FACING, bd.state.getValue(Tent.FACING)))
     }
   }
   override def update() {
@@ -310,9 +303,6 @@ class TileTent extends RMTile with WithTileInventory with IUpdatePlayerListBox {
         bd.update
         bd.updateRender
       }
-      if ((sleepingPlayer != null) && !sleepingPlayer.isPlayerSleeping) {
-        sleepingPlayer = null
-      }
       if ((time <= 0) && (getStackInSlot(0) != null)) {
         decrStackSize(0, 1)
         time = 1500
@@ -329,6 +319,7 @@ class TileTent extends RMTile with WithTileInventory with IUpdatePlayerListBox {
   override def writeToNBT(tag: NBTTagCompound) {
     super.writeToNBT(tag)
     tag.setInteger("contends", contends)
+    tag.setBoolean("occupied", occupied)
     tag.setInteger("beds", beds)
     tag.setInteger("lanterns", lanterns)
     tag.setInteger("chests", chests)

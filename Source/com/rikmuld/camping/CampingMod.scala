@@ -179,10 +179,7 @@ object Lib {
 
 //  CAMPFIRE / TRAP / TENT ITEM MODEL                                    ASAP
 //  CAMPFIRE / LANTERN LIGHTING CHANGE NOT WORK SMOOTHLY                 ASAP
-//  FIX: REMOVE MORE THEN ONE IF NEXT TO EACH OTHER                      THIS (NOW)
-//  ADD METHODS FOR SLEEPING IN BLOCK AND TILE                           THIS (NOW)
 //  FIX ISSUES                                                           LATER
-//  MOD SOUNDS                                                           THIS (NOW)
 
 //CHANGELOG FOR THIS UPDATE SO FAR
 

@@ -122,6 +122,7 @@ import com.rikmuld.corerm.bounds.TileBounds
 import com.rikmuld.corerm.bounds.BoundsData
 import com.rikmuld.corerm.bounds.BoundsStructure
 import com.rikmuld.camping.objs.block.TentBounds
+import com.rikmuld.camping.objs.misc.PlayerSleepInTent
 
 object Objs {
   var tab:CreativeTabs = _
@@ -277,6 +278,7 @@ object Objs {
         RMMod.registerPacket(classOf[MapData])
         RMMod.registerPacket(classOf[PlayerExitLog])  
         RMMod.registerPacket(classOf[BoundsData])
+        RMMod.registerPacket(classOf[PlayerSleepInTent])
         
         GameRegistry.registerWorldGenerator(new WorldGenerator(), 9999) 
         
