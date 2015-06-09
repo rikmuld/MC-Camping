@@ -22,6 +22,7 @@ import net.minecraftforge.common.MinecraftForge
 import net.minecraftforge.fml.common.SidedProxy
 import net.minecraftforge.client.model.ISmartItemModel
 import net.minecraftforge.client.model.ISmartBlockModel
+import net.minecraftforge.fml.relauncher.SideOnly
 @Mod(modid = MOD_ID, name = MOD_NAME, version = MOD_VERSION, dependencies = MOD_DEPENDENCIES, modLanguage = MOD_LANUAGE)
 object CampingMod {
   final val MOD_ID = "camping"
@@ -39,23 +40,12 @@ object CampingMod {
   @SidedProxy(clientSide = MOD_CLIENT_PROXY, serverSide = MOD_SERVER_PROXY)
   var proxy: ProxyServer = _
   var config: Config = _
-  var eventsC:EventsC = _
-  var eventsS:EventsS = _
 
   @EventHandler
   def preInit(event: FMLPreInitializationEvent) {
     config = new Config(new Configuration(event.getSuggestedConfigurationFile()))
     config.sync
-    
-    eventsS = new EventsS
-    MinecraftForge.EVENT_BUS.register(eventsS)
-    FMLCommonHandler.instance.bus.register(eventsS)
-    
-    if(event.getSide.eq(Side.CLIENT)){
-      eventsC = new EventsC
-      MinecraftForge.EVENT_BUS.register(eventsC)
-      FMLCommonHandler.instance.bus.register(eventsC)
-    }
+    proxy.registerEvents
   }
   @EventHandler
   def Init(event: FMLInitializationEvent) {
@@ -168,15 +158,16 @@ object Lib {
 
 //ROUND PORT UP
 
-//  CAMPFIRE / TRAP / TENT ITEM MODEL                                    ASAP
-//  CAMPFIRE / LANTERN LIGHTING CHANGE NOT WORK SMOOTHLY                 ASAP
-//  FIX ISSUES                                                           LATER
+//  CAMPFIRES / TRAP / TENT ITEM MODEL                                    ASAP
+//  CAMPFIRE / LANTERN LIGHTING CHANGE NOT WORK SMOOTHLY                  ASAP
+//  FIX ISSUES                                                            LATER
 
 //CHANGELOG FOR THIS UPDATE SO FAR
 
 //FIXED: CHANGING KEY DOESN'T WORK
 //FIXED: SOME BUGS THAT CAUSED CRASHES
 //IMPROVED SPAWN ALGRORITM FOR CAMAPSITES
+//ADDED RUSSIAN LANGUAGE SUPPROT 
 //ENCHANTED FEEL EN STABILITY OF THE LOGSEAT, THE SLEEPINGBAG, THE HEMP AND THE TENT
 //PORTED TO MINECRAFT 1.8
 //IMPROVED/FIXED SHIFT-CLICKING IN SOME INVENTORIES

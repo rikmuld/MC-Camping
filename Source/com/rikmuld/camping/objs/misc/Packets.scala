@@ -15,6 +15,10 @@ import com.rikmuld.camping.CampingMod
 import com.rikmuld.corerm.RMMod
 import com.rikmuld.camping.objs.tile.TileLogseat
 import com.rikmuld.camping.objs.tile.TileTent
+import net.minecraftforge.fml.relauncher.SideOnly
+import net.minecraftforge.fml.relauncher.Side
+import com.rikmuld.camping.EventsS
+import com.rikmuld.camping.EventsC
 
 class OpenGui(var id: Int) extends BasicPacketData {
   var x: Int = 0
@@ -66,9 +70,9 @@ class MapData(var scale: Int, var x: Int, var z: Int, var colours: Array[Byte]) 
     stream.readBytes(colours)
   }
   override def handlePacket(player: EntityPlayer, ctx: MessageContext) {
-    if (eventsC.map != null) {
-      eventsC.map.colorData(player) = colours
-      eventsC.map.posData(player) = Array(scale, x, z)
+    if (proxy.getEventClient.asInstanceOf[EventsC].map != null) {
+      proxy.getEventClient.asInstanceOf[EventsC].map.colorData(player) = colours
+      proxy.getEventClient.asInstanceOf[EventsC].map.posData(player) = Array(scale, x, z)
     }
   }
 }
@@ -137,5 +141,5 @@ class KeyData(var id: Int) extends BasicPacketData {
   def this() = this(0)
   override def setData(stream: PacketBuffer) = stream.writeInt(id)
   override def getData(stream: PacketBuffer) = id = stream.readInt
-  override def handlePacket(player: EntityPlayer, ctx: MessageContext) = eventsS.keyPressedServer(player, id)
+  override def handlePacket(player: EntityPlayer, ctx: MessageContext) = proxy.getEventServer.keyPressedServer(player, id)
 }

@@ -125,6 +125,10 @@ import com.rikmuld.camping.objs.block.TentBounds
 import com.rikmuld.camping.objs.misc.PlayerSleepInTent
 import net.minecraft.client.settings.KeyBinding
 import com.rikmuld.camping.Lib._
+import net.minecraft.item.ItemFood
+import net.minecraft.item.crafting.FurnaceRecipes
+import net.minecraftforge.fml.relauncher.SideOnly
+import net.minecraftforge.fml.relauncher.Side
 
 object Objs {
   var tab:CreativeTabs = _
@@ -238,6 +242,7 @@ object Objs {
       }
     }
        
+    @SideOnly(Side.CLIENT)
     override def registerClient {
       ClientRegistry.bindTileEntitySpecialRenderer(classOf[TileTrap], new TrapRender)
       ClientRegistry.bindTileEntitySpecialRenderer(classOf[TileCampfire], new CampfireRender)
@@ -264,8 +269,10 @@ object Objs {
   object ModMisc extends ModRegister {
     import com.rikmuld.camping.objs.Objs.ModItems.MetaLookup._
 
+    @SideOnly(Side.CLIENT)
     override def registerClient {
       if(phase==ModRegister.PERI){
+        keyOpenCamping = new KeyBinding(KeyInfo.desc(KeyInfo.INVENTORY_KEY), KeyInfo.default(KeyInfo.INVENTORY_KEY), KeyInfo.CATAGORY_MOD)
         ClientRegistry.registerKeyBinding(keyOpenCamping)
       }
     }
@@ -284,15 +291,13 @@ object Objs {
         RMMod.registerPacket(classOf[NBTPlayer])
         RMMod.registerPacket(classOf[KeyData])
         RMMod.registerPacket(classOf[ItemsData])
-        RMMod.registerPacket(classOf[MapData])
         RMMod.registerPacket(classOf[PlayerExitLog])  
         RMMod.registerPacket(classOf[BoundsData])
         RMMod.registerPacket(classOf[PlayerSleepInTent])
+        RMMod.registerPacket(classOf[MapData])
         
         GameRegistry.registerWorldGenerator(new WorldGenerator(), 9999) 
-        
-        keyOpenCamping = new KeyBinding(KeyInfo.desc(KeyInfo.INVENTORY_KEY), KeyInfo.default(KeyInfo.INVENTORY_KEY), KeyInfo.CATAGORY_MOD)
-        
+                
         if(!config.coreOnly){
           bleedingSource = new DamageSourceBleeding(DamageInfo.BLEEDING)
           bleeding = new PotionBleeding(PotionInfo.BLEEDING)
@@ -320,6 +325,13 @@ object Objs {
         spit.addFood(nwsk(rabbit), nwsk(cooked_rabbit))
         spit.addFood(nwsk(fish), nwsk(cooked_fish))
         spit.addFood(nwsk(fish, 1), nwsk(cooked_fish, 1))
+        
+        FurnaceRecipes.instance.getSmeltingList.asInstanceOf[java.util.Map[ItemStack, ItemStack]].foreach(stacks => {
+          if (stacks._1.getItem.isInstanceOf[ItemFood] && stacks._1.getItem.getUnlocalizedName != null) {
+            if (stacks._1.getItem.asInstanceOf[ItemFood].isWolfsFavoriteMeat()) grill.addFood(stacks._1, stacks._2)
+            else pan.addFood(stacks._1, stacks._2)
+          }
+        })
       }
     }
   }
@@ -350,6 +362,8 @@ object Objs {
       guiTentChests = RMMod.proxy.registerGui(classOf[ContainerTentChests], null)
       guiTentLantern = RMMod.proxy.registerGui(classOf[ContainerTentLanterns], null)
     }
+    
+    @SideOnly(Side.CLIENT)
     override def registerClient {
       guiBackpack = RMMod.proxy.registerGui(classOf[BackpackContainer], classOf[BackpackGui])
       guiKit = RMMod.proxy.registerGui(classOf[KitContainer], classOf[KitGui])
@@ -384,6 +398,7 @@ object Objs {
         if (config.useFoxes) for (biome <- snow) EntityRegistry.addSpawn(classOf[Fox], 5, 2, 4, EnumCreatureType.CREATURE, biome)
       }
     }
+    @SideOnly(Side.CLIENT)
     override def registerClient {
       if(!config.coreOnly){
         RenderingRegistry.registerEntityRenderingHandler(classOf[Bear], new BearRenderer(new BearModel))
@@ -412,24 +427,24 @@ object Objs {
       val lanterns = lantern.getMetaCycle(2)
   
       GameRegistry.addRecipe(nwsk(backpack), "000", "0 0", "000", '0': Character, prts(Parts.CANVAS))
-      GameRegistry.addRecipe(nwsk(knife), "010", "010", "010", '0': Character, dye(1), '1': Character, Items.iron_ingot)
-      GameRegistry.addRecipe(nwsk(campfireCook), " 0 ", "0 0", " 0 ", '0': Character, Blocks.cobblestone)
-      GameRegistry.addRecipe(nwsk(campfire), " 0 ", "010", "020", '0': Character, Items.stick, '1': Character, Items.flint, '2': Character, campfireCook)
-      GameRegistry.addRecipe(nwsk(kit), "000", "111", "000", '0': Character, Items.iron_ingot, '1': Character, dye(11))
-      GameRegistry.addRecipe(lanterns(ModBlocks.MetaLookup.Lantern.ON), "000", "010", "222", '1': Character, Items.glowstone_dust, '0': Character, Blocks.glass_pane, '2': Character, Items.gold_ingot)
-      GameRegistry.addRecipe(lanterns(ModBlocks.MetaLookup.Lantern.OFF), "000", "0 0", "111", '1': Character, Items.gold_ingot, '0': Character, Blocks.glass_pane)
-      GameRegistry.addRecipe(prts(Parts.STICK_IRON), "0", "0", '0': Character, Items.iron_ingot)
-      GameRegistry.addRecipe(prts(Parts.PAN), " 0 ", "121", " 1 ", '0': Character, dye(1), '1': Character, Items.iron_ingot, '2': Character, Items.bowl)
-      GameRegistry.addRecipe(prts(Parts.MARSHMALLOW).toStack(3), "010", "020", "030", '0': Character, Items.sugar, '1': Character, Items.potionitem, '2': Character, Items.egg, '3': Character, Items.bowl)
-      GameRegistry.addShapelessRecipe(nwsk(log), nwsk(Blocks.log).getWildValue, nwsk(knife).getWildValue)
-      GameRegistry.addShapelessRecipe(nwsk(log), nwsk(Blocks.log2).getWildValue, nwsk(knife).getWildValue)
-      GameRegistry.addShapelessRecipe(lanterns(ModBlocks.MetaLookup.Lantern.ON), lanterns(ModBlocks.MetaLookup.Lantern.OFF), Items.glowstone_dust)
-      GameRegistry.addShapelessRecipe(lanterns(ModBlocks.MetaLookup.Lantern.ON), lanterns(ModBlocks.MetaLookup.Lantern.ON), Items.glowstone_dust)
+      GameRegistry.addRecipe(nwsk(knife), "010", "010", "010", '0': Character, dye(1), '1': Character, iron_ingot)
+      GameRegistry.addRecipe(nwsk(campfireCook), " 0 ", "0 0", " 0 ", '0': Character, cobblestone)
+      GameRegistry.addRecipe(nwsk(campfire), " 0 ", "010", "020", '0': Character, stick, '1': Character, flint, '2': Character, campfireCook)
+      GameRegistry.addRecipe(nwsk(kit), "000", "111", "000", '0': Character, iron_ingot, '1': Character, dye(11))
+      GameRegistry.addRecipe(lanterns(ModBlocks.MetaLookup.Lantern.ON), "000", "010", "222", '1': Character, glowstone_dust, '0': Character, glass_pane, '2': Character, gold_ingot)
+      GameRegistry.addRecipe(lanterns(ModBlocks.MetaLookup.Lantern.OFF), "000", "0 0", "111", '1': Character, gold_ingot, '0': Character, glass_pane)
+      GameRegistry.addRecipe(prts(Parts.STICK_IRON), "0", "0", '0': Character, iron_ingot)
+      GameRegistry.addRecipe(prts(Parts.PAN), " 0 ", "121", " 1 ", '0': Character, dye(1), '1': Character, iron_ingot, '2': Character, bowl)
+      GameRegistry.addRecipe(prts(Parts.MARSHMALLOW).toStack(3), "010", "020", "030", '0': Character, sugar, '1': Character, potionitem, '2': Character, egg, '3': Character, bowl)
+      GameRegistry.addShapelessRecipe(nwsk(logseat), nwsk(log).getWildValue, nwsk(knife).getWildValue)
+      GameRegistry.addShapelessRecipe(nwsk(log), nwsk(log2).getWildValue, nwsk(knife).getWildValue)
+      GameRegistry.addShapelessRecipe(lanterns(ModBlocks.MetaLookup.Lantern.ON), lanterns(ModBlocks.MetaLookup.Lantern.OFF), glowstone_dust)
+      GameRegistry.addShapelessRecipe(lanterns(ModBlocks.MetaLookup.Lantern.ON), lanterns(ModBlocks.MetaLookup.Lantern.ON), glowstone_dust)
       GameRegistry.addShapelessRecipe(prts(Parts.MARSHMALLOWSTICK).toStack(3), prts(Parts.MARSHMALLOW), prts(Parts.STICK_IRON), prts(Parts.STICK_IRON), prts(Parts.STICK_IRON))
       GameRegistry.addRecipe(nwsk(tent), "000", "0 0", "1 1", '0': Character, prts(Parts.CANVAS), '1': Character, prts(Parts.STICK_IRON));
-      GameRegistry.addRecipe(nwsk(sleepingBag), "1  ", "000", '0': Character, nwsk(Blocks.wool).getWildValue, '1': Character, nwsk(knife).getWildValue)
-      GameRegistry.addRecipe(nwsk(sleepingBag), " 1 ", "000", '0': Character, nwsk(Blocks.wool).getWildValue, '1': Character, nwsk(knife).getWildValue)
-      GameRegistry.addRecipe(nwsk(sleepingBag), "  1", "000", '0': Character, nwsk(Blocks.wool).getWildValue, '1': Character, nwsk(knife).getWildValue)
+      GameRegistry.addRecipe(nwsk(sleepingBag), "1  ", "000", '0': Character, nwsk(wool).getWildValue, '1': Character, nwsk(knife).getWildValue)
+      GameRegistry.addRecipe(nwsk(sleepingBag), " 1 ", "000", '0': Character, nwsk(wool).getWildValue, '1': Character, nwsk(knife).getWildValue)
+      GameRegistry.addRecipe(nwsk(sleepingBag), "  1", "000", '0': Character, nwsk(wool).getWildValue, '1': Character, nwsk(knife).getWildValue)
       GameRegistry.addShapelessRecipe(prts(Parts.CANVAS), hemp, nwsk(knife).getWildValue)
       GameRegistry.addShapelessRecipe(nwsk(tent), tent, nwsk(Items.dye).getWildValue)
   
@@ -437,11 +452,11 @@ object Objs {
         val partsAnimal = animalParts.getMetaCycle(animalParts.getItemInfo.getValue(PropType.METADATA).asInstanceOf[Array[_]].length)
   
         GameRegistry.addSmelting(nwsk(venisonRaw), nwsk(venisonCooked), 3)
-        GameRegistry.addRecipe(nwsk(trap), " 1 ", "101", " 1 ", '0': Character, Items.iron_ingot, '1': Character, prts(Parts.STICK_IRON))
-        GameRegistry.addRecipe(nwsk(furHead), "000", "010", '0': Character, partsAnimal(PartsAnimal.FUR_WHITE), '1': Character, Items.leather_helmet)
-        GameRegistry.addRecipe(nwsk(furChest), "0 0", "010", "222", '0': Character, partsAnimal(PartsAnimal.FUR_WHITE), '1': Character, Items.leather_chestplate, '2': Character, partsAnimal(PartsAnimal.FUR_BROWN))
-        GameRegistry.addRecipe(nwsk(furLeg), "000", "010", "0 0", '0': Character, partsAnimal(PartsAnimal.FUR_BROWN), '1': Character, Items.leather_leggings)
-        GameRegistry.addRecipe(nwsk(furBoot), "0 0", "010", '0': Character, partsAnimal(PartsAnimal.FUR_BROWN), '1': Character, Items.leather_boots)
+        GameRegistry.addRecipe(nwsk(trap), " 1 ", "101", " 1 ", '0': Character, iron_ingot, '1': Character, prts(Parts.STICK_IRON))
+        GameRegistry.addRecipe(nwsk(furHead), "000", "010", '0': Character, partsAnimal(PartsAnimal.FUR_WHITE), '1': Character, leather_helmet)
+        GameRegistry.addRecipe(nwsk(furChest), "0 0", "010", "222", '0': Character, partsAnimal(PartsAnimal.FUR_WHITE), '1': Character, leather_chestplate, '2': Character, partsAnimal(PartsAnimal.FUR_BROWN))
+        GameRegistry.addRecipe(nwsk(furLeg), "000", "010", "0 0", '0': Character, partsAnimal(PartsAnimal.FUR_BROWN), '1': Character, leather_leggings)
+        GameRegistry.addRecipe(nwsk(furBoot), "0 0", "010", '0': Character, partsAnimal(PartsAnimal.FUR_BROWN), '1': Character, leather_boots)
       }
     }
   }
