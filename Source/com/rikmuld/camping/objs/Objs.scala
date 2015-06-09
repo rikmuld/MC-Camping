@@ -123,6 +123,8 @@ import com.rikmuld.corerm.bounds.BoundsData
 import com.rikmuld.corerm.bounds.BoundsStructure
 import com.rikmuld.camping.objs.block.TentBounds
 import com.rikmuld.camping.objs.misc.PlayerSleepInTent
+import net.minecraft.client.settings.KeyBinding
+import com.rikmuld.camping.Lib._
 
 object Objs {
   var tab:CreativeTabs = _
@@ -134,6 +136,7 @@ object Objs {
   var bleeding: Potion = _
   var bleedingSource: DamageSource = _
   var tentStructure:Array[BoundsStructure] = _
+  var keyOpenCamping:KeyBinding = _
   
   object ModItems extends ModRegister {
     import com.rikmuld.camping.objs.Objs.ModItems.MetaLookup._
@@ -261,6 +264,12 @@ object Objs {
   object ModMisc extends ModRegister {
     import com.rikmuld.camping.objs.Objs.ModItems.MetaLookup._
 
+    override def registerClient {
+      if(phase==ModRegister.PERI){
+        ClientRegistry.registerKeyBinding(keyOpenCamping)
+      }
+    }
+    
     override def register {
       if(phase==ModRegister.PERI){
         val xLine = Array(1, -1, 1, -1, 0, 1, -1, 0, 1, -1, 0, 1, -1, 0, 1, -1, 0)
@@ -281,6 +290,8 @@ object Objs {
         RMMod.registerPacket(classOf[PlayerSleepInTent])
         
         GameRegistry.registerWorldGenerator(new WorldGenerator(), 9999) 
+        
+        keyOpenCamping = new KeyBinding(KeyInfo.desc(KeyInfo.INVENTORY_KEY), KeyInfo.default(KeyInfo.INVENTORY_KEY), KeyInfo.CATAGORY_MOD)
         
         if(!config.coreOnly){
           bleedingSource = new DamageSourceBleeding(DamageInfo.BLEEDING)

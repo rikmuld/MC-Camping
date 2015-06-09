@@ -107,7 +107,7 @@ class Grill(item: ItemStack) extends CookingEquipment(CampingMod.config.cookTime
     GL11.glRotatef(-90, 1, 0, 0)
     GL11.glRotatef(45, 0, -1, 0)
     GL11.glRotatef(-155, 1, 0, 1)
-    renderer.renderItem(entity, item, TransformType.FIRST_PERSON)
+    if(entity!=null)renderer.renderItem(entity, item, TransformType.FIRST_PERSON)
     GL11.glPopMatrix()
   }
   override def drawGuiTexture(container: GuiCampfireCook) {
@@ -258,7 +258,7 @@ class Spit(item: ItemStack) extends CookingEquipment(CampingMod.config.cookTimeS
     GL11.glScalef(0.15F, 0.15F, 0.25F)
     GL11.glRotatef(45, 0, -1, 0)
     GL11.glRotatef(-150, 1, 0, 1)
-    renderer.renderItem(entity, item, TransformType.FIRST_PERSON)
+    if(entity!=null)renderer.renderItem(entity, item, TransformType.FIRST_PERSON)
     GL11.glPopMatrix()
   }
   override def drawGuiTexture(container: GuiCampfireCook) {

@@ -137,7 +137,7 @@ class EventsS {
     }
   }
   def keyPressedServer(player: EntityPlayer, id: Int) {
-    if(id==KeyInfo.values(KeyInfo.INVENTORY_KEY))player.openGui(RMMod, Objs.guiCamping, player.worldObj, 0, 0, 0)
+    if(id==Objs.keyOpenCamping.getKeyCode)player.openGui(RMMod, Objs.guiCamping, player.worldObj, 0, 0, 0)
   }
   @SubscribeEvent
   def onPlayerTick(event: PlayerTickEvent) {
@@ -203,10 +203,10 @@ class EventsC {
   @SubscribeEvent
   def onKeyInput(event: KeyInputEvent) {
     if (!FMLClientHandler.instance.isGUIOpen(classOf[GuiChat])) {
-      for (key <- 0 to keys.length - 1) {
-        if (keys(key).isPressed) {
-          keyPressedClient(keys(key).getKeyCode)
-          PacketSender.toServer(new KeyData(keys(key).getKeyCode))
+      for (key <- 0 until KeyInfo.default.length) {
+        if (Objs.keyOpenCamping.isPressed) {
+          keyPressedClient(Objs.keyOpenCamping.getKeyCode)
+          PacketSender.toServer(new KeyData(Objs.keyOpenCamping.getKeyCode))
         }
       }
     }

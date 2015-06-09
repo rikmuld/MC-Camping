@@ -39,7 +39,6 @@ object CampingMod {
   @SidedProxy(clientSide = MOD_CLIENT_PROXY, serverSide = MOD_SERVER_PROXY)
   var proxy: ProxyServer = _
   var config: Config = _
-  var keys: Array[KeyBinding] = _
   var eventsC:EventsC = _
   var eventsS:EventsS = _
 
@@ -60,14 +59,6 @@ object CampingMod {
   }
   @EventHandler
   def Init(event: FMLInitializationEvent) {
-    if(event.getSide.eq(Side.CLIENT)){
-      keys = new Array[KeyBinding](KeyInfo.desc.length)
-      for (i <- 0 to keys.length - 1) {
-        keys(i) = new KeyBinding(KeyInfo.desc(i), KeyInfo.values(i), KeyInfo.CATAGORY_MOD)
-        ClientRegistry.registerKeyBinding(keys(i))
-      }
-    }
-    
     register(event.getSide, ModMisc, ModRegister.PERI)
     register(event.getSide, ModGuis, ModRegister.PERI)
     register(event.getSide, ModEntities, ModRegister.PERI)
@@ -127,7 +118,7 @@ object Lib {
     final val desc: Array[String] = Array(
       "Camping Inventory Key")
   
-    final val values: Array[Integer] = Array(
+    final val default: Array[Integer] = Array(
       Keyboard.KEY_C)
   }
   
@@ -183,7 +174,9 @@ object Lib {
 
 //CHANGELOG FOR THIS UPDATE SO FAR
 
+//FIXED: CHANGING KEY DOESN'T WORK
+//FIXED: SOME BUGS THAT CAUSED CRASHES
 //IMPROVED SPAWN ALGRORITM FOR CAMAPSITES
-//ENCHANTED FEEL EN STABILITY OF THE LOGSEAT, SLEEPINGBAG AND THE TENT
+//ENCHANTED FEEL EN STABILITY OF THE LOGSEAT, THE SLEEPINGBAG, THE HEMP AND THE TENT
 //PORTED TO MINECRAFT 1.8
 //IMPROVED/FIXED SHIFT-CLICKING IN SOME INVENTORIES
