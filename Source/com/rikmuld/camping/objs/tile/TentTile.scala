@@ -119,7 +119,7 @@ class TileTent extends RMTile with WithTileInventory with IUpdatePlayerListBox {
   }
   def getContendsFor(block: Block): ItemStack = {
     if (block == Objs.lantern) {
-      val lanternStack = new ItemStack(ALOWED_ITEMS(0), lanterns, if (time > 0) 0 else 1)
+      val lanternStack = new ItemStack(ALOWED_ITEMS(0), lanterns, if (time > 0) MetaLookup.Lantern.ON else MetaLookup.Lantern.OFF)
       if (time > 0) {
         lanternStack.setTagCompound(new NBTTagCompound())
         lanternStack.getTagCompound.setInteger("time", time)
@@ -237,6 +237,7 @@ class TileTent extends RMTile with WithTileInventory with IUpdatePlayerListBox {
     sendTileData(2, !worldObj.isRemote, contends)
     bd.update
     bd.updateRender
+    updateLight
   }
   def setSlideState(slideState: Int) {
     slide = slideState
@@ -247,13 +248,21 @@ class TileTent extends RMTile with WithTileInventory with IUpdatePlayerListBox {
   override def setTileData(id: Int, data: Array[Int]) {
     super.setTileData(id, data)
     if (id == 1) setContends(data(0), data(1), false, data(2))
-    else if (id == 2) contends = data(0)
+    else if (id == 2) {
+      contends = data(0)
+      updateLight
+    }
     else if (id == 3) lanternDamage = data(0)
     else if (id == 4) {
       slide = data(0)
       manageSlots()
     } else if (id == 5) time = data(0)
     else if (id == 6) color = data(0)
+  }
+  def updateLight() {
+    getWorld.theProfiler.startSection("checkLight")
+    getWorld.checkLight(pos)
+    getWorld.theProfiler.endSection
   }
   def sleep(player: EntityPlayer) {
     if(!worldObj.isRemote) {
@@ -314,9 +323,7 @@ class TileTent extends RMTile with WithTileInventory with IUpdatePlayerListBox {
         bd.update
         bd.updateRender
       }
-      if (time != oldTime) {
-        sendTileData(5, true, time)
-      }
+      if (time != oldTime) sendTileData(5, true, time)
     }
   }
   override def writeToNBT(tag: NBTTagCompound) {

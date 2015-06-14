@@ -189,7 +189,16 @@ class TileCampfireCook extends RMTile with WithTileInventory with IUpdatePlayerL
     if (updateNum > 0) {
       updateNum -= 1
       bd.update
+      bd.updateRender
+      updateLight
     }
+  }
+  def updateLight {
+    getWorld.theProfiler.startSection("checkLight")
+    getWorld.checkLight(pos)
+    getWorld.theProfiler.endSection
+    
+    if(!worldObj.isRemote)sendTileData(2, true, 0)
   }
   override def readFromNBT(tag: NBTTagCompound) {
     super.readFromNBT(tag)
@@ -202,6 +211,7 @@ class TileCampfireCook extends RMTile with WithTileInventory with IUpdatePlayerL
   override def setTileData(id: Int, data: Array[Int]) {
     if (id == 0) fuel = data(0)
     if (id == 1) cookProgress(data(1)) = data(0)
+    if (id == 2) updateLight
   }
   override def update(){
     manageCookingEquipment()
