@@ -153,14 +153,12 @@ object Lib {
     final val MODEL_TRAP = MODEL_LOCATION + "ModelBearTrapOpen.png"
     final val MODEL_CAMPER_FEMALE = MODEL_LOCATION + "ModelCamperFemale.png"
     final val MODEL_CAMPER_MALE = MODEL_LOCATION + "ModelCamperMale.png"
-  } 
+  }
 }
 
-//ROUND PORT UP
-
-//  CAMPFIRES / TRAP / TENT ITEM MODEL                                    ASAP
-//  CAMPFIRE / LANTERN LIGHTING CHANGE NOT WORK SMOOTHLY                  ASAP
-//  FIX ISSUES                                                            LATER
+//  TODO BEFORE UPDATE
+//
+//  CAMPFIRE / LANTERN LIGHTING CHANGE NOT WORK SMOOTLY
 
 //CHANGELOG FOR THIS UPDATE SO FAR
 

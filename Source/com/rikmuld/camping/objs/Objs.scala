@@ -129,6 +129,7 @@ import net.minecraft.item.ItemFood
 import net.minecraft.item.crafting.FurnaceRecipes
 import net.minecraftforge.fml.relauncher.SideOnly
 import net.minecraftforge.fml.relauncher.Side
+import com.rikmuld.camping.objs.block.TentItem
 
 object Objs {
   var tab:CreativeTabs = _
@@ -218,7 +219,7 @@ object Objs {
     final val TRAP = new ObjInfo(Tab(tab), Name("trap"), Materia(Material.iron), Hardness(1f), GuiTrigger(guiTrap))
     final val CAMPFIRE = new ObjInfo(Tab(tab), Name("campfire"), Materia(Material.fire), Hardness(2f), StepSound(Block.soundTypeStone), LightLevel(1.0f), GuiTrigger(guiCampfire))
     final val CAMPFIRE_COOK = new ObjInfo(Tab(tab), Name("campfireCook"), Materia(Material.fire), Hardness(2f), StepSound(Block.soundTypeStone), LightLevel(1.0f), GuiTrigger(guiCampfireCook))
-    final val TENT = new ObjInfo(Tab(tab), Name("tent"), Materia(Material.cloth), Hardness(0.2f), GuiTrigger(guiTent))
+    final val TENT = new ObjInfo(Tab(tab), Name("tent"), Materia(Material.cloth), Hardness(0.2f), GuiTrigger(guiTent), Metadata("black", "red", "green", "brown", "blue", "purple", "cyan", "grayLight", "grayDark", "pink", "lime", "yellow", "blueLight", "magenta", "orange", "white"), ItemBl(classOf[TentItem]))
     final val BOUNDS_TENT = new ObjInfo(Name("tentBounds"), Materia(Material.cloth))
 
     override def register {

@@ -1,5 +1,5 @@
 {
     "variants": {
-        "normal": { "model": "camping:campfire" }
+        "normal": { "model": "camping:campfireCook" }
     }
 }

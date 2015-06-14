@@ -59,6 +59,7 @@ class TentRender extends TileEntitySpecialRenderer {
     GL11.glPopMatrix()
     
     if (tile.lanterns > 0) {
+      GL11.glTranslatef(0, -1.5f, .03f)
       val lanternStack = new ItemStack(Objs.lantern, 1, tile.lanternDamage)
       if ((tile.getRotation == 0) || (tile.getRotation == 2)) GL11.glRotatef(90, 0F, 1F, 0F)
       if ((tile.getRotation == 0) || (tile.getRotation == 1)) GL11.glTranslatef(-1, 0.9375F, -0.155F)

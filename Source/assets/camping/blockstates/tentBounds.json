@@ -1,5 +1,8 @@
 {
     "variants": {
-        "normal": { "model": "camping:tent" }
+        "facing=north": { "model": "camping:tent" },
+        "facing=west": { "model": "camping:tent" },
+        "facing=south": { "model": "camping:tent" },
+        "facing=east": { "model": "camping:tent" }
     }
 }

@@ -14,28 +14,14 @@ import java.util.Random
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType
 import com.rikmuld.camping.objs.tile.TileCampfire
 import com.rikmuld.camping.Lib.TextureInfo
-import com.rikmuld.camping.render.models.CampfireModel
 import com.rikmuld.camping.objs.tile.TileCampfireCook
-
-object CampfireRender {
-  final val MODEL = new CampfireModel
-  final val TEXTURE = new ResourceLocation(TextureInfo.MODEL_CAMPFIRE)
-}
 
 class CampfireRender extends TileEntitySpecialRenderer {
   var renderer: ItemRenderer = Minecraft.getMinecraft.getItemRenderer
   var rand: Random = new Random()
 
   override def renderTileEntityAt(tileentity: TileEntity, x: Double, y: Double, z: Double, f: Float, i:Int) {
-    GL11.glPushMatrix()
-    GL11.glEnable(GL12.GL_RESCALE_NORMAL)
     val tile = tileentity.asInstanceOf[TileCampfire]
-    bindTexture(CampfireRender.TEXTURE)
-    GL11.glTranslatef(x.toFloat + 0.5F, y.toFloat + 1.5F, z.toFloat + 0.5F)
-    GL11.glScalef(1.0F, -1F, -1F)
-    GL11.glScalef(0.0625F, 0.0625F, 0.0625F)
-    CampfireRender.MODEL.renderAll
-    GL11.glPopMatrix()
     GL11.glPushMatrix()
     GL11.glEnable(GL12.GL_RESCALE_NORMAL)
     GL11.glTranslatef(x.toFloat + 0.4F, y.toFloat + 0.0625f, z.toFloat + 0.4F)
@@ -72,10 +58,6 @@ class CampfireCookRender extends TileEntitySpecialRenderer {
         tile.equipment.renderFood(i, tile.getStackInSlot(i + 2), entity)
       }
     }
-    bindTexture(CampfireRender.TEXTURE)
-    GL11.glTranslatef(0, -1.5f, 0)
-    GL11.glScalef(0.0625F, 0.0625F, 0.0625F)
-    CampfireRender.MODEL.renderOnly(CampfireModel.BASE:_*)
     GL11.glPopMatrix
     GL11.glPushMatrix
     GL11.glTranslatef(x.toFloat + 0.4F, y.toFloat + 0.0625f, z.toFloat + 0.4F)

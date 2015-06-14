@@ -32,6 +32,8 @@ import com.rikmuld.corerm.bounds.Bounds
 import com.rikmuld.corerm.bounds.IBoundsBlock
 import com.rikmuld.camping.objs.misc.PlayerSleepInTent
 import com.rikmuld.camping.objs.block.TentBounds
+import com.rikmuld.camping.objs.Objs.ModBlocks.MetaLookup
+import com.sun.swing.internal.plaf.metal.resources.metal
 
 object TileEntityTent {
   var bounds: Array[Bounds] = Array(new Bounds(-0.5F, 0, 0, 1.5F, 1.5F, 3), new Bounds(-2, 0, -0.5F, 1, 1.5F, 1.5F), new Bounds(-0.5F, 0, -2, 1.5F, 1.5F, 1), new Bounds(0, 0, -0.5F, 3, 1.5F, 1.5F))
@@ -41,45 +43,46 @@ object TileEntityTent {
 }
 
 class TileTent extends RMTile with WithTileInventory with IUpdatePlayerListBox {
+  final val COST_CHEST = 2
+  final val COST_BED = 5
+  final val COST_LANTERN = 1
+  final val MAX_COST = 10
+  final val MAX_CHESTS: Int = 5
+  final val MAX_BEDS: Int = 1
+  final val MAX_LANTERNS: Int = 1
+  final val ALOWED_ITEMS = Array(Objs.lantern, Blocks.chest, Objs.sleepingBag)
+
   var slots: Array[Array[SlotState]] = _
   var structures: Array[BoundsStructure] = _
   var tracker = new Array[BoundsTracker](4)
   var isNew = true
   var dropped = false
-  var contendList = Array(Objs.lantern, Blocks.chest, Objs.sleepingBag)
-  var maxContends = 10
-  var chestCost = 2
-  var bedCost = 5
-  var lanternCost = 1
+  var needLightUpdate = true
+  var occupied = false
   var chests: Int = _
   var beds: Int = _
   var lanterns: Int = _
-  var maxChests: Int = 5
-  var maxBeds: Int = 1
-  var maxLanterns: Int = 1
   var contends: Int = _
-  var time: Int = -1
   var oldTime: Int = _
-  var lanternDamage = 0
   var updateTick: Int = _
-  var needLightUpdate = true
-  var lanternUpdateTick = 3
   var slide: Int = _
-  var maxSlide = 144
   var chestTracker: Int = _
   var lanternTracker: Int = _
+  var lanternDamage = 0
+  var time: Int = -1
+  var lanternUpdateTick = 3
+  var maxSlide = 144
   var color = 15
-  var occupied = false
   
   def addBed(): Boolean = {
-    if (((contends + bedCost) <= maxContends) && (beds < maxBeds)) {
+    if (((contends + COST_BED) <= MAX_COST) && (beds < MAX_BEDS)) {
       setContends(beds + 1, BEDS, true, 0)
       return true
     }
     false
   }
   def addChests(): Boolean = {
-    if (((contends + chestCost) <= maxContends) && (chests < maxChests)) {
+    if (((contends + COST_CHEST) <= MAX_COST) && (chests < MAX_CHESTS)) {
       setContends(chests + 1, CHEST, true, 0)
       return true
     }
@@ -87,15 +90,15 @@ class TileTent extends RMTile with WithTileInventory with IUpdatePlayerListBox {
   }
   def addContends(stack: ItemStack): Boolean = {
     val id = Block.getBlockFromItem(stack.getItem())
-    if (id == contendList(0)) return addLentern(stack)
-    if (id == contendList(1)) return addChests
-    if (id == contendList(2)) return addBed
+    if (id == ALOWED_ITEMS(0)) return addLentern(stack)
+    if (id == ALOWED_ITEMS(1)) return addChests
+    if (id == ALOWED_ITEMS(2)) return addBed
     false
   }
   def addLentern(stack: ItemStack): Boolean = {
-    if (((contends + lanternCost) <= maxContends) && (lanterns < maxLanterns)) {
+    if (((contends + COST_LANTERN) <= MAX_COST) && (lanterns < MAX_LANTERNS)) {
       time = if (stack.hasTagCompound()) stack.getTagCompound.getInteger("time") else -1
-      lanternDamage = if (time > 0) 0 else 1
+      lanternDamage = if (time > 0) MetaLookup.Lantern.ON else MetaLookup.Lantern.OFF
       sendTileData(3, true, lanternDamage)
       setContends(lanterns + 1, LANTERN, true, 0)
       return true
@@ -104,27 +107,27 @@ class TileTent extends RMTile with WithTileInventory with IUpdatePlayerListBox {
   }
   def getContends(): ArrayList[ItemStack] = {
     val stacks = new ArrayList[ItemStack]()
-    val lanternStack = new ItemStack(contendList(0), lanterns, if (time > 0) 0 else 1)
+    val lanternStack = new ItemStack(ALOWED_ITEMS(0), lanterns, if (time > 0) MetaLookup.Lantern.ON else MetaLookup.Lantern.OFF)
     if (time > 0) {
       lanternStack.setTagCompound(new NBTTagCompound())
       lanternStack.getTagCompound.setInteger("time", time)
     }
     if (lanterns > 0) stacks.add(lanternStack)
-    if (chests > 0) stacks.add(new ItemStack(contendList(1), chests, 0))
-    if (beds > 0) stacks.add(new ItemStack(contendList(2), beds, 0))
+    if (chests > 0) stacks.add(new ItemStack(ALOWED_ITEMS(1), chests, 0))
+    if (beds > 0) stacks.add(new ItemStack(ALOWED_ITEMS(2), beds, 0))
     stacks
   }
   def getContendsFor(block: Block): ItemStack = {
     if (block == Objs.lantern) {
-      val lanternStack = new ItemStack(contendList(0), lanterns, if (time > 0) 0 else 1)
+      val lanternStack = new ItemStack(ALOWED_ITEMS(0), lanterns, if (time > 0) 0 else 1)
       if (time > 0) {
         lanternStack.setTagCompound(new NBTTagCompound())
         lanternStack.getTagCompound.setInteger("time", time)
       }
       return lanternStack
     }
-    if (block == Blocks.chest) return new ItemStack(contendList(1), 1, 0)
-    if (block == Objs.sleepingBag) return new ItemStack(contendList(2), 1, 0)
+    if (block == Blocks.chest) return new ItemStack(ALOWED_ITEMS(1), 1, 0)
+    if (block == Objs.sleepingBag) return new ItemStack(ALOWED_ITEMS(2), 1, 0)
     null
   }
   
@@ -224,13 +227,13 @@ class TileTent extends RMTile with WithTileInventory with IUpdatePlayerListBox {
     }
   }
   def setContends(contendNum: Int, contendId: Int, sendData: Boolean, drop: Int) {
-    if (drop == 1) worldObj.dropItemInWorld(getContendsFor(contendList(contendId)), bd.x, bd.y, bd.z, new Random())
+    if (drop == 1) worldObj.dropItemInWorld(getContendsFor(ALOWED_ITEMS(contendId)), bd.x, bd.y, bd.z, new Random())
     if (drop == 2) worldObj.dropItemsInWorld(getContends, bd.x, bd.y, bd.z, new Random())
     if (sendData) sendTileData(1, !worldObj.isRemote, contendNum, contendId, drop)
     if (contendId == LANTERN) lanterns = contendNum
     if (contendId == CHEST) chests = contendNum
     if (contendId == BEDS) beds = contendNum
-    contends = (beds * bedCost) + (chests * chestCost) + (lanterns * lanternCost)
+    contends = (beds * COST_BED) + (chests * COST_CHEST) + (lanterns * COST_LANTERN)
     sendTileData(2, !worldObj.isRemote, contends)
     bd.update
     bd.updateRender
@@ -298,7 +301,7 @@ class TileTent extends RMTile with WithTileInventory with IUpdatePlayerListBox {
       }
       if (time == 0) {
         time = -1
-        lanternDamage = 1
+        lanternDamage = MetaLookup.Lantern.OFF
         sendTileData(3, true, lanternDamage)
         bd.update
         bd.updateRender
@@ -306,7 +309,7 @@ class TileTent extends RMTile with WithTileInventory with IUpdatePlayerListBox {
       if ((time <= 0) && (getStackInSlot(0) != null)) {
         decrStackSize(0, 1)
         time = 1500
-        lanternDamage = 0
+        lanternDamage = MetaLookup.Lantern.ON
         sendTileData(3, true, lanternDamage)
         bd.update
         bd.updateRender

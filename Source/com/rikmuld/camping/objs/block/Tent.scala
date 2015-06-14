@@ -44,6 +44,16 @@ import com.rikmuld.camping.objs.misc.OpenGui
 import com.rikmuld.camping.objs.tile.TileTent
 import com.rikmuld.camping.objs.tile.TileTent
 import com.rikmuld.corerm.bounds.BoundsTracker
+import com.rikmuld.camping.objs.Objs.ModBlocks.MetaLookup
+import com.rikmuld.corerm.objs.RMItemBlock
+import com.rikmuld.camping.CampingMod
+import net.minecraft.block.Block
+import net.minecraft.client.resources.model.ModelResourceLocation
+import net.minecraftforge.fml.relauncher.SideOnly
+import net.minecraftforge.fml.relauncher.Side
+import net.minecraft.creativetab.CreativeTabs
+import net.minecraft.item.Item
+import scala.collection.JavaConversions._
 
 object Tent {
   val FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL.asInstanceOf[Predicate[_]])
@@ -70,9 +80,7 @@ class Tent(modId:String, info:ObjInfo) extends RMBlockContainer(modId, info) wit
         val stacks = new ArrayList[ItemStack]
         dropBlockAsItem(world, pos, state, 1)
         stacks.addAll(tile.getContends)
-        val stack = nwsk(this)
-        stack.setTagCompound(new NBTTagCompound)
-        stack.getTagCompound.setInteger("color", tile.color)  
+        val stack = nwsk(this, tile.color)
         stacks.add(stack)
         world.dropItemsInWorld(stacks, pos.getX, pos.getY, pos.getZ, new Random())
       }
@@ -102,7 +110,7 @@ class Tent(modId:String, info:ObjInfo) extends RMBlockContainer(modId, info) wit
   }
   override def getLightValue(world: IBlockAccess, pos:BlockPos): Int = {
     val tile = world.getTileEntity(pos).asInstanceOf[TileTent]
-    if ((tile.lanternDamage == 0) && (tile.lanterns > 0)) 15 else 0
+    if ((tile.lanternDamage == MetaLookup.Lantern.ON) && (tile.lanterns > 0)) 15 else 0
   }
   override def onBlockActivated(world: World, pos:BlockPos, state:IBlockState, player: EntityPlayer, side: EnumFacing, xHit: Float, yHit: Float, zHit: Float): Boolean = {
     if (!world.isRemote) {
@@ -120,4 +128,19 @@ class Tent(modId:String, info:ObjInfo) extends RMBlockContainer(modId, info) wit
     true
   }
   override def openGui(bd:BlockData, player:EntityPlayer, id:Int) = PacketSender.toClient(new OpenGui(id, bd.x, bd.y, bd.z))
+}
+
+class TentItem(block:Block) extends RMItemBlock(CampingMod.MOD_ID, Objs.ModBlocks.TENT, block) {  
+  @SideOnly(Side.CLIENT)
+  override def getSubItems(itemIn:Item, tab:CreativeTabs, subItems:java.util.List[_]) {
+    subItems.asInstanceOf[java.util.List[ItemStack]].add(new ItemStack(itemIn, 1, 15)) 
+  }
+  override def placeBlockAt(stack: ItemStack, player: EntityPlayer, world: World, pos: BlockPos, side: EnumFacing, hitX: Float, hitY: Float, hitZ: Float, newState: IBlockState): Boolean = {
+    if(super.placeBlockAt(stack, player, world, pos, side, hitX, hitY, hitZ, newState)){
+      (world, pos).tile.asInstanceOf[TileTent].color = stack.getItemDamage
+      (world, pos).tile.asInstanceOf[TileTent].setColor(stack.getItemDamage)
+      true
+    }
+    false
+  }
 }

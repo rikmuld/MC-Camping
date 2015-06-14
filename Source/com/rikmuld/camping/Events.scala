@@ -144,7 +144,7 @@ class EventsS {
     val player = event.player
     val world = player.worldObj
     Objs.tent.asInstanceOf[Tent].facingFlag = player.facing.getHorizontalIndex
-
+    
     if (!config.coreOnly) {
       if (event.phase.equals(Phase.START)) {
         if (player.getEntityData().getInteger("isInTrap") <= 0) {
