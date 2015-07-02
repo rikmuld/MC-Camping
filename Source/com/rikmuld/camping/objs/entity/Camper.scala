@@ -43,6 +43,10 @@ import net.minecraft.world.World
 import net.minecraftforge.fml.relauncher.SideOnly
 import net.minecraft.client.Minecraft
 import net.minecraftforge.fml.relauncher.Side
+import net.minecraft.util.BlockPos
+import com.rikmuld.corerm.misc.WorldBlock._
+import net.minecraftforge.event.terraingen.BiomeEvent.GetWaterColor
+import com.rikmuld.camping.objs.block.Tent
 
 object Camper {
   val recipeListRaw = new HashMap[Item, Tuple]()
@@ -70,37 +74,24 @@ class Camper(world: World) extends EntityCreature(world) with IMerchant with INp
   targetTasks.addTask(0, new EntityAINearestAttackableTarget(this, classOf[EntityMob], false))
   targetTasks.addTask(0, new EntityAINearestAttackableTarget(this, classOf[Bear], false))
 
-  var xHome, yHome, zHome: Int = _
-  var hasHomeCoords = false
   var playerBuy: EntityPlayer = null
   var recipeList: MerchantRecipeList = _
+  var camp:Option[Campsite] = None
 
-  def this(world: World, x: Double, y: Double, z: Double) {
-    this(world)
-    setPosition(x, y, z)
-    xHome = x.toInt
-    yHome = y.toInt
-    zHome = z.toInt
-
-    hasHomeCoords = true
-  }
   def setGender(gender: Int) = dataWatcher.updateObject(16, Integer.valueOf(gender))
   def getGender: Int = dataWatcher.getWatchableObjectInt(16)
   override def writeEntityToNBT(tag: NBTTagCompound) {
     super.writeEntityToNBT(tag)
     tag.setInteger("gender", getGender)
-    tag.setInteger("xHome", xHome)
-    tag.setInteger("yHome", yHome)
-    tag.setInteger("zHome", zHome)
-    tag.setBoolean("hasHome", hasHomeCoords)
+    camp.map { campsite =>
+      tag.setBoolean("hasCamp", true)
+      tag.setTag("campsite", campsite.toNBT(new NBTTagCompound))
+    }
   }
   override def readEntityFromNBT(tag: NBTTagCompound) {
     super.writeEntityToNBT(tag)
     setGender(tag.getInteger("gender"))
-    xHome = tag.getInteger("xHome")
-    yHome = tag.getInteger("yHome")
-    zHome = tag.getInteger("zHome")
-    hasHomeCoords = tag.getBoolean("hasHome")
+    if(tag.hasKey("hasCamp")) camp = Some(Campsite.fromNBT(this, tag.getCompoundTag("campsite")))
   }
   protected override def applyEntityAttributes {
     super.applyEntityAttributes();
@@ -111,6 +102,10 @@ class Camper(world: World) extends EntityCreature(world) with IMerchant with INp
   override def entityInit {
     super.entityInit
     dataWatcher.addObject(16, Integer.valueOf(0))
+  }
+  override def onUpdate {
+    super.onUpdate
+    camp.map {campsite => campsite.update }
   }
   protected override def getDeathSound = "mob.villager.death"
   protected override def getHurtSound = "mob.villager.hit"
@@ -136,12 +131,6 @@ class Camper(world: World) extends EntityCreature(world) with IMerchant with INp
     }
     flag
   }
-  override def onUpdate() {
-    super.onUpdate()
-    if (rand.nextInt(500) == 0 && (!worldObj.isRemote)) {
-      getNavigator.tryMoveToXYZ(xHome - 2 + rand.nextInt(4), yHome, zHome - 2 + rand.nextInt(4), 0.4)
-    }
-  }
   override def interact(player: EntityPlayer): Boolean = {
     val itemstack = player.inventory.getCurrentItem
     val flag = (itemstack != null) && (itemstack.getItem == Items.spawn_egg)
@@ -153,14 +142,13 @@ class Camper(world: World) extends EntityCreature(world) with IMerchant with INp
       true
     } else super.interact(player)
   }
-  def setCustomer(player: EntityPlayer) = playerBuy = player
-  def getCustomer(): EntityPlayer = playerBuy
-  def getRecipes(player: EntityPlayer): MerchantRecipeList = if (recipeList == null) setRecipeList else recipeList
+  override def setCustomer(player: EntityPlayer) = playerBuy = player
+  override def getCustomer(): EntityPlayer = playerBuy
+  override def getRecipes(player: EntityPlayer): MerchantRecipeList = if (recipeList == null) setRecipeList else recipeList
   @SideOnly(Side.CLIENT)
-  def setRecipes(recipes: MerchantRecipeList) {}
-  def useRecipe(resipes: MerchantRecipe) {}
-  def func_110297_a_(stack: ItemStack) {}
-  def verifySellingItem(stack:ItemStack) {}
+  override def setRecipes(recipes: MerchantRecipeList) {}
+  override def useRecipe(resipes: MerchantRecipe) {}
+  override def verifySellingItem(stack:ItemStack) {}
   def isTrading: Boolean = getCustomer != null
   def setRecipeList: MerchantRecipeList = {
     recipeList = new MerchantRecipeList()
@@ -200,6 +188,7 @@ class Camper(world: World) extends EntityCreature(world) with IMerchant with INp
     val tuple = Camper.recipeListRaw(item).asInstanceOf[Tuple]
     if (tuple == null) 1 else (if (tuple.getFirst.asInstanceOf[java.lang.Integer].intValue() >= tuple.getSecond.asInstanceOf[java.lang.Integer].intValue()) tuple.getFirst.asInstanceOf[java.lang.Integer].intValue() else tuple.getFirst.asInstanceOf[java.lang.Integer].intValue() + random.nextInt(tuple.getSecond.asInstanceOf[java.lang.Integer].intValue() - tuple.getFirst.asInstanceOf[java.lang.Integer].intValue()))
   }
+  def setCampsite(campsite:Option[Campsite]) = camp = campsite
 }
 
 @SideOnly(Side.CLIENT)
@@ -208,4 +197,26 @@ class CamperRender(model: ModelBase) extends RenderLiving(Minecraft.getMinecraft
     super.doRender(entity.asInstanceOf[EntityLiving], d0, d1, d2, f, f1)
   }
   protected override def getEntityTexture(entity: Entity): ResourceLocation = new ResourceLocation(if (entity.asInstanceOf[Camper].getGender == 0) TextureInfo.MODEL_CAMPER_MALE else TextureInfo.MODEL_CAMPER_FEMALE)
+}
+
+object Campsite {
+  def fromNBT(camper:Camper, tag:NBTTagCompound):Campsite = {
+    val center = tag.getIntArray("center")
+    val tent = tag.getIntArray("tent")
+    println("hallo")
+    new Campsite(camper, new BlockPos(center(0), center(1), center(2)), new BlockPos(tent(0), tent(1), tent(2)))
+  }
+}
+
+class Campsite(camper:Camper, center:BlockPos, tent:BlockPos) {  
+  def update {
+    if(!(getWorld, tent).block.isInstanceOf[Tent])camper.setCampsite(None)
+    else if(Math.sqrt(camper.getDistanceSqToCenter(center)) > 15 && !camper.getMoveHelper.isUpdating)camper.getMoveHelper.setMoveTo(center.getX, center.getY, center.getZ, .8)
+  }
+  def getWorld = camper.worldObj
+  def toNBT(tag:NBTTagCompound):NBTTagCompound = {
+    tag.setIntArray("center", Array(center.getX, center.getY, center.getZ))
+    tag.setIntArray("tent", Array(tent.getX, tent.getY, tent.getZ))
+    tag
+  }
 }

@@ -18,7 +18,7 @@ object ColouredFlame {
 }
 
 @SideOnly(Side.CLIENT)
-class ColoredFlame(world: World, x: Double, y: Double, z: Double, mX: Double, mY: Double, mZ: Double, color: Int) extends EntityFX(world, x, y, z, mX, mY, mZ) {
+class ColouredFlame(world: World, x: Double, y: Double, z: Double, mX: Double, mY: Double, mZ: Double, color: Int) extends EntityFX(world, x, y, z, mX, mY, mZ) {
   motionX = (motionX * 0.009999999776482582D) + mX
   motionY = (motionY * 0.009999999776482582D) + mY
   motionZ = (motionZ * 0.009999999776482582D) + mZ

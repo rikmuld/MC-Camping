@@ -15,6 +15,7 @@ import net.minecraft.init.Blocks
 import net.minecraft.util.EnumFacing
 import com.rikmuld.camping.objs.tile.TileTent
 import com.rikmuld.camping.objs.tile.TileEntityTent
+import com.rikmuld.camping.objs.entity.Campsite
 
 class HempGen extends net.minecraft.world.gen.feature.WorldGenerator {
   override def generate(world: World, random: Random, pos:BlockPos): Boolean = {
@@ -49,6 +50,7 @@ class CampsiteGen extends net.minecraft.world.gen.feature.WorldGenerator {
     
     val camper = new Camper(world)
     camper.setPosition(bd.west.x, bd.west.y, bd.west.z)
+    camper.setCampsite(Some(new Campsite(camper, bd.west.pos, bd.south.south.pos)))
     world.spawnEntityInWorld(camper)
     
     true

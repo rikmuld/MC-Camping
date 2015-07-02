@@ -296,9 +296,7 @@ object Objs {
         RMMod.registerPacket(classOf[BoundsData])
         RMMod.registerPacket(classOf[PlayerSleepInTent])
         RMMod.registerPacket(classOf[MapData])
-        
-        GameRegistry.registerWorldGenerator(new WorldGenerator(), 9999) 
-                
+                        
         if(!config.coreOnly){
           bleedingSource = new DamageSourceBleeding(DamageInfo.BLEEDING)
           bleeding = new PotionBleeding(PotionInfo.BLEEDING)
@@ -386,6 +384,8 @@ object Objs {
           registerEntity(classOf[Bear].asInstanceOf[Class[Entity]], "bearGrizzly", EntityInfo.BEAR, true, 0x583B2D, 0xE2B572)
           registerEntity(classOf[Fox].asInstanceOf[Class[Entity]], "foxArctic", EntityInfo.FOX, true, 0xE0EEEE, 0x362819)
           registerEntity(classOf[Camper].asInstanceOf[Class[Entity]], "camper", EntityInfo.CAMPER, true, 0x747B51, 0x70471B)
+          
+          GameRegistry.registerWorldGenerator(new WorldGenerator(), 9999) 
         }
       } else if(phase==ModRegister.POST&&config.coreOnly==false){
         val forests = BiomeDictionary.getBiomesForType(Type.FOREST)

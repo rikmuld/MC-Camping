@@ -19,9 +19,9 @@ import com.rikmuld.corerm.objs.ObjInfo
 import net.minecraft.item.Item
 import net.minecraft.block.Block
 import net.minecraftforge.fml.client.FMLClientHandler
-import com.rikmuld.camping.render.fx.ColoredFlame
 import net.minecraftforge.fml.common.FMLCommonHandler
 import net.minecraftforge.common.MinecraftForge
+import com.rikmuld.camping.render.fx.ColouredFlame
 
 class ProxyServer {
   var eventsS:EventsS = _
@@ -48,5 +48,5 @@ class ProxyClient extends ProxyServer {
     FMLCommonHandler.instance.bus.register(eventsC)
   }
   override def getEventClient:Any = eventsC
-  override def spawnFlame(world: World, x: Double, y: Double, z: Double, motionX: Double, motionY: Double, motionZ: Double, color: Int) = FMLClientHandler.instance().getClient.effectRenderer.addEffect(new ColoredFlame(world, x, y, z, motionX, motionY, motionZ, color))
+  override def spawnFlame(world: World, x: Double, y: Double, z: Double, motionX: Double, motionY: Double, motionZ: Double, color: Int) = FMLClientHandler.instance().getClient.effectRenderer.addEffect(new ColouredFlame(world, x, y, z, motionX, motionY, motionZ, color))
 }

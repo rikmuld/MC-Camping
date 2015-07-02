@@ -1,7 +1,6 @@
 package com.rikmuld.camping.objs.entity
 
 import org.lwjgl.opengl.GL11
-
 import com.google.common.base.Predicate
 import com.rikmuld.camping.CampingMod._
 import com.rikmuld.camping.Lib._
@@ -9,7 +8,6 @@ import com.rikmuld.camping.objs.Objs._
 import com.rikmuld.camping.objs.Objs
 import com.rikmuld.camping.objs.Objs.ModItems.MetaLookup._
 import com.rikmuld.corerm.CoreUtils._
-
 import net.minecraft.client.Minecraft
 import net.minecraft.client.model.ModelBase
 import net.minecraft.client.renderer.entity.RenderLiving
@@ -36,6 +34,7 @@ import net.minecraft.util.ResourceLocation
 import net.minecraft.world.World
 import net.minecraftforge.fml.relauncher.SideOnly
 import net.minecraftforge.fml.relauncher.Side
+import com.rikmuld.camping.CampingMod
 
 class Fox(world: World) extends EntityAnimal(world) {
 
@@ -71,6 +70,10 @@ class Fox(world: World) extends EntityAnimal(world) {
     super.applyEntityAttributes();
     this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(10.0D)
     this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.30000001192092896D)
+  }
+  override def onUpdate() {
+    super.onUpdate()
+    if (!worldObj.isRemote && !CampingMod.config.useFoxes) setDead()
   }
   override def attackEntityAsMob(entity: Entity): Boolean = entity.attackEntityFrom(DamageSource.causeMobDamage(this), 3.0F)
   override protected def dropFewItems(playerAttack: Boolean, loot: Int) {

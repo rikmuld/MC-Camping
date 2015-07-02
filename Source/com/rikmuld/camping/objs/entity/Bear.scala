@@ -39,6 +39,7 @@ import net.minecraft.util.ResourceLocation
 import net.minecraft.world.World
 import net.minecraftforge.fml.relauncher.SideOnly
 import net.minecraftforge.fml.relauncher.Side
+import com.rikmuld.camping.CampingMod
 
 class Bear(world: World) extends EntityAnimal(world) {
   setSize(1F, 1.125F)
@@ -87,7 +88,7 @@ class Bear(world: World) extends EntityAnimal(world) {
   override def isBreedingItem(stack: ItemStack): Boolean = stack.getItem() == Items.fish
   override def onUpdate() {
     super.onUpdate()
-    if (!worldObj.isRemote && (world.getWorldInfo.getDifficulty.getDifficultyId() == 0)) setDead()
+    if (!worldObj.isRemote && ((world.getWorldInfo.getDifficulty.getDifficultyId() == 0) || !CampingMod.config.useBears)) setDead()
   }
   override def attackEntityAsMob(entity: Entity): Boolean = {
     var f = this.getEntityAttribute(SharedMonsterAttributes.attackDamage).getAttributeValue.toFloat

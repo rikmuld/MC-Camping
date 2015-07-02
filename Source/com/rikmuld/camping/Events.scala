@@ -189,7 +189,7 @@ class EventsS {
     }
     if (!config.coreOnly) {
       var campNum = 0.0f
-      for (i <- 0 until 4 if (player.inventory.armorInventory(i) != null && player.inventory.armorInventory(i).getItem.asInstanceOf[ItemArmor].getArmorMaterial.equals(Objs.fur))) campNum += 0.25f
+      for (i <- 0 until 4 if (player.inventory.armorInventory(i) != null && player.inventory.armorInventory(i).getItem.isInstanceOf[ItemArmor] && player.inventory.armorInventory(i).getItem.asInstanceOf[ItemArmor].getArmorMaterial.equals(Objs.fur))) campNum += 0.25f
       if (player.getEntityAttribute(SharedMonsterAttributes.movementSpeed).getModifier(UUIDSpeedCamping) != null) player.getEntityAttribute(SharedMonsterAttributes.movementSpeed).removeModifier(player.getEntityAttribute(SharedMonsterAttributes.movementSpeed).getModifier(UUIDSpeedCamping))
       player.getEntityAttribute(SharedMonsterAttributes.movementSpeed).applyModifier(new AttributeModifier(UUIDSpeedCamping, "camping.speedBoost", 0.04 * campNum, 0))
     }
