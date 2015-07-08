@@ -1,29 +1,31 @@
 package com.rikmuld.camping.world
 
-import com.rikmuld.camping.objs.Objs
-import net.minecraft.world.World
 import java.util.Random
-import net.minecraft.block.material.Material
-import net.minecraft.util.BlockPos
-import com.rikmuld.corerm.misc.WorldBlock._
-import com.rikmuld.camping.objs.block.Hemp
-import com.rikmuld.corerm.objs.WithInstable
+
+import com.rikmuld.camping.objs.Objs
 import com.rikmuld.camping.objs.Objs.ModBlocks.MetaLookup
+import com.rikmuld.camping.objs.block.Hemp
 import com.rikmuld.camping.objs.entity.Camper
-import com.rikmuld.camping.objs.tile.TileEntityTent
-import net.minecraft.init.Blocks
-import net.minecraft.util.EnumFacing
-import com.rikmuld.camping.objs.tile.TileTent
-import com.rikmuld.camping.objs.tile.TileEntityTent
 import com.rikmuld.camping.objs.entity.Campsite
+import com.rikmuld.camping.objs.tile.TileEntityTent
+import com.rikmuld.camping.objs.tile.TileTent
+import com.rikmuld.corerm.misc.WorldBlock.BlockData
+import com.rikmuld.corerm.misc.WorldBlock.IMBlockData
+import com.rikmuld.corerm.objs.WithInstable
+
+import net.minecraft.block.material.Material
+import net.minecraft.init.Blocks
+import net.minecraft.util.BlockPos
+import net.minecraft.world.World
 
 class HempGen extends net.minecraft.world.gen.feature.WorldGenerator {
-  override def generate(world: World, random: Random, pos:BlockPos): Boolean = {
+  def generate(world: World, random: Random, pos: BlockPos): Boolean = {
     var bd = (world, pos)
-    for (tr <- 0 until 20) {
-      bd = bd.nw(bd.relPos(random.nextInt(4) - random.nextInt(4), 0, random.nextInt(4) - random.nextInt(4)))
+    for (i <- 0 until 20) {
+      val posNew = pos.add(random.nextInt(4) - random.nextInt(4), 0, random.nextInt(4) - random.nextInt(4))
+      bd = (world, posNew)
       if (bd.isAir && (bd.down.north.material == Material.water || bd.down.south.material == Material.water || bd.down.west.material == Material.water || bd.down.east.material == Material.water)) {
-        val age = random.nextInt(random.nextInt(4) + 1)
+       val age = random.nextInt(random.nextInt(4) + 1)
         if (Objs.hemp.asInstanceOf[WithInstable].canStay(world, bd.pos)) {
           bd.setState(Objs.hemp.getBlockState.getBaseState.withProperty(Hemp.AGE, age))
           if (age == MetaLookup.Hemp.GROWN_BIG_BOTTOM) bd.up.setState(Objs.hemp.getBlockState.getBaseState.withProperty(Hemp.AGE, age + 1))
@@ -38,7 +40,7 @@ class CampsiteGen extends net.minecraft.world.gen.feature.WorldGenerator {
   override def generate(world: World, random: Random, pos:BlockPos): Boolean = {
     var bd = (world, pos)
     
-    while (bd.up.block != Blocks.air || bd.up.up.block != Blocks.air) bd = bd.up
+    while (bd.block != Blocks.air) bd = bd.up
     bd = bd.up
     
     if (!isValitSpawn(bd.west, 3, 2, 5)) return false

@@ -26,6 +26,7 @@ import com.rikmuld.camping.objs.misc.OpenGui
 import org.lwjgl.input.Mouse
 import com.rikmuld.camping.objs.tile.TileEntityTent
 import com.rikmuld.camping.objs.Objs
+import net.minecraft.entity.Entity
 
 class GuiTent(player: EntityPlayer, tile: IInventory) extends GuiScreen {
   var tent = tile.asInstanceOf[TileTent]
@@ -42,7 +43,7 @@ class GuiTent(player: EntityPlayer, tile: IInventory) extends GuiScreen {
     fontRender.drawString(text, x - (fontRender.getStringWidth(text) / 2), y, color)
   }
   override def drawScreen(mouseX: Int, mouseY: Int, partitialTicks: Float) {
-    drawDefaultBackground()
+    if(this.mc != null)drawDefaultBackground()
     val guiLeft = (width - 255) / 2
     val guiTop = (height - 160) / 2
     GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F)

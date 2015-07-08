@@ -25,8 +25,10 @@ class Trap(modId:String, info:ObjInfo) extends RMBlockContainer(modId, info) wit
   
   override def getCollisionBoundingBox(world: World, pos:BlockPos, state:IBlockState): AxisAlignedBB = null
   override def setBlockBoundsBasedOnState(world:IBlockAccess, pos:BlockPos) {
-    if (world.getTileEntity(pos).asInstanceOf[TileTrap].open)setBlockBounds(0.21875f, 0, 0.21875f, 0.78125f, 0.1875f, 0.78125f)
-    else setBlockBounds(0.21875f, 0, 0.34375f, 0.78125f, 0.25f, 0.65f)
+    Option(world.getTileEntity(pos)).map { tile =>
+      if(tile.asInstanceOf[TileTrap].open)setBlockBounds(0.21875f, 0, 0.21875f, 0.78125f, 0.1875f, 0.78125f)
+      else setBlockBounds(0.21875f, 0, 0.34375f, 0.78125f, 0.25f, 0.65f)
+    }
   }
   override def getRenderType = 3
   override def createNewTileEntity(world: World, meta: Int): RMTile = new TileTrap
