@@ -19,7 +19,7 @@ import net.minecraft.util.BlockPos
 import net.minecraft.world.World
 
 class HempGen extends net.minecraft.world.gen.feature.WorldGenerator {
-  def generate(world: World, random: Random, pos: BlockPos): Boolean = {
+  override def generate(world: World, random: Random, pos: BlockPos): Boolean = {
     var bd = (world, pos)
     for (i <- 0 until 20) {
       val posNew = pos.add(random.nextInt(4) - random.nextInt(4), 0, random.nextInt(4) - random.nextInt(4))
@@ -40,7 +40,7 @@ class CampsiteGen extends net.minecraft.world.gen.feature.WorldGenerator {
   override def generate(world: World, random: Random, pos:BlockPos): Boolean = {
     var bd = (world, pos)
     
-    while (bd.block != Blocks.air) bd = bd.up
+    while (bd.up.block != Blocks.air || bd.up.up.block != Blocks.air) bd = bd.up
     bd = bd.up
     
     if (!isValitSpawn(bd.west, 3, 2, 5)) return false
