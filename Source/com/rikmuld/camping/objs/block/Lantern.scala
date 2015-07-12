@@ -45,40 +45,43 @@ import net.minecraft.block.properties.PropertyBool
 import com.sun.org.apache.xalan.internal.xsltc.compiler.WithParam
 import com.rikmuld.corerm.objs.WithProperties
 import com.rikmuld.corerm.objs.RMBoolProp
+import com.rikmuld.camping.objs.Objs.ModBlocks
+import net.minecraft.entity.EntityLivingBase
     
 object Lantern {
   val LIT = PropertyBool.create("lit")
+  val TOP = PropertyBool.create("top")
 }
 
 class Lantern(modId:String, info:ObjInfo) extends RMBlockContainer(modId, info) with WithModel with WithInstable with WithProperties {
-  var burnTime: Int = _
+  var burnTime:Option[Int] = None 
 
   setBlockBounds(0.3F, 0, 0.3F, 0.7F, 0.9F, 0.7F)
   setDefaultState(getStateFromMeta(0))
   
-  override def getProps = Array(new RMBoolProp(LIT, 0))
+  override def onBlockPlacedBy(world:World, pos:BlockPos, state:IBlockState, entity:EntityLivingBase, stack:ItemStack) = setTop((world, pos))
+  override def getProps = Array(new RMBoolProp(LIT, 0), new RMBoolProp(TOP, 1))
   override def breakBlock(world: World, pos:BlockPos, state:IBlockState) {
-    burnTime = if ((world, pos).tile != null) (world, pos).tile.asInstanceOf[TileLantern].burnTime else 0
+    burnTime = if (Option((world, pos).tile).isDefined) Some((world, pos).tile.asInstanceOf[TileLantern].burnTime) else None
     super.breakBlock(world, pos, state)
   }
-  override def canPlaceBlockAt(world: World, pos:BlockPos): Boolean = {
-    ((world, pos).block == null || (world, pos).isReplaceable) && canStay((world, pos))
-  }
+  override def canPlaceBlockAt(world: World, pos:BlockPos): Boolean = ((world, pos).block == null || (world, pos).isReplaceable) && canStay((world, pos))
   override def createNewTileEntity(world: World, meta: Int): RMTile = new TileLantern()
   override def getDrops(world:IBlockAccess, pos:BlockPos, state:IBlockState, forture:Int):java.util.List[ItemStack] = {
-    val stack = new ItemStack(this, 1, getMetaFromState(state))
-    stack.setTagCompound(new NBTTagCompound())
-    stack.getTagCompound.setInteger("time", burnTime)
+    val stack = new ItemStack(this, 1, if(isLit(world, pos)) MetaLookup.Lantern.ON else MetaLookup.Lantern.OFF)
+    burnTime.map { time => 
+      stack.setTagCompound(new NBTTagCompound())
+      stack.getTagCompound.setInteger("time", time)
+    }
     List(stack)
   }
-  override def damageDropped(state: IBlockState) = getMetaFromState(state)
   override def canStay(bd:BlockData) = bd.world.isTouchingBlockSolidForSideOrHasCorrectBounds(bd.pos, EnumFacing.UP, EnumFacing.DOWN)
   @SideOnly(Side.CLIENT)
-  override def getBlockLayer = EnumWorldBlockLayer.CUTOUT
   override def getLightOpacity(world: IBlockAccess, pos:BlockPos): Int = {
-    if (world.getBlockState(pos).getBlock == Objs.lantern&&getMetaFromState(world.getBlockState(pos))==MetaLookup.Lantern.ON) 255 else 0
+    if (world.getBlockState(pos).getBlock == Objs.lantern&&isLit(world, pos))255 else 0
   }
-  override def getLightValue(world: IBlockAccess, pos:BlockPos): Int = if (getMetaFromState(world.getBlockState(pos))==MetaLookup.Lantern.ON) 15 else 0
+  def isLit(world:IBlockAccess, pos:BlockPos) = world.getBlockState(pos).getValue(Lantern.LIT).asInstanceOf[Boolean]
+  override def getLightValue(world: IBlockAccess, pos:BlockPos): Int = if(isLit(world, pos)) 15 else 0
   override def onBlockActivated(world: World, pos:BlockPos, state:IBlockState, player: EntityPlayer, side: EnumFacing, xHit: Float, yHit: Float, zHit: Float): Boolean = {
     if (!world.isRemote) {
       val bd = (world, pos)
@@ -91,6 +94,9 @@ class Lantern(modId:String, info:ObjInfo) extends RMBlockContainer(modId, info) 
     }
     false
   }
+  def setTop(bd:BlockData) = bd.setState(bd.state.withProperty(Lantern.TOP, bd.world.isTouchingBlockSolidForSideOrHasCorrectBounds(bd.pos, EnumFacing.UP) && !bd.world.isTouchingBlockSolidForSideOrHasCorrectBounds(bd.pos, EnumFacing.DOWN)))
+  override def getBlockLayer = EnumWorldBlockLayer.CUTOUT
+  override def couldStay(bd:BlockData) = setTop(bd)
 }
 
 class LanternItem(block: Block) extends RMItemBlock(MOD_ID, Objs.ModBlocks.LANTERN, block) {

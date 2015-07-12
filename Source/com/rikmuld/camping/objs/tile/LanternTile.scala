@@ -5,6 +5,7 @@ import net.minecraft.nbt.NBTTagCompound
 import com.rikmuld.corerm.misc.WorldBlock._
 import com.rikmuld.camping.objs.Objs.ModBlocks.MetaLookup
 import net.minecraft.server.gui.IUpdatePlayerListBox
+import com.rikmuld.camping.objs.block.Lantern
 
 class TileLantern extends RMTile with IUpdatePlayerListBox {
   var burnTime: Int = _
@@ -14,8 +15,7 @@ class TileLantern extends RMTile with IUpdatePlayerListBox {
     burnTime = tag.getInteger("burnTime")
     super.readFromNBT(tag)
   }
-
-  override def update() {
+  override def update {
     if (!worldObj.isRemote) {
       ticker += 1
       if (ticker >= 10) {
@@ -28,9 +28,10 @@ class TileLantern extends RMTile with IUpdatePlayerListBox {
       }
     }
   }
-
   override def writeToNBT(tag: NBTTagCompound) {
     tag.setInteger("burnTime", burnTime)
     super.writeToNBT(tag)
   }
+  def isLit = bd.state.getValue(Lantern.LIT).asInstanceOf[Boolean]
+  def isTop = bd.state.getValue(Lantern.TOP).asInstanceOf[Boolean]
 }

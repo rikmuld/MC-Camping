@@ -27,7 +27,7 @@ import net.minecraftforge.fml.relauncher.SideOnly
 object CampingMod {
   final val MOD_ID = "camping"
   final val MOD_NAME = "The Camping Mod 2"
-  final val MOD_VERSION = "2.2c"
+  final val MOD_VERSION = "2.2d"
   final val MOD_LANUAGE = "scala"
   final val MOD_DEPENDENCIES = "required-after:Forge@[v11.14.1.1397,);required-after:corerm@[1.2,)"
   final val MOD_SERVER_PROXY = "com.rikmuld."+MOD_ID+".ProxyServer"
@@ -71,6 +71,8 @@ object CampingMod {
     if(side == Side.SERVER)register.registerServer    
   }
 }
+
+//TODO FIX LANTERN ON TOP OF LANTERN FORCE PLACE BREAKS BOTH 
 
 object Lib {
   object ConfigInfo {
@@ -155,13 +157,3 @@ object Lib {
     final val MODEL_CAMPER_MALE = MODEL_LOCATION + "ModelCamperMale.png"
   }
 }
-
-//CHANGELOG FOR THIS UPDATE SO FAR
-
-//FIXED: CHANGING KEY DOESN'T WORK
-//FIXED: SOME BUGS THAT CAUSED CRASHES
-//IMPROVED SPAWN ALGRORITM FOR CAMAPSITES
-//ADDED RUSSIAN LANGUAGE SUPPROT 
-//ENCHANTED FEEL EN STABILITY OF THE LOGSEAT, THE SLEEPINGBAG, THE HEMP AND THE TENT
-//PORTED TO MINECRAFT 1.8
-//IMPROVED/FIXED SHIFT-CLICKING IN SOME INVENTORIES

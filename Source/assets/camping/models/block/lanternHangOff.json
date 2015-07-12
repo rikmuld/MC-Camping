@@ -1,5 +1,5 @@
 {
-    "parent": "camping:block/lanternBase",
+    "parent": "camping:block/lanternHangBase",
     "textures": {
 		"tex": "camping:blocks/lanternOff"
     }

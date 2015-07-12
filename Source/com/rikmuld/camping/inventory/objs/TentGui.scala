@@ -43,7 +43,8 @@ class GuiTent(player: EntityPlayer, tile: IInventory) extends GuiScreen {
     fontRender.drawString(text, x - (fontRender.getStringWidth(text) / 2), y, color)
   }
   override def drawScreen(mouseX: Int, mouseY: Int, partitialTicks: Float) {
-    if(this.mc != null)drawDefaultBackground()
+    if(Option(mc).isEmpty) return
+    drawDefaultBackground
     val guiLeft = (width - 255) / 2
     val guiTop = (height - 160) / 2
     GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F)

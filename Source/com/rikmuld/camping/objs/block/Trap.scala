@@ -30,7 +30,6 @@ class Trap(modId:String, info:ObjInfo) extends RMBlockContainer(modId, info) wit
       else setBlockBounds(0.21875f, 0, 0.34375f, 0.78125f, 0.25f, 0.65f)
     }
   }
-  override def getRenderType = 3
   override def createNewTileEntity(world: World, meta: Int): RMTile = new TileTrap
   override def onBlockActivated(world: World, pos:BlockPos, state:IBlockState, player: EntityPlayer, side: EnumFacing, xHit: Float, yHit: Float, zHit: Float): Boolean = {
     val tile = (world, pos).tile.asInstanceOf[TileTrap]
