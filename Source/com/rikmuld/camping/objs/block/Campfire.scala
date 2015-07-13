@@ -71,7 +71,11 @@ class CampfireCook(modId:String, info:ObjInfo) extends RMBlockContainer(modId, i
 
   override def getRenderType = 3
   override def createNewTileEntity(world: World, meta: Int): RMTile = new TileCampfireCook()
-  override def getLightValue(world: IBlockAccess, pos:BlockPos): Int = if(world.getTileEntity(pos).asInstanceOf[TileCampfireCook].fuel > 0) 15 else 0
+  override def getLightValue(world: IBlockAccess, pos:BlockPos): Int = {
+    var fuel = 0
+    Option(world.getTileEntity(pos)).map { tile => fuel = tile.asInstanceOf[TileCampfireCook].fuel }
+    if(fuel > 0) 15 else 0
+  }
   @SideOnly(Side.CLIENT)
   override def randomDisplayTick(world: World, pos:BlockPos, state:IBlockState, random: Random) {
     if ((world, pos).tile.asInstanceOf[TileCampfireCook].fuel > 0) {
