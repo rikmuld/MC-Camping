@@ -27,6 +27,8 @@ import com.rikmuld.camping.objs.tile.TileCampfireCook
 import com.rikmuld.camping.objs.tile.TileCampfire
 import com.rikmuld.corerm.objs.RMTile
 import com.rikmuld.corerm.CoreUtils._
+import com.rikmuld.camping.Lib.NBTInfo
+import net.minecraft.nbt.NBTTagCompound
 
 object Campfire {
   def particleAnimation(bd:BlockData, color:Int, random:Random){
@@ -57,7 +59,15 @@ class Campfire(modId:String, info: ObjInfo) extends RMBlockContainer(modId, info
       breakBlock(world, pos, state)
       bd.toAir
       player.getCurrentEquippedItem.addDamage(player, 1)
-    } else super.onBlockActivated(world, pos, state, player, side, xHit, yHit, zHit)
+    } else if(!world.isRemote && player.getCurrentEquippedItem != null && player.getCurrentEquippedItem.getItem == Items.dye && bd.tile.asInstanceOf[TileCampfire].addDye(player.getCurrentEquippedItem)) {
+      player.getCurrentEquippedItem.stackSize-=1
+      var data = player.getEntityData
+      if(!data.hasKey(NBTInfo.ACHIEVEMENTS))data.setTag(NBTInfo.ACHIEVEMENTS, new NBTTagCompound())
+      data = data.getTag(NBTInfo.ACHIEVEMENTS).asInstanceOf[NBTTagCompound]
+      var dye = if(data.hasKey("dye_burn"))data.getInteger("dye_burn") else 0
+      if(dye == 4)player.triggerAchievement(Objs.achMadCamper)
+      else data.setInteger("dye_burn", dye + 1)
+    }
     true
   }
   @SideOnly(Side.CLIENT)
@@ -69,6 +79,11 @@ class Campfire(modId:String, info: ObjInfo) extends RMBlockContainer(modId, info
 class CampfireCook(modId:String, info:ObjInfo) extends RMBlockContainer(modId, info) with WithModel with WithInstable {
   setBlockBounds(0.125F, 0.0F, 0.125F, 0.875F, 0.125F, 0.875F)
 
+  override def onBlockActivated(world: World, pos:BlockPos, state:IBlockState, player: EntityPlayer, side: EnumFacing, xHit: Float, yHit: Float, zHit: Float): Boolean = {
+    val bd = (world, pos)
+    bd.tile.asInstanceOf[TileCampfireCook].lastPlayer = player
+    super.onBlockActivated(world, pos, state, player, side, xHit, yHit, zHit)
+  }
   override def getRenderType = 3
   override def createNewTileEntity(world: World, meta: Int): RMTile = new TileCampfireCook()
   override def getLightValue(world: IBlockAccess, pos:BlockPos): Int = {

@@ -27,9 +27,9 @@ import net.minecraftforge.fml.relauncher.SideOnly
 object CampingMod {
   final val MOD_ID = "camping"
   final val MOD_NAME = "The Camping Mod 2"
-  final val MOD_VERSION = "2.2d"
+  final val MOD_VERSION = "2.2e"
   final val MOD_LANUAGE = "scala"
-  final val MOD_DEPENDENCIES = "required-after:Forge@[v11.14.1.1397,);required-after:corerm@[1.2,)"
+  final val MOD_DEPENDENCIES = "required-after:Forge@[v11.14.1.1397,);required-after:corerm@[1.2b,)"
   final val MOD_SERVER_PROXY = "com.rikmuld."+MOD_ID+".ProxyServer"
   final val MOD_CLIENT_PROXY = "com.rikmuld."+MOD_ID+".ProxyClient"
   final val MOD_GUIFACTORY = "com.rikmuld.camping.core.GuiFactory"
@@ -56,6 +56,7 @@ object CampingMod {
     register(event.getSide, ModBlocks, ModRegister.PERI)
     register(event.getSide, ModItems, ModRegister.PERI)
     register(event.getSide, ModRecipes, ModRegister.PERI)
+    register(event.getSide, ModAchievements, ModRegister.PERI)
   }
   @EventHandler
   def PosInit(event: FMLPostInitializationEvent) {
@@ -72,7 +73,8 @@ object CampingMod {
   }
 }
 
-//TODO FIX LANTERN ON TOP OF LANTERN FORCE PLACE BREAKS BOTH 
+//FIX LANTERN IN TENT NOT RIGHT
+//FIX TENT CRASH
 
 object Lib {
   object ConfigInfo {
@@ -91,8 +93,23 @@ object Lib {
     final val MOUNTABLE = 3
   }
   
+  object AchievementInfo {
+    final val KNIFE_GET = "knifeGet"
+    final val FULL_CAMPER = "fullCamper"
+    final val EXPLORER = "explorer"
+    final val WILD_MAN = "wildMan"
+    final val TENT_SLEEP = "backTBasic"
+    final val LUXURY_TENT = "luxury"
+    final val MARSHMELLOW = "roasting"
+    final val MAD_CAMPER = "madCamper"
+    final val CAMPFIRE_MASTERY = "campfire"
+    final val HUNTER = "hunter"
+    final val PROTECTOR = "protector"
+  }
+  
   object NBTInfo {
     final val INV_CAMPING = "campInv"
+    final val ACHIEVEMENTS = "camping_achieve"
   }
   
   object PotionInfo {
@@ -123,7 +140,6 @@ object Lib {
   
     final val MODEL_CAMPFIRE = MODEL_LOCATION + "ModelCampfireDeco.png"
     final val SPRITE_FX = SPRITE_LOCATION + "SpriteFX.png"
-    final val GUI_CAMPFIRE = GUI_LOCATION + "GuiCampfireDeco.png"
     final val GUI_CAMPINV_BACK = GUI_LOCATION + "GuiCampingBackpack.png"
     final val GUI_CAMPINV_TOOL = GUI_LOCATION + "GuiCampingTool.png"
     final val MC_INVENTORY = MC_GUI_LOCATION + "inventory.png"

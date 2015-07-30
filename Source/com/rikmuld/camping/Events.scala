@@ -70,6 +70,7 @@ import com.rikmuld.camping.objs.tile.TileTrap
 import com.rikmuld.camping.objs.Objs.ModItems.MetaLookup
 import com.rikmuld.camping.objs.tile.TileCampfireCook
 import com.rikmuld.camping.objs.block.Tent
+import com.rikmuld.camping.objs.entity.Mountable
 
 class EventsS {
   var tickLight: Int = 0
@@ -111,6 +112,7 @@ class EventsS {
   def onPlayerLogin(event: PlayerLoggedInEvent) = if (!config.coreOnly) Option(event.player.getEntityData.getCompoundTag(NBTInfo.INV_CAMPING)) map (tag => PacketSender.to(new NBTPlayer(tag), event.player.asInstanceOf[EntityPlayerMP]))
   @SubscribeEvent
   def onItemCrafted(event: ItemCraftedEvent) {
+    if(event.crafting.getItem == Objs.knife)event.player.triggerAchievement(Objs.achKnife)
     for (slot <- 0 until event.craftMatrix.getSizeInventory if Option(event.craftMatrix.getStackInSlot(slot)).isDefined) {
       val stackInSlot = event.craftMatrix.getStackInSlot(slot)
       val itemInSlot = Option(stackInSlot.getItem)
@@ -179,6 +181,7 @@ class EventsS {
             player.getCurrentEquippedItem.stackSize -= 1
             if (player.getCurrentEquippedItem.stackSize <= 0) player.setCurrentItem(null)
             if (!player.inventory.addItemStackToInventory(new ItemStack(Objs.marshmallow))) player.dropPlayerItemWithRandomChoice(new ItemStack(Objs.marshmallow), false)
+            if(Option(player.ridingEntity).isDefined && player.ridingEntity.isInstanceOf[Mountable])player.triggerAchievement(Objs.achMarshRoast)
             marshupdate = 0
           }
           val tile = bd.tile.asInstanceOf[TileCampfireCook]
@@ -190,6 +193,7 @@ class EventsS {
     if (!config.coreOnly) {
       var campNum = 0.0f
       for (i <- 0 until 4 if (player.inventory.armorInventory(i) != null && player.inventory.armorInventory(i).getItem.isInstanceOf[ItemArmor] && player.inventory.armorInventory(i).getItem.asInstanceOf[ItemArmor].getArmorMaterial.equals(Objs.fur))) campNum += 0.25f
+      if(campNum == 1) player.triggerAchievement(Objs.achWildMan)
       if (player.getEntityAttribute(SharedMonsterAttributes.movementSpeed).getModifier(UUIDSpeedCamping) != null) player.getEntityAttribute(SharedMonsterAttributes.movementSpeed).removeModifier(player.getEntityAttribute(SharedMonsterAttributes.movementSpeed).getModifier(UUIDSpeedCamping))
       player.getEntityAttribute(SharedMonsterAttributes.movementSpeed).applyModifier(new AttributeModifier(UUIDSpeedCamping, "camping.speedBoost", 0.04 * campNum, 0))
     }

@@ -27,6 +27,7 @@ import org.lwjgl.input.Mouse
 import com.rikmuld.camping.objs.tile.TileEntityTent
 import com.rikmuld.camping.objs.Objs
 import net.minecraft.entity.Entity
+import net.minecraft.client.Minecraft
 
 class GuiTent(player: EntityPlayer, tile: IInventory) extends GuiScreen {
   var tent = tile.asInstanceOf[TileTent]
@@ -42,8 +43,9 @@ class GuiTent(player: EntityPlayer, tile: IInventory) extends GuiScreen {
   override def drawCenteredString(fontRender: FontRenderer, text: String, x: Int, y: Int, color: Int) {
     fontRender.drawString(text, x - (fontRender.getStringWidth(text) / 2), y, color)
   }
+  def checkMc = if(Option(mc).isEmpty) mc = Minecraft.getMinecraft
   override def drawScreen(mouseX: Int, mouseY: Int, partitialTicks: Float) {
-    if(Option(mc).isEmpty) return
+    checkMc
     drawDefaultBackground
     val guiLeft = (width - 255) / 2
     val guiTop = (height - 160) / 2
@@ -92,6 +94,7 @@ class GuiTent(player: EntityPlayer, tile: IInventory) extends GuiScreen {
   }
   override def updateScreen() {
     super.updateScreen()
+    checkMc
     if (!mc.thePlayer.isEntityAlive || mc.thePlayer.isDead) mc.thePlayer.closeScreen()
   }
 }
@@ -104,9 +107,11 @@ class GuiTentSleeping(player: EntityPlayer, tile: IInventory) extends GuiScreen 
     case 0 => tent.sleep(mc.thePlayer)
     case _ => 
   }
+  def checkMc = if(Option(mc).isEmpty) mc = Minecraft.getMinecraft
   override def doesGuiPauseGame(): Boolean = false
   override def drawCenteredString(fontRender: FontRenderer, text: String, x: Int, y: Int, color: Int) = fontRender.drawString(text, x - (fontRender.getStringWidth(text) / 2), y, color)
   override def drawScreen(mouseX: Int, mouseY: Int, partitialTicks: Float) {
+    checkMc
     drawDefaultBackground()
     val guiLeft = (width - 97) / 2
     val guiTop = (height - 30) / 2
@@ -132,6 +137,7 @@ class GuiTentSleeping(player: EntityPlayer, tile: IInventory) extends GuiScreen 
   }
   override def updateScreen {
     super.updateScreen
+    checkMc
     if (!mc.thePlayer.isEntityAlive || mc.thePlayer.isDead) mc.thePlayer.closeScreen()
   }
 }

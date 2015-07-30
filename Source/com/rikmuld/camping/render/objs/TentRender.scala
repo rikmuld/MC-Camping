@@ -62,13 +62,11 @@ class TentRender extends TileEntitySpecialRenderer {
       GL11.glTranslatef(0, -1.5f, .03f)
       val lanternStack = new ItemStack(Objs.lantern, 1, tile.lanternDamage)
       if ((tile.getRotation == 0) || (tile.getRotation == 2)) GL11.glRotatef(90, 0F, 1F, 0F)
-      if ((tile.getRotation == 0) || (tile.getRotation == 1)) GL11.glTranslatef(-1, 0.9375F, -0.155F)
-      if ((tile.getRotation == 2) || (tile.getRotation == 3)) GL11.glTranslatef(1, 0.9375F, -0.175F)
+      if ((tile.getRotation == 0) || (tile.getRotation == 1)) GL11.glTranslatef(-1, 1.2f, -.02f)
+      if ((tile.getRotation == 2) || (tile.getRotation == 3)) GL11.glTranslatef(1, 1.2f, -.02F)
       GL11.glRotatef(180, 1, 0, 0)
-      GL11.glRotatef(-40, 0, 1, 0)
-      GL11.glRotatef(-25, -1, 0, 1)
-      GL11.glScalef(0.3F, -0.3F, -0.3F)
-      if (tile.getWorld.getClosestPlayer(x, y, z, -1) != null && lanternStack != null) renderer.renderItem(tile.getWorld.getClosestPlayer(x, y, z, -1), lanternStack, TransformType.FIRST_PERSON)
+      GL11.glScalef(0.4F, -0.4F, -0.4f)
+      if (tile.getWorld.getClosestPlayer(x, y, z, -1) != null && lanternStack != null) renderer.renderItem(tile.getWorld.getClosestPlayer(x, y, z, -1), lanternStack, TransformType.NONE)
     }
     GL11.glPopMatrix()
   }

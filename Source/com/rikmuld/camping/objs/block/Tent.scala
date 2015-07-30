@@ -115,8 +115,10 @@ class Tent(modId:String, info:ObjInfo) extends RMBlockContainer(modId, info) wit
   override def onBlockActivated(world: World, pos:BlockPos, state:IBlockState, player: EntityPlayer, side: EnumFacing, xHit: Float, yHit: Float, zHit: Float): Boolean = {
     if (!world.isRemote) {
       val bd = (world, pos)
-      if ((player.getCurrentEquippedItem != null) && bd.tile.asInstanceOf[TileTent].addContends(player.getCurrentEquippedItem)) {
+      val tile = bd.tile.asInstanceOf[TileTent]
+      if ((player.getCurrentEquippedItem != null) && tile.addContends(player.getCurrentEquippedItem)) {
         player.getCurrentEquippedItem.stackSize -= 1
+        if(tile.lanterns == 1 && tile.chests == 2 && tile.beds == 1) player.triggerAchievement(Objs.achLuxury)
         if (player.getCurrentEquippedItem.stackSize < 0) player.setCurrentItem(null)
         return true
       } else if ((player.getCurrentEquippedItem != null) && (player.getCurrentEquippedItem.getItem() == Items.dye) && (bd.tile.asInstanceOf[TileTent].color != player.getCurrentEquippedItem.getItemDamage)) {
@@ -140,7 +142,6 @@ class TentItem(block:Block) extends RMItemBlock(CampingMod.MOD_ID, Objs.ModBlock
       (world, pos).tile.asInstanceOf[TileTent].color = stack.getItemDamage
       (world, pos).tile.asInstanceOf[TileTent].setColor(stack.getItemDamage)
       true
-    }
-    false
+    } else false
   }
 }

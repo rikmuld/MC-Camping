@@ -137,6 +137,7 @@ class Camper(world: World) extends EntityCreature(world) with IMerchant with INp
     if (!flag && isEntityAlive && !isTrading && !player.isSneaking) {
       if (!worldObj.isRemote) {
         setCustomer(player)
+        player.triggerAchievement(Objs.achExplorer)
         player.displayVillagerTradeGui(this)
       }
       true

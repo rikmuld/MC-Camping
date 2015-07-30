@@ -84,8 +84,9 @@ class Lantern(modId:String, info:ObjInfo) extends RMBlockContainer(modId, info) 
     if(isTop(world, pos))setBlockBounds(0.3F, 0, 0.3F, 0.7F, 1, 0.7F)
     else setBlockBounds(0.3F, 0, 0.3F, 0.7F, 0.75625F, 0.7F)
   }
-  def isLit(world:IBlockAccess, pos:BlockPos) = world.getBlockState(pos).getValue(Lantern.LIT).asInstanceOf[Boolean]
-  def isTop(world:IBlockAccess, pos:BlockPos) = world.getBlockState(pos).getValue(Lantern.TOP).asInstanceOf[Boolean]
+  def isLit(world:IBlockAccess, pos:BlockPos) = getStateValue(world, pos, Lantern.LIT)
+  def isTop(world:IBlockAccess, pos:BlockPos) = getStateValue(world, pos, Lantern.TOP)
+  def getStateValue(world:IBlockAccess, pos:BlockPos, prop:PropertyBool) = if(world.getBlockState(pos).getBlock.eq(this)) world.getBlockState(pos).getValue(prop).asInstanceOf[Boolean] else false
   override def getLightValue(world: IBlockAccess, pos:BlockPos): Int = if(isLit(world, pos)) 15 else 0
   override def onBlockActivated(world: World, pos:BlockPos, state:IBlockState, player: EntityPlayer, side: EnumFacing, xHit: Float, yHit: Float, zHit: Float): Boolean = {
     if (!world.isRemote) {

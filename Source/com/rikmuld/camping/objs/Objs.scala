@@ -99,10 +99,8 @@ import net.minecraftforge.client.MinecraftForgeClient
 import net.minecraft.item.Item
 import com.rikmuld.camping.objs.block.CampfireCook
 import com.rikmuld.camping.objs.block.Campfire
-import com.rikmuld.camping.inventory.objs.ContainerCampfire
 import com.rikmuld.camping.inventory.objs.ContainerCampfireCook
 import com.rikmuld.camping.inventory.objs.GuiCampfireCook
-import com.rikmuld.camping.inventory.objs.GuiCampfire
 import com.rikmuld.camping.objs.tile.TileCampfire
 import com.rikmuld.camping.objs.tile.TileCampfireCook
 import com.rikmuld.camping.render.objs.CampfireRender
@@ -130,18 +128,21 @@ import net.minecraft.item.crafting.FurnaceRecipes
 import net.minecraftforge.fml.relauncher.SideOnly
 import net.minecraftforge.fml.relauncher.Side
 import com.rikmuld.camping.objs.block.TentItem
+import net.minecraft.stats.Achievement
+import com.rikmuld.corerm.objs.RMAchievement
 
 object Objs {
   var tab:CreativeTabs = _
   var fur: ArmorMaterial = _
   var knife, parts, backpack, kit, marshmallow, animalParts, furBoot, furLeg, furChest, furHead, venisonCooked, venisonRaw:RMCoreItem = _
   var hemp, lantern, tent, logseat, light, sleepingBag, trap, campfire, campfireCook, tentBounds:RMCoreBlock = _
-  var guiBackpack, guiKit, guiCamping, guiTrap, guiCampfire, guiCampfireCook, guiTentSleep, guiTentChests, guiTentLantern, guiTent:Int = _
+  var guiBackpack, guiKit, guiCamping, guiTrap, guiCampfireCook, guiTentSleep, guiTentChests, guiTentLantern, guiTent:Int = _
   var spit, grill, pan:CookingEquipment = _
   var bleeding: Potion = _
   var bleedingSource: DamageSource = _
   var tentStructure:Array[BoundsStructure] = _
   var keyOpenCamping:KeyBinding = _
+  var achKnife, achCamperFull, achExplorer, achWildMan, achBackBasic, achLuxury, achMarshRoast, achMadCamper, achCampfire, achHunter, achProtector:Achievement = _
   
   object ModItems extends ModRegister {
     import com.rikmuld.camping.objs.Objs.ModItems.MetaLookup._
@@ -217,7 +218,7 @@ object Objs {
     final val LIGHT = new ObjInfo(Name("light"), Materia(Material.air), LightLevel(1.0f))
     final val SLEEPING_BAG = new ObjInfo(Tab(tab), Name("sleepingBag"), Materia(Material.cloth), Hardness(0.1f), MaxStacksize(4), ItemBl(classOf[SleepingBagItem]))
     final val TRAP = new ObjInfo(Tab(tab), Name("trap"), Materia(Material.iron), Hardness(1f), GuiTrigger(guiTrap))
-    final val CAMPFIRE = new ObjInfo(Tab(tab), Name("campfire"), Materia(Material.fire), Hardness(2f), StepSound(Block.soundTypeStone), LightLevel(1.0f), GuiTrigger(guiCampfire))
+    final val CAMPFIRE = new ObjInfo(Tab(tab), Name("campfire"), Materia(Material.fire), Hardness(2f), StepSound(Block.soundTypeStone), LightLevel(1.0f))
     final val CAMPFIRE_COOK = new ObjInfo(Tab(tab), Name("campfireCook"), Materia(Material.fire), Hardness(2f), StepSound(Block.soundTypeStone), LightLevel(1.0f), GuiTrigger(guiCampfireCook))
     final val TENT = new ObjInfo(Tab(tab), Name("tent"), Materia(Material.cloth), Hardness(0.2f), GuiTrigger(guiTent), Metadata("black", "red", "green", "brown", "blue", "purple", "cyan", "grayLight", "grayDark", "pink", "lime", "yellow", "blueLight", "magenta", "orange", "white"), ItemBl(classOf[TentItem]))
     final val BOUNDS_TENT = new ObjInfo(Name("tentBounds"), Materia(Material.cloth))
@@ -354,8 +355,6 @@ object Objs {
       guiKit = RMMod.proxy.registerGui(classOf[KitContainer], null)
       guiCamping = RMMod.proxy.registerGui(classOf[ContainerCampinv], null)
       guiTrap = RMMod.proxy.registerGui(classOf[ContainerTrap], null)
-      guiCampfire = RMMod.proxy.registerGui(classOf[ContainerCampfire], null)
-      guiCampfireCook = RMMod.proxy.registerGui(classOf[ContainerCampfireCook], null)
       guiTent = RMMod.proxy.registerGui(null, null)
       guiTentSleep = RMMod.proxy.registerGui(null, null)
       guiTentChests = RMMod.proxy.registerGui(classOf[ContainerTentChests], null)
@@ -368,7 +367,6 @@ object Objs {
       guiKit = RMMod.proxy.registerGui(classOf[KitContainer], classOf[KitGui])
       guiCamping = RMMod.proxy.registerGui(classOf[ContainerCampinv], classOf[GuiCampinginv])
       guiTrap = RMMod.proxy.registerGui(classOf[ContainerTrap], classOf[GuiTrap])
-      guiCampfire = RMMod.proxy.registerGui(classOf[ContainerCampfire], classOf[GuiCampfire])
       guiCampfireCook = RMMod.proxy.registerGui(classOf[ContainerCampfireCook], classOf[GuiCampfireCook])
       guiTent = RMMod.proxy.registerGui(null, classOf[GuiTent])
       guiTentSleep = RMMod.proxy.registerGui(null, classOf[GuiTentSleeping])
@@ -415,6 +413,30 @@ object Objs {
         EntityList.entityEggs.asInstanceOf[java.util.Map[Int, EntityEggInfo]](id2) = new EntityEggInfo(id2, colour1, colour2);
         Objs.tab.asInstanceOf[com.rikmuld.camping.objs.misc.Tab].eggIds.append(id2)
       }
+    }
+  }
+  
+  object ModAchievements extends ModRegister {
+    import com.rikmuld.camping.Lib.AchievementInfo._
+    
+    override def register {      
+      achKnife = RMAchievement.addAchievement(MOD_ID, KNIFE_GET, 0, 0, nwsk(knife), None)
+      achCamperFull = RMAchievement.addAchievement(MOD_ID, FULL_CAMPER, 2, 0, nwsk(backpack), Some(achKnife))
+      achExplorer = RMAchievement.addAchievement(MOD_ID, EXPLORER, 2, -2, nwsk(map), Some(achCamperFull))
+      achWildMan = RMAchievement.addAchievement(MOD_ID, WILD_MAN, 4, 0, nwsk(furChest), Some(achCamperFull))
+      achBackBasic = RMAchievement.addAchievement(MOD_ID, TENT_SLEEP, 0, -2, nwsk(tent, 15), Some(achKnife))
+      achLuxury = RMAchievement.addAchievement(MOD_ID, LUXURY_TENT, 0, -4, nwsk(lantern), Some(achBackBasic))
+      achMarshRoast = RMAchievement.addAchievement(MOD_ID, MARSHMELLOW, -2, 0, nwsk(marshmallow), Some(achKnife))
+      achMadCamper = RMAchievement.addAchievement(MOD_ID, MAD_CAMPER, -2, -2, nwsk(dye, 6), Some(achMarshRoast))
+      achCampfire = RMAchievement.addAchievement(MOD_ID, CAMPFIRE_MASTERY, -4, 0, nwsk(kit), Some(achMarshRoast))
+      achProtector = RMAchievement.addAchievement(MOD_ID, PROTECTOR, 2, 2, nwsk(trap), Some(achKnife))
+      achHunter = RMAchievement.addAchievement(MOD_ID, HUNTER, -2, 2, nwsk(trap), Some(achKnife))
+      
+      achLuxury.setSpecial
+      achWildMan.setSpecial
+      achCampfire.setSpecial
+      
+      RMAchievement.buildPage(MOD_ID, "Camping Mod")
     }
   }
   

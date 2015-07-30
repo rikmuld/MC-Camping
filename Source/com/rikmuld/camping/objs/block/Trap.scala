@@ -33,6 +33,7 @@ class Trap(modId:String, info:ObjInfo) extends RMBlockContainer(modId, info) wit
   override def createNewTileEntity(world: World, meta: Int): RMTile = new TileTrap
   override def onBlockActivated(world: World, pos:BlockPos, state:IBlockState, player: EntityPlayer, side: EnumFacing, xHit: Float, yHit: Float, zHit: Float): Boolean = {
     val tile = (world, pos).tile.asInstanceOf[TileTrap]
+    tile.lastPlayer = Some(player)
     if (!world.isRemote && !world.getTileEntity(pos).asInstanceOf[TileTrap].open) {
       tile.forceOpen
       true

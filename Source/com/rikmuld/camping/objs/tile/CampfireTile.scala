@@ -22,8 +22,10 @@ import com.rikmuld.camping.misc.CookingEquipment
 import com.rikmuld.camping.objs.Objs.ModItems.MetaLookup
 import com.rikmuld.camping.objs.misc.ItemsData
 import net.minecraft.server.gui.IUpdatePlayerListBox
+import net.minecraft.entity.player.EntityPlayer
+import com.rikmuld.camping.Lib.NBTInfo
 
-class TileCampfire extends RMTile with WithTileInventory with IUpdatePlayerListBox {
+class TileCampfire extends RMTile with IUpdatePlayerListBox {
   var color: Int = 16
   var oldTime: Int = _
   var time: Int = _
@@ -64,7 +66,6 @@ class TileCampfire extends RMTile with WithTileInventory with IUpdatePlayerListB
   }
   @SideOnly(Side.CLIENT)
   override def getRenderBoundingBox(): AxisAlignedBB = AxisAlignedBB.fromBounds(bd.x, bd.y, bd.z, bd.x + 1, bd.y + 1, bd.z + 1)
-  override def getSizeInventory(): Int = 1
   override def readFromNBT(tag: NBTTagCompound) {
     super.readFromNBT(tag)
     color = tag.getInteger("color")
@@ -72,11 +73,16 @@ class TileCampfire extends RMTile with WithTileInventory with IUpdatePlayerListB
     for (i <- 0 until coals.length; j <- 0 until coals(i).length) {
       coals(i)(j) = tag.getFloat("coals" + i + j)
     }
-    super[WithTileInventory].readFromNBT(tag)
   }
   override def setTileData(id: Int, data: Array[Int]) {
     if (id == 0) colorFlame(data(0))
-    if (id == 1) time = data(0)
+  }
+  def addDye(stack:ItemStack):Boolean = {
+    if ((stack != null) && ((time == 0)) || color != stack.getItemDamage ) {
+      colorFlame(stack.getItemDamage)
+      time = 6000
+      true
+    } else false
   }
   override def update() {
     if (!worldObj.isRemote) {
@@ -86,14 +92,8 @@ class TileCampfire extends RMTile with WithTileInventory with IUpdatePlayerListB
         bd.updateRender
       }
       oldTime = time
-      if ((getStackInSlot(0) != null) && (time == 0)) {
-        colorFlame(getStackInSlot(0).getItemDamage)
-        time = 6000
-        decrStackSize(0, 1)
-      }
       if (time != 0) time -= 1
       if ((color != 16) && (time == 0)) colorFlame(16)
-      if (oldTime != time) sendTileData(1, true, time)
       if ((time > 0) && ((time % 120) == 0)) {
         val entitys = worldObj.getEntitiesWithinAABB(classOf[EntityLivingBase], AxisAlignedBB.fromBounds(bd.x - 8, bd.y - 8, bd.z - 8, bd.x + 8, bd.y + 8, bd.z + 8)).asInstanceOf[ArrayList[EntityLivingBase]]
         for (entity <- entitys) entity.addPotionEffect(new PotionEffect(effectsOrderd(color)))
@@ -105,7 +105,6 @@ class TileCampfire extends RMTile with WithTileInventory with IUpdatePlayerListB
     tag.setInteger("color", color)
     tag.setInteger("time", time)
     for (i <- 0 until coals.length; j <- 0 until coals(i).length) tag.setFloat("coals" + i + j, coals(i)(j))
-    super[WithTileInventory].writeToNBT(tag)
   }
 }
 
@@ -122,6 +121,7 @@ class TileCampfireCook extends RMTile with WithTileInventory with IUpdatePlayerL
   private var active: Boolean = _
   private var oldActive: Boolean = _
   private var updateNum: Int = _
+  var lastPlayer:EntityPlayer = _
 
   for (i <- 0 until 20) {
     coals(0)(i) = rand.nextFloat() / 5F
@@ -214,14 +214,27 @@ class TileCampfireCook extends RMTile with WithTileInventory with IUpdatePlayerL
     if (id == 2) updateLight
   }
   override def update(){
+    var equipOld = equipment
     manageCookingEquipment()
     if (!worldObj.isRemote) {
+      if(equipOld != equipment)Option(lastPlayer).map(checkCampfireAch)
       active = fuel > 0
       manageFuel()
       cookFood()
       manageLight()
       oldActive = active
     }
+  }
+  def checkCampfireAch(player:EntityPlayer){
+    var data = player.getEntityData
+    if(!data.hasKey(NBTInfo.ACHIEVEMENTS))data.setTag(NBTInfo.ACHIEVEMENTS, new NBTTagCompound())
+    data = data.getTag(NBTInfo.ACHIEVEMENTS).asInstanceOf[NBTTagCompound]
+    var campfires = if(data.hasKey("camp_make")) data.getIntArray("camp_make") else Array(0, 0, 0)
+    if(equipment == Objs.spit)campfires(0) = 1
+    else if(equipment == Objs.grill)campfires(1) = 1
+    else if(equipment == Objs.pan)campfires(2) = 1
+    if(campfires(0) == 1 && campfires(1) == 1 && campfires(2) == 1) player.triggerAchievement(Objs.achCampfire)
+    data.setIntArray("camp_make", campfires)
   }
   override def writeToNBT(tag: NBTTagCompound) {
     super.writeToNBT(tag)

@@ -190,6 +190,7 @@ class InventoryCampinv(player: EntityPlayer, var slots: ArrayList[SlotWithDisabl
         }
       }
     }
+    if(getInventory.filter { stack => stack==null }.size == 0)player.triggerAchievement(Objs.achCamperFull)
   }
   override def openInventory(player:EntityPlayer) {
     super.openInventory(player)

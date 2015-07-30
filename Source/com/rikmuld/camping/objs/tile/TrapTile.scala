@@ -40,8 +40,9 @@ class TileTrap extends RMTile with WithTileInventory with IUpdatePlayerListBox {
   var cooldown: Int = _
   var open: Boolean = true
   var captureFlag: Boolean = _
-  var monsterItemAttr = Array(Items.rotten_flesh, Items.chicken, Items.beef, Items.porkchop, Objs.venisonRaw)
-
+  var monsterItemAttr = Array(Items.rotten_flesh, Items.chicken, Items.beef, Items.porkchop, Objs.venisonRaw, Items.mutton, Items.rabbit)
+  var lastPlayer:Option[EntityPlayer] = None 
+  
   override def getSizeInventory(): Int = 1
   override def onInventoryChanged(slot: Int) {
     super[WithTileInventory].onInventoryChanged(slot)
@@ -86,6 +87,16 @@ class TileTrap extends RMTile with WithTileInventory with IUpdatePlayerListBox {
             trappedEntity = entities.get(0)
           } else if (!(entities.get(0).isInstanceOf[EntityPlayer])) {
             trappedEntity = entities.get(0)
+            lastPlayer.map {player => 
+              if(getStackInSlot(0) != null){
+                if (trappedEntity.isInstanceOf[EntityAnimal]) {
+                  if (trappedEntity.asInstanceOf[EntityAnimal].isBreedingItem(getStackInSlot(0)))player.triggerAchievement(Objs.achHunter)
+                }
+                if (trappedEntity.isInstanceOf[Bear] || trappedEntity.isInstanceOf[EntityZombie] || trappedEntity.isInstanceOf[EntityCreeper] || trappedEntity.isInstanceOf[EntitySkeleton] || trappedEntity.isInstanceOf[EntityEnderman] || trappedEntity.isInstanceOf[EntitySpider]) {
+                  if (monsterItemAttr.contains(getStackInSlot(0).getItem()))player.triggerAchievement(Objs.achProtector)
+                }
+              }
+            }
             if (getStackInSlot(0) != null) getStackInSlot(0).stackSize -= 1
           }
         }

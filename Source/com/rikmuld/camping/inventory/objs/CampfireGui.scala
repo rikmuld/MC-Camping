@@ -24,49 +24,6 @@ import com.rikmuld.camping.objs.tile.TileCampfire
 import com.rikmuld.camping.objs.tile.TileCampfireCook
 import com.rikmuld.camping.inventory.SlotCooking
 
-class GuiCampfire(player: EntityPlayer, tile: IInventory) extends GuiContainerSimple(new ContainerCampfire(player, tile)) {
-  ySize = 120
-
-  var fire = tile.asInstanceOf[TileCampfire]  
-  
-  def getTexture: String = TextureInfo.GUI_CAMPFIRE
-  def getName: String = ""
-  def hasName: Boolean = false
-  override def drawGuiContainerForegroundLayer(par1: Int, par2: Int) {
-    val time = fire.time
-    val timeLeft = (if (fire.color == 16) "" else ("§" + TextInfo.COLOURS_DYE(fire.color))) + (time / 1200).toString + ":" + (if (((time % 1200) / 20).toString.length == 1) ("0" + ((time % 1200) / 20).toString) else (((time % 1200) / 20).toString))
-    fontRendererObj.drawString(StatCollector.translateToLocal(timeLeft), 92, 16, 4210752)
-  }
-}
-
-class ContainerCampfire(player: EntityPlayer, tile: IInventory) extends RMContainerTile(player, tile) {
-  addSlotToContainer(new SlotItemsOnly(tile, 0, 71, 12, Items.dye))
-  this.addSlots(player.inventory, 0, 1, 9, 8, 96)
-  this.addSlots(player.inventory, 9, 3, 9, 8, 38)
-
-  override def transferStackInSlot(player: EntityPlayer, slotNum: Int): ItemStack = {
-    var itemstack: ItemStack = null
-    val slot = inventorySlots.get(slotNum).asInstanceOf[Slot]
-    if ((slot != null) && slot.getHasStack) {
-      val itemstack1 = slot.getStack
-      itemstack = itemstack1.copy()
-      if (slotNum < tile.getSizeInventory) {
-        if (!mergeItemStack(itemstack1, tile.getSizeInventory, inventorySlots.size, true)) return null
-      } else {
-        if (itemstack.getItem == Items.dye) {
-          if (!mergeItemStack(itemstack1, 0, 1, false)) return null
-        } else return null
-      }
-      if (itemstack1.stackSize == 0) {
-        slot.putStack(null)
-      } else {
-        slot.onSlotChanged()
-      }
-    }
-    itemstack
-  }
-}
-
 class GuiCampfireCook(player: EntityPlayer, tile: IInventory) extends GuiContainer(new ContainerCampfireCook(player, tile)) {
   ySize = 188
 
