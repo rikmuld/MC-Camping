@@ -110,7 +110,7 @@ class Tent(modId:String, info:ObjInfo) extends RMBlockContainer(modId, info) wit
   }
   override def getLightValue(world: IBlockAccess, pos:BlockPos): Int = {
     val tile = world.getTileEntity(pos).asInstanceOf[TileTent]
-    if ((tile.lanternDamage == MetaLookup.Lantern.ON) && (tile.lanterns > 0)) 15 else 0
+    if (Option(tile).isDefined && (tile.lanternDamage == MetaLookup.Lantern.ON) && (tile.lanterns > 0)) 15 else 0
   }
   override def onBlockActivated(world: World, pos:BlockPos, state:IBlockState, player: EntityPlayer, side: EnumFacing, xHit: Float, yHit: Float, zHit: Float): Boolean = {
     if (!world.isRemote) {
