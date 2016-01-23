@@ -1,7 +1,0 @@
-{
-    "parent": "camping:block/sleepingBag",
-    "textures": {
-        "particle": "camping:blocks/sleepingBag_tail",
-        "wool": "camping:blocks/sleepingBag_tail"
-    }
-}

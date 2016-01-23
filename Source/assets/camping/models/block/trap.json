@@ -1,6 +1,0 @@
-{
-    "parent": "camping:block/none",
-    "textures": {
-        "break": "blocks/iron_block"
-    }
-}

@@ -1,6 +1,0 @@
-{
-    "parent": "camping:block/lanternBase",
-    "textures": {
-		"tex": "camping:blocks/lanternOn"
-    }
-}
