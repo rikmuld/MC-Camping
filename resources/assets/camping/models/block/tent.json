@@ -1,0 +1,6 @@
+{
+    "parent": "camping:block/none",
+    "textures": {
+        "break": "blocks/wool_colored_white"
+    }
+}
