@@ -19,7 +19,7 @@ import com.rikmuld.camping.inventory.SlotCooking
 import com.rikmuld.corerm.CoreUtils._
 import net.minecraft.item.ItemStack
 import com.rikmuld.camping.misc.CookingEquipment
-import com.rikmuld.camping.objs.Objs.ModItems.MetaLookup
+import com.rikmuld.camping.objs.ItemDefinitions
 import com.rikmuld.camping.objs.misc.ItemsData
 import net.minecraft.server.gui.IUpdatePlayerListBox
 import net.minecraft.entity.player.EntityPlayer
@@ -108,6 +108,30 @@ class TileCampfire extends RMTile with IUpdatePlayerListBox {
   }
 }
 
+class TileCampfireWood extends TileCampfire {
+  private var fuel = 5000
+  
+  override def update() {
+    if (!worldObj.isRemote) {
+      fuel-=1
+      sendTileData(1, true, fuel)
+    }
+  }
+  override def writeToNBT(tag: NBTTagCompound) {
+    super.writeToNBT(tag)
+    tag.setInteger("fuel", fuel)
+  }
+  override def readFromNBT(tag: NBTTagCompound) {
+    super.readFromNBT(tag)
+    fuel = tag.getInteger("fuel")
+  }
+  override def setTileData(id: Int, data: Array[Int]) {
+    if (id == 1) fuel = data(0)
+    else super.setTileData(id, data)
+  }
+  def getFuel():Int = Math.ceil(fuel/313).toInt
+}
+
 class TileCampfireCook extends RMTile with WithTileInventory with IUpdatePlayerListBox {
   var maxFeul: Int = config.campfireMaxFuel
   var fuelForCoal: Int = config.campfireCoalFuel
@@ -137,14 +161,14 @@ class TileCampfireCook extends RMTile with WithTileInventory with IUpdatePlayerL
           cookProgress(i) = 0
           if (equipment.canCook(getStackInSlot(i + 2))) {
             if (equipment.getCookedFood(getStackInSlot(i + 2)) != null) setInventorySlotContents(i + 2, equipment.getCookedFood(getStackInSlot(i + 2)).copy())
-            else setInventorySlotContents(i + 2, new ItemStack(Objs.parts, 1, MetaLookup.Parts.ASH))
-          } else setInventorySlotContents(i + 2, new ItemStack(Objs.parts, 1, MetaLookup.Parts.ASH))
+            else setInventorySlotContents(i + 2, new ItemStack(Objs.parts, 1, ItemDefinitions.Parts.ASH))
+          } else setInventorySlotContents(i + 2, new ItemStack(Objs.parts, 1, ItemDefinitions.Parts.ASH))
           PacketSender.toClient(new ItemsData(i + 2, bd.x, bd.y, bd.z, getStackInSlot(i + 2)))
         }
         if (fuel > 0) {
           if ((getStackInSlot(i + 2) != null) &&
             (!(getStackInSlot(i + 2).getItem == Objs.parts) ||
-              getStackInSlot(i + 2).getItemDamage != MetaLookup.Parts.ASH)) {
+              getStackInSlot(i + 2).getItemDamage != ItemDefinitions.Parts.ASH)) {
             cookProgress(i) += 1
           }
         } else if (cookProgress(i) > 0) cookProgress(i) = 0

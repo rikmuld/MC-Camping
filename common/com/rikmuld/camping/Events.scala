@@ -33,8 +33,8 @@ import net.minecraftforge.client.event.GuiScreenEvent.ActionPerformedEvent
 import net.minecraftforge.fml.common.gameevent.InputEvent.KeyInputEvent
 import com.rikmuld.camping.inventory.gui.GuiMapHUD
 import com.rikmuld.camping.objs.Objs
-import com.rikmuld.camping.objs.Objs.ModItems.MetaLookup._
-import com.rikmuld.camping.objs.Objs.ModBlocks.MetaLookup._
+import com.rikmuld.camping.objs.BlockDefinitions._
+import com.rikmuld.camping.objs.ItemDefinitions._
 import com.rikmuld.camping.CampingMod._
 import com.rikmuld.camping.Utils._
 import com.rikmuld.camping.Lib._
@@ -67,7 +67,7 @@ import com.rikmuld.camping.objs.misc.MapData
 import com.rikmuld.camping.objs.block.Hemp
 import net.minecraft.util.BlockPos
 import com.rikmuld.camping.objs.tile.TileTrap
-import com.rikmuld.camping.objs.Objs.ModItems.MetaLookup
+import com.rikmuld.camping.objs.ItemDefinitions
 import com.rikmuld.camping.objs.tile.TileCampfireCook
 import com.rikmuld.camping.objs.block.Tent
 import com.rikmuld.camping.objs.entity.Mountable
@@ -169,7 +169,7 @@ class EventsS {
         PacketSender.to(new MapData(data.scale, data.xCenter, data.zCenter, data.colors), player.asInstanceOf[EntityPlayerMP])
       }
     }
-    if (!world.isRemote && (Option(player.getCurrentEquippedItem).isDefined) && player.getCurrentEquippedItem.getItem == Objs.parts && (player.getCurrentEquippedItem.getItemDamage == MetaLookup.Parts.MARSHMALLOWSTICK)) {
+    if (!world.isRemote && (Option(player.getCurrentEquippedItem).isDefined) && player.getCurrentEquippedItem.getItem == Objs.parts && (player.getCurrentEquippedItem.getItemDamage == ItemDefinitions.Parts.MARSHMALLOWSTICK)) {
       val mob = Option(player.getMOP)
       if (mob.isDefined) {
         val x = mob.get.getBlockPos.getX

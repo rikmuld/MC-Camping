@@ -3,7 +3,7 @@ package com.rikmuld.camping.objs.tile
 import com.rikmuld.corerm.objs.RMTile
 import net.minecraft.nbt.NBTTagCompound
 import com.rikmuld.corerm.misc.WorldBlock._
-import com.rikmuld.camping.objs.Objs.ModBlocks.MetaLookup
+import com.rikmuld.camping.objs.BlockDefinitions
 import net.minecraft.server.gui.IUpdatePlayerListBox
 import com.rikmuld.camping.objs.block.Lantern
 
@@ -22,8 +22,8 @@ class TileLantern extends RMTile with IUpdatePlayerListBox {
         ticker = 0
         if (burnTime > 0) burnTime -= 1
       }
-      if (burnTime <= 0 && bd.meta == MetaLookup.Lantern.ON) {
-        bd.setMeta(MetaLookup.Lantern.OFF)
+      if (burnTime <= 0 && bd.meta == BlockDefinitions.Lantern.ON) {
+        bd.setMeta(BlockDefinitions.Lantern.OFF)
         bd.update
       }
     }

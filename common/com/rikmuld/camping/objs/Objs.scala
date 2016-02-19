@@ -130,36 +130,68 @@ import net.minecraftforge.fml.relauncher.Side
 import com.rikmuld.camping.objs.block.TentItem
 import net.minecraft.stats.Achievement
 import com.rikmuld.corerm.objs.RMAchievement
+import com.rikmuld.camping.ConfigGUI
+import com.rikmuld.camping.objs.tile.TileCampfireWood
+import com.rikmuld.camping.objs.block.CampfireWood
 
 object Objs {
   var tab:CreativeTabs = _
   var fur: ArmorMaterial = _
-  var knife, parts, backpack, kit, marshmallow, animalParts, furBoot, furLeg, furChest, furHead, venisonCooked, venisonRaw:RMCoreItem = _
-  var hemp, lantern, tent, logseat, light, sleepingBag, trap, campfire, campfireCook, tentBounds:RMCoreBlock = _
-  var guiBackpack, guiKit, guiCamping, guiTrap, guiCampfireCook, guiTentSleep, guiTentChests, guiTentLantern, guiTent:Int = _
-  var spit, grill, pan:CookingEquipment = _
+  var knife, 
+      parts, 
+      backpack, 
+      kit, 
+      marshmallow, 
+      animalParts, 
+      furBoot, 
+      furLeg, 
+      furChest, 
+      furHead, 
+      venisonCooked, 
+      venisonRaw:RMCoreItem = _
+  var hemp, 
+      campfireWood, 
+      lantern, 
+      tent, 
+      logseat, 
+      light, 
+      sleepingBag, 
+      trap, 
+      campfire, 
+      campfireCook, 
+      tentBounds:RMCoreBlock = _
+  var guiBackpack, 
+      guiConfig, 
+      guiKit, 
+      guiCamping, 
+      guiTrap, 
+      guiCampfireCook, 
+      guiTentSleep, 
+      guiTentChests, 
+      guiTentLantern, 
+      guiTent:Int = _
+  var spit, 
+      grill, 
+      pan:CookingEquipment = _
   var bleeding: Potion = _
   var bleedingSource: DamageSource = _
   var tentStructure:Array[BoundsStructure] = _
   var keyOpenCamping:KeyBinding = _
-  var achKnife, achCamperFull, achExplorer, achWildMan, achBackBasic, achLuxury, achMarshRoast, achMadCamper, achCampfire, achHunter, achProtector:Achievement = _
+  var achKnife, 
+      achCamperFull, 
+      achExplorer, 
+      achWildMan, 
+      achBackBasic, 
+      achLuxury, 
+      achMarshRoast, 
+      achMadCamper, 
+      achCampfire, 
+      achHunter, 
+      achProtector:Achievement = _
   
   object ModItems extends ModRegister {
-    import com.rikmuld.camping.objs.Objs.ModItems.MetaLookup._
-
-    val KNIFE = new ObjInfo(Tab(tab), MaxDamage(config.toolUse), MaxStacksize(1), Name("knife"))
-    val PARTS = new ObjInfo(Tab(tab), Name("parts"), Metadata("canvas", "stickIron", "pan", "ash", "marshmallows", "marshmallowStickRaw"))
-    val BACKPACK = new ObjInfo(Tab(tab), MaxStacksize(1), Name("backpack"), ForceSubtype(true), GuiTrigger(guiBackpack))
-    val KIT = new ObjInfo(Tab(tab), MaxStacksize(1), Name("kit"), ForceSubtype(true), GuiTrigger(guiKit), Metadata("kit", "spitKit", "grillKit", "panKit", "uselessKit"))
-    val MARSHMALLOW = new ObjInfo(Tab(tab), Name("marshmallowStickCooked"), WolfMeat(false), Heal(config.marshHeal), Saturation(config.marshSaturation))
-    val PARTS_ANIMAL = new ObjInfo(Tab(tab), Name("partsAnimal"), Metadata("furWhite", "furBrown"))
-    val FUR_BOOT = new ObjInfo(Tab(tab), Name("armorFurBoots"), ArmorTyp(3), ArmorMateria(fur), ArmorTexture(TextureInfo.ARMOR_FUR_MAIN))
-    val FUR_LEG = new ObjInfo(Tab(tab), Name("armorFurLeg"), ArmorTyp(2), ArmorMateria(fur), ArmorTexture(TextureInfo.ARMOR_FUR_LEG))
-    val FUR_CHEST = new ObjInfo(Tab(tab), Name("armorFurChest"), ArmorTyp(1), ArmorMateria(fur), ArmorTexture(TextureInfo.ARMOR_FUR_MAIN))
-    val FUR_HEAD = new ObjInfo(Tab(tab), Name("armorFurHelm"), ArmorTyp(0), ArmorMateria(fur), ArmorTexture(TextureInfo.ARMOR_FUR_MAIN))
-    val VENISON_RAW = new ObjInfo(Tab(tab), Name("venisonRaw"), WolfMeat(true), Heal(config.venisonRawHeal), Saturation(config.venisonRawSaturation))
-    val VENISON_COOKED = new ObjInfo(Tab(tab), Name("venisonCooked"), WolfMeat(true), Heal(config.venisonHeal), Saturation(config.venisonSaturation))
-
+    import com.rikmuld.camping.objs.ItemDefinitions._
+    
     override def register {      
       knife = new RMItem(MOD_ID, KNIFE){
         override def onItemUse(item: ItemStack, player: EntityPlayer, world: World, pos:BlockPos, sideHit: EnumFacing, xHit: Float, yHit: Float, zHit: Float): Boolean = {
@@ -176,7 +208,7 @@ object Objs {
       }
       backpack = new RMItem(MOD_ID, BACKPACK)
       kit = new Kit(MOD_ID, KIT)
-      
+            
       if(!config.coreOnly){
         animalParts = new RMItem(MOD_ID, PARTS_ANIMAL)
         venisonRaw = new RMItemFood(MOD_ID, VENISON_RAW)
@@ -187,43 +219,13 @@ object Objs {
         furHead = new RMItemArmor(MOD_ID, FUR_HEAD)
       }
     }
-
-    object MetaLookup {
-      object Parts {
-        final val CANVAS = 0
-        final val STICK_IRON = 1
-        final val PAN = 2
-        final val ASH = 3
-        final val MARSHMALLOW = 4
-        final val MARSHMALLOWSTICK = 5
-      }
-      object Kit {
-        final val EMPTY = 0
-        final val SPIT = 1
-        final val GRILL = 2
-        final val PAN = 3
-        final val USELESS = 4
-      }
-      object PartsAnimal {
-        final val FUR_WHITE = 0
-        final val FUR_BROWN = 1
-      }
-    }
   }
     
   object ModBlocks extends ModRegister {
-    final val LANTERN = new ObjInfo(Tab(tab), Name("lantern"), Materia(Material.glass), Metadata("lanternOff", "lanternOn"), MaxStacksize(1), Hardness(.5f), LightOpacity(255), ItemBl(classOf[LanternItem]))
-    final val HEMP = new ObjInfo(Tab(tab), Name("hemp"), Materia(Material.plants), Metadata("plantHemp_0", "plantHemp_1", "plantHemp_2", "plantHemp_3", "plantHemp_4", "plantHemp_5"))
-    final val LOGSEAT = new ObjInfo(Tab(tab), Name("logseat"), Materia(Material.wood), StepSound(Block.soundTypeWood), Hardness(2.0f), HarvestLevel("axe", 0))
-    final val LIGHT = new ObjInfo(Name("light"), Materia(Material.air), LightLevel(1.0f))
-    final val SLEEPING_BAG = new ObjInfo(Tab(tab), Name("sleepingBag"), Materia(Material.cloth), Hardness(0.1f), MaxStacksize(4), ItemBl(classOf[SleepingBagItem]))
-    final val TRAP = new ObjInfo(Tab(tab), Name("trap"), Materia(Material.iron), Hardness(1f), GuiTrigger(guiTrap))
-    final val CAMPFIRE = new ObjInfo(Tab(tab), Name("campfire"), Materia(Material.fire), Hardness(2f), StepSound(Block.soundTypeStone), LightLevel(1.0f))
-    final val CAMPFIRE_COOK = new ObjInfo(Tab(tab), Name("campfireCook"), Materia(Material.fire), Hardness(2f), StepSound(Block.soundTypeStone), LightLevel(1.0f), GuiTrigger(guiCampfireCook))
-    final val TENT = new ObjInfo(Tab(tab), Name("tent"), Materia(Material.cloth), Hardness(0.2f), GuiTrigger(guiTent), Metadata("black", "red", "green", "brown", "blue", "purple", "cyan", "grayLight", "grayDark", "pink", "lime", "yellow", "blueLight", "magenta", "orange", "white"), ItemBl(classOf[TentItem]))
-    final val BOUNDS_TENT = new ObjInfo(Name("tentBounds"), Materia(Material.cloth))
-
+    import com.rikmuld.camping.objs.BlockDefinitions._
+    
     override def register {
+      campfireWood = new CampfireWood(MOD_ID, CAMPFIRE_WOOD)
       campfireCook = new CampfireCook(MOD_ID, CAMPFIRE_COOK)
       campfire = new Campfire(MOD_ID, CAMPFIRE)
       sleepingBag = new SleepingBag(MOD_ID, SLEEPING_BAG)
@@ -251,25 +253,10 @@ object Objs {
       ClientRegistry.bindTileEntitySpecialRenderer(classOf[TileCampfireCook], new CampfireCookRender)
       ClientRegistry.bindTileEntitySpecialRenderer(classOf[TileTent], new TentRender)
     }
-      
-    object MetaLookup {
-      object Lantern {
-        final val OFF = 0
-        final val ON = 1
-      }
-      object Hemp {
-        final val INFANT_1 = 0
-        final val INFANT_2 = 1
-        final val INFANT_3 = 2
-        final val GROWN_SMALL = 3
-        final val GROWN_BIG_BOTTOM = 4
-        final val GROWN_BIG_TOP = 5
-      }
-    }
   }
   
   object ModMisc extends ModRegister {
-    import com.rikmuld.camping.objs.Objs.ModItems.MetaLookup._
+    import com.rikmuld.camping.objs.ItemDefinitions._
 
     @SideOnly(Side.CLIENT)
     override def registerClient {
@@ -344,6 +331,7 @@ object Objs {
       GameRegistry.registerTileEntity(classOf[TileTrap], MOD_ID + "_tileTrap")
       GameRegistry.registerTileEntity(classOf[TileCampfire], MOD_ID + "_tileCampfire")
       GameRegistry.registerTileEntity(classOf[TileCampfireCook], MOD_ID + "_tileCampfireCook")
+      GameRegistry.registerTileEntity(classOf[TileCampfireWood], MOD_ID + "_tileCampfireWood")
       GameRegistry.registerTileEntity(classOf[TileBounds], MOD_ID + "_tileBounds")
       GameRegistry.registerTileEntity(classOf[TileTent], MOD_ID + "_tileTent")
     }
@@ -360,6 +348,7 @@ object Objs {
       guiTentSleep = RMMod.proxy.registerGui(null, null)
       guiTentChests = RMMod.proxy.registerGui(classOf[ContainerTentChests], null)
       guiTentLantern = RMMod.proxy.registerGui(classOf[ContainerTentLanterns], null)
+      guiConfig = RMMod.proxy.registerGui(null, null)
     }
     
     @SideOnly(Side.CLIENT)
@@ -373,6 +362,7 @@ object Objs {
       guiTentSleep = RMMod.proxy.registerGui(null, classOf[GuiTentSleeping])
       guiTentChests = RMMod.proxy.registerGui(classOf[ContainerTentChests], classOf[GuiTentChests])
       guiTentLantern = RMMod.proxy.registerGui(classOf[ContainerTentLanterns], classOf[GuiTentLanterns])
+      guiConfig = RMMod.proxy.registerGui(null, classOf[ConfigGUI])
     }
   }
   
@@ -421,17 +411,17 @@ object Objs {
     import com.rikmuld.camping.Lib.AchievementInfo._
     
     override def register {      
-      achKnife = RMAchievement.addAchievement(MOD_ID, KNIFE_GET, 0, 0, nwsk(knife), None)
-      achCamperFull = RMAchievement.addAchievement(MOD_ID, FULL_CAMPER, 2, 0, nwsk(backpack), Some(achKnife))
-      achExplorer = RMAchievement.addAchievement(MOD_ID, EXPLORER, 2, -2, nwsk(map), Some(achCamperFull))
-      achWildMan = RMAchievement.addAchievement(MOD_ID, WILD_MAN, 4, 0, nwsk(furChest), Some(achCamperFull))
-      achBackBasic = RMAchievement.addAchievement(MOD_ID, TENT_SLEEP, 0, -2, nwsk(tent, 15), Some(achKnife))
-      achLuxury = RMAchievement.addAchievement(MOD_ID, LUXURY_TENT, 0, -4, nwsk(lantern), Some(achBackBasic))
-      achMarshRoast = RMAchievement.addAchievement(MOD_ID, MARSHMELLOW, -2, 0, nwsk(marshmallow), Some(achKnife))
-      achMadCamper = RMAchievement.addAchievement(MOD_ID, MAD_CAMPER, -2, -2, nwsk(dye, 6), Some(achMarshRoast))
-      achCampfire = RMAchievement.addAchievement(MOD_ID, CAMPFIRE_MASTERY, -4, 0, nwsk(kit), Some(achMarshRoast))
-      achProtector = RMAchievement.addAchievement(MOD_ID, PROTECTOR, 2, 2, nwsk(trap), Some(achKnife))
-      achHunter = RMAchievement.addAchievement(MOD_ID, HUNTER, -2, 2, nwsk(trap), Some(achKnife))
+      achKnife =        RMAchievement.addAchievement(MOD_ID, KNIFE_GET, 0, 0, nwsk(knife), None)
+      achCamperFull =   RMAchievement.addAchievement(MOD_ID, FULL_CAMPER, 2, 0, nwsk(backpack), Some(achKnife))
+      achExplorer =     RMAchievement.addAchievement(MOD_ID, EXPLORER, 2, -2, nwsk(map), Some(achCamperFull))
+      achWildMan =      RMAchievement.addAchievement(MOD_ID, WILD_MAN, 4, 0, nwsk(furChest), Some(achCamperFull))
+      achBackBasic =    RMAchievement.addAchievement(MOD_ID, TENT_SLEEP, 0, -2, nwsk(tent, 15), Some(achKnife))
+      achLuxury =       RMAchievement.addAchievement(MOD_ID, LUXURY_TENT, 0, -4, nwsk(lantern), Some(achBackBasic))
+      achMarshRoast =   RMAchievement.addAchievement(MOD_ID, MARSHMELLOW, -2, 0, nwsk(marshmallow), Some(achKnife))
+      achMadCamper =    RMAchievement.addAchievement(MOD_ID, MAD_CAMPER, -2, -2, nwsk(dye, 6), Some(achMarshRoast))
+      achCampfire =     RMAchievement.addAchievement(MOD_ID, CAMPFIRE_MASTERY, -4, 0, nwsk(kit), Some(achMarshRoast))
+      achProtector =    RMAchievement.addAchievement(MOD_ID, PROTECTOR, 2, 2, nwsk(trap), Some(achKnife))
+      achHunter =       RMAchievement.addAchievement(MOD_ID, HUNTER, -2, 2, nwsk(trap), Some(achKnife))
       
       achLuxury.setSpecial
       achWildMan.setSpecial
@@ -442,8 +432,8 @@ object Objs {
   }
   
   object ModRecipes extends ModRegister {
-    import com.rikmuld.camping.objs.Objs.ModBlocks.MetaLookup._
-    import com.rikmuld.camping.objs.Objs.ModItems.MetaLookup._
+    import com.rikmuld.camping.objs.BlockDefinitions._
+    import com.rikmuld.camping.objs.ItemDefinitions._
 
     override def register {
       val dye = Items.dye.getMetaCycle(16)
@@ -455,17 +445,18 @@ object Objs {
       GameRegistry.addRecipe(nwsk(campfireCook), " 0 ", "0 0", " 0 ", '0': Character, cobblestone)
       GameRegistry.addRecipe(nwsk(campfire), " 0 ", "010", "020", '0': Character, stick, '1': Character, flint, '2': Character, campfireCook)
       GameRegistry.addRecipe(nwsk(kit), "000", "111", "000", '0': Character, iron_ingot, '1': Character, dye(11))
-      GameRegistry.addRecipe(lanterns(ModBlocks.MetaLookup.Lantern.ON), "000", "010", "222", '1': Character, glowstone_dust, '0': Character, glass_pane, '2': Character, gold_ingot)
-      GameRegistry.addRecipe(lanterns(ModBlocks.MetaLookup.Lantern.OFF), "000", "0 0", "111", '1': Character, gold_ingot, '0': Character, glass_pane)
+      GameRegistry.addRecipe(lanterns(BlockDefinitions.Lantern.ON), "000", "010", "222", '1': Character, glowstone_dust, '0': Character, glass_pane, '2': Character, gold_ingot)
+      GameRegistry.addRecipe(lanterns(BlockDefinitions.Lantern.OFF), "000", "0 0", "111", '1': Character, gold_ingot, '0': Character, glass_pane)
       GameRegistry.addRecipe(prts(Parts.STICK_IRON), "0", "0", '0': Character, iron_ingot)
       GameRegistry.addRecipe(prts(Parts.PAN), " 0 ", "121", " 1 ", '0': Character, dye(1), '1': Character, iron_ingot, '2': Character, bowl)
       GameRegistry.addRecipe(prts(Parts.MARSHMALLOW).toStack(3), "010", "020", "030", '0': Character, sugar, '1': Character, potionitem, '2': Character, egg, '3': Character, bowl)
+      GameRegistry.addShapelessRecipe(prts(Parts.TENT_PEG), prts(Parts.STICK_IRON), nwsk(knife).getWildValue)
       GameRegistry.addShapelessRecipe(nwsk(logseat), nwsk(log).getWildValue, nwsk(knife).getWildValue)
       GameRegistry.addShapelessRecipe(nwsk(log), nwsk(log2).getWildValue, nwsk(knife).getWildValue)
-      GameRegistry.addShapelessRecipe(lanterns(ModBlocks.MetaLookup.Lantern.ON), lanterns(ModBlocks.MetaLookup.Lantern.OFF), glowstone_dust)
-      GameRegistry.addShapelessRecipe(lanterns(ModBlocks.MetaLookup.Lantern.ON), lanterns(ModBlocks.MetaLookup.Lantern.ON), glowstone_dust)
+      GameRegistry.addShapelessRecipe(lanterns(BlockDefinitions.Lantern.ON), lanterns(BlockDefinitions.Lantern.OFF), glowstone_dust)
+      GameRegistry.addShapelessRecipe(lanterns(BlockDefinitions.Lantern.ON), lanterns(BlockDefinitions.Lantern.ON), glowstone_dust)
       GameRegistry.addShapelessRecipe(prts(Parts.MARSHMALLOWSTICK).toStack(3), prts(Parts.MARSHMALLOW), prts(Parts.STICK_IRON), prts(Parts.STICK_IRON), prts(Parts.STICK_IRON))
-      GameRegistry.addRecipe(nwsk(tent), "000", "0 0", "1 1", '0': Character, prts(Parts.CANVAS), '1': Character, prts(Parts.STICK_IRON));
+      GameRegistry.addRecipe(nwsk(tent), "000", "0 0", "1 1", '0': Character, prts(Parts.CANVAS), '1': Character, prts(Parts.TENT_PEG));
       GameRegistry.addRecipe(nwsk(sleepingBag), "1  ", "000", '0': Character, nwsk(wool).getWildValue, '1': Character, nwsk(knife).getWildValue)
       GameRegistry.addRecipe(nwsk(sleepingBag), " 1 ", "000", '0': Character, nwsk(wool).getWildValue, '1': Character, nwsk(knife).getWildValue)
       GameRegistry.addRecipe(nwsk(sleepingBag), "  1", "000", '0': Character, nwsk(wool).getWildValue, '1': Character, nwsk(knife).getWildValue)

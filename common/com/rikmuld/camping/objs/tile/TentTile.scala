@@ -32,7 +32,7 @@ import com.rikmuld.corerm.bounds.Bounds
 import com.rikmuld.corerm.bounds.IBoundsBlock
 import com.rikmuld.camping.objs.misc.PlayerSleepInTent
 import com.rikmuld.camping.objs.block.TentBounds
-import com.rikmuld.camping.objs.Objs.ModBlocks.MetaLookup
+import com.rikmuld.camping.objs.BlockDefinitions
 import com.sun.swing.internal.plaf.metal.resources.metal
 
 object TileEntityTent {
@@ -98,7 +98,7 @@ class TileTent extends RMTile with WithTileInventory with IUpdatePlayerListBox {
   def addLentern(stack: ItemStack): Boolean = {
     if (((contends + COST_LANTERN) <= MAX_COST) && (lanterns < MAX_LANTERNS)) {
       time = if (stack.hasTagCompound()) stack.getTagCompound.getInteger("time") else -1
-      lanternDamage = if (time > 0) MetaLookup.Lantern.ON else MetaLookup.Lantern.OFF
+      lanternDamage = if (time > 0) BlockDefinitions.Lantern.ON else BlockDefinitions.Lantern.OFF
       sendTileData(3, true, lanternDamage)
       setContends(lanterns + 1, LANTERN, true, 0)
       return true
@@ -107,7 +107,7 @@ class TileTent extends RMTile with WithTileInventory with IUpdatePlayerListBox {
   }
   def getContends(): ArrayList[ItemStack] = {
     val stacks = new ArrayList[ItemStack]()
-    val lanternStack = new ItemStack(ALOWED_ITEMS(0), lanterns, if (time > 0) MetaLookup.Lantern.ON else MetaLookup.Lantern.OFF)
+    val lanternStack = new ItemStack(ALOWED_ITEMS(0), lanterns, if (time > 0) BlockDefinitions.Lantern.ON else BlockDefinitions.Lantern.OFF)
     if (time > 0) {
       lanternStack.setTagCompound(new NBTTagCompound())
       lanternStack.getTagCompound.setInteger("time", time)
@@ -119,7 +119,7 @@ class TileTent extends RMTile with WithTileInventory with IUpdatePlayerListBox {
   }
   def getContendsFor(block: Block): ItemStack = {
     if (block == Objs.lantern) {
-      val lanternStack = new ItemStack(ALOWED_ITEMS(0), lanterns, if (time > 0) MetaLookup.Lantern.ON else MetaLookup.Lantern.OFF)
+      val lanternStack = new ItemStack(ALOWED_ITEMS(0), lanterns, if (time > 0) BlockDefinitions.Lantern.ON else BlockDefinitions.Lantern.OFF)
       if (time > 0) {
         lanternStack.setTagCompound(new NBTTagCompound())
         lanternStack.getTagCompound.setInteger("time", time)
@@ -311,7 +311,7 @@ class TileTent extends RMTile with WithTileInventory with IUpdatePlayerListBox {
       }
       if (time == 0) {
         time = -1
-        lanternDamage = MetaLookup.Lantern.OFF
+        lanternDamage = BlockDefinitions.Lantern.OFF
         sendTileData(3, true, lanternDamage)
         bd.update
         bd.updateRender
@@ -319,7 +319,7 @@ class TileTent extends RMTile with WithTileInventory with IUpdatePlayerListBox {
       if ((time <= 0) && (getStackInSlot(0) != null)) {
         decrStackSize(0, 1)
         time = 1500
-        lanternDamage = MetaLookup.Lantern.ON
+        lanternDamage = BlockDefinitions.Lantern.ON
         sendTileData(3, true, lanternDamage)
         bd.update
         bd.updateRender

@@ -13,7 +13,7 @@ import org.lwjgl.opengl.GL11
 import scala.collection.mutable.ListBuffer
 import com.rikmuld.corerm.misc.AbstractBox
 import com.rikmuld.camping.objs.Objs
-import com.rikmuld.camping.objs.Objs.ModItems.MetaLookup._
+import com.rikmuld.camping.objs.ItemDefinitions._
 import com.rikmuld.camping.Lib._
 import com.rikmuld.camping.CampingMod
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType

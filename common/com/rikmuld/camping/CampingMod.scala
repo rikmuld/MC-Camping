@@ -23,16 +23,16 @@ import net.minecraftforge.fml.common.SidedProxy
 import net.minecraftforge.client.model.ISmartItemModel
 import net.minecraftforge.client.model.ISmartBlockModel
 import net.minecraftforge.fml.relauncher.SideOnly
-@Mod(modid = MOD_ID, name = MOD_NAME, version = MOD_VERSION, dependencies = MOD_DEPENDENCIES, modLanguage = MOD_LANUAGE)
+@Mod(modid = MOD_ID, name = MOD_NAME, version = MOD_VERSION, dependencies = MOD_DEPENDENCIES, modLanguage = MOD_LANUAGE, guiFactory = MOD_GUIFACTORY)
 object CampingMod {
   final val MOD_ID = "camping"
   final val MOD_NAME = "The Camping Mod 2"
-  final val MOD_VERSION = "2.2e"
+  final val MOD_VERSION = "2.2f"
   final val MOD_LANUAGE = "scala"
-  final val MOD_DEPENDENCIES = "required-after:Forge@[v11.14.1.1397,);required-after:corerm@[1.2b,)"
+  final val MOD_DEPENDENCIES = "required-after:Forge@[v11.14.1.1397,);required-after:corerm@[1.2c,)"
   final val MOD_SERVER_PROXY = "com.rikmuld."+MOD_ID+".ProxyServer"
   final val MOD_CLIENT_PROXY = "com.rikmuld."+MOD_ID+".ProxyClient"
-  final val MOD_GUIFACTORY = "com.rikmuld.camping.core.GuiFactory"
+  final val MOD_GUIFACTORY = "com.rikmuld.camping.GuiFactory"
   final val PACKET_CHANEL = MOD_ID
   
   val registers = new ListBuffer[ModRegister]

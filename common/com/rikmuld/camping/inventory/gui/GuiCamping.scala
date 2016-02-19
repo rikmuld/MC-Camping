@@ -19,6 +19,9 @@ import net.minecraft.client.gui.inventory.GuiInventory
 import com.rikmuld.camping.CampingMod._
 import com.rikmuld.corerm.tabbed.ButtonTabbed
 import com.rikmuld.corerm.tabbed.GuiTabbed
+import net.minecraft.client.Minecraft
+import com.rikmuld.corerm.RMMod
+import com.rikmuld.camping.ConfigGUI
 
 object GuiCampinginv {
   final val TAB_ARMOR = 0
@@ -62,6 +65,14 @@ class GuiCampinginv(var player: EntityPlayer) extends GuiTabbed(player, new Cont
   def setContents(){
     hasKnife = (this.inventorySlots.asInstanceOf[ContainerCampinv].campinv.getStackInSlot(1) != null)
     hasBackpack = (this.inventorySlots.asInstanceOf[ContainerCampinv].campinv.getStackInSlot(0) != null)
+  }
+  override def setTabTopActive(id: Int) {
+    if(id == GuiCampinginv.TAB_CONFIG){
+      val gui =  new ConfigGUI(this)
+      gui.setWorldAndResolution(mc, width, height)
+      gui.initGui()
+      mc.currentScreen = gui
+    } else super.setTabTopActive(id)
   }
   def drawHoverdButton(id:Int, mouseX:Int, mouseY:Int){
     val list = new java.util.ArrayList[String]()

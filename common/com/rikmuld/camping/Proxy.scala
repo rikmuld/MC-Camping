@@ -50,3 +50,38 @@ class ProxyClient extends ProxyServer {
   override def getEventClient:Any = eventsC
   override def spawnFlame(world: World, x: Double, y: Double, z: Double, motionX: Double, motionY: Double, motionZ: Double, color: Int) = FMLClientHandler.instance().getClient.effectRenderer.addEffect(new ColouredFlame(world, x, y, z, motionX, motionY, motionZ, color))
 }
+
+object Solution {
+    def main(args: Array[String]) = { 
+        val pos = Console.readLine
+        val board = new Array[String](5)
+        for (i <- 0 until 5) {
+            board.update(i, Console.readLine)
+        }
+    nextMove(pos, board)
+    }
+
+  def nextMove(pos:String, board:Array[String])={
+    var dist = Integer.MAX_VALUE
+    val bot = pos.split(' ')
+    val posi = (bot(0).toInt, bot(1).toInt)
+    var coords = (0, 0)
+
+    for(row <- 0 until board.length){
+      for(column <- 0 until row){
+        if(board(row)(column) == 'd'){
+          val nwDist = Math.abs(posi._2 - row) + Math.abs(posi._1 - column)
+          if(nwDist < dist){
+            dist = nwDist
+            coords = (column, row)
+          }
+        }
+      }
+    }
+    
+    if(posi._1<coords._1)println("RIGHT")
+    else if(posi._1>coords._1)println("LEFT")
+    else if(posi._2<coords._2)println("DOWN")
+    else if(posi._2>coords._2)println("UP")
+  }
+}

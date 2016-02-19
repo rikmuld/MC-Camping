@@ -3,7 +3,8 @@ package com.rikmuld.camping.world
 import java.util.Random
 
 import com.rikmuld.camping.objs.Objs
-import com.rikmuld.camping.objs.Objs.ModBlocks.MetaLookup
+import com.rikmuld.camping.objs.ItemDefinitions._
+import com.rikmuld.camping.objs.BlockDefinitions
 import com.rikmuld.camping.objs.block.Hemp
 import com.rikmuld.camping.objs.entity.Camper
 import com.rikmuld.camping.objs.entity.Campsite
@@ -28,7 +29,7 @@ class HempGen extends net.minecraft.world.gen.feature.WorldGenerator {
        val age = random.nextInt(random.nextInt(4) + 1)
         if (Objs.hemp.asInstanceOf[WithInstable].canStay(world, bd.pos)) {
           bd.setState(Objs.hemp.getBlockState.getBaseState.withProperty(Hemp.AGE, age))
-          if (age == MetaLookup.Hemp.GROWN_BIG_BOTTOM) bd.up.setState(Objs.hemp.getBlockState.getBaseState.withProperty(Hemp.AGE, age + 1))
+          if (age == BlockDefinitions.Hemp.GROWN_BIG_BOTTOM) bd.up.setState(Objs.hemp.getBlockState.getBaseState.withProperty(Hemp.AGE, age + 1))
         }
       }
     }

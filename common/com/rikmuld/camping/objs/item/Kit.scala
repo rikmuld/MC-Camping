@@ -15,7 +15,7 @@ import scala.collection.mutable.HashMap
 import net.minecraft.item.Item
 import net.minecraftforge.fml.relauncher.Side
 import org.lwjgl.input.Keyboard
-import com.rikmuld.camping.objs.Objs.ModItems.MetaLookup._
+import com.rikmuld.camping.objs.ItemDefinitions._
 import com.rikmuld.corerm.objs.Properties
 import com.rikmuld.corerm.objs.PropType._
 import com.rikmuld.corerm.Lib._

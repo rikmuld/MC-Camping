@@ -6,7 +6,7 @@ import com.rikmuld.camping.CampingMod._
 import com.rikmuld.camping.Lib._
 import com.rikmuld.camping.objs.Objs._
 import com.rikmuld.camping.objs.Objs
-import com.rikmuld.camping.objs.Objs.ModItems.MetaLookup._
+import com.rikmuld.camping.objs.ItemDefinitions._
 import com.rikmuld.corerm.CoreUtils._
 import net.minecraft.client.Minecraft
 import net.minecraft.client.model.ModelBase

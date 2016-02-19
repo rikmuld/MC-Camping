@@ -29,6 +29,7 @@ import com.rikmuld.corerm.objs.RMTile
 import com.rikmuld.corerm.CoreUtils._
 import com.rikmuld.camping.Lib.NBTInfo
 import net.minecraft.nbt.NBTTagCompound
+import com.rikmuld.camping.objs.tile.TileCampfireWood
 
 object Campfire {
   def particleAnimation(bd:BlockData, color:Int, random:Random){
@@ -46,12 +47,6 @@ class Campfire(modId:String, info: ObjInfo) extends RMBlockContainer(modId, info
 
   override def getRenderType = 3
   override def createNewTileEntity(world: World, meta: Int): RMTile = new TileCampfire()
-  override def getDrops(world: IBlockAccess, pos:BlockPos, state:IBlockState, fortune: Int): ArrayList[ItemStack] = {
-    val stacks = new ArrayList[ItemStack]()
-    stacks.add(new ItemStack(Items.stick, new Random().nextInt(4) + 1, 0))
-    stacks.add(new ItemStack(Objs.campfireCook, 1, 0))
-    stacks
-  }
   override def onBlockActivated(world: World, pos:BlockPos, state:IBlockState, player: EntityPlayer, side: EnumFacing, xHit: Float, yHit: Float, zHit: Float): Boolean = {
     val bd = (world, pos)
     if ((player.getCurrentEquippedItem != null) && (player.getCurrentEquippedItem.getItem == Objs.knife)) {
@@ -98,3 +93,29 @@ class CampfireCook(modId:String, info:ObjInfo) extends RMBlockContainer(modId, i
     }
   }
 }
+
+//paritcles also based on brightness
+class CampfireWood(modId:String, info:ObjInfo) extends Campfire(modId, info) with WithModel with WithInstable {
+  setBlockBounds(0.125F, 0.0F, 0.125F, 0.875F, 0.125F, 0.875F)
+  
+  override def getDrops(world: IBlockAccess, pos:BlockPos, state:IBlockState, fortune: Int): ArrayList[ItemStack] = {
+    val stacks = new ArrayList[ItemStack]()
+    stacks.add(new ItemStack(Items.stick, new Random().nextInt(4) + 1, 0))
+    stacks.add(new ItemStack(Objs.campfireCook, 1, 0))
+    stacks
+  }
+  
+  override def getLightValue(world: IBlockAccess, pos:BlockPos): Int = {
+    var fuel = 0
+    Option(world.getTileEntity(pos)).map { tile => fuel = tile.asInstanceOf[TileCampfireWood].getFuel() }
+    fuel
+  }
+  
+  override def createNewTileEntity(world: World, meta: Int): RMTile = new TileCampfireWood()
+}
+
+//fixed no ingame config bug
+//camping inventory configuration now opens the in game config
+//added tent pegs (replacing iron sticks in some recipes)
+//added wooden campfire
+//decoration campfire drop itself, instead of its parts

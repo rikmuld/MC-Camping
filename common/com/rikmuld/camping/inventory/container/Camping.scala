@@ -20,7 +20,7 @@ import net.minecraftforge.common.util.Constants
 import com.rikmuld.corerm.inventory.RMPlayerInventory
 import com.rikmuld.corerm.inventory.RMInventoryItem
 import scala.collection.JavaConversions._
-import com.rikmuld.camping.objs.Objs.ModBlocks.MetaLookup
+import com.rikmuld.camping.objs.BlockDefinitions._
 import net.minecraft.inventory.ContainerPlayer
 import net.minecraft.entity.player.InventoryPlayer
 import com.rikmuld.camping.inventory.gui.GuiCampinginv
@@ -33,6 +33,7 @@ import com.rikmuld.corerm.tabbed.SlotTabbedCrafting
 import com.rikmuld.corerm.tabbed.SlotTabbedItemsNot
 import com.rikmuld.corerm.tabbed.SlotTabbed
 import com.rikmuld.corerm.tabbed.ContainerTabbed
+import com.rikmuld.camping.objs.BlockDefinitions
 
 class ContainerCampinv(player:EntityPlayer) extends Container with ContainerTabbed {
   var backpackInv: RMInventoryItem = new RMInventoryItem(new ItemStack(Objs.backpack, 1, 0), player, 27, 64, false)
@@ -48,7 +49,7 @@ class ContainerCampinv(player:EntityPlayer) extends Container with ContainerTabb
     
   addSlotToContainer(new SlotItemsOnly(campinv, 0, 8, 35, new ItemStack(Objs.backpack)))
   addSlotToContainer(new SlotItemsOnly(campinv, 1, 8, 53, Objs.knife))
-  addSlotToContainer(new SlotItemsOnly(campinv, 2, 196, 35, new ItemStack(Objs.lantern, 1, MetaLookup.Lantern.ON)))
+  addSlotToContainer(new SlotItemsOnly(campinv, 2, 196, 35, new ItemStack(Objs.lantern, 1, BlockDefinitions.Lantern.ON)))
   addSlotToContainer(new SlotItemsOnly(campinv, 3, 196, 53, Items.filled_map))
   
   for (row <- 0 until 3; collom <- 0 until 9) {
@@ -117,7 +118,7 @@ class ContainerCampinv(player:EntityPlayer) extends Container with ContainerTabb
         else if(itemstack.getItem==Objs.knife) {
           if(mergeItemStack(itemstack1, 37, 38, false))success = true
         }
-        else if(itemstack.isItemEqual(new ItemStack(Objs.lantern, 0, MetaLookup.Lantern.ON))) {
+        else if(itemstack.isItemEqual(new ItemStack(Objs.lantern, 0, BlockDefinitions.Lantern.ON))) {
           if(mergeItemStack(itemstack1, 38, 39, false))success = true
         }
         else if(itemstack.getItem==Items.filled_map){

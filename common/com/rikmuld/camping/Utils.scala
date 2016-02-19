@@ -26,9 +26,10 @@ import scala.collection.JavaConversions._
 import net.minecraftforge.common.util.Constants
 import com.rikmuld.corerm.CoreUtils._
 import com.rikmuld.camping.objs.Objs
-import com.rikmuld.camping.objs.Objs.ModBlocks.MetaLookup._
+import com.rikmuld.camping.objs.BlockDefinitions._
+import com.rikmuld.camping.objs.BlockDefinitions
 import com.rikmuld.camping.Lib._
-import com.rikmuld.camping.objs.Objs.ModBlocks.MetaLookup
+import com.rikmuld.camping.objs.ItemDefinitions._
 
 object Utils {
   implicit class CampingUtils(player: EntityPlayer) {
@@ -73,7 +74,7 @@ object Utils {
       }
       null
     }
-    def hasLantarn(): Boolean = loadCampInvItemsFromNBT().containsStack(new ItemStack(Item.getItemFromBlock(Objs.lantern), 1, MetaLookup.Lantern.ON))
+    def hasLantarn(): Boolean = loadCampInvItemsFromNBT().containsStack(new ItemStack(Item.getItemFromBlock(Objs.lantern), 1, BlockDefinitions.Lantern.ON))
     def hasMap(): Boolean = loadCampInvItemsFromNBT().containsItem(Items.filled_map)
     def lanternTick() {
       val stacks = player.loadCampInvItemsFromNBT();

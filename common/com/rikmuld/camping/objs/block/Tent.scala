@@ -44,7 +44,7 @@ import com.rikmuld.camping.objs.misc.OpenGui
 import com.rikmuld.camping.objs.tile.TileTent
 import com.rikmuld.camping.objs.tile.TileTent
 import com.rikmuld.corerm.bounds.BoundsTracker
-import com.rikmuld.camping.objs.Objs.ModBlocks.MetaLookup
+import com.rikmuld.camping.objs.BlockDefinitions
 import com.rikmuld.corerm.objs.RMItemBlock
 import com.rikmuld.camping.CampingMod
 import net.minecraft.block.Block
@@ -110,7 +110,7 @@ class Tent(modId:String, info:ObjInfo) extends RMBlockContainer(modId, info) wit
   }
   override def getLightValue(world: IBlockAccess, pos:BlockPos): Int = {
     val tile = world.getTileEntity(pos).asInstanceOf[TileTent]
-    if (Option(tile).isDefined && (tile.lanternDamage == MetaLookup.Lantern.ON) && (tile.lanterns > 0)) 15 else 0
+    if (Option(tile).isDefined && (tile.lanternDamage == BlockDefinitions.Lantern.ON) && (tile.lanterns > 0)) 15 else 0
   }
   override def onBlockActivated(world: World, pos:BlockPos, state:IBlockState, player: EntityPlayer, side: EnumFacing, xHit: Float, yHit: Float, zHit: Float): Boolean = {
     if (!world.isRemote) {
@@ -132,7 +132,7 @@ class Tent(modId:String, info:ObjInfo) extends RMBlockContainer(modId, info) wit
   override def openGui(bd:BlockData, player:EntityPlayer, id:Int) = PacketSender.toClient(new OpenGui(id, bd.x, bd.y, bd.z))
 }
 
-class TentItem(block:Block) extends RMItemBlock(CampingMod.MOD_ID, Objs.ModBlocks.TENT, block) {  
+class TentItem(block:Block) extends RMItemBlock(CampingMod.MOD_ID, BlockDefinitions.TENT, block) {  
   @SideOnly(Side.CLIENT)
   override def getSubItems(itemIn:Item, tab:CreativeTabs, subItems:java.util.List[_]) {
     subItems.asInstanceOf[java.util.List[ItemStack]].add(new ItemStack(itemIn, 1, 15)) 

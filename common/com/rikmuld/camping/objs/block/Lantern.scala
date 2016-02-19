@@ -6,9 +6,9 @@ import com.rikmuld.camping.CampingMod._
 import com.rikmuld.camping.Lib._
 import com.rikmuld.camping.Utils._
 import com.rikmuld.camping.objs.Objs
-import com.rikmuld.camping.objs.Objs.ModBlocks.MetaLookup._
-import com.rikmuld.camping.objs.Objs.ModBlocks.MetaLookup
-import com.rikmuld.camping.objs.Objs.ModItems.MetaLookup._
+import com.rikmuld.camping.objs.BlockDefinitions._
+import com.rikmuld.camping.objs.BlockDefinitions
+import com.rikmuld.camping.objs.ItemDefinitions._
 import com.rikmuld.camping.objs.block.Lantern._
 import com.rikmuld.camping.objs.tile.TileLantern
 import com.rikmuld.corerm.CoreUtils._
@@ -68,7 +68,7 @@ class Lantern(modId:String, info:ObjInfo) extends RMBlockContainer(modId, info) 
   override def canPlaceBlockAt(world: World, pos:BlockPos): Boolean = ((world, pos).block == null || (world, pos).isReplaceable) && canStay((world, pos))
   override def createNewTileEntity(world: World, meta: Int): RMTile = new TileLantern()
   override def getDrops(world:IBlockAccess, pos:BlockPos, state:IBlockState, forture:Int):java.util.List[ItemStack] = {
-    val stack = new ItemStack(this, 1, if(isLit(world, pos)) MetaLookup.Lantern.ON else MetaLookup.Lantern.OFF)
+    val stack = new ItemStack(this, 1, if(isLit(world, pos)) BlockDefinitions.Lantern.ON else BlockDefinitions.Lantern.OFF)
     burnTime.map { time => 
       stack.setTagCompound(new NBTTagCompound())
       stack.getTagCompound.setInteger("time", time)
@@ -105,21 +105,21 @@ class Lantern(modId:String, info:ObjInfo) extends RMBlockContainer(modId, info) 
   override def couldStay(bd:BlockData) = setTop(bd)
 }
 
-class LanternItem(block: Block) extends RMItemBlock(MOD_ID, Objs.ModBlocks.LANTERN, block) {
+class LanternItem(block: Block) extends RMItemBlock(MOD_ID, BlockDefinitions.LANTERN, block) {
   override def addInformation(stack: ItemStack, player: EntityPlayer, list: java.util.List[_], par4: Boolean) {
     if (stack.hasTagCompound()) list.asInstanceOf[java.util.List[String]].add("Burning time left: " + (stack.getTagCompound.getInteger("time") / 2) + " seconds")
   }
   @SideOnly(Side.CLIENT)
   override def getSubItems(item: Item, creativetabs: CreativeTabs, stackList: java.util.List[_]) {
-    val lantern = new ItemStack(item, 1, MetaLookup.Lantern.ON)
+    val lantern = new ItemStack(item, 1, BlockDefinitions.Lantern.ON)
     lantern.setTagCompound(new NBTTagCompound())
     lantern.getTagCompound.setInteger("time", 1500)
     stackList.asInstanceOf[java.util.List[ItemStack]].add(lantern)
-    stackList.asInstanceOf[java.util.List[ItemStack]].add(new ItemStack(item, 1, MetaLookup.Lantern.OFF))
+    stackList.asInstanceOf[java.util.List[ItemStack]].add(new ItemStack(item, 1, BlockDefinitions.Lantern.OFF))
   }
   override def placeBlockAt(stack: ItemStack, player: EntityPlayer, world: World, pos:BlockPos, side: EnumFacing, hitX: Float, hitY: Float, hitZ: Float, state:IBlockState): Boolean = {
     if (super.placeBlockAt(stack, player, world, pos, side, hitX, hitY, hitZ, state)) {
-      (world, pos).tile.asInstanceOf[TileLantern].burnTime = if (stack.hasTagCompound() && (stack.getItemDamage == MetaLookup.Lantern.ON)) stack.getTagCompound.getInteger("time") else 0
+      (world, pos).tile.asInstanceOf[TileLantern].burnTime = if (stack.hasTagCompound() && (stack.getItemDamage == BlockDefinitions.Lantern.ON)) stack.getTagCompound.getInteger("time") else 0
       return true
     }
     false

@@ -13,7 +13,7 @@ import net.minecraft.inventory.Slot
 import net.minecraft.nbt.NBTTagCompound
 import com.rikmuld.corerm.inventory.RMInventoryItem
 import com.rikmuld.camping.Lib._
-import com.rikmuld.camping.objs.Objs.ModItems.MetaLookup._
+import com.rikmuld.camping.objs.ItemDefinitions._
 import com.rikmuld.corerm.CoreUtils._
 import com.rikmuld.camping.misc.CookingEquipment
 import net.minecraft.block.material.MapColor

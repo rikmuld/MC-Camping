@@ -36,6 +36,7 @@ import net.minecraft.util.ChatComponentTranslation
 import net.minecraft.block.BlockBed
 import net.minecraft.world.IBlockAccess
 import net.minecraft.entity.Entity
+import com.rikmuld.camping.objs.BlockDefinitions
 
 object SleepingBag {
   val IS_HEAD = PropertyBool.create("isHead")
@@ -121,4 +122,4 @@ class SleepingBag(modId:String, info:ObjInfo) extends RMBlock(modId, info) with 
   override def isBedFoot(world:IBlockAccess, pos:BlockPos) = !isHead(world.getBlockState(pos))
 }
 
-class SleepingBagItem(block:Block) extends RMItemBlock(MOD_ID, Objs.ModBlocks.SLEEPING_BAG, block){}
+class SleepingBagItem(block:Block) extends RMItemBlock(MOD_ID, BlockDefinitions.SLEEPING_BAG, block){}
