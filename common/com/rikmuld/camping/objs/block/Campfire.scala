@@ -1,35 +1,35 @@
 package com.rikmuld.camping.objs.block
 
-import com.rikmuld.corerm.objs.RMBlockContainer
-import com.rikmuld.corerm.objs.WithInstable
-import net.minecraft.tileentity.TileEntity
-import net.minecraft.entity.player.EntityPlayer
+import java.util.ArrayList
+import java.util.Random
 import com.rikmuld.camping.CampingMod._
+import com.rikmuld.camping.Lib.NBTInfo
+import com.rikmuld.camping.objs.Objs
+import com.rikmuld.camping.objs.tile.TileCampfire
+import com.rikmuld.camping.objs.tile.TileCampfireCook
+import com.rikmuld.camping.objs.tile.TileCampfireWood
+import com.rikmuld.corerm.CoreUtils._
+import com.rikmuld.corerm.misc.WorldBlock._
+import com.rikmuld.corerm.objs.ObjInfo
+import com.rikmuld.corerm.objs.RMBlockContainer
+import com.rikmuld.corerm.objs.RMTile
+import com.rikmuld.corerm.objs.WithInstable
+import com.rikmuld.corerm.objs.WithModel
+import net.minecraft.block.Block
+import net.minecraft.block.state.IBlockState
+import net.minecraft.entity.player.EntityPlayer
+import net.minecraft.init.Items
+import net.minecraft.item.ItemStack
+import net.minecraft.nbt.NBTTagCompound
+import net.minecraft.tileentity.TileEntity
+import net.minecraft.util.BlockPos
+import net.minecraft.util.EnumFacing
+import net.minecraft.util.EnumParticleTypes
 import net.minecraft.world.IBlockAccess
 import net.minecraft.world.World
-import com.rikmuld.corerm.objs.WithModel
-import net.minecraft.init.Blocks
 import net.minecraftforge.fml.relauncher.SideOnly
-import java.util.Random
-import java.util.ArrayList
-import net.minecraft.block.Block
-import net.minecraft.item.ItemStack
-import com.rikmuld.camping.objs.Objs
 import net.minecraftforge.fml.relauncher.Side
-import com.rikmuld.corerm.objs.ObjInfo
-import net.minecraft.init.Items
-import net.minecraft.util.BlockPos
-import net.minecraft.block.state.IBlockState
-import net.minecraft.util.EnumFacing
-import com.rikmuld.corerm.misc.WorldBlock._
-import net.minecraft.util.EnumParticleTypes
-import com.rikmuld.camping.objs.tile.TileCampfireCook
-import com.rikmuld.camping.objs.tile.TileCampfire
-import com.rikmuld.corerm.objs.RMTile
-import com.rikmuld.corerm.CoreUtils._
-import com.rikmuld.camping.Lib.NBTInfo
-import net.minecraft.nbt.NBTTagCompound
-import com.rikmuld.camping.objs.tile.TileCampfireWood
+import com.rikmuld.camping.objs.ItemDefinitions
 
 object Campfire {
   def particleAnimation(bd:BlockData, color:Int, random:Random){
@@ -99,16 +99,22 @@ class CampfireWood(modId:String, info:ObjInfo) extends Campfire(modId, info) wit
   setBlockBounds(0.125F, 0.0F, 0.125F, 0.875F, 0.125F, 0.875F)
   
   override def getDrops(world: IBlockAccess, pos:BlockPos, state:IBlockState, fortune: Int): ArrayList[ItemStack] = {
+    val rand = new Random
     val stacks = new ArrayList[ItemStack]()
-    stacks.add(new ItemStack(Items.stick, new Random().nextInt(4) + 1, 0))
-    stacks.add(new ItemStack(Objs.campfireCook, 1, 0))
+
+    val ash = rand.nextInt(3)
+    
+    stacks.add(new ItemStack(Objs.parts, ash, ItemDefinitions.Parts.ASH))
+    stacks.add(new ItemStack(Items.stick, 2-ash, 0))
+    
     stacks
   }
   
   override def getLightValue(world: IBlockAccess, pos:BlockPos): Int = {
-    var fuel = 0
+    var fuel = 16
     Option(world.getTileEntity(pos)).map { tile => fuel = tile.asInstanceOf[TileCampfireWood].getFuel() }
-    fuel
+    println(fuel)
+    if(fuel==0) 16 else fuel
   }
   
   override def createNewTileEntity(world: World, meta: Int): RMTile = new TileCampfireWood()
@@ -116,6 +122,7 @@ class CampfireWood(modId:String, info:ObjInfo) extends Campfire(modId, info) wit
 
 //fixed no ingame config bug
 //camping inventory configuration now opens the in game config
+//message on startup on how to change invenoty behaviour
 //added tent pegs (replacing iron sticks in some recipes)
 //added wooden campfire
 //decoration campfire drop itself, instead of its parts

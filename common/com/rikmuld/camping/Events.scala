@@ -71,6 +71,9 @@ import com.rikmuld.camping.objs.ItemDefinitions
 import com.rikmuld.camping.objs.tile.TileCampfireCook
 import com.rikmuld.camping.objs.block.Tent
 import com.rikmuld.camping.objs.entity.Mountable
+import net.minecraftforge.fml.common.gameevent.PlayerEvent
+import net.minecraft.util.ChatComponentText
+import net.minecraftforge.event.world.WorldEvent
 
 class EventsS {
   var tickLight: Int = 0
@@ -251,6 +254,16 @@ class EventsC {
           ReflectionHelper.setPrivateValue(classOf[GuiScreen], mc.currentScreen, list, 7) 
         }
       }
+    }
+  }
+  @SubscribeEvent
+  def onPlayerJoinWorld(event: PlayerLoggedInEvent){
+    if(config.welcomeMess){
+      event.player.addChatComponentMessage(new ChatComponentText("The Camping Iventory overides the normal inventory. To change this, " +
+                                                                 "just press the configuration tab in the Camping Invenory; search for: " +
+                                                                 "'primary inventory option'."))
+
+      config.disableMess
     }
   }
   @SubscribeEvent

@@ -45,7 +45,6 @@ import net.minecraft.block.properties.PropertyBool
 import com.sun.org.apache.xalan.internal.xsltc.compiler.WithParam
 import com.rikmuld.corerm.objs.WithProperties
 import com.rikmuld.corerm.objs.RMBoolProp
-import com.rikmuld.camping.objs.Objs.ModBlocks
 import net.minecraft.entity.EntityLivingBase
     
 object Lantern {

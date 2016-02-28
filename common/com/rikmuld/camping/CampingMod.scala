@@ -3,7 +3,6 @@ package com.rikmuld.camping
 import scala.collection.mutable.ListBuffer
 import com.rikmuld.camping.CampingMod._
 import com.rikmuld.camping.Lib._
-import com.rikmuld.camping.objs.Objs._
 import com.rikmuld.corerm.misc.ModRegister
 import com.rikmuld.corerm.objs.ObjInfo
 import com.rikmuld.corerm.objs.Properties._
@@ -23,6 +22,15 @@ import net.minecraftforge.fml.common.SidedProxy
 import net.minecraftforge.client.model.ISmartItemModel
 import net.minecraftforge.client.model.ISmartBlockModel
 import net.minecraftforge.fml.relauncher.SideOnly
+import com.rikmuld.camping.objs.registers.ModAchievements
+import com.rikmuld.camping.objs.registers.ModGuis
+import com.rikmuld.camping.objs.registers.ModBlocks
+import com.rikmuld.camping.objs.registers.ModRecipes
+import com.rikmuld.camping.objs.registers.ModItems
+import com.rikmuld.camping.objs.registers.ModEntities
+import com.rikmuld.camping.objs.registers.ModTiles
+import com.rikmuld.camping.objs.registers.ModMisc
+
 @Mod(modid = MOD_ID, name = MOD_NAME, version = MOD_VERSION, dependencies = MOD_DEPENDENCIES, modLanguage = MOD_LANUAGE, guiFactory = MOD_GUIFACTORY)
 object CampingMod {
   final val MOD_ID = "camping"

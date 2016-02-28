@@ -38,7 +38,9 @@ class Config(val file: Configuration) {
   var coreOnly = false
   var prmInv = 0
   var secInv = 0
-
+  var welcomeMess = true
+  var maxWoodFuel = 5000
+  
   var elements: java.util.List[IConfigElement] = new ArrayList[IConfigElement];
 
   def sync = {    
@@ -64,8 +66,10 @@ class Config(val file: Configuration) {
     worldGenHemp = getVar("Enable Campsite generation", "Enable/Disable the world generation for Campsites.", CAT_WORLD, worldGenCampsite).asInstanceOf[Boolean]
     campsiteRareness = getVar("Campsite Rareness", "Rareness of the campsite world generation", CAT_WORLD, campsiteRareness).asInstanceOf[Integer]
     coreOnly = getVar("Core Features Only", "Only use the core features of the camping mod. WARNING! use carfully!", CAT_GENERAL, coreOnly).asInstanceOf[Boolean]
-    prmInv = getVar("Primary Inventory Option", "0: Replace MC Inventory; 1: Open by Button; 2: Open by Key", CAT_GENERAL, prmInv, 0, 2).asInstanceOf[Integer]
-    secInv = getVar("Secundairy Inventory Option", "Button location if primary inventory option is set to 1: 0:In inventory; 1:left top; 2:right top; 3:left bottom; 4:right bottom", CAT_GENERAL, secInv, 0, 4).asInstanceOf[Integer]
+    prmInv = getVar("Primary Inventory Option", "0: Replace MC Inventory; 1: Open by Button; 2: Open by Key (default 'C')", CAT_GENERAL, prmInv, 0, 2).asInstanceOf[Integer]
+    secInv = getVar("Secundairy Inventory Option", "Button location if primary inventory option is set to 1. 0:In inventory, 1:left-top, 2:right-top, 3:left-bottom, 4:right-bottom", CAT_GENERAL, secInv, 0, 4).asInstanceOf[Integer]
+    welcomeMess = getVar("Welcome Message", "Print the welcome message", CAT_GENERAL, welcomeMess).asInstanceOf[Boolean]
+    maxWoodFuel = getVar("Provisional Campfire Burn Time", "The burn time of a provisional campfire", CAT_CAMPFIRE, maxWoodFuel).asInstanceOf[Integer]
 
     if (file.hasChanged) file.save
     for (i <- 0 until file.getCategoryNames.size) elements.addAll(new ConfigElement(file.getCategory(file.getCategoryNames().toArray().apply(i).asInstanceOf[String])).getChildElements());
@@ -88,6 +92,10 @@ class Config(val file: Configuration) {
     
     file.getCategory(CAT_GENERAL).get("Primary Inventory Option").setValue(prm)
     file.getCategory(CAT_GENERAL).get("Secundairy Inventory Option").setValue(sec)
+    file.save
+  }
+  def disableMess(){
+    file.getCategory(CAT_GENERAL).get("Welcome Message").setValue(false)
     file.save
   }
 }

@@ -1,0 +1,8 @@
+{
+    "variants": {
+        "lit=true,top=false": { "model": "camping:lanternOn" },
+        "lit=false,top=false": { "model": "camping:lanternOff" },
+		"lit=true,top=true": { "model": "camping:lanternHangOn" },
+        "lit=false,top=true": { "model": "camping:lanternHangOff" }
+    }
+}

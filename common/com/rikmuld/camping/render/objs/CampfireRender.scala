@@ -22,6 +22,7 @@ class CampfireRender extends TileEntitySpecialRenderer {
 
   override def renderTileEntityAt(tileentity: TileEntity, x: Double, y: Double, z: Double, f: Float, i:Int) {
     val tile = tileentity.asInstanceOf[TileCampfire]
+    if(!tile.renderCoal)return
     GL11.glPushMatrix()
     GL11.glEnable(GL12.GL_RESCALE_NORMAL)
     GL11.glTranslatef(x.toFloat + 0.4F, y.toFloat + 0.0625f, z.toFloat + 0.4F)

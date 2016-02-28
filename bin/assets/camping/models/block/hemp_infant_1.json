@@ -1,0 +1,6 @@
+{
+    "parent": "block/tallgrass",
+    "textures": {
+        "cross": "camping:blocks/plantHemp_0"
+    }
+}

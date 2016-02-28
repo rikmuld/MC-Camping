@@ -12,6 +12,7 @@ import java.util.Random
 import java.util.ArrayList
 import net.minecraftforge.fml.relauncher.Side
 import com.rikmuld.corerm.misc.WorldBlock._
+import com.rikmuld.corerm.CoreUtils._
 import scala.collection.JavaConversions._
 import com.rikmuld.camping.objs.Objs
 import com.rikmuld.corerm.network.PacketSender
@@ -60,6 +61,7 @@ class TileCampfire extends RMTile with IUpdatePlayerListBox {
     coals(2)(i) = rand.nextFloat() * 360
   }
 
+  def renderCoal = false
   private def colorFlame(color: Int) {
     this.color = color
     if (!worldObj.isRemote) sendTileData(0, true, color)
@@ -109,14 +111,33 @@ class TileCampfire extends RMTile with IUpdatePlayerListBox {
 }
 
 class TileCampfireWood extends TileCampfire {
-  private var fuel = 5000
+  private var fuel = config.maxWoodFuel
+  private var oldLight = 16
   
   override def update() {
     if (!worldObj.isRemote) {
       fuel-=1
       sendTileData(1, true, fuel)
+      if(fuel<=0){
+        break()
+      }
+    }
+    val newLight = Math.ceil(fuel/(config.maxWoodFuel/16.0)).toInt
+    if(newLight != oldLight){
+      updateLight
+      oldLight = newLight
     }
   }
+  def updateLight {
+    getWorld.theProfiler.startSection("checkLight")
+    getWorld.checkLight(pos)
+    getWorld.theProfiler.endSection
+  }
+  def break(){
+    worldObj.dropItemInWorld(new ItemStack(Objs.parts, rand.nextInt(3), ItemDefinitions.Parts.ASH), pos.getX, pos.getY, pos.getZ, rand)
+    worldObj.setBlockToAir(pos)
+  }
+  override def renderCoal = false
   override def writeToNBT(tag: NBTTagCompound) {
     super.writeToNBT(tag)
     tag.setInteger("fuel", fuel)
@@ -129,7 +150,7 @@ class TileCampfireWood extends TileCampfire {
     if (id == 1) fuel = data(0)
     else super.setTileData(id, data)
   }
-  def getFuel():Int = Math.ceil(fuel/313).toInt
+  def getFuel():Int = oldLight
 }
 
 class TileCampfireCook extends RMTile with WithTileInventory with IUpdatePlayerListBox {
