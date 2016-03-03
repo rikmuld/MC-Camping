@@ -40,7 +40,7 @@ object ModBlocks extends ModRegister {
   override def register {
     campfireCook = new CampfireCook(MOD_ID, CAMPFIRE_COOK)
     campfireWood = new CampfireWood(MOD_ID, CAMPFIRE_WOOD)
-    campfire = new Campfire(MOD_ID, CAMPFIRE)
+    //campfire = new Campfire(MOD_ID, CAMPFIRE)
     sleepingBag = new SleepingBag(MOD_ID, SLEEPING_BAG)
     tent = new Tent(MOD_ID, TENT)
     logseat = new Logseat(MOD_ID, LOGSEAT)

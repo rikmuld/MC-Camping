@@ -25,6 +25,11 @@ import com.rikmuld.camping.objs.misc.ItemsData
 import net.minecraft.server.gui.IUpdatePlayerListBox
 import net.minecraft.entity.player.EntityPlayer
 import com.rikmuld.camping.Lib.NBTInfo
+import com.rikmuld.camping.objs.block.CampfireCook
+import net.minecraft.util.BlockPos
+import net.minecraft.block.state.IBlockState
+import net.minecraft.world.World
+import com.rikmuld.camping.objs.block.CampfireWood
 
 class TileCampfire extends RMTile with IUpdatePlayerListBox {
   var color: Int = 16
@@ -82,7 +87,7 @@ class TileCampfire extends RMTile with IUpdatePlayerListBox {
   def addDye(stack:ItemStack):Boolean = {
     if ((stack != null) && ((time == 0)) || color != stack.getItemDamage ) {
       colorFlame(stack.getItemDamage)
-      time = 6000
+      time = 3000
       true
     } else false
   }
@@ -110,28 +115,57 @@ class TileCampfire extends RMTile with IUpdatePlayerListBox {
   }
 }
 
-class TileCampfireWood extends TileCampfire {
-  private var fuel = config.maxWoodFuel
-  private var oldLight = 16
+class TileCampfireWood extends TileCampfire with Roaster {
+  private var on = false
+  val maxFeul = config.maxWoodFuel
+  private var fuel = 0
+  private var lightState = 0
+  private var oldLightState = 0
+  private var lid = 0
   
+  override def canRoast(item:ItemStack):Boolean = {
+    this.fuel > 0 && 
+    this.on &&
+    (item.getItem, item.getItemDamage) == (Objs.parts, ItemDefinitions.Parts.MARSHMALLOWSTICK)
+  }
+  override def roastResult(item:ItemStack) = new ItemStack(Objs.marshmallow)
+  override def roastSpeed(item:ItemStack) = ((Math.log10((100*fuel)/maxFeul + 1) + 0.25)/2).toFloat
+  override def roastTime(item:ItemStack):Int = 350
+
   override def update() {
     if (!worldObj.isRemote) {
-      fuel-=1
-      sendTileData(1, true, fuel)
-      if(fuel<=0){
-        break()
+      oldLightState = lightState
+      
+      if(on){
+        fuel-=1
+        sendTileData(1, true, fuel)
+        if(fuel<=0){
+          break()
+        }
+      } else {
+        if(lid>0)lid -= 1
+        if(lid>25){
+          setOn()
+        }
+        this.sendTileData(2, true, lid)
+      }
+      
+      lightState = getFuel()
+      if(lightState != oldLightState){
+        if(bd.block == Objs.campfireWood) Objs.campfireWood.asInstanceOf[CampfireWood].setLight(getWorld, pos, lightState)
       }
     }
-    val newLight = Math.ceil(fuel/(config.maxWoodFuel/16.0)).toInt
-    if(newLight != oldLight){
-      updateLight
-      oldLight = newLight
-    }
+    
+    super.update
   }
-  def updateLight {
-    getWorld.theProfiler.startSection("checkLight")
-    getWorld.checkLight(pos)
-    getWorld.theProfiler.endSection
+  override def shouldRefresh(world:World, pos:BlockPos, oldState:IBlockState, newState:IBlockState) = oldState.getBlock != newState.getBlock
+  def isOn() = on
+  def tryLid() = lid += 5
+  def getLid() = lid
+  def setOn(){
+    this.on = true
+    this.fuel = maxFeul
+    this.sendTileData(4, !worldObj.isRemote, 1)
   }
   def break(){
     worldObj.dropItemInWorld(new ItemStack(Objs.parts, rand.nextInt(3), ItemDefinitions.Parts.ASH), pos.getX, pos.getY, pos.getZ, rand)
@@ -141,38 +175,58 @@ class TileCampfireWood extends TileCampfire {
   override def writeToNBT(tag: NBTTagCompound) {
     super.writeToNBT(tag)
     tag.setInteger("fuel", fuel)
+    tag.setBoolean("on", on)
   }
   override def readFromNBT(tag: NBTTagCompound) {
     super.readFromNBT(tag)
     fuel = tag.getInteger("fuel")
+    on = tag.getBoolean("on")
   }
   override def setTileData(id: Int, data: Array[Int]) {
     if (id == 1) fuel = data(0)
+    else if(id == 2)lid = data(0)
+    else if (id == 4) {
+      on = true
+      this.fuel = maxFeul
+    }
     else super.setTileData(id, data)
   }
-  def getFuel():Int = oldLight
+  def getFuel():Int = if(on) Math.min(15, Math.ceil(fuel/(maxFeul/80.0)).toInt) else lid/2
 }
 
-class TileCampfireCook extends RMTile with WithTileInventory with IUpdatePlayerListBox {
+abstract trait Roaster {
+  def canRoast(item:ItemStack):Boolean
+  def roastTime(item:ItemStack):Int = 150
+  def roastSpeed(item:ItemStack):Float = 1
+  def roastResult(item:ItemStack):ItemStack
+}
+
+class TileCampfireCook extends RMTile with WithTileInventory with IUpdatePlayerListBox with Roaster {
   var maxFeul: Int = config.campfireMaxFuel
   var fuelForCoal: Int = config.campfireCoalFuel
   var fuel: Int = _
+  var oldFuel: Int = _
   var coals: Array[Array[Float]] = Array.ofDim[Float](3, 20)
   var rand: Random = new Random()
   var cookProgress: Array[Int] = new Array[Int](10)
   var oldCookProgress: Array[Int] = new Array[Int](10)
   var equipment: CookingEquipment = _
   var slots: ArrayList[SlotCooking] = _
-  private var active: Boolean = _
-  private var oldActive: Boolean = _
-  private var updateNum: Int = _
   var lastPlayer:EntityPlayer = _
-
+  
   for (i <- 0 until 20) {
     coals(0)(i) = rand.nextFloat() / 5F
     coals(1)(i) = rand.nextFloat() / 5F
     coals(2)(i) = rand.nextFloat() * 360
   }
+
+  override def canRoast(item:ItemStack):Boolean = {
+    this.fuel > 0 && 
+    (item.getItem, item.getItemDamage) == (Objs.parts, ItemDefinitions.Parts.MARSHMALLOWSTICK)
+  }
+  override def roastResult(item:ItemStack) = new ItemStack(Objs.marshmallow)
+  override def roastSpeed(item:ItemStack) = ((Math.log10((100*fuel)/maxFeul + 1) + 0.25)/2).toFloat
+  override def roastTime(item:ItemStack):Int = 150
 
   private def cookFood() {
     if (equipment != null) {
@@ -229,22 +283,6 @@ class TileCampfireCook extends RMTile with WithTileInventory with IUpdatePlayerL
       fuel += fuelForCoal
     }
   }
-  def manageLight() {
-    if (active != oldActive) updateNum = 5
-    if (updateNum > 0) {
-      updateNum -= 1
-      bd.update
-      bd.updateRender
-      updateLight
-    }
-  }
-  def updateLight {
-    getWorld.theProfiler.startSection("checkLight")
-    getWorld.checkLight(pos)
-    getWorld.theProfiler.endSection
-    
-    if(!worldObj.isRemote)sendTileData(2, true, 0)
-  }
   override def readFromNBT(tag: NBTTagCompound) {
     super.readFromNBT(tag)
     fuel = tag.getInteger("fuel")
@@ -256,18 +294,20 @@ class TileCampfireCook extends RMTile with WithTileInventory with IUpdatePlayerL
   override def setTileData(id: Int, data: Array[Int]) {
     if (id == 0) fuel = data(0)
     if (id == 1) cookProgress(data(1)) = data(0)
-    if (id == 2) updateLight
   }
+  override def shouldRefresh(world:World, pos:BlockPos, oldState:IBlockState, newState:IBlockState) = oldState.getBlock != newState.getBlock
   override def update(){
     var equipOld = equipment
     manageCookingEquipment()
     if (!worldObj.isRemote) {
       if(equipOld != equipment)Option(lastPlayer).map(checkCampfireAch)
-      active = fuel > 0
+      oldFuel = fuel
       manageFuel()
       cookFood()
-      manageLight()
-      oldActive = active
+      if(fuel != oldFuel){
+        if(fuel == 0)Objs.campfireCook.asInstanceOf[CampfireCook].setOn(getWorld, pos, false)
+        else if(oldFuel == 0)Objs.campfireCook.asInstanceOf[CampfireCook].setOn(getWorld, pos, true)
+      }
     }
   }
   def checkCampfireAch(player:EntityPlayer){

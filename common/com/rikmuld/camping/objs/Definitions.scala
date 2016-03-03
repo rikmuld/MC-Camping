@@ -77,7 +77,8 @@ object BlockDefinitions {
                                          Materia(Material.fire), 
                                          Hardness(1f), 
                                          StepSound(Block.soundTypeStone),
-                                         LightLevel(1.0f))
+                                         LightLevel(1.0f),
+                                         HarvestLevel("axe", 0))
   
   final val CAMPFIRE_COOK  = new ObjInfo(Tab(tab),
                                          Name("campfireCook"), 
@@ -85,6 +86,7 @@ object BlockDefinitions {
                                          Hardness(2f), 
                                          StepSound(Block.soundTypeStone), 
                                          LightLevel(1.0f), 
+                                         HarvestLevel("pickaxe", 0),
                                          GuiTrigger(guiCampfireCook))
   
   final val TENT           = new ObjInfo(Tab(tab), 

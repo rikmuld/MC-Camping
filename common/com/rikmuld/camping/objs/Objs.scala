@@ -38,7 +38,7 @@ object Objs {
       light, 
       sleepingBag, 
       trap, 
-      campfire, 
+      //campfire, 
       campfireCook, 
       tentBounds:RMCoreBlock = _
       

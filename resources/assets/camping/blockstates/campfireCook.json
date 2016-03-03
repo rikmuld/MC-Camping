@@ -1,5 +1,6 @@
 {
     "variants": {
-        "normal": { "model": "camping:campfireCook" }
+        "on=true": { "model": "camping:campfireCook" },
+        "on=false": { "model": "camping:campfireCook" }
     }
 }

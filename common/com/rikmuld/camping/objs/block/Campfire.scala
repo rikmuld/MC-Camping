@@ -30,14 +30,24 @@ import net.minecraft.world.World
 import net.minecraftforge.fml.relauncher.SideOnly
 import net.minecraftforge.fml.relauncher.Side
 import com.rikmuld.camping.objs.ItemDefinitions
+import net.minecraft.block.properties.PropertyInteger
+import com.rikmuld.corerm.objs.WithProperties
+import com.rikmuld.corerm.objs.RMProp
+import net.minecraft.block.properties.IProperty
+import com.rikmuld.corerm.objs.RMIntProp
+import net.minecraft.block.properties.PropertyBool
+import com.rikmuld.corerm.objs.RMBoolProp
 
 object Campfire {
-  def particleAnimation(bd:BlockData, color:Int, random:Random){
+  val ON = PropertyBool.create("on");
+  val LIGHT = PropertyInteger.create("light", 0, 15);
+
+  def particleAnimation(bd:BlockData, color:Int, random:Random, flame:Boolean){
     val motionY = (random.nextFloat() / 40F) + 0.025F
     val particleX = ((bd.x + 0.5F) - 0.15F) + (random.nextInt(30) / 100F)
     val particleY = bd.y + 0.1F + (random.nextInt(15) / 100F)
     val particleZ = ((bd.z + 0.5F) - 0.15F) + (random.nextInt(30) / 100F)
-    proxy.spawnFlame(bd.world, particleX, particleY, particleZ, 0.0F, motionY, 0.0F, color)
+    if(flame)proxy.spawnFlame(bd.world, particleX, particleY, particleZ, 0.0F, motionY, 0.0F, color)
     bd.world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, particleX, particleY, particleZ, 0.0D, 0.05D, 0.0D)
   }
 }
@@ -49,12 +59,7 @@ class Campfire(modId:String, info: ObjInfo) extends RMBlockContainer(modId, info
   override def createNewTileEntity(world: World, meta: Int): RMTile = new TileCampfire()
   override def onBlockActivated(world: World, pos:BlockPos, state:IBlockState, player: EntityPlayer, side: EnumFacing, xHit: Float, yHit: Float, zHit: Float): Boolean = {
     val bd = (world, pos)
-    if ((player.getCurrentEquippedItem != null) && (player.getCurrentEquippedItem.getItem == Objs.knife)) {
-      if (!player.inventory.addItemStackToInventory(new ItemStack(Objs.campfire))) world.dropItemInWorld(new ItemStack(Objs.campfire), bd.x, bd.y, bd.z, new Random())
-      breakBlock(world, pos, state)
-      bd.toAir
-      player.getCurrentEquippedItem.addDamage(player, 1)
-    } else if(!world.isRemote && player.getCurrentEquippedItem != null && player.getCurrentEquippedItem.getItem == Items.dye && bd.tile.asInstanceOf[TileCampfire].addDye(player.getCurrentEquippedItem)) {
+    if(!world.isRemote && player.getCurrentEquippedItem != null && player.getCurrentEquippedItem.getItem == Items.dye && bd.tile.asInstanceOf[TileCampfire].addDye(player.getCurrentEquippedItem)) {
       player.getCurrentEquippedItem.stackSize-=1
       var data = player.getEntityData
       if(!data.hasKey(NBTInfo.ACHIEVEMENTS))data.setTag(NBTInfo.ACHIEVEMENTS, new NBTTagCompound())
@@ -67,13 +72,17 @@ class Campfire(modId:String, info: ObjInfo) extends RMBlockContainer(modId, info
   }
   @SideOnly(Side.CLIENT)
   override def randomDisplayTick(world: World, pos:BlockPos, state:IBlockState, random: Random) {
-    for (i <- 0 until 3) Campfire.particleAnimation((world, pos), (world, pos).tile.asInstanceOf[TileCampfire].color, random)
+    for (i <- 0 until 3) Campfire.particleAnimation((world, pos), (world, pos).tile.asInstanceOf[TileCampfire].color, random, true)
   }
 }
   
-class CampfireCook(modId:String, info:ObjInfo) extends RMBlockContainer(modId, info) with WithModel with WithInstable {
+class CampfireCook(modId:String, info:ObjInfo) extends RMBlockContainer(modId, info) with WithModel with WithInstable with WithProperties {
   setBlockBounds(0.125F, 0.0F, 0.125F, 0.875F, 0.125F, 0.875F)
-
+  setDefaultState(getStateFromMeta(0))
+  
+  def isOn(world:IBlockAccess, pos:BlockPos) = world.getBlockState(pos).getValue(Campfire.ON).asInstanceOf[Boolean]
+  def setOn(world:World, pos:BlockPos, on:Boolean) = (world, pos).setState((world, pos).state.withProperty(Campfire.ON, on))
+  override def getProps = Array(new RMBoolProp(Campfire.ON, 0))
   override def onBlockActivated(world: World, pos:BlockPos, state:IBlockState, player: EntityPlayer, side: EnumFacing, xHit: Float, yHit: Float, zHit: Float): Boolean = {
     val bd = (world, pos)
     bd.tile.asInstanceOf[TileCampfireCook].lastPlayer = player
@@ -81,45 +90,66 @@ class CampfireCook(modId:String, info:ObjInfo) extends RMBlockContainer(modId, i
   }
   override def getRenderType = 3
   override def createNewTileEntity(world: World, meta: Int): RMTile = new TileCampfireCook()
-  override def getLightValue(world: IBlockAccess, pos:BlockPos): Int = {
-    var fuel = 0
-    Option(world.getTileEntity(pos)).map { tile => fuel = tile.asInstanceOf[TileCampfireCook].fuel }
-    if(fuel > 0) 15 else 0
-  }
+  override def getLightValue(world: IBlockAccess, pos:BlockPos): Int = if(isOn(world, pos)) 15 else 0
   @SideOnly(Side.CLIENT)
   override def randomDisplayTick(world: World, pos:BlockPos, state:IBlockState, random: Random) {
     if ((world, pos).tile.asInstanceOf[TileCampfireCook].fuel > 0) {
-      for (i <- 0 until 3) Campfire.particleAnimation((world, pos), 16, random)
+      for (i <- 0 until 3) Campfire.particleAnimation((world, pos), 16, random, true)
     }
   }
 }
 
-//paritcles also based on brightness
-class CampfireWood(modId:String, info:ObjInfo) extends Campfire(modId, info) with WithModel with WithInstable {
+class CampfireWood(modId:String, info:ObjInfo) extends Campfire(modId, info) with WithProperties {
   setBlockBounds(0.125F, 0.0F, 0.125F, 0.875F, 0.125F, 0.875F)
+  setDefaultState(this.getStateFromMeta(0).withProperty(Campfire.LIGHT, 0))
   
+  def getLight(world:IBlockAccess, pos:BlockPos) = world.getBlockState(pos).getValue(Campfire.LIGHT).asInstanceOf[Integer]
+  def setLight(world:World, pos:BlockPos, light:Integer) = (world, pos).setState((world, pos).state.withProperty(Campfire.LIGHT, light))
+  override def getProps = Array(new RMIntProp(Campfire.LIGHT, 4, 0))
   override def getDrops(world: IBlockAccess, pos:BlockPos, state:IBlockState, fortune: Int): ArrayList[ItemStack] = {
     val rand = new Random
     val stacks = new ArrayList[ItemStack]()
-
-    val ash = rand.nextInt(3)
     
-    stacks.add(new ItemStack(Objs.parts, ash, ItemDefinitions.Parts.ASH))
-    stacks.add(new ItemStack(Items.stick, 2-ash, 0))
-    
+    stacks.add(new ItemStack(Items.stick, rand.nextInt(3)+1))
     stacks
   }
   
-  override def getLightValue(world: IBlockAccess, pos:BlockPos): Int = {
-    var fuel = 16
-    Option(world.getTileEntity(pos)).map { tile => fuel = tile.asInstanceOf[TileCampfireWood].getFuel() }
-    println(fuel)
-    if(fuel==0) 16 else fuel
+  @SideOnly(Side.CLIENT)
+  override def randomDisplayTick(world: World, pos:BlockPos, state:IBlockState, random: Random) {
+    val tile = world.getTileEntity(pos).asInstanceOf[TileCampfireWood]
+    if(tile.isOn())super.randomDisplayTick(world, pos, state, random)
+    else {
+      val lid = tile.getLid
+      if(lid > 0)for (i <- 0 until (lid/5).toInt + 1) Campfire.particleAnimation((world, pos), (world, pos).tile.asInstanceOf[TileCampfire].color, random, false)
+    }
   }
   
+  override def getLightValue(world: IBlockAccess, pos:BlockPos): Int = getLight(world, pos)
+  override def onBlockActivated(world: World, pos:BlockPos, state:IBlockState, player: EntityPlayer, side: EnumFacing, xHit: Float, yHit: Float, zHit: Float): Boolean = {
+    if(!world.isRemote){
+      val bd = (world, pos)
+      val item = player.getCurrentEquippedItem
+      
+      if(Option(item).isDefined && item.getItem == Items.stick){
+        val tile = bd.tile.asInstanceOf[TileCampfireWood]
+        tile.tryLid()
+      }
+    }
+    
+    if(!world.isRemote && (world, pos).tile.asInstanceOf[TileCampfireWood].isOn())super.onBlockActivated(world, pos, state, player, side, xHit, yHit, zHit)
+    else true
+  }
   override def createNewTileEntity(world: World, meta: Int): RMTile = new TileCampfireWood()
 }
 
+//fixed harvest level/tool for campfires
+//fixed glowstone not consuming in lantern
+//fixed lantern when broken by hand loses fuel
+//reduced dye burning time
+//removed ecoration campfres
+//imporved stability of campfire lighting
+//wooden campfire can only roast things on sticks (more stick food to come!)
+//roasting speed depends on amount of fuel of a campfire
 //fixed no ingame config bug
 //camping inventory configuration now opens the in game config
 //message on startup on how to change invenoty behaviour

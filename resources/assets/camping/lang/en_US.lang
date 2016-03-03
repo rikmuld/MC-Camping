@@ -1,7 +1,7 @@
 itemGroup.camping=The Camping Mod
 tile.campfire.name=Decorative Campfire
-tile.campfireCook.name=Cooking Campfire
-tile.campfireWood.name=Provisional Campfire
+tile.campfireCook.name=Campfire
+tile.campfireWood.name=Wooden Campfire
 item.knife.name=Swiss Knife
 item.parts_canvas.name=Canvas
 item.parts_stickIron.name=Iron Stick

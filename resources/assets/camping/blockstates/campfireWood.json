@@ -1,5 +1,20 @@
 {
     "variants": {
-        "normal": { "model": "camping:campfireWood" }
+        "light=0": { "model": "camping:campfireWood" },
+        "light=1": { "model": "camping:campfireWood" },
+        "light=2": { "model": "camping:campfireWood" },
+        "light=3": { "model": "camping:campfireWood" },
+        "light=4": { "model": "camping:campfireWood" },
+        "light=5": { "model": "camping:campfireWood" },
+        "light=6": { "model": "camping:campfireWood" },
+        "light=7": { "model": "camping:campfireWood" },
+        "light=8": { "model": "camping:campfireWood" },
+        "light=9": { "model": "camping:campfireWood" },
+        "light=10": { "model": "camping:campfireWood" },
+        "light=11": { "model": "camping:campfireWood" },
+        "light=12": { "model": "camping:campfireWood" },
+        "light=13": { "model": "camping:campfireWood" },
+        "light=14": { "model": "camping:campfireWood" },
+        "light=15": { "model": "camping:campfireWood" }
     }
 }

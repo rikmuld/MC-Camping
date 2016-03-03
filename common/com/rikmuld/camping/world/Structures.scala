@@ -46,7 +46,7 @@ class CampsiteGen extends net.minecraft.world.gen.feature.WorldGenerator {
     
     if (!isValitSpawn(bd.west, 3, 2, 5)) return false
 
-    bd.setState(Objs.campfire.getDefaultState)
+    bd.setState(Objs.campfireWood.getDefaultState)
     bd.south.south.setState(Objs.tent.getDefaultState)
     bd.south.south.tile.asInstanceOf[TileTent].createStructure
     bd.south.south.tile.asInstanceOf[TileTent].setContends(1, TileEntityTent.BEDS, true, 0)

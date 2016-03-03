@@ -67,10 +67,14 @@ class Lantern(modId:String, info:ObjInfo) extends RMBlockContainer(modId, info) 
   override def canPlaceBlockAt(world: World, pos:BlockPos): Boolean = ((world, pos).block == null || (world, pos).isReplaceable) && canStay((world, pos))
   override def createNewTileEntity(world: World, meta: Int): RMTile = new TileLantern()
   override def getDrops(world:IBlockAccess, pos:BlockPos, state:IBlockState, forture:Int):java.util.List[ItemStack] = {
-    val stack = new ItemStack(this, 1, if(isLit(world, pos)) BlockDefinitions.Lantern.ON else BlockDefinitions.Lantern.OFF)
+    println(isLit(world, pos))
+    val stack = new ItemStack(this, 1, BlockDefinitions.Lantern.OFF)
     burnTime.map { time => 
-      stack.setTagCompound(new NBTTagCompound())
-      stack.getTagCompound.setInteger("time", time)
+      if(time>0){
+        stack.setItemDamage(BlockDefinitions.Lantern.ON)
+        stack.setTagCompound(new NBTTagCompound())
+        stack.getTagCompound.setInteger("time", time)
+      }
     }
     List(stack)
   }
@@ -94,6 +98,7 @@ class Lantern(modId:String, info:ObjInfo) extends RMBlockContainer(modId, info) 
         bd.setState(state.withProperty(LIT, true))
         bd.update
         bd.tile.asInstanceOf[TileLantern].burnTime = 1500
+        player.getCurrentEquippedItem.stackSize-=1
         return true
       }
     }

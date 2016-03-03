@@ -74,10 +74,11 @@ import com.rikmuld.camping.objs.entity.Mountable
 import net.minecraftforge.fml.common.gameevent.PlayerEvent
 import net.minecraft.util.ChatComponentText
 import net.minecraftforge.event.world.WorldEvent
+import com.rikmuld.camping.objs.tile.Roaster
 
 class EventsS {
   var tickLight: Int = 0
-  var marshupdate = 0
+  var marshupdate: Float = 0
   val UUIDSpeedCamping = new UUID(new Random(83746763).nextLong, new Random(28647556).nextLong)
 
   @SubscribeEvent
@@ -172,27 +173,39 @@ class EventsS {
         PacketSender.to(new MapData(data.scale, data.xCenter, data.zCenter, data.colors), player.asInstanceOf[EntityPlayerMP])
       }
     }
-    if (!world.isRemote && (Option(player.getCurrentEquippedItem).isDefined) && player.getCurrentEquippedItem.getItem == Objs.parts && (player.getCurrentEquippedItem.getItemDamage == ItemDefinitions.Parts.MARSHMALLOWSTICK)) {
-      val mob = Option(player.getMOP)
-      if (mob.isDefined) {
-        val x = mob.get.getBlockPos.getX
-        val y = mob.get.getBlockPos.getY
-        val z = mob.get.getBlockPos.getZ
-        val bd = (player.worldObj, mob.get.getBlockPos)
-        if (bd.block == Objs.campfireCook && (new Vec3(x + 0.5F, y + 0.5F, z + 0.5F).distanceTo(new Vec3(player.posX, player.posY, player.posZ)) <= 2.5F)) {
-          if (marshupdate > 80) {
-            player.getCurrentEquippedItem.stackSize -= 1
-            if (player.getCurrentEquippedItem.stackSize <= 0) player.setCurrentItem(null)
-            if (!player.inventory.addItemStackToInventory(new ItemStack(Objs.marshmallow))) player.dropPlayerItemWithRandomChoice(new ItemStack(Objs.marshmallow), false)
-            if(Option(player.ridingEntity).isDefined && player.ridingEntity.isInstanceOf[Mountable])player.triggerAchievement(Objs.achMarshRoast)
-            marshupdate = 0
-          }
-          val tile = bd.tile.asInstanceOf[TileCampfireCook]
-          if (tile.fuel > 0) marshupdate += 1
-          else marshupdate = 0
-        }
+    if (!world.isRemote) {
+      val oldMarsh = marshupdate
+      
+      if(Option(player.getCurrentEquippedItem).isDefined){
+        val mob = Option(player.getMOP)
+        if (mob.isDefined) {
+          val x = mob.get.getBlockPos.getX
+          val y = mob.get.getBlockPos.getY
+          val z = mob.get.getBlockPos.getZ
+          val bd = (player.worldObj, mob.get.getBlockPos)
+          val item = player.getCurrentEquippedItem
+          
+          if(bd.tile.isInstanceOf[Roaster] && (new Vec3(x + 0.5F, y + 0.5F, z + 0.5F).distanceTo(new Vec3(player.posX, player.posY, player.posZ)) <= 2.5F)){
+            val roaster = bd.tile.asInstanceOf[Roaster]
+            if(roaster.canRoast(item)){
+              if(marshupdate > roaster.roastTime(item)){
+                player.getCurrentEquippedItem.stackSize -= 1
+                if (player.getCurrentEquippedItem.stackSize <= 0) player.setCurrentItem(null)
+                
+                val cooked = roaster.roastResult(item)
+                
+                if (!player.inventory.addItemStackToInventory(cooked)) player.dropPlayerItemWithRandomChoice(cooked, false)
+                if(Option(player.ridingEntity).isDefined && player.ridingEntity.isInstanceOf[Mountable])player.triggerAchievement(Objs.achMarshRoast)
+                marshupdate = 0
+              } else marshupdate += roaster.roastSpeed(item)
+            } 
+          } 
+        } 
       }
+      
+      if(marshupdate == oldMarsh)marshupdate = 0
     }
+        
     if (!config.coreOnly) {
       var campNum = 0.0f
       for (i <- 0 until 4 if (player.inventory.armorInventory(i) != null && player.inventory.armorInventory(i).getItem.isInstanceOf[ItemArmor] && player.inventory.armorInventory(i).getItem.asInstanceOf[ItemArmor].getArmorMaterial.equals(Objs.fur))) campNum += 0.25f
