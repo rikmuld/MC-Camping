@@ -141,9 +141,16 @@ object ItemDefinitions {
   
   final val BACKPACK       = new ObjInfo(Tab(tab), 
                                          MaxStacksize(1), 
-                                         Name("backpack"), 
+                                         Name("bag"), 
                                          ForceSubtype(true), 
-                                         GuiTrigger(guiBackpack))
+                                         GuiTriggerMeta((0, guiPouch), (1, guiBackpack), (2, guiRucksack)),
+                                         Metadata("pouch", "backpack", "rucksack"))
+  
+  object Backpack {
+    final val POUCH = 0
+    final val BACKPACK = 1
+    final val RUCKSACK = 2
+  }
   
   final val KIT            = new ObjInfo(Tab(tab), 
                                          MaxStacksize(1), 

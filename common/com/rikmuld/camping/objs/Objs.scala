@@ -42,7 +42,9 @@ object Objs {
       campfireCook, 
       tentBounds:RMCoreBlock = _
       
-  var guiBackpack, 
+  var guiPouch,
+      guiBackpack,
+      guiRucksack, 
       guiConfig, 
       guiKit, 
       guiCamping, 

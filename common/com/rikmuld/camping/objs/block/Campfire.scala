@@ -141,18 +141,12 @@ class CampfireWood(modId:String, info:ObjInfo) extends Campfire(modId, info) wit
   }
   override def createNewTileEntity(world: World, meta: Int): RMTile = new TileCampfireWood()
 }
+//current changlog 2.3b
 
-//fixed harvest level/tool for campfires
-//fixed glowstone not consuming in lantern
-//fixed lantern when broken by hand loses fuel
-//reduced dye burning time
-//removed ecoration campfres
-//imporved stability of campfire lighting
-//wooden campfire can only roast things on sticks (more stick food to come!)
-//roasting speed depends on amount of fuel of a campfire
-//fixed no ingame config bug
-//camping inventory configuration now opens the in game config
-//message on startup on how to change invenoty behaviour
-//added tent pegs (replacing iron sticks in some recipes)
-//added wooden campfire
-//decoration campfire drop itself, instead of its parts
+//fixed camping inventory backpack slots not gone after removing backpack
+//added the pouch, it can store up to three items
+//changed the backpack icon and dropped capacity to 9 items
+//added the rucksack, it can store up to 27 items
+//all three of them can be used in the camping inventory
+//fixed tents cannot be colored in crafting tables
+//fixed the default tent that is crafted is the black tent

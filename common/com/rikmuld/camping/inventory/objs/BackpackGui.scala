@@ -14,15 +14,9 @@ import net.minecraft.inventory.Slot
 import com.rikmuld.camping.Lib._
 import com.rikmuld.corerm.CoreUtils._
 import com.rikmuld.corerm.inventory.RMInventoryItem
+import com.rikmuld.camping.objs.ItemDefinitions
 
-class BackpackGui(player: EntityPlayer) extends GuiContainerSimple(new BackpackContainer(player)) {
-  override def getTexture: String = TextureInfo.GUI_BAG;
-  override def getName: String = "Hiking Bag";
-  override def hasName: Boolean = true;
-}
-
-class BackpackContainer(player: EntityPlayer) extends RMContainerItem(player) {
-  for (row <- 0 until 3; collom <- 0 until 9) this.addSlot(new SlotItemsNot(inv, collom + (row * 9), 8 + (collom * 18), 26 + (row * 18), Objs.backpack))
+class BagContainer(player: EntityPlayer) extends RMContainerItem(player) {
   this.addSlots(invPlayer, 9, 3, 9, 8, 84)
   for (row <- 0 until 9) {
     if (row == invPlayer.currentItem) addSlotToContainer(new SlotNoPickup(invPlayer, row, 8 + (row * 18), 142))
@@ -30,5 +24,41 @@ class BackpackContainer(player: EntityPlayer) extends RMContainerItem(player) {
   }
 
   override def getItemInv = new RMInventoryItem(player.getCurrentEquippedItem, player, 27, 64, true)
-  override def getItem: Item = Objs.backpack
+  override def getItem: Item = Objs.backpack;
+}
+
+class BackpackGui(player: EntityPlayer) extends GuiContainerSimple(new BackpackContainer(player)) {
+  override def getTexture: String = TextureInfo.GUI_BAG;
+  override def getName: String = "Backpack";
+  override def hasName: Boolean = true;
+}
+
+class BackpackContainer(player: EntityPlayer) extends BagContainer(player) {
+  for (row <- 0 until 3; collom <- 3 until 6) this.addSlot(new SlotItemsNot(inv, collom + (row * 9), 8 + (collom * 18), 26 + (row * 18), Objs.backpack))
+
+  override def getItemDamage: Int = ItemDefinitions.Backpack.BACKPACK
+}
+
+class PouchGui(player: EntityPlayer) extends GuiContainerSimple(new PouchContainer(player)) {
+  override def getTexture: String = TextureInfo.GUI_BAG;
+  override def getName: String = "Pouch";
+  override def hasName: Boolean = true;
+}
+
+class PouchContainer(player: EntityPlayer) extends BagContainer(player) {
+  for (row <- 1 until 2; collom <- 3 until 6) this.addSlot(new SlotItemsNot(inv, collom + (row * 9), 8 + (collom * 18), 26 + (row * 18), Objs.backpack))
+
+  override def getItemDamage: Int = ItemDefinitions.Backpack.POUCH
+}
+
+class RucksackGui(player: EntityPlayer) extends GuiContainerSimple(new RucksackContainer(player)) {
+  override def getTexture: String = TextureInfo.GUI_BAG;
+  override def getName: String = "Rucksack";
+  override def hasName: Boolean = true;
+}
+
+class RucksackContainer(player: EntityPlayer) extends BagContainer(player) {
+  for (row <- 0 until 3; collom <- 0 until 9) this.addSlot(new SlotItemsNot(inv, collom + (row * 9), 8 + (collom * 18), 26 + (row * 18), Objs.backpack))
+
+  override def getItemDamage: Int = ItemDefinitions.Backpack.RUCKSACK
 }

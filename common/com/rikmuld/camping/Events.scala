@@ -134,12 +134,6 @@ class EventsS {
         event.crafting.setTagCompound(new NBTTagCompound())
         event.crafting.getTagCompound.setInteger("time", 1500)
       }
-      if (event.crafting.getItem() == Item.getItemFromBlock(Objs.tent)) {
-        if (event.craftMatrix.getStackInSlot(slot).getItem() == Items.dye) {
-          event.crafting.setTagCompound(new NBTTagCompound())
-          event.crafting.getTagCompound.setInteger("color", event.craftMatrix.getStackInSlot(slot).getItemDamage)
-        }
-      }
     }
   }
   def keyPressedServer(player: EntityPlayer, id: Int) {

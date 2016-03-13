@@ -9,7 +9,9 @@ import com.rikmuld.camping.inventory.objs.GuiCampfireCook
 import com.rikmuld.camping.inventory.objs.ContainerCampfireCook
 import com.rikmuld.camping.ConfigGUI
 import com.rikmuld.corerm.RMMod
+import com.rikmuld.camping.inventory.objs.RucksackGui
 import com.rikmuld.camping.inventory.objs.BackpackGui
+import com.rikmuld.camping.inventory.objs.PouchGui
 import com.rikmuld.camping.inventory.objs.GuiTrap
 import com.rikmuld.camping.inventory.gui.GuiCampinginv
 import com.rikmuld.camping.inventory.objs.GuiTentLanterns
@@ -19,13 +21,17 @@ import com.rikmuld.camping.inventory.objs.ContainerTrap
 import com.rikmuld.camping.inventory.objs.ContainerTentLanterns
 import com.rikmuld.camping.inventory.container.ContainerCampinv
 import com.rikmuld.camping.inventory.objs.BackpackContainer
+import com.rikmuld.camping.inventory.objs.RucksackContainer
+import com.rikmuld.camping.inventory.objs.PouchContainer
 import com.rikmuld.camping.inventory.objs.KitGui
 import com.rikmuld.camping.inventory.objs.KitContainer
 import com.rikmuld.camping.inventory.objs.GuiTentSleeping
 
 object ModGuis extends ModRegister{
   override def registerServer {
+    guiPouch = RMMod.proxy.registerGui(classOf[PouchContainer], null)
     guiBackpack = RMMod.proxy.registerGui(classOf[BackpackContainer], null)
+    guiRucksack = RMMod.proxy.registerGui(classOf[RucksackContainer], null)
     guiKit = RMMod.proxy.registerGui(classOf[KitContainer], null)
     guiCamping = RMMod.proxy.registerGui(classOf[ContainerCampinv], null)
     guiTrap = RMMod.proxy.registerGui(classOf[ContainerTrap], null)
@@ -39,7 +45,9 @@ object ModGuis extends ModRegister{
   
   @SideOnly(Side.CLIENT)
   override def registerClient {
+    guiPouch = RMMod.proxy.registerGui(classOf[PouchContainer], classOf[PouchGui])
     guiBackpack = RMMod.proxy.registerGui(classOf[BackpackContainer], classOf[BackpackGui])
+    guiRucksack = RMMod.proxy.registerGui(classOf[RucksackContainer], classOf[RucksackGui])
     guiKit = RMMod.proxy.registerGui(classOf[KitContainer], classOf[KitGui])
     guiCamping = RMMod.proxy.registerGui(classOf[ContainerCampinv], classOf[GuiCampinginv])
     guiTrap = RMMod.proxy.registerGui(classOf[ContainerTrap], classOf[GuiTrap])

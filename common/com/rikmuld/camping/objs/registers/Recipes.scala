@@ -40,12 +40,12 @@ object ModRecipes extends ModRegister {
     GameRegistry.addShapelessRecipe(lanterns(BlockDefinitions.Lantern.ON), lanterns(BlockDefinitions.Lantern.OFF), glowstone_dust)
     GameRegistry.addShapelessRecipe(lanterns(BlockDefinitions.Lantern.ON), lanterns(BlockDefinitions.Lantern.ON), glowstone_dust)
     GameRegistry.addShapelessRecipe(prts(Parts.MARSHMALLOWSTICK).toStack(3), prts(Parts.MARSHMALLOW), prts(Parts.STICK_IRON), prts(Parts.STICK_IRON), prts(Parts.STICK_IRON))
-    GameRegistry.addRecipe(nwsk(tent), "000", "0 0", "1 1", '0': Character, prts(Parts.CANVAS), '1': Character, prts(Parts.TENT_PEG));
+    GameRegistry.addRecipe(nwsk(tent, 1, BlockDefinitions.Tent.WHITE), "000", "0 0", "1 1", '0': Character, prts(Parts.CANVAS), '1': Character, prts(Parts.TENT_PEG));
     GameRegistry.addRecipe(nwsk(sleepingBag), "1  ", "000", '0': Character, nwsk(wool).getWildValue, '1': Character, nwsk(knife).getWildValue)
     GameRegistry.addRecipe(nwsk(sleepingBag), " 1 ", "000", '0': Character, nwsk(wool).getWildValue, '1': Character, nwsk(knife).getWildValue)
     GameRegistry.addRecipe(nwsk(sleepingBag), "  1", "000", '0': Character, nwsk(wool).getWildValue, '1': Character, nwsk(knife).getWildValue)
     GameRegistry.addShapelessRecipe(prts(Parts.CANVAS), hemp, nwsk(knife).getWildValue)
-    GameRegistry.addShapelessRecipe(nwsk(tent), tent, nwsk(Items.dye).getWildValue)
+    for(i <- 0 until 16) GameRegistry.addShapelessRecipe(nwsk(tent, 1, i), nwsk(tent).getWildValue, nwsk(Items.dye, 1, i))
 
     if (!config.coreOnly) {
       val partsAnimal = animalParts.getMetaCycle(animalParts.getItemInfo.getValue(PropType.METADATA).asInstanceOf[Array[_]].length)

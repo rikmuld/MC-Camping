@@ -204,7 +204,6 @@ object Campsite {
   def fromNBT(camper:Camper, tag:NBTTagCompound):Campsite = {
     val center = tag.getIntArray("center")
     val tent = tag.getIntArray("tent")
-    println("hallo")
     new Campsite(camper, new BlockPos(center(0), center(1), center(2)), new BlockPos(tent(0), tent(1), tent(2)))
   }
 }
