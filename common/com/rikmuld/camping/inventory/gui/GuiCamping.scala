@@ -22,6 +22,7 @@ import com.rikmuld.corerm.tabbed.GuiTabbed
 import net.minecraft.client.Minecraft
 import com.rikmuld.corerm.RMMod
 import com.rikmuld.camping.ConfigGUI
+import com.rikmuld.camping.objs.ItemDefinitions
 
 object GuiCampinginv {
   final val TAB_ARMOR = 0
@@ -38,9 +39,11 @@ class GuiCampinginv(var player: EntityPlayer) extends GuiTabbed(player, new Cont
   var hasKnife = false
   var lastMouseX = 0
   var lastMouseY = 0
+  
+  var pack = 0
            
   override def initGui {
-    super.initGui
+    super.initGui 
     init(guiLeft, guiTop, fontRendererObj)
   }
   override def initTabbed {
@@ -63,8 +66,13 @@ class GuiCampinginv(var player: EntityPlayer) extends GuiTabbed(player, new Cont
       enabled = config.prmInv==1&&config.secInv!=id-3})
   }
   def setContents(){
+    val backpack = this.inventorySlots.asInstanceOf[ContainerCampinv].campinv.getStackInSlot(0)
+    
     hasKnife = (this.inventorySlots.asInstanceOf[ContainerCampinv].campinv.getStackInSlot(1) != null)
-    hasBackpack = (this.inventorySlots.asInstanceOf[ContainerCampinv].campinv.getStackInSlot(0) != null)
+    if(backpack!=null){
+      hasBackpack = true
+      pack = backpack.getItemDamage
+    } else hasBackpack = false
   }
   override def setTabTopActive(id: Int) {
     if(id == GuiCampinginv.TAB_CONFIG){
@@ -130,7 +138,13 @@ class GuiCampinginv(var player: EntityPlayer) extends GuiTabbed(player, new Cont
       this.mc.getTextureManager().bindTexture(inventoryTexture)
       this.drawTexturedModalRect(guiLeft + 29, guiTop+7, 7, 7, 154, 72);
       GuiInventory.drawEntityOnScreen(guiLeft + 51 + 22, guiTop + 75, 30, (guiLeft + 51 + 22 - lastMouseX).asInstanceOf[Float], (guiTop + 75 - 50 - lastMouseY).asInstanceOf[Float], this.mc.thePlayer);
-    } else if(id==1)drawTexturedModalRect(guiLeft+29, guiTop+16, 29, 83, 162, 54)
+    } else if(id==1){
+      if(hasBackpack){
+        if(pack==ItemDefinitions.Backpack.RUCKSACK)drawTexturedModalRect(guiLeft+29, guiTop+16, 29, 83, 162, 54)
+        else if(pack==ItemDefinitions.Backpack.BACKPACK)drawTexturedModalRect(guiLeft + 83, guiTop + 16, 29, 83, 54, 54)
+        else if(pack==ItemDefinitions.Backpack.POUCH)drawTexturedModalRect(guiLeft + 83, guiTop + 34, 0, 166, 54, 18)  
+      }
+    }
     else if(id==2)drawTexturedModalRect(guiLeft+52, guiTop+16, 0, 166, 115, 54)
     else {
       

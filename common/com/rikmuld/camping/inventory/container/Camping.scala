@@ -34,6 +34,7 @@ import com.rikmuld.corerm.tabbed.SlotTabbedItemsNot
 import com.rikmuld.corerm.tabbed.SlotTabbed
 import com.rikmuld.corerm.tabbed.ContainerTabbed
 import com.rikmuld.camping.objs.BlockDefinitions
+import com.rikmuld.camping.objs.ItemDefinitions
 
 class ContainerCampinv(player:EntityPlayer) extends Container with ContainerTabbed {
   var backpackInv: RMInventoryItem = new RMInventoryItem(new ItemStack(Objs.backpack, 1, 0), player, 27, 64, false)
@@ -47,7 +48,7 @@ class ContainerCampinv(player:EntityPlayer) extends Container with ContainerTabb
   this.addSlots(player.inventory, 0, 1, 9, 30, 142)
   this.addSlots(player.inventory, 9, 3, 9, 30, 84)
     
-  addSlotToContainer(new SlotItemsOnly(campinv, 0, 8, 35, new ItemStack(Objs.backpack)))
+  addSlotToContainer(new SlotItemsOnly(campinv, 0, 8, 35, Objs.backpack))
   addSlotToContainer(new SlotItemsOnly(campinv, 1, 8, 53, Objs.knife))
   addSlotToContainer(new SlotItemsOnly(campinv, 2, 196, 35, new ItemStack(Objs.lantern, 1, BlockDefinitions.Lantern.ON)))
   addSlotToContainer(new SlotItemsOnly(campinv, 3, 196, 53, Items.filled_map))
@@ -81,6 +82,10 @@ class ContainerCampinv(player:EntityPlayer) extends Container with ContainerTabb
   onCraftMatrixChanged(this.craftMatrix)
   campinv.openInventory(player)
   backpackInv.openInventory(player)
+  override def updateTab(player:EntityPlayer, left:Int, top:Int){
+    super.updateTab(player, left, top)
+    campinv.onChange(0)
+  }
   override def onCraftMatrixChanged(par1IInventory: IInventory) {
     craftResult.setInventorySlotContents(0, CraftingManager.getInstance.findMatchingRecipe(this.craftMatrix, this.player.worldObj))
     craftResultSmall.setInventorySlotContents(0, CraftingManager.getInstance.findMatchingRecipe(this.craftMatrixSmall, this.player.worldObj))
@@ -171,31 +176,52 @@ class InventoryCampinv(player: EntityPlayer, var slots: ArrayList[SlotWithDisabl
   if (player.getEntityData.hasKey("campInv") == false) player.getEntityData.setTag("campInv", new NBTTagCompound())
   tag = player.getEntityData.getCompoundTag("campInv")
 
+  final val SLOT_BACKPACK = 0
+  
+  final val POUCH = List(12, 13, 14)
+  final val BACKPACK = List(3, 4, 5, 21, 22, 23) ::: POUCH
+  final val RUCKSACK = List.range(0, 27)
+  
   override def onChange(slotNum: Int) {
     super.onChange(slotNum)
-    if (slotNum == 0) {
-      if (getStackInSlot(0) != null) {
-        for (slot <- slots) {
-          slot.enable
-          if (!getStackInSlot(0).hasTagCompound()) getStackInSlot(0).setTagCompound(new NBTTagCompound())
-          backpack.tag = getStackInSlot(0).getTagCompound
-          backpack.readFromNBT(backpack.tag)
-        }
-        backpack.item = getStackInSlot(0).getItem
-      } else {
-        for (slot <- slots) {
-          slot.disable
-          Double
-          backpack.tag = new NBTTagCompound()
-          backpack.readFromNBT(backpack.tag)
-        }
-      }
+    if (slotNum == SLOT_BACKPACK) {
+      backpackChange()
     }
     if(getInventory.filter { stack => stack==null }.size == 0)player.triggerAchievement(Objs.achCamperFull)
   }
   override def openInventory(player:EntityPlayer) {
     super.openInventory(player)
-    onChange(0)
+    onChange(SLOT_BACKPACK)
   }
   override def getInventoryStackLimit = 1
+  def backpackChange(){
+    var pack = getStackInSlot(SLOT_BACKPACK)
+    if (pack != null) {
+      if (!pack.hasTagCompound()) pack.setTagCompound(new NBTTagCompound())
+      backpack.tag = pack.getTagCompound
+      backpack.readFromNBT(backpack.tag)
+      
+      enableBackpackSlots(pack.getItemDamage)
+      
+      backpack.item = pack.getItem
+    } else {
+      backpack.tag = new NBTTagCompound()
+      backpack.readFromNBT(backpack.tag)
+      
+      disdableBackpackSlots()
+    }
+  }
+  def enableBackpackSlots(damage:Int){
+    var set:List[Int] = List()
+    damage match {
+      case ItemDefinitions.Backpack.POUCH => set = POUCH
+      case ItemDefinitions.Backpack.BACKPACK => set = BACKPACK
+      case ItemDefinitions.Backpack.RUCKSACK => set = RUCKSACK
+    }
+    for (slot <- slots) slot.disable
+    for(slot <- set) slots(slot).enable
+  }
+  def disdableBackpackSlots(){
+    for (slot <- slots) slot.disable
+  }
 }

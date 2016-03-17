@@ -35,7 +35,7 @@ import com.rikmuld.camping.objs.registers.ModMisc
 object CampingMod {
   final val MOD_ID = "camping"
   final val MOD_NAME = "The Camping Mod 2"
-  final val MOD_VERSION = "2.2g"
+  final val MOD_VERSION = "2.3b"
   final val MOD_LANUAGE = "scala"
   final val MOD_DEPENDENCIES = "required-after:Forge@[v11.14.1.1397,);required-after:corerm@[1.2c,)"
   final val MOD_SERVER_PROXY = "com.rikmuld."+MOD_ID+".ProxyServer"
@@ -80,9 +80,6 @@ object CampingMod {
     if(side == Side.SERVER)register.registerServer    
   }
 }
-
-//FIX LANTERN IN TENT NOT RIGHT
-//FIX TENT CRASH
 
 object Lib {
   object ConfigInfo {
