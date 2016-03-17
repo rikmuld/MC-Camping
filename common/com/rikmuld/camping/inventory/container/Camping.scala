@@ -84,7 +84,7 @@ class ContainerCampinv(player:EntityPlayer) extends Container with ContainerTabb
   backpackInv.openInventory(player)
   override def updateTab(player:EntityPlayer, left:Int, top:Int){
     super.updateTab(player, left, top)
-    campinv.onChange(0)
+    campinv.backpackChange()
   }
   override def onCraftMatrixChanged(par1IInventory: IInventory) {
     craftResult.setInventorySlotContents(0, CraftingManager.getInstance.findMatchingRecipe(this.craftMatrix, this.player.worldObj))
