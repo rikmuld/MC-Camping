@@ -16,6 +16,7 @@ import com.rikmuld.camping.objs.BlockDefinitions
 import com.rikmuld.corerm.CoreUtils._
 import net.minecraft.init.Items._
 import net.minecraft.init.Blocks._
+import com.rikmuld.camping.objs.ItemDefinitions
 
 object ModRecipes extends ModRegister {
   override def register {
@@ -44,6 +45,9 @@ object ModRecipes extends ModRegister {
     GameRegistry.addRecipe(nwsk(sleepingBag), "1  ", "000", '0': Character, nwsk(wool).getWildValue, '1': Character, nwsk(knife).getWildValue)
     GameRegistry.addRecipe(nwsk(sleepingBag), " 1 ", "000", '0': Character, nwsk(wool).getWildValue, '1': Character, nwsk(knife).getWildValue)
     GameRegistry.addRecipe(nwsk(sleepingBag), "  1", "000", '0': Character, nwsk(wool).getWildValue, '1': Character, nwsk(knife).getWildValue)
+    GameRegistry.addRecipe(nwsk(backpack, 1, ItemDefinitions.Backpack.POUCH), " 0 ", "1 1", "111", '0': Character, string, '1': Character, leather)
+    GameRegistry.addRecipe(nwsk(backpack, 1, ItemDefinitions.Backpack.BACKPACK), " 0 ", "121", "111", '0': Character, string, '1': Character, prts(ItemDefinitions.Parts.CANVAS), '2':Character, nwsk(backpack, 1, ItemDefinitions.Backpack.BACKPACK))
+    GameRegistry.addRecipe(nwsk(backpack, 1, ItemDefinitions.Backpack.RUCKSACK), " 0 ", "121", "111", '0': Character, string, '1': Character, nwsk(animalParts, 1, ItemDefinitions.PartsAnimal.FUR_BROWN), '2':Character, nwsk(backpack, 1, ItemDefinitions.Backpack.RUCKSACK))
     GameRegistry.addShapelessRecipe(prts(Parts.CANVAS), hemp, nwsk(knife).getWildValue)
     for(i <- 0 until 16) GameRegistry.addShapelessRecipe(nwsk(tent, 1, i), nwsk(tent).getWildValue, nwsk(Items.dye, 1, i))
 
