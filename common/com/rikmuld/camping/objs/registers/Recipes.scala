@@ -24,7 +24,6 @@ object ModRecipes extends ModRegister {
     val prts = parts.getMetaCycle(parts.getItemInfo.getValue(PropType.METADATA).asInstanceOf[Array[_]].length)
     val lanterns = lantern.getMetaCycle(2)
 
-    GameRegistry.addRecipe(nwsk(backpack), "000", "0 0", "000", '0': Character, prts(Parts.CANVAS))
     GameRegistry.addRecipe(nwsk(knife), "010", "010", "010", '0': Character, dye(1), '1': Character, iron_ingot)
     GameRegistry.addRecipe(nwsk(campfireCook), " 0 ", "0 0", " 0 ", '0': Character, cobblestone)
     //GameRegistry.addRecipe(nwsk(campfire), " 0 ", "010", "020", '0': Character, stick, '1': Character, flint, '2': Character, campfireCook)
