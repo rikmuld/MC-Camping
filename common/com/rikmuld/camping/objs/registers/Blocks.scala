@@ -35,6 +35,8 @@ import net.minecraftforge.fml.client.registry.ClientRegistry
 import net.minecraftforge.fml.relauncher.SideOnly
 import net.minecraftforge.fml.relauncher.Side
 import com.rikmuld.camping.objs.BlockDefinitions._
+import net.minecraft.init.Blocks
+import net.minecraft.item.ItemStack
 
 object ModBlocks extends ModRegister {
   override def register {

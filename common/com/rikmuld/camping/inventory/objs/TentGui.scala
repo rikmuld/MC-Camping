@@ -28,11 +28,25 @@ import com.rikmuld.camping.objs.tile.TileEntityTent
 import com.rikmuld.camping.objs.Objs
 import net.minecraft.entity.Entity
 import net.minecraft.client.Minecraft
+import net.minecraft.init.Blocks
+import com.rikmuld.camping.objs.BlockDefinitions
+import net.minecraft.util.StatCollector
 
 class GuiTent(player: EntityPlayer, tile: IInventory) extends GuiScreen {
   var tent = tile.asInstanceOf[TileTent]
   var canClick: Array[Boolean] = Array(false, false, false)
+  val bedName = new ItemStack(Items.bed).getDisplayName()
+  val lanternName = new ItemStack(Objs.lantern, 1, BlockDefinitions.Lantern.ON).getDisplayName()
+  val chestName = new ItemStack(Blocks.chest).getDisplayName()
 
+  val plural = StatCollector.translateToLocal("camping.tent.plural") 
+  val manage = StatCollector.translateToLocal("camping.tent.manage") 
+  val remove = StatCollector.translateToLocal("camping.tent.remove") 
+  val clear = StatCollector.translateToLocal("camping.tent.clearall") 
+  val space = StatCollector.translateToLocal("camping.tent.spaceLeft")  
+  val sleeping = StatCollector.translateToLocal("camping.tent.sleeping")  
+  val inventory = StatCollector.translateToLocal("camping.tent.inventory")  
+  
   protected override def actionPerformed(button: GuiButton): Unit = button.id match {
     case 0 => tent.removeAll()
     case 1 => tent.removeBed()
@@ -56,14 +70,14 @@ class GuiTent(player: EntityPlayer, tile: IInventory) extends GuiScreen {
     if (tent.chests == 0) drawTexturedModalRect(guiLeft + 102, guiTop + 78, 51, 160, 51, 53)
     if (tent.beds == 0) drawTexturedModalRect(guiLeft + 172, guiTop + 78, 102, 160, 51, 53)
     GL11.glPushMatrix()
-    drawCenteredString(fontRendererObj, "Space Left: " + tent.contends + "/" + tent.MAX_COST, (width / 2) - 45, guiTop + 10, 0)
-    drawCenteredString(fontRendererObj, "Beds: " + tent.beds + "/" + tent.MAX_BEDS, (width / 2) - 45, guiTop + 30, 0)
-    drawCenteredString(fontRendererObj, "Lanterns: " + tent.lanterns + "/" + tent.MAX_LANTERNS, (width / 2) - 45, guiTop + 40, 0)
-    drawCenteredString(fontRendererObj, "Chests: " + tent.chests + "/" + tent.MAX_CHESTS, (width / 2) - 45, guiTop + 50, 0)
+    drawCenteredString(fontRendererObj, space + ": " + tent.contends + "/" + tent.MAX_COST, (width / 2) - 45, guiTop + 10, 0)
+    drawCenteredString(fontRendererObj, bedName + plural + ": " + tent.beds + "/" + tent.MAX_BEDS, (width / 2) - 45, guiTop + 30, 0)
+    drawCenteredString(fontRendererObj, lanternName + plural + ": " + tent.lanterns + "/" + tent.MAX_LANTERNS, (width / 2) - 45, guiTop + 40, 0)
+    drawCenteredString(fontRendererObj, chestName + plural + ": " + tent.chests + "/" + tent.MAX_CHESTS, (width / 2) - 45, guiTop + 50, 0)
     GL11.glScalef(0.8F, 0.8F, 0.8F)
-    drawCenteredString(fontRendererObj, "Manage Inventory", ((width / 2) * 1.25F).toInt, (guiTop * 1.25F).toInt + (142 * 1.25F).toInt, 0)
-    drawCenteredString(fontRendererObj, "Manage Lantern", ((width / 2) * 1.25F).toInt - (80 * 1.25F).toInt, (guiTop * 1.25F).toInt + (142 * 1.25F).toInt, 0)
-    drawCenteredString(fontRendererObj, "Manage Sleeping", ((width / 2) * 1.25F).toInt + (80 * 1.25F).toInt, (guiTop * 1.25F).toInt + (142 * 1.25F).toInt, 0)
+    drawCenteredString(fontRendererObj, manage + " " + inventory, ((width / 2) * 1.25F).toInt, (guiTop * 1.25F).toInt + (142 * 1.25F).toInt, 0)
+    drawCenteredString(fontRendererObj, manage + " " + lanternName, ((width / 2) * 1.25F).toInt - (80 * 1.25F).toInt, (guiTop * 1.25F).toInt + (142 * 1.25F).toInt, 0)
+    drawCenteredString(fontRendererObj, manage + " " + sleeping, ((width / 2) * 1.25F).toInt + (80 * 1.25F).toInt, (guiTop * 1.25F).toInt + (142 * 1.25F).toInt, 0)
     GL11.glPopMatrix()
     if (isPointInRegion(172, 78, 51, 53, mouseX, mouseY, guiLeft, guiTop) && (tent.beds > 0)) {
       if (Mouse.isButtonDown(0) && canClick(0)) mc.thePlayer.openGui(RMMod, Objs.guiTentSleep, tent.getWorld, tent.getPos.getX, tent.getPos.getY, tent.getPos.getZ)
@@ -82,10 +96,10 @@ class GuiTent(player: EntityPlayer, tile: IInventory) extends GuiScreen {
   override def initGui() {
     super.initGui()
     val guiTop = (height - 160) / 2
-    buttonList.asInstanceOf[java.util.List[GuiButton]].add(new GuiButton(0, (width / 2) + 4, (guiTop + 10) - 2, 85, 10, "Clear All"))
-    buttonList.asInstanceOf[java.util.List[GuiButton]].add(new GuiButton(1, (width / 2) + 4, (guiTop + 30) - 2, 85, 10, "Remove Bed"))
-    buttonList.asInstanceOf[java.util.List[GuiButton]].add(new GuiButton(2, (width / 2) + 4, (guiTop + 40) - 2, 85, 10, "Remove Lantern"))
-    buttonList.asInstanceOf[java.util.List[GuiButton]].add(new GuiButton(3, (width / 2) + 4, (guiTop + 50) - 2, 85, 10, "Remove Chest"))
+    buttonList.asInstanceOf[java.util.List[GuiButton]].add(new GuiButton(0, (width / 2) + 4, (guiTop + 10) - 2, 85, 10, clear))
+    buttonList.asInstanceOf[java.util.List[GuiButton]].add(new GuiButton(1, (width / 2) + 4, (guiTop + 30) - 2, 85, 10, remove + " " + bedName))
+    buttonList.asInstanceOf[java.util.List[GuiButton]].add(new GuiButton(2, (width / 2) + 4, (guiTop + 40) - 2, 85, 10, remove + " " + lanternName))
+    buttonList.asInstanceOf[java.util.List[GuiButton]].add(new GuiButton(3, (width / 2) + 4, (guiTop + 50) - 2, 85, 10, remove + " " + chestName))
   }
   private def isPointInRegion(x: Int, y: Int, width: Int, height: Int, pointX: Int, pointY: Int, guiLeft: Int, guiTop: Int): Boolean = {
     val pointXX = pointX - guiLeft
@@ -102,6 +116,7 @@ class GuiTent(player: EntityPlayer, tile: IInventory) extends GuiScreen {
 class GuiTentSleeping(player: EntityPlayer, tile: IInventory) extends GuiScreen {
   var tent = tile.asInstanceOf[TileTent]
   var canClick: Boolean = _
+  val sleep = StatCollector.translateToLocal("camping.tent.sleep")  
 
   protected override def actionPerformed(button: GuiButton): Unit = button.id match {
     case 0 => tent.sleep(mc.thePlayer)
@@ -128,7 +143,7 @@ class GuiTentSleeping(player: EntityPlayer, tile: IInventory) extends GuiScreen 
   override def initGui {
     super.initGui
     val guiTop = (height - 30) / 2
-    buttonList.asInstanceOf[java.util.List[GuiButton]].add(new GuiButton(0, (width / 2) + -20, guiTop + 10, 61, 10, "Sleep"))
+    buttonList.asInstanceOf[java.util.List[GuiButton]].add(new GuiButton(0, (width / 2) + -20, guiTop + 10, 61, 10, sleep))
   }
   private def isPointInRegion(x: Int, y: Int, width: Int, height: Int, pointX: Int, pointY: Int, guiLeft: Int, guiTop: Int): Boolean = {
     val pointXX = pointX - guiLeft
