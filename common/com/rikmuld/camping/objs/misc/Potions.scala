@@ -14,7 +14,7 @@ object Potions {
   final val TEXTURE = new ResourceLocation(TextureInfo.SPRITE_POTION)
 }
 
-class PotionBleeding(name: String) extends Potion(Potions.TEXTURE, false, 9643043) {
+class PotionBleeding(name: String) extends Potion(false, 9643043) {
   setPotionName(name)
   setIconIndex(0, 0)
 

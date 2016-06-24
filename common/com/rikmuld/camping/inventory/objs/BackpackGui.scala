@@ -15,7 +15,6 @@ import com.rikmuld.camping.Lib._
 import com.rikmuld.corerm.CoreUtils._
 import com.rikmuld.corerm.inventory.RMInventoryItem
 import com.rikmuld.camping.objs.ItemDefinitions
-import net.minecraft.util.StatCollector
 import net.minecraft.item.ItemStack
 import net.minecraft.inventory.Container
 
@@ -26,7 +25,7 @@ class BagContainer(player: EntityPlayer) extends RMContainerItem(player) {
     else addSlotToContainer(new Slot(invPlayer, row, 8 + (row * 18), 142))
   }
 
-  override def getItemInv = new RMInventoryItem(player.getCurrentEquippedItem, player, 27, 64, true)
+  override def getItemInv = new RMInventoryItem(player.inventory.getCurrentItem, player, 27, 64, true)
   override def getItem: Item = Objs.backpack;
 }
 

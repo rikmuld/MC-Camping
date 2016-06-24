@@ -9,7 +9,7 @@ import org.lwjgl.input.Keyboard
 import com.rikmuld.camping.objs.Objs
 import net.minecraft.client.settings.GameSettings
 import com.sun.beans.decoder.TrueElementHandler
-import net.minecraft.util.BlockPos
+import net.minecraft.util.math.BlockPos
 import com.rikmuld.corerm.network.PacketSender
 import com.rikmuld.camping.objs.misc.PlayerExitLog
 

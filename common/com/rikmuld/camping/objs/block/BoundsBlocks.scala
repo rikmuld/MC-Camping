@@ -4,7 +4,7 @@ import com.rikmuld.corerm.bounds.IBoundsBlock
 import com.rikmuld.corerm.objs.ObjInfo
 import com.rikmuld.corerm.objs.RMBlockContainer
 import com.rikmuld.corerm.objs.WithModel
-import net.minecraft.util.BlockPos
+import net.minecraft.util.math.BlockPos
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.world.IBlockAccess
 import net.minecraft.world.World
@@ -13,8 +13,6 @@ import com.rikmuld.camping.objs.tile.TileTent
 import com.rikmuld.corerm.bounds.TileBounds
 import net.minecraft.util.EnumFacing
 import com.rikmuld.corerm.misc.WorldBlock._
-import net.minecraft.util.ChatComponentTranslation
-import net.minecraft.world.biome.BiomeGenBase
 import com.rikmuld.corerm.objs.WithProperties
 import net.minecraft.block.properties.PropertyDirection
 import com.google.common.base.Predicate
@@ -23,7 +21,10 @@ import net.minecraft.block.properties.PropertyBool
 import com.rikmuld.corerm.objs.RMBoolProp
 import net.minecraft.block.state.IBlockState
 import com.rikmuld.camping.objs.tile.TileTent
-import net.minecraft.world.IWorldAccess
+import net.minecraft.util.text.TextComponentTranslation
+import net.minecraft.world.biome.Biome
+import net.minecraftforge.common.BiomeDictionary
+import net.minecraft.init.Biomes
 
 object TentBounds {
   val FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL.asInstanceOf[Predicate[EnumFacing]])
@@ -41,20 +42,20 @@ class TentBounds(modId:String, info:ObjInfo) extends RMBlockContainer(modId, inf
   def getBaseTile(world:IBlockAccess, pos:BlockPos) = world.getTileEntity(world.getTileEntity(pos).asInstanceOf[TileBounds].basePos).asInstanceOf[TileTent]
   def getBaseTile(bd:BlockData) = (bd.world, bd.tile.asInstanceOf[TileBounds].basePos).tile.asInstanceOf[TileTent]
   def sleep(bd:BlockData, player:EntityPlayer){
-    if(bd.world.provider.canRespawnHere && bd.world.getBiomeGenForCoords(bd.pos) != BiomeGenBase.hell){ 
+    if(bd.world.provider.canRespawnHere && bd.world.getBiomeGenForCoords(bd.pos) != Biomes.HELL){ 
       if(isOccupied(bd)){
         val sleepingPlayer = getPlayerInBed((bd.world, bd.pos))
         if(sleepingPlayer != null) {
-          player.addChatComponentMessage(new ChatComponentTranslation("tile.bed.occupied", new Object))
+          player.addChatComponentMessage(new TextComponentTranslation("tile.bed.occupied", new Object))
           return
         }
        getBaseTile(bd).setOccupied(false)
       }
       val sleepState = player.trySleep(bd.pos)
-      if(sleepState == EntityPlayer.EnumStatus.OK)getBaseTile(bd).setOccupied(true)
+      if(sleepState == EntityPlayer.SleepResult.OK)getBaseTile(bd).setOccupied(true)
       else {
-        if(sleepState == EntityPlayer.EnumStatus.NOT_POSSIBLE_NOW) player.addChatComponentMessage(new ChatComponentTranslation("tile.bed.noSleep", new Object))
-        else if(sleepState == EntityPlayer.EnumStatus.NOT_SAFE) player.addChatComponentMessage(new ChatComponentTranslation("tile.bed.noSleep", new Object))
+        if(sleepState == EntityPlayer.SleepResult.NOT_POSSIBLE_NOW) player.addChatComponentMessage(new TextComponentTranslation("tile.bed.noSleep", new Object))
+        else if(sleepState == EntityPlayer.SleepResult.NOT_SAFE) player.addChatComponentMessage(new TextComponentTranslation("tile.bed.noSleep", new Object))
       }
     } else {
       bd.toAir

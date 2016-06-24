@@ -50,7 +50,7 @@ class GuiMapHUD extends GuiScreen {
         val colorIndex = colorData(mc.thePlayer)(i)
         if ((colorIndex / 4) == 0) rgbColors(i) = ((((i + (i / 128)) & 1) * 8) + 16) << 24
         else if (colorIndex >= 0) {
-          val colorValue = MapColor.mapColorArray(colorIndex / 4).colorValue
+          val colorValue = MapColor.COLORS(colorIndex / 4).colorValue
           val heightFlag = colorIndex & 3
           var heigthDarkness = 220
           if (heightFlag == 2) heigthDarkness = 255

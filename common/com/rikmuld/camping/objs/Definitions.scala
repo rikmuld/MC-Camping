@@ -15,7 +15,7 @@ import net.minecraft.block.Block
 object BlockDefinitions {
   final val LANTERN        = new ObjInfo(Tab(tab), 
                                          Name("lantern"),
-                                         Materia(Material.glass),
+                                         Materia(Material.GLASS),
                                          Metadata("lanternOff", "lanternOn"), 
                                          MaxStacksize(1), 
                                          Hardness(.5f), 
@@ -29,7 +29,7 @@ object BlockDefinitions {
   
   final val HEMP           = new ObjInfo(Tab(tab), 
                                          Name("hemp"), 
-                                         Materia(Material.plants), 
+                                         Materia(Material.PLANTS), 
                                          Metadata("plantHemp_0", "plantHemp_1", "plantHemp_2", "plantHemp_3", "plantHemp_4", "plantHemp_5"))
   
   object Hemp {
@@ -43,38 +43,38 @@ object BlockDefinitions {
   
   final val LOGSEAT        = new ObjInfo(Tab(tab), 
                                          Name("logseat"), 
-                                         Materia(Material.wood), 
+                                         Materia(Material.WOOD), 
                                          StepSound(Block.soundTypeWood), 
                                          Hardness(2.0f), 
                                          HarvestLevel("axe", 0))
    
   final val LIGHT          = new ObjInfo(Name("light"), 
-                                         Materia(Material.air), 
+                                         Materia(Material.AIR), 
                                          LightLevel(1.0f))
   
   final val SLEEPING_BAG   = new ObjInfo(Tab(tab), 
                                          Name("sleepingBag"), 
-                                         Materia(Material.cloth), 
+                                         Materia(Material.CLOTH), 
                                          Hardness(0.1f), 
                                          MaxStacksize(4), 
                                          ItemBl(classOf[SleepingBagItem]))
   
   final val TRAP           = new ObjInfo(Tab(tab), 
                                          Name("trap"), 
-                                         Materia(Material.iron), 
+                                         Materia(Material.IRON), 
                                          Hardness(1f), 
                                          GuiTrigger(guiTrap))
   
   final val CAMPFIRE       = new ObjInfo(Tab(tab), 
                                          Name("campfire"), 
-                                         Materia(Material.fire), 
+                                         Materia(Material.FIRE), 
                                          Hardness(2f), 
                                          StepSound(Block.soundTypeStone), 
                                          LightLevel(1.0f))
   
   final val CAMPFIRE_WOOD  = new ObjInfo(Tab(tab), 
                                          Name("campfireWood"), 
-                                         Materia(Material.fire), 
+                                         Materia(Material.FIRE), 
                                          Hardness(1f), 
                                          StepSound(Block.soundTypeStone),
                                          LightLevel(1.0f),
@@ -82,7 +82,7 @@ object BlockDefinitions {
   
   final val CAMPFIRE_COOK  = new ObjInfo(Tab(tab),
                                          Name("campfireCook"), 
-                                         Materia(Material.fire), 
+                                         Materia(Material.FIRE), 
                                          Hardness(2f), 
                                          StepSound(Block.soundTypeStone), 
                                          LightLevel(1.0f), 
@@ -91,7 +91,7 @@ object BlockDefinitions {
   
   final val TENT           = new ObjInfo(Tab(tab), 
                                          Name("tent"),
-                                         Materia(Material.cloth), 
+                                         Materia(Material.CLOTH), 
                                          Hardness(0.2f), 
                                          GuiTrigger(guiTent), 
                                          Metadata("black", "red", "green", "brown", "blue", "purple", "cyan", "grayLight", "grayDark", "pink", "lime", "yellow", "blueLight", "magenta", "orange", "white"), 
@@ -116,7 +116,7 @@ object BlockDefinitions {
   }
   
   final val BOUNDS_TENT   = new ObjInfo(Name("tentBounds"), 
-                                         Materia(Material.cloth))
+                                         Materia(Material.CLOTH))
 }
 
 object ItemDefinitions {

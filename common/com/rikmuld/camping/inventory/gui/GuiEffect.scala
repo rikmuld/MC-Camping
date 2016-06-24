@@ -35,7 +35,7 @@ trait GuiWithEffect extends GuiContainer {
         var k = 33
         if (collection.size() > 5) k = 132 / (collection.size() - 1);
         this.mc.thePlayer.getActivePotionEffects.asInstanceOf[Collection[PotionEffect]].foreach { potioneffect =>
-          val potion = Potion.potionTypes(potioneffect.getPotionID)
+          val potion = potioneffect.getPotion
           GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F)
           this.mc.getTextureManager().bindTexture(inventoryTexture)
           this.drawTexturedModalRect(i, j, 0, 166, 140, 32)
@@ -54,8 +54,8 @@ trait GuiWithEffect extends GuiContainer {
             else if (potioneffect.getAmplifier() == 3)s1 = s1 + " " + I18n.format("enchantment.level.4", new Object)
             
             fontRenderer.drawStringWithShadow(s1, i + 10 + 18, j + 6, 16777215)
-            val s = Potion.getDurationString(potioneffect)
-            fontRenderer.drawStringWithShadow(s, i + 10 + 18, j + 6 + 10, 8355711)
+            val s = potioneffect.getDuration
+            fontRenderer.drawStringWithShadow(s.toString(), i + 10 + 18, j + 6 + 10, 8355711)
           }
           j += k
         }

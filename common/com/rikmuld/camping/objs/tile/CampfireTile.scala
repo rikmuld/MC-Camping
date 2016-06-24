@@ -5,7 +5,6 @@ import com.rikmuld.camping.CampingMod._
 import com.rikmuld.corerm.objs.WithTileInventory
 import net.minecraft.entity.EntityLivingBase
 import net.minecraft.nbt.NBTTagCompound
-import net.minecraft.util.AxisAlignedBB
 import net.minecraft.potion.PotionEffect
 import net.minecraftforge.fml.relauncher.SideOnly
 import java.util.Random
@@ -25,11 +24,12 @@ import com.rikmuld.camping.objs.misc.ItemsData
 import net.minecraft.entity.player.EntityPlayer
 import com.rikmuld.camping.Lib.NBTInfo
 import com.rikmuld.camping.objs.block.CampfireCook
-import net.minecraft.util.BlockPos
 import net.minecraft.block.state.IBlockState
 import net.minecraft.world.World
 import com.rikmuld.camping.objs.block.CampfireWood
 import net.minecraft.util.ITickable
+import net.minecraft.util.math.BlockPos
+import net.minecraft.util.math.AxisAlignedBB
 
 class TileCampfire extends RMTile with ITickable {
   var color: Int = 16

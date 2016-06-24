@@ -3,7 +3,6 @@ package com.rikmuld.camping.inventory.gui
 import org.lwjgl.opengl.GL11
 import net.minecraft.client.Minecraft
 import net.minecraft.client.gui.GuiButton
-import net.minecraft.client.renderer.entity.RenderItem
 import net.minecraft.item.ItemStack
 import net.minecraft.util.ResourceLocation
 import net.minecraft.client.renderer.OpenGlHelper

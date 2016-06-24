@@ -1,24 +1,23 @@
 package com.rikmuld.camping.objs.misc
 
-import com.rikmuld.camping.objs.Objs
 import com.rikmuld.camping.CampingMod._
-import com.rikmuld.camping.Lib._
-import com.rikmuld.corerm.objs.WithTileInventory
-import net.minecraft.network.PacketBuffer
-import net.minecraft.nbt.NBTTagCompound
-import net.minecraft.entity.player.EntityPlayer
-import com.rikmuld.corerm.network.BasicPacketData
-import net.minecraft.item.ItemStack
-import net.minecraftforge.fml.common.network.simpleimpl.MessageContext
-import net.minecraft.util.BlockPos
 import com.rikmuld.camping.CampingMod
-import com.rikmuld.corerm.RMMod
+import com.rikmuld.camping.EventsC
+import com.rikmuld.camping.EventsS
+import com.rikmuld.camping.Lib._
+import com.rikmuld.camping.objs.Objs
 import com.rikmuld.camping.objs.tile.TileLogseat
 import com.rikmuld.camping.objs.tile.TileTent
-import net.minecraftforge.fml.relauncher.SideOnly
-import net.minecraftforge.fml.relauncher.Side
-import com.rikmuld.camping.EventsS
-import com.rikmuld.camping.EventsC
+import com.rikmuld.corerm.RMMod
+import com.rikmuld.corerm.network.BasicPacketData
+import com.rikmuld.corerm.objs.WithTileInventory
+
+import net.minecraft.entity.player.EntityPlayer
+import net.minecraft.item.ItemStack
+import net.minecraft.nbt.NBTTagCompound
+import net.minecraft.network.PacketBuffer
+import net.minecraft.util.math.BlockPos
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext
 
 class OpenGui(var id: Int) extends BasicPacketData {
   var x: Int = 0

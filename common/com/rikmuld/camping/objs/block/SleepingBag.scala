@@ -11,13 +11,12 @@ import net.minecraft.client.renderer.EnumFaceDirection
 import net.minecraft.util.EnumFacing
 import com.google.common.base.Predicate
 import com.rikmuld.camping.objs.block.SleepingBag._
-import net.minecraft.block.state.BlockState
 import net.minecraft.block.state.IBlockState
 import com.rikmuld.corerm.CoreUtils._
 import com.rikmuld.corerm.objs.WithProperties
 import com.rikmuld.corerm.objs.RMBoolProp
 import com.rikmuld.corerm.objs.RMFacingHorizontalProp
-import net.minecraft.util.BlockPos
+import net.minecraft.util.math.BlockPos
 import net.minecraft.item.ItemStack
 import net.minecraft.entity.EntityLivingBase
 import net.minecraft.world.World
@@ -25,18 +24,18 @@ import com.rikmuld.corerm.misc.WorldBlock._
 import net.minecraft.init.Blocks
 import com.rikmuld.corerm.objs.WithModel
 import net.minecraft.block.Block
-import net.minecraft.util.AxisAlignedBB
+import net.minecraft.util.math.AxisAlignedBB
 import java.util.Random
 import com.rikmuld.corerm.objs.RMItemBlock
 import com.rikmuld.camping.objs.Objs
 import com.rikmuld.camping.CampingMod._
 import net.minecraft.entity.player.EntityPlayer
-import net.minecraft.world.biome.BiomeGenBase
-import net.minecraft.util.ChatComponentTranslation
 import net.minecraft.block.BlockBed
 import net.minecraft.world.IBlockAccess
 import net.minecraft.entity.Entity
 import com.rikmuld.camping.objs.BlockDefinitions
+import net.minecraft.init.Biomes
+import net.minecraft.util.text.TextComponentTranslation
 
 object SleepingBag {
   val IS_HEAD = PropertyBool.create("isHead")
@@ -52,7 +51,7 @@ class SleepingBag(modId:String, info:ObjInfo) extends RMBlock(modId, info) with 
   override def onBlockPlacedBy(world:World, pos:BlockPos, state:IBlockState, entity:EntityLivingBase, stack:ItemStack) {
     val bd = (world, pos)
     bd.setState(blockState.getBaseState.withProperty(FACING, entity.facing).withProperty(IS_HEAD, true.asInstanceOf[java.lang.Boolean]))
-    if(bd.nw(entity.facing).block == Blocks.air || bd.nw(entity.facing).isReplaceable) bd.nw(entity.facing).setState(blockState.getBaseState.withProperty(IS_HEAD, false.asInstanceOf[java.lang.Boolean]).withProperty(FACING, entity.facing.getOpposite))
+    if(bd.nw(entity.facing).block == Blocks.AIR || bd.nw(entity.facing).isReplaceable) bd.nw(entity.facing).setState(blockState.getBaseState.withProperty(IS_HEAD, false.asInstanceOf[java.lang.Boolean]).withProperty(FACING, entity.facing.getOpposite))
     dropIfCantStay(bd)
   }
   def isHead(state:IBlockState):Boolean = state.getValue(IS_HEAD).asInstanceOf[Boolean]
@@ -83,20 +82,20 @@ class SleepingBag(modId:String, info:ObjInfo) extends RMBlock(modId, info) with 
         if(bd.block!=this)return true
       }
       
-      if(bd.world.provider.canRespawnHere && bd.world.getBiomeGenForCoords(bd.pos) != BiomeGenBase.hell){ 
+      if(bd.world.provider.canRespawnHere && bd.world.getBiomeGenForCoords(bd.pos) != Biomes.HELL){ 
         if(isOccupied(bd.state)){
           val sleepingPlayer = getPlayerInBed((bd.world, bd.pos))
           if(sleepingPlayer != null) {
-            player.addChatComponentMessage(new ChatComponentTranslation("tile.bed.occupied", new Object))
+            player.addChatComponentMessage(new TextComponentTranslation("tile.bed.occupied", new Object))
             return true
           }
           bd.setState(bd.state.withProperty(IS_OCCUPIED, false.asInstanceOf[java.lang.Boolean]))
         }
         val sleepState = player.trySleep(bd.pos)
-        if(sleepState == EntityPlayer.EnumStatus.OK)bd.setState(bd.state.withProperty(IS_OCCUPIED, true.asInstanceOf[java.lang.Boolean]), 4)
+        if(sleepState == EntityPlayer.SleepResult.OK)bd.setState(bd.state.withProperty(IS_OCCUPIED, true.asInstanceOf[java.lang.Boolean]), 4)
         else {
-          if(sleepState == EntityPlayer.EnumStatus.NOT_POSSIBLE_NOW) player.addChatComponentMessage(new ChatComponentTranslation("tile.bed.noSleep", new Object))
-          else if(sleepState == EntityPlayer.EnumStatus.NOT_SAFE) player.addChatComponentMessage(new ChatComponentTranslation("tile.bed.noSleep", new Object))
+          if(sleepState == EntityPlayer.SleepResult.NOT_POSSIBLE_NOW) player.addChatComponentMessage(new TextComponentTranslation("tile.bed.noSleep", new Object))
+          else if(sleepState == EntityPlayer.SleepResult.NOT_SAFE) player.addChatComponentMessage(new TextComponentTranslation("tile.bed.noSleep", new Object))
         }
       } else {
         bd.toAir

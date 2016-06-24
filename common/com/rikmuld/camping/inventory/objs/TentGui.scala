@@ -30,22 +30,22 @@ import net.minecraft.entity.Entity
 import net.minecraft.client.Minecraft
 import net.minecraft.init.Blocks
 import com.rikmuld.camping.objs.BlockDefinitions
-import net.minecraft.util.StatCollector
+import net.minecraft.util.text.translation.I18n
 
 class GuiTent(player: EntityPlayer, tile: IInventory) extends GuiScreen {
   var tent = tile.asInstanceOf[TileTent]
   var canClick: Array[Boolean] = Array(false, false, false)
-  val bedName = new ItemStack(Items.bed).getDisplayName()
+  val bedName = new ItemStack(Items.BED).getDisplayName()
   val lanternName = new ItemStack(Objs.lantern, 1, BlockDefinitions.Lantern.ON).getDisplayName()
-  val chestName = new ItemStack(Blocks.chest).getDisplayName()
+  val chestName = new ItemStack(Blocks.CHEST).getDisplayName()
 
-  val plural = StatCollector.translateToLocal("camping.tent.plural") 
-  val manage = StatCollector.translateToLocal("camping.tent.manage") 
-  val remove = StatCollector.translateToLocal("camping.tent.remove") 
-  val clear = StatCollector.translateToLocal("camping.tent.clearall") 
-  val space = StatCollector.translateToLocal("camping.tent.spaceLeft")  
-  val sleeping = StatCollector.translateToLocal("camping.tent.sleeping")  
-  val inventory = StatCollector.translateToLocal("camping.tent.inventory")  
+  val plural = I18n.translateToLocal("camping.tent.plural") 
+  val manage = I18n.translateToLocal("camping.tent.manage") 
+  val remove = I18n.translateToLocal("camping.tent.remove") 
+  val clear = I18n.translateToLocal("camping.tent.clearall") 
+  val space = I18n.translateToLocal("camping.tent.spaceLeft")  
+  val sleeping = I18n.translateToLocal("camping.tent.sleeping")  
+  val inventory = I18n.translateToLocal("camping.tent.inventory")  
   
   protected override def actionPerformed(button: GuiButton): Unit = button.id match {
     case 0 => tent.removeAll()
@@ -116,7 +116,7 @@ class GuiTent(player: EntityPlayer, tile: IInventory) extends GuiScreen {
 class GuiTentSleeping(player: EntityPlayer, tile: IInventory) extends GuiScreen {
   var tent = tile.asInstanceOf[TileTent]
   var canClick: Boolean = _
-  val sleep = StatCollector.translateToLocal("camping.tent.sleep")  
+  val sleep = I18n.translateToLocal("camping.tent.sleep")  
 
   protected override def actionPerformed(button: GuiButton): Unit = button.id match {
     case 0 => tent.sleep(mc.thePlayer)
@@ -184,7 +184,7 @@ class GuiTentLanterns(player: EntityPlayer, inv: IInventory) extends GuiContaine
 class ContainerTentLanterns(player: EntityPlayer, tile: IInventory) extends RMContainerTile(player, tile) {
   var tent = tile.asInstanceOf[TileTent]
 
-  addSlotToContainer(new SlotItemsOnly(tile, 0, 80, 88, Items.glowstone_dust))
+  addSlotToContainer(new SlotItemsOnly(tile, 0, 80, 88, Items.GLOWSTONE_DUST))
   this.addSlots(player.inventory, 9, 3, 9, 8, 113)
   this.addSlots(player.inventory, 0, 1, 9, 8, 171)
 
@@ -196,7 +196,7 @@ class ContainerTentLanterns(player: EntityPlayer, tile: IInventory) extends RMCo
       itemstack = itemstack1.copy()
       if (i < tent.getSizeInventory) {
         if (!mergeItemStack(itemstack1, tent.getSizeInventory, inventorySlots.size, true)) return null
-      } else if (itemstack1.getItem() == Items.glowstone_dust) {
+      } else if (itemstack1.getItem() == Items.GLOWSTONE_DUST) {
         if (!mergeItemStack(itemstack1, 0, tent.getSizeInventory, true)) return null
       }
       if (itemstack1.stackSize == 0) slot.putStack(null)

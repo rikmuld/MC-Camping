@@ -6,7 +6,6 @@ import net.minecraft.client.gui.inventory.GuiContainer
 import com.rikmuld.corerm.client.GuiContainerSimple
 import com.rikmuld.camping.Lib.TextureInfo
 import com.rikmuld.camping.objs.tile.TileCampfire
-import net.minecraft.util.StatCollector
 import org.lwjgl.opengl.GL11
 import net.minecraft.util.ResourceLocation
 import com.rikmuld.corerm.Lib.TextInfo
@@ -17,12 +16,12 @@ import net.minecraft.item.ItemStack
 import com.rikmuld.corerm.inventory.SlotItemsOnly
 import net.minecraft.init.Items
 import net.minecraft.inventory.Slot
-import net.minecraft.inventory.ICrafting
 import com.rikmuld.camping.objs.Objs
 import java.util.ArrayList
 import com.rikmuld.camping.objs.tile.TileCampfire
 import com.rikmuld.camping.objs.tile.TileCampfireCook
 import com.rikmuld.camping.inventory.SlotCooking
+import net.minecraft.inventory.IContainerListener
 
 class GuiCampfireCook(player: EntityPlayer, tile: IInventory) extends GuiContainer(new ContainerCampfireCook(player, tile)) {
   ySize = 188
@@ -59,7 +58,7 @@ class ContainerCampfireCook(player: EntityPlayer, tile: IInventory) extends RMCo
   val fire = tile.asInstanceOf[TileCampfireCook]
   val slots = new ArrayList[SlotCooking]()
 
-  addSlotToContainer(new SlotItemsOnly(tile, 0, 80, 84, Items.coal))
+  addSlotToContainer(new SlotItemsOnly(tile, 0, 80, 84, Items.COAL))
   addSlotToContainer(new SlotItemsOnly(tile, 1, 150, 9, new ItemStack(Objs.kit, 1, 1), new ItemStack(Objs.kit, 1, 3), new ItemStack(Objs.kit, 1, 2)))
   for (i <- 0 until 10) {
     val slot = new SlotCooking(tile, i + 2, 0, 0)
@@ -70,8 +69,8 @@ class ContainerCampfireCook(player: EntityPlayer, tile: IInventory) extends RMCo
   this.addSlots(player.inventory, 0, 1, 9, 8, 164)
   this.addSlots(player.inventory, 9, 3, 9, 8, 106)
 
-  override def onCraftGuiOpened(crafting: ICrafting) {
-    super.onCraftGuiOpened(crafting)
+  override def addListener(crafting: IContainerListener) {
+    super.addListener(crafting)
     for (i <- 0 until fire.cookProgress.length) {
       crafting.sendProgressBarUpdate(this, i, fire.cookProgress(i))
     }
@@ -85,7 +84,7 @@ class ContainerCampfireCook(player: EntityPlayer, tile: IInventory) extends RMCo
       if (slotNum < fire.getSizeInventory) {
         if (!mergeItemStack(itemstack1, fire.getSizeInventory, inventorySlots.size, true)) return null
       } else {
-        if (itemstack.getItem == Items.coal) {
+        if (itemstack.getItem == Items.COAL) {
           if (!mergeItemStack(itemstack1, 0, 1, false)) return null
         } else if (itemstack.getItem == Objs.kit) {
           if (!mergeItemStack(itemstack1, 1, 2, false)) return null

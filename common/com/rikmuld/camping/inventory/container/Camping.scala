@@ -35,6 +35,7 @@ import com.rikmuld.corerm.tabbed.SlotTabbed
 import com.rikmuld.corerm.tabbed.ContainerTabbed
 import com.rikmuld.camping.objs.BlockDefinitions
 import com.rikmuld.camping.objs.ItemDefinitions
+import net.minecraft.inventory.EntityEquipmentSlot
 
 class ContainerCampinv(player:EntityPlayer) extends Container with ContainerTabbed {
   var backpackInv: RMInventoryItem = new RMInventoryItem(new ItemStack(Objs.backpack, 1, 0), player, 27, 64, false)
@@ -51,7 +52,7 @@ class ContainerCampinv(player:EntityPlayer) extends Container with ContainerTabb
   addSlotToContainer(new SlotItemsOnly(campinv, 0, 8, 35, Objs.backpack))
   addSlotToContainer(new SlotItemsOnly(campinv, 1, 8, 53, Objs.knife))
   addSlotToContainer(new SlotItemsOnly(campinv, 2, 196, 35, new ItemStack(Objs.lantern, 1, BlockDefinitions.Lantern.ON)))
-  addSlotToContainer(new SlotItemsOnly(campinv, 3, 196, 53, Items.filled_map))
+  addSlotToContainer(new SlotItemsOnly(campinv, 3, 196, 53, Items.FILLED_MAP))
   
   for (row <- 0 until 3; collom <- 0 until 9) {
     val slot = new SlotTabbedItemsNot(backpackInv, collom + (row * 9), 30 + (collom * 18), 17 + (row * 18), 1, 0, Objs.backpack)
@@ -94,10 +95,10 @@ class ContainerCampinv(player:EntityPlayer) extends Container with ContainerTabb
     if (!this.player.worldObj.isRemote) {
       for (i <- 0 until 9) {
         val itemstack = craftMatrix.removeStackFromSlot(i)
-        if (itemstack != null) player.dropPlayerItemWithRandomChoice(itemstack, false)
+        if (itemstack != null) player.dropItem(itemstack, false)
         if(i<4){
           val itemstack2 = craftMatrixSmall.removeStackFromSlot(i)
-          if (itemstack2 != null) player.dropPlayerItemWithRandomChoice(itemstack2, false)
+          if (itemstack2 != null) player.dropItem(itemstack2, false)
         }
       }
     }
@@ -126,7 +127,7 @@ class ContainerCampinv(player:EntityPlayer) extends Container with ContainerTabb
         else if(itemstack.isItemEqual(new ItemStack(Objs.lantern, 0, BlockDefinitions.Lantern.ON))) {
           if(mergeItemStack(itemstack1, 38, 39, false))success = true
         }
-        else if(itemstack.getItem==Items.filled_map){
+        else if(itemstack.getItem==Items.FILLED_MAP){
           if(mergeItemStack(itemstack1, 39, 40, false))success = true
         }
         else if(getCurrentTabTop == GuiCampinginv.TAB_ARMOR && itemstack.getItem.isInstanceOf[ItemArmor]){
@@ -135,12 +136,12 @@ class ContainerCampinv(player:EntityPlayer) extends Container with ContainerTabb
         if(!success){
           success = false
           if (slotNum < 9) {
-            if(getCurrentTabTop == GuiCampinginv.TAB_BACKPACK && Option(getSlot(36).getStack).getOrElse(nwsk(Blocks.air)).getItem.eq(Objs.backpack)) {
+            if(getCurrentTabTop == GuiCampinginv.TAB_BACKPACK && Option(getSlot(36).getStack).getOrElse(nwsk(Blocks.AIR)).getItem.eq(Objs.backpack)) {
               if(this.mergeItemStack(itemstack1, 40, 67, false))success = true
             }
             if (!success && !this.mergeItemStack(itemstack1, 9, 36, false))return null
           } else if (slotNum >= 9 && slotNum < 36) {
-            if(getCurrentTabTop == GuiCampinginv.TAB_BACKPACK && Option(getSlot(36).getStack).getOrElse(nwsk(Blocks.air)).getItem.eq(Objs.backpack)) {
+            if(getCurrentTabTop == GuiCampinginv.TAB_BACKPACK && Option(getSlot(36).getStack).getOrElse(nwsk(Blocks.AIR)).getItem.eq(Objs.backpack)) {
               if(this.mergeItemStack(itemstack1, 40, 67, false))success = true
             }
             if (!success && !this.mergeItemStack(itemstack1, 0, 9, false))return null
@@ -187,7 +188,7 @@ class InventoryCampinv(player: EntityPlayer, var slots: ArrayList[SlotWithDisabl
     if (slotNum == SLOT_BACKPACK) {
       backpackChange()
     }
-    if(getInventory.filter { stack => stack==null }.size == 0)player.triggerAchievement(Objs.achCamperFull)
+    if(getInventory.filter { stack => stack==null }.size == 0)player.addStat(Objs.achCamperFull)
   }
   override def openInventory(player:EntityPlayer) {
     super.openInventory(player)

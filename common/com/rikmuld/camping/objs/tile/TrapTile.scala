@@ -7,7 +7,7 @@ import net.minecraft.entity.EntityLivingBase
 import com.rikmuld.corerm.objs.WithTileInventory
 import java.util.UUID
 import net.minecraft.nbt.NBTTagCompound
-import net.minecraft.util.AxisAlignedBB
+import net.minecraft.util.math.AxisAlignedBB
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.potion.PotionEffect
 import net.minecraft.init.Items

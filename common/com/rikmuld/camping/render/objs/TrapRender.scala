@@ -44,7 +44,7 @@ class TrapRender extends TileEntitySpecialRenderer[TileTrap] {
       GL11.glRotatef(-41, 0, 1, 0)
       GL11.glRotatef(-25, -1, 0, 1)
       GL11.glScalef(0.1F, -0.1F, -0.1F)
-      renderer.renderItem(tileentity.getWorld.getClosestPlayer(x, y, z, -1), tile.getStackInSlot(0), TransformType.FIRST_PERSON)
+      renderer.renderItem(tileentity.getWorld.getClosestPlayer(x, y, z, -1, false), tile.getStackInSlot(0), TransformType.FIRST_PERSON_LEFT_HAND)
       GL11.glPopMatrix()
     }
   }

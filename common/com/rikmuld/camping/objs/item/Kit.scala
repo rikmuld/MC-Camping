@@ -39,11 +39,11 @@ class Kit(modId:String, info:ObjInfo) extends RMItem(modId, info) {
   }
   @SideOnly(Side.CLIENT)
   override def getSubItems(item: Item, creativetabs: CreativeTabs, list: java.util.List[ItemStack]) {
-    val stick = new ItemStack(Items.stick)
+    val stick = new ItemStack(Items.STICK)
     val stickIron = new ItemStack(Objs.parts, 1, Parts.STICK_IRON)
     val string = new ItemStack(Objs.parts, 1, Parts.PAN)
-    val pan = new ItemStack(Items.string)
-    val fenceIron = new ItemStack(Blocks.iron_bars)
+    val pan = new ItemStack(Items.STRING)
+    val fenceIron = new ItemStack(Blocks.IRON_BARS)
     val inventoryContents = Array(Array(stick, stick, stickIron), Array(stick, stick, stick, stick, stickIron, stickIron, fenceIron), Array(stick, stick, stickIron, string, pan))
     list.asInstanceOf[java.util.List[ItemStack]].add(new ItemStack(item, 1, 0))
     for (meta <- 1 until (info.getProp[Properties.Metadata](METADATA).names.size - 1)) {

@@ -47,7 +47,7 @@ class GuiCampinginv(var player: EntityPlayer) extends GuiTabbed(player, new Cont
     init(guiLeft, guiTop, fontRendererObj)
   }
   override def initTabbed {
-    addTopTab("Armor", xSize, ySize, guiLeft+24, guiTop, tabsTop.size, new ItemStack(Items.skull, 1, 3))
+    addTopTab("Armor", xSize, ySize, guiLeft+24, guiTop, tabsTop.size, new ItemStack(Items.SKULL, 1, 3))
     addTopTab("Backpack", xSize, ySize, guiLeft+24, guiTop, tabsTop.size, new ItemStack(Objs.backpack))
     addTopTab("Crafting", xSize, ySize, guiLeft+24, guiTop, tabsTop.size, new ItemStack(Objs.knife))
     addTopTab("Configuration", xSize, ySize, guiLeft+24, guiTop, tabsTop.size, 220, 0, 16, 16)
@@ -121,7 +121,7 @@ class GuiCampinginv(var player: EntityPlayer) extends GuiTabbed(player, new Cont
     if (isPointInRegion(8, 35, 16, 16, mouseX, mouseY)) itemRender.renderItemIntoGUI(new ItemStack(Objs.backpack), guiLeft + 8, guiTop + 35)
     if (isPointInRegion(8, 53, 16, 16, mouseX, mouseY)) itemRender.renderItemIntoGUI(new ItemStack(Objs.knife), guiLeft + 8, guiTop + 53)
     if (isPointInRegion(196, 35, 16, 16, mouseX, mouseY)) itemRender.renderItemIntoGUI(new ItemStack(Objs.lantern), guiLeft + 196, guiTop + 35)
-    if (isPointInRegion(196, 53, 16, 16, mouseX, mouseY)) itemRender.renderItemIntoGUI(new ItemStack(Items.filled_map), guiLeft + 196, guiTop + 53)
+    if (isPointInRegion(196, 53, 16, 16, mouseX, mouseY)) itemRender.renderItemIntoGUI(new ItemStack(Items.FILLED_MAP), guiLeft + 196, guiTop + 53)
     super.drawGuiContainerBackgroundLayer(partTick, mouseX, mouseY)
   }
   override def drawGuiContainerForegroundLayer(mouseX:Int, mouseY:Int) {

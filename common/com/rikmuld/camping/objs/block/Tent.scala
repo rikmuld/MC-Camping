@@ -12,8 +12,8 @@ import com.rikmuld.corerm.objs.RMFacingHorizontalProp
 import com.rikmuld.camping.objs.block.Tent._
 import com.rikmuld.corerm.objs.WithInstable
 import com.rikmuld.camping.objs.tile.TileEntityTent
-import net.minecraft.util.BlockPos
-import net.minecraft.util.AxisAlignedBB
+import net.minecraft.util.math.BlockPos
+import net.minecraft.util.math.AxisAlignedBB
 import net.minecraft.world.World
 import net.minecraft.entity.Entity
 import com.rikmuld.camping.objs.tile.TileEntityTent
@@ -27,7 +27,7 @@ import java.util.ArrayList
 import java.util.Random
 import net.minecraft.item.ItemStack
 import com.rikmuld.camping.objs.Objs
-import net.minecraft.util.MathHelper
+import net.minecraft.util.math.MathHelper
 import com.rikmuld.corerm.objs.RMTile
 import net.minecraft.world.IBlockAccess
 import net.minecraft.entity.EntityLivingBase

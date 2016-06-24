@@ -4,12 +4,11 @@ import net.minecraft.world.chunk.IChunkProvider
 import net.minecraft.world.World
 import java.util.Random
 import net.minecraftforge.common.BiomeDictionary
-import net.minecraft.world.biome.BiomeGenBase
-import net.minecraft.world.biome.BiomeGenBase.TempCategory
 import net.minecraftforge.fml.common.IWorldGenerator
 import com.rikmuld.camping.objs.Objs
 import com.rikmuld.camping.CampingMod._
-import net.minecraft.util.BlockPos
+import net.minecraft.world.biome.Biome.TempCategory
+import net.minecraft.util.math.BlockPos
 
 class WorldGenerator extends IWorldGenerator {
   val hemp = new HempGen
@@ -18,7 +17,7 @@ class WorldGenerator extends IWorldGenerator {
   var xBlock, yBlock, zBlock: Int = _
 
   override def generate(random: Random, chunkX: Int, chunkZ: Int, world: World, chunkGenerator: IChunkProvider, chunkProvider: IChunkProvider) {
-    if (config.hasWorldGen) world.provider.getDimensionId match {
+    if (config.hasWorldGen) world.provider.getDimension match {
       case -1 => generateNether(world, random, chunkX * 16, chunkZ * 16)
       case 0 => generateSurface(world, random, chunkX * 16, chunkZ * 16)
       case 1 => generateEnd(world, random, chunkX * 16, chunkZ * 16)

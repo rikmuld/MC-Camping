@@ -24,10 +24,10 @@ import net.minecraft.entity.Entity
 import net.minecraft.entity.EntityLivingBase
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemStack
-import net.minecraft.util.AxisAlignedBB
-import net.minecraft.util.BlockPos
+import net.minecraft.util.math.AxisAlignedBB
+import net.minecraft.util.math.BlockPos
 import net.minecraft.util.EnumFacing
-import net.minecraft.util.Vec3
+import net.minecraft.util.math.Vec3d
 import net.minecraft.world.IBlockAccess
 import net.minecraft.world.World
 
@@ -65,7 +65,7 @@ class Logseat(modId:String, info:ObjInfo) extends RMBlockContainer(modId, info) 
     super.addCollisionBoxesToList(world, pos, state, axisAligned, list, entity)
   }
   override def onBlockActivated(world: World, pos:BlockPos, state:IBlockState, player: EntityPlayer, side: EnumFacing, xHit: Float, yHit: Float, zHit: Float): Boolean = {
-    if (!player.isRiding && (new Vec3(pos.getX + 0.5F, pos.getY + 0.5F, pos.getZ + 0.5F).distanceTo(new Vec3(player.posX, player.posY, player.posZ)) <= 2.5F)) {
+    if (!player.isRiding && (new Vec3d(pos.getX + 0.5F, pos.getY + 0.5F, pos.getZ + 0.5F).distanceTo(new Vec3d(player.posX, player.posY, player.posZ)) <= 2.5F)) {
       world.getTileEntity(pos).asInstanceOf[TileLogseat].mountable.interactFirst(player)
     }
     true

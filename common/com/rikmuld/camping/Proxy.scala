@@ -9,9 +9,7 @@ import scala.collection.mutable.HashMap
 import net.minecraft.inventory.Container
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraft.inventory.IInventory
-import net.minecraft.util.BlockPos
-import net.minecraft.client.resources.model.ModelResourceLocation
-import net.minecraft.client.resources.model.ModelBakery
+import net.minecraft.util.math.BlockPos
 import net.minecraft.client.Minecraft
 import com.rikmuld.corerm.objs.PropType
 import com.rikmuld.corerm.objs.Properties._

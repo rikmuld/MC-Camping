@@ -19,8 +19,6 @@ import net.minecraftforge.fml.client.registry.ClientRegistry
 import net.minecraftforge.fml.common.FMLCommonHandler
 import net.minecraftforge.common.MinecraftForge
 import net.minecraftforge.fml.common.SidedProxy
-import net.minecraftforge.client.model.ISmartItemModel
-import net.minecraftforge.client.model.ISmartBlockModel
 import net.minecraftforge.fml.relauncher.SideOnly
 import com.rikmuld.camping.objs.registers.ModAchievements
 import com.rikmuld.camping.objs.registers.ModGuis

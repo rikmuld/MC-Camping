@@ -4,77 +4,70 @@ import java.util.ArrayList
 import java.util.Random
 import java.util.UUID
 import scala.collection.JavaConversions._
-import org.lwjgl.input.Mouse
+import com.rikmuld.camping.CampingMod._
+import com.rikmuld.camping.Lib._
+import com.rikmuld.camping.Utils._
+import com.rikmuld.corerm.CoreUtils._
+import com.rikmuld.camping.inventory.container.InventoryCampinv
+import com.rikmuld.camping.inventory.gui.ButtonItem
+import com.rikmuld.camping.inventory.gui.GuiMapHUD
+import com.rikmuld.camping.objs.BlockDefinitions._
+import com.rikmuld.camping.objs.ItemDefinitions._
+import com.rikmuld.camping.objs.Objs
+import com.rikmuld.camping.objs.block.Hemp
+import com.rikmuld.camping.objs.block.Tent
+import com.rikmuld.camping.objs.entity.Mountable
+import com.rikmuld.camping.objs.misc.KeyData
+import com.rikmuld.camping.objs.misc.MapData
+import com.rikmuld.camping.objs.misc.NBTPlayer
+import com.rikmuld.camping.objs.misc.OpenGui
+import com.rikmuld.camping.objs.tile.Roaster
+import com.rikmuld.camping.objs.tile.TileTrap
+import com.rikmuld.corerm.RMMod
+import com.rikmuld.corerm.misc.WorldBlock._
+import com.rikmuld.corerm.network.PacketSender
 import net.minecraft.client.Minecraft
 import net.minecraft.client.gui.GuiButton
 import net.minecraft.client.gui.GuiChat
 import net.minecraft.client.gui.GuiScreen
 import net.minecraft.client.gui.inventory.GuiContainer
-import net.minecraft.client.gui.inventory.GuiContainerCreative
 import net.minecraft.client.gui.inventory.GuiInventory
-import net.minecraft.creativetab.CreativeTabs
 import net.minecraft.entity.SharedMonsterAttributes
 import net.minecraft.entity.ai.attributes.AttributeModifier
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.entity.player.EntityPlayerMP
 import net.minecraft.init.Blocks
+import net.minecraft.init.Items
 import net.minecraft.item.Item
+import net.minecraft.item.ItemArmor
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
-import net.minecraft.util.Vec3
+import net.minecraft.util.math.BlockPos
+import net.minecraft.util.text.TextComponentString
 import net.minecraftforge.client.event.GuiOpenEvent
+import net.minecraftforge.client.event.GuiScreenEvent.ActionPerformedEvent
 import net.minecraftforge.client.event.RenderGameOverlayEvent
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType
 import net.minecraftforge.event.entity.living.LivingDeathEvent
 import net.minecraftforge.event.entity.player.BonemealEvent
 import net.minecraftforge.event.entity.player.PlayerDropsEvent
-import net.minecraft.inventory.ContainerPlayer
-import net.minecraftforge.client.event.GuiScreenEvent.ActionPerformedEvent
+import net.minecraftforge.fml.client.FMLClientHandler
+import net.minecraftforge.fml.client.event.ConfigChangedEvent
+import net.minecraftforge.fml.common.eventhandler.Event
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 import net.minecraftforge.fml.common.gameevent.InputEvent.KeyInputEvent
-import com.rikmuld.camping.inventory.gui.GuiMapHUD
-import com.rikmuld.camping.objs.Objs
-import com.rikmuld.camping.objs.BlockDefinitions._
-import com.rikmuld.camping.objs.ItemDefinitions._
-import com.rikmuld.camping.CampingMod._
-import com.rikmuld.camping.Utils._
-import com.rikmuld.camping.Lib._
-import com.rikmuld.corerm.network.PacketSender
-import com.rikmuld.corerm.CoreUtils._
-import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerRespawnEvent
+import net.minecraftforge.fml.common.gameevent.PlayerEvent
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.ItemCraftedEvent
+import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent
+import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerRespawnEvent
+import net.minecraftforge.fml.common.gameevent.TickEvent
+import net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent
+import net.minecraftforge.fml.common.gameevent.TickEvent.Phase
 import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent
 import net.minecraftforge.fml.relauncher.ReflectionHelper
-import net.minecraftforge.fml.client.FMLClientHandler
-import com.rikmuld.camping.inventory.container.InventoryCampinv
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
-import net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent
-import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent
-import com.rikmuld.camping.inventory.gui.ButtonItem
-import net.minecraftforge.fml.client.event.ConfigChangedEvent
 import net.minecraftforge.fml.relauncher.SideOnly
-import net.minecraftforge.fml.common.gameevent.TickEvent
-import net.minecraftforge.fml.common.gameevent.TickEvent.Phase
-import net.minecraftforge.fml.common.eventhandler.Event
-import net.minecraft.item.ItemArmor
 import net.minecraftforge.fml.relauncher.Side
-import net.minecraft.init.Items
-import com.rikmuld.camping.objs.misc.NBTPlayer
-import com.rikmuld.camping.objs.misc.KeyData
-import com.rikmuld.camping.objs.misc.OpenGui
-import com.rikmuld.corerm.RMMod
-import com.rikmuld.corerm.misc.WorldBlock._
-import com.rikmuld.camping.objs.misc.MapData
-import com.rikmuld.camping.objs.block.Hemp
-import net.minecraft.util.BlockPos
-import com.rikmuld.camping.objs.tile.TileTrap
-import com.rikmuld.camping.objs.ItemDefinitions
-import com.rikmuld.camping.objs.tile.TileCampfireCook
-import com.rikmuld.camping.objs.block.Tent
-import com.rikmuld.camping.objs.entity.Mountable
-import net.minecraftforge.fml.common.gameevent.PlayerEvent
-import net.minecraft.util.ChatComponentText
-import net.minecraftforge.event.world.WorldEvent
-import com.rikmuld.camping.objs.tile.Roaster
+import net.minecraft.util.math.Vec3d
 
 class EventsS {
   var tickLight: Int = 0
@@ -83,23 +76,29 @@ class EventsS {
 
   @SubscribeEvent
   def onBoneMealUsed(event: BonemealEvent) {
-    if (event.block.getBlock == Objs.hemp) event.setResult(if (event.block.getBlock.asInstanceOf[Hemp].grow((event.world, event.pos))) Event.Result.ALLOW else Event.Result.DENY)
+    if (event.getBlock.getBlock == Objs.hemp) {
+      event.setResult(
+          if (event.getBlock.getBlock.asInstanceOf[Hemp].grow((event.getWorld, event.getPos))) 
+            Event.Result.ALLOW 
+          else Event.Result.DENY
+          )
+    }
   }
   @SubscribeEvent
   def onConfigChanged(eventArgs: ConfigChangedEvent.OnConfigChangedEvent) {
-    if (eventArgs.modID.equals(MOD_ID)) config.sync
+    if (eventArgs.getModID.equals(MOD_ID)) config.sync
   }
   @SubscribeEvent
   def onPlayerDeath(event: PlayerDropsEvent) {
-    if (!config.coreOnly) InventoryCampinv.dropItems(event.entityPlayer)
+    if (!config.coreOnly) InventoryCampinv.dropItems(event.getEntityPlayer)
   }
   @SubscribeEvent
   def onEntityDeath(event: LivingDeathEvent) {
-    if (event.entity.isInstanceOf[EntityPlayer]) {
-      if (event.entity.worldObj.getGameRules().getBoolean("keepInventory")) {
-        val tag = event.entity.asInstanceOf[EntityPlayer].getEntityData.getCompoundTag("campInv")
-        if (!event.entity.asInstanceOf[EntityPlayer].getEntityData.hasKey(EntityPlayer.PERSISTED_NBT_TAG)) event.entity.asInstanceOf[EntityPlayer].getEntityData.setTag(EntityPlayer.PERSISTED_NBT_TAG, new NBTTagCompound())
-        event.entity.asInstanceOf[EntityPlayer].getEntityData.getCompoundTag(EntityPlayer.PERSISTED_NBT_TAG).setTag("campInv", tag)
+    if (event.getEntity.isInstanceOf[EntityPlayer]) {
+      if (event.getEntity.worldObj.getGameRules().getBoolean("keepInventory")) {
+        val tag = event.getEntity.asInstanceOf[EntityPlayer].getEntityData.getCompoundTag("campInv")
+        if (!event.getEntity.asInstanceOf[EntityPlayer].getEntityData.hasKey(EntityPlayer.PERSISTED_NBT_TAG)) event.getEntity.asInstanceOf[EntityPlayer].getEntityData.setTag(EntityPlayer.PERSISTED_NBT_TAG, new NBTTagCompound())
+        event.getEntity.asInstanceOf[EntityPlayer].getEntityData.getCompoundTag(EntityPlayer.PERSISTED_NBT_TAG).setTag("campInv", tag)
       }
     }
   }
@@ -116,7 +115,7 @@ class EventsS {
   def onPlayerLogin(event: PlayerLoggedInEvent) = if (!config.coreOnly) Option(event.player.getEntityData.getCompoundTag(NBTInfo.INV_CAMPING)) map (tag => PacketSender.to(new NBTPlayer(tag), event.player.asInstanceOf[EntityPlayerMP]))
   @SubscribeEvent
   def onItemCrafted(event: ItemCraftedEvent) {
-    if(event.crafting.getItem == Objs.knife)event.player.triggerAchievement(Objs.achKnife)
+    if(event.crafting.getItem == Objs.knife)event.player.addStat(Objs.achKnife)
     for (slot <- 0 until event.craftMatrix.getSizeInventory if Option(event.craftMatrix.getStackInSlot(slot)).isDefined) {
       val stackInSlot = event.craftMatrix.getStackInSlot(slot)
       val itemInSlot = Option(stackInSlot.getItem)
@@ -124,11 +123,12 @@ class EventsS {
         val returnStack = Option(stackInSlot.addDamage(1))
         returnStack map (stack => stack.stackSize += 1)
         event.craftMatrix.setInventorySlotContents(slot, returnStack.getOrElse(null))
-      } else if (itemInSlot.isDefined && itemInSlot.get == Items.bowl && (event.crafting.getItem() == Objs.parts) && (event.crafting.getItemDamage == Parts.MARSHMALLOW)) {
-        val returnStack = new ItemStack(Items.bowl, stackInSlot.stackSize + 1, 0)
+      } else if (itemInSlot.isDefined && itemInSlot.get == Items.BOWL && (event.crafting.getItem() == Objs.parts) && (event.crafting.getItemDamage == Parts.MARSHMALLOW)) {
+        val returnStack = new ItemStack(Items.BOWL, stackInSlot.stackSize + 1, 0)
         event.craftMatrix.setInventorySlotContents(slot, returnStack)
-      } else if (itemInSlot.isDefined && itemInSlot.get == Items.potionitem && (event.crafting.getItem() == Objs.parts) && (event.crafting.getItemDamage == Parts.MARSHMALLOW)) {
-        if (!event.player.inventory.addItemStackToInventory(new ItemStack(Items.glass_bottle))) event.player.dropPlayerItemWithRandomChoice(new ItemStack(Items.glass_bottle), false)
+      } else if (itemInSlot.isDefined && itemInSlot.get == Items.POTIONITEM && (event.crafting.getItem() == Objs.parts) && (event.crafting.getItemDamage == Parts.MARSHMALLOW)) {
+        if (!event.player.inventory.addItemStackToInventory(new ItemStack(Items.GLASS_BOTTLE))) 
+          event.player.dropItem(new ItemStack(Items.GLASS_BOTTLE), false)
       }
       if ((event.crafting.getItem() == Item.getItemFromBlock(Objs.lantern)) && (event.crafting.getItemDamage == Lantern.ON)) {
         event.crafting.setTagCompound(new NBTTagCompound())
@@ -149,7 +149,8 @@ class EventsS {
       if (event.phase.equals(Phase.START)) {
         if (player.getEntityData().getInteger("isInTrap") <= 0) {
           player.getEntityData().setInteger("isInTrap", player.getEntityData().getInteger("isInTrap") - 1)
-        } else if (Option(player.getEntityAttribute(SharedMonsterAttributes.movementSpeed).getModifier(TileTrap.UUIDSpeedTrap)).isDefined) player.getEntityAttribute(SharedMonsterAttributes.movementSpeed).removeModifier(player.getEntityAttribute(SharedMonsterAttributes.movementSpeed).getModifier(TileTrap.UUIDSpeedTrap))
+        } else if (Option(player.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getModifier(TileTrap.UUIDSpeedTrap)).isDefined) 
+          player.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).removeModifier(player.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getModifier(TileTrap.UUIDSpeedTrap))
       }
       if (!world.isRemote && player.hasLantarn()) {
         tickLight += 1
@@ -157,9 +158,9 @@ class EventsS {
           tickLight = 0
           player.lanternTick()
           val bd = (player.worldObj, new BlockPos(player.posX.toInt, player.posY.toInt, player.posZ.toInt))
-          if (bd.down.block == Blocks.air) bd.down.setState(Objs.light.getDefaultState)
-          else if (bd.block == Blocks.air) bd.setState(Objs.light.getDefaultState)
-          else if (bd.up.block == Blocks.air) bd.up.setState(Objs.light.getDefaultState)
+          if (bd.down.block == Blocks.AIR) bd.down.setState(Objs.light.getDefaultState)
+          else if (bd.block == Blocks.AIR) bd.setState(Objs.light.getDefaultState)
+          else if (bd.up.block == Blocks.AIR) bd.up.setState(Objs.light.getDefaultState)
         }
       }
       if (!world.isRemote && player.hasMap()) {
@@ -170,26 +171,27 @@ class EventsS {
     if (!world.isRemote) {
       val oldMarsh = marshupdate
       
-      if(Option(player.getCurrentEquippedItem).isDefined){
+      if(Option(player.getActiveItemStack).isDefined){
         val mob = Option(player.getMOP)
         if (mob.isDefined) {
           val x = mob.get.getBlockPos.getX
           val y = mob.get.getBlockPos.getY
           val z = mob.get.getBlockPos.getZ
           val bd = (player.worldObj, mob.get.getBlockPos)
-          val item = player.getCurrentEquippedItem
+          val item = player.inventory.getCurrentItem
           
-          if(bd.tile.isInstanceOf[Roaster] && (new Vec3(x + 0.5F, y + 0.5F, z + 0.5F).distanceTo(new Vec3(player.posX, player.posY, player.posZ)) <= 2.5F)){
+          if(bd.tile.isInstanceOf[Roaster] && (new Vec3d(x + 0.5F, y + 0.5F, z + 0.5F).distanceTo(new Vec3d(player.posX, player.posY, player.posZ)) <= 2.5F)){
             val roaster = bd.tile.asInstanceOf[Roaster]
             if(roaster.canRoast(item)){
               if(marshupdate > roaster.roastTime(item)){
-                player.getCurrentEquippedItem.stackSize -= 1
-                if (player.getCurrentEquippedItem.stackSize <= 0) player.setCurrentItem(null)
+                player.inventory.getCurrentItem.stackSize -= 1
+                //TODO CHECK
+                //if (player.inventory.getCurrentItem.stackSize <= 0) player.setCurrentItem(null)
                 
                 val cooked = roaster.roastResult(item)
                 
-                if (!player.inventory.addItemStackToInventory(cooked)) player.dropPlayerItemWithRandomChoice(cooked, false)
-                if(Option(player.ridingEntity).isDefined && player.ridingEntity.isInstanceOf[Mountable])player.triggerAchievement(Objs.achMarshRoast)
+                if (!player.inventory.addItemStackToInventory(cooked)) player.dropItem(cooked, false)
+                if(Option(player.getRidingEntity).isDefined && player.getRidingEntity.isInstanceOf[Mountable])player.addStat(Objs.achMarshRoast)
                 marshupdate = 0
               } else marshupdate += roaster.roastSpeed(item)
             } 
@@ -203,9 +205,9 @@ class EventsS {
     if (!config.coreOnly) {
       var campNum = 0.0f
       for (i <- 0 until 4 if (player.inventory.armorInventory(i) != null && player.inventory.armorInventory(i).getItem.isInstanceOf[ItemArmor] && player.inventory.armorInventory(i).getItem.asInstanceOf[ItemArmor].getArmorMaterial.equals(Objs.fur))) campNum += 0.25f
-      if(campNum == 1) player.triggerAchievement(Objs.achWildMan)
-      if (player.getEntityAttribute(SharedMonsterAttributes.movementSpeed).getModifier(UUIDSpeedCamping) != null) player.getEntityAttribute(SharedMonsterAttributes.movementSpeed).removeModifier(player.getEntityAttribute(SharedMonsterAttributes.movementSpeed).getModifier(UUIDSpeedCamping))
-      player.getEntityAttribute(SharedMonsterAttributes.movementSpeed).applyModifier(new AttributeModifier(UUIDSpeedCamping, "camping.speedBoost", 0.04 * campNum, 0))
+      if(campNum == 1) player.addStat(Objs.achWildMan)
+      if (player.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getModifier(UUIDSpeedCamping) != null) player.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).removeModifier(player.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getModifier(UUIDSpeedCamping))
+      player.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).applyModifier(new AttributeModifier(UUIDSpeedCamping, "camping.speedBoost", 0.04 * campNum, 0))
     }
   }
 }
@@ -232,7 +234,7 @@ class EventsC {
   @SubscribeEvent
   def guiOpenClient(event: GuiOpenEvent) {
     if (!config.coreOnly) {
-      if(event.gui.isInstanceOf[GuiInventory]&&config.prmInv==0){
+      if(event.getGui.isInstanceOf[GuiInventory]&&config.prmInv==0){
         if(Minecraft.getMinecraft.thePlayer.capabilities.isCreativeMode) return;
         event.setCanceled(true)
         PacketSender.toServer(new OpenGui(Objs.guiCamping, 0, 0, 0))
@@ -266,7 +268,7 @@ class EventsC {
   @SubscribeEvent
   def onPlayerJoinWorld(event: PlayerLoggedInEvent){
     if(config.welcomeMess){
-      event.player.addChatComponentMessage(new ChatComponentText("The Camping Iventory overides the normal inventory. To change this, " +
+      event.player.addChatComponentMessage(new TextComponentString("The Camping Iventory overides the normal inventory. To change this, " +
                                                                  "just press the configuration tab in the Camping Invenory; search for: " +
                                                                  "'primary inventory option'."))
 
@@ -275,20 +277,20 @@ class EventsC {
   }
   @SubscribeEvent
   def onOverlayRender(event: RenderGameOverlayEvent) {
-    if (event.`type` != ElementType.HOTBAR) return
+    if (event.getType != ElementType.HOTBAR) return
     if (!config.coreOnly) {
       val mc = FMLClientHandler.instance().getClient
       if (map == null) map = new GuiMapHUD()
       if (mc.thePlayer.hasMap) {
-        map.setWorldAndResolution(mc, event.resolution.getScaledWidth, event.resolution.getScaledHeight)
-        map.drawScreen(0, 0, event.partialTicks)
+        map.setWorldAndResolution(mc, event.getResolution.getScaledWidth, event.getResolution.getScaledHeight)
+        map.drawScreen(0, 0, event.getPartialTicks)
       }
     }
   }
   @SubscribeEvent
   def buttonPressed(event: ActionPerformedEvent) {
     if (!config.coreOnly&&config.prmInv==1){
-      if (event.gui.isInstanceOf[GuiInventory]&&event.button.id==10){
+      if (event.getGui.isInstanceOf[GuiInventory]&&event.getButton.id==10){
           PacketSender.toServer(new OpenGui(Objs.guiCamping))
       } 
     }

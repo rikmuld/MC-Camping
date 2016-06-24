@@ -7,7 +7,7 @@ import net.minecraft.block.material.Material
 import net.minecraft.init.Blocks
 import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
-import net.minecraft.util.AxisAlignedBB
+import net.minecraft.util.math.AxisAlignedBB
 import net.minecraft.world.IBlockAccess
 import net.minecraft.world.World
 import net.minecraftforge.common.EnumPlantType
@@ -24,14 +24,12 @@ import net.minecraftforge.fml.relauncher.Side
 import com.rikmuld.corerm.objs.WithModel
 import com.rikmuld.camping.CampingMod._
 import net.minecraft.block.BlockReed
-import net.minecraft.util.BlockPos
+import net.minecraft.util.math.BlockPos
 import com.rikmuld.corerm.misc.WorldBlock._
 import net.minecraft.util.EnumFacing
 import com.rikmuld.corerm.objs.WithInstable
-import net.minecraft.block.state.BlockState
 import net.minecraft.block.state.IBlockState
 import scala.collection.JavaConversions._
-import net.minecraft.util.EnumWorldBlockLayer
 import net.minecraft.block.properties.PropertyInteger
 import com.rikmuld.camping.objs.BlockDefinitions
 import com.rikmuld.corerm.objs.RMItemBlock
@@ -78,7 +76,7 @@ class Hemp(modId:String, info:ObjInfo) extends RMBlock(modId, info) with IPlanta
         if (random.nextInt((25.0F / speed).toInt + 1) == 0) bd.setState(getStateFromMeta(bd.meta+1), 2)
       } else if (bd.meta == BlockDefinitions.Hemp.GROWN_SMALL) {
         if (random.nextInt((25.0F / speed).toInt + 1) == 0) {
-          if ((world, pos.up).block == Blocks.air) {
+          if ((world, pos.up).block == Blocks.AIR) {
             (world, pos.up).setState(getStateFromMeta(5), 2)
             bd.setState(getStateFromMeta(4), 2)
           }
@@ -91,12 +89,13 @@ class Hemp(modId:String, info:ObjInfo) extends RMBlock(modId, info) with IPlanta
     super.breakBlock(world, pos, state)
   }
   def getGrowthRate(bd:BlockData): Float = {
-    var water = if (bd.world.getBlockState(bd.relPos(1, -1, 0)).getBlock.getMaterial == Material.water) 1 else 0
-    water += (if (bd.world.getBlockState(bd.relPos(-1, -1, 0)).getBlock.getMaterial == Material.water) 1 else 0)
-    water += (if (bd.world.getBlockState(bd.relPos(0, -1, 1)).getBlock.getMaterial == Material.water) 1 else 0)
-    water += (if (bd.world.getBlockState(bd.relPos(0, -1, -1)).getBlock.getMaterial == Material.water) 1 else 0)
+    var water = if (bd.world.getBlockState(bd.relPos(1, -1, 0)).getBlock.getMaterial(bd.state) == Material.WATER) 1 else 0
+    water += (if (bd.world.getBlockState(bd.relPos(-1, -1, 0)).getBlock.getMaterial(bd.state) == Material.WATER) 1 else 0)
+    water += (if (bd.world.getBlockState(bd.relPos(0, -1, 1)).getBlock.getMaterial(bd.state) == Material.WATER) 1 else 0)
+    water += (if (bd.world.getBlockState(bd.relPos(0, -1, -1)).getBlock.getMaterial(bd.state) == Material.WATER) 1 else 0)
     var light = Math.max(1, ((bd.world.getLightBrightness(bd.pos.up) * 15) - 9) / 3f)    
-    var ground = if (bd.world.getBlockState(bd.pos.down).getBlock == Blocks.grass || bd.world.getBlockState(bd.pos.down).getBlock == Blocks.dirt) 2 else 1
+    var ground = if (bd.world.getBlockState(bd.pos.down).getBlock == Blocks.GRASS || 
+        bd.world.getBlockState(bd.pos.down).getBlock == Blocks.DIRT) 2 else 1
     ground * water * light * config.hempSpeed
   }
   override def getDrops(world: IBlockAccess, pos:BlockPos, state:IBlockState, fortune: Int): java.util.List[ItemStack] = if (getMetaFromState(state) >= BlockDefinitions.Hemp.GROWN_SMALL) super.getDrops(world, pos, state, fortune) else List()

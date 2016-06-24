@@ -16,9 +16,8 @@ import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.nbt.NBTTagList
-import net.minecraft.util.MathHelper
-import net.minecraft.util.MovingObjectPosition
-import net.minecraft.util.Vec3
+import net.minecraft.util.math.MathHelper
+import net.minecraft.util.math.Vec3d
 import net.minecraft.world.World
 import net.minecraft.world.storage.MapData
 import net.minecraftforge.oredict.OreDictionary
@@ -30,7 +29,6 @@ import com.rikmuld.camping.objs.BlockDefinitions._
 import com.rikmuld.camping.objs.BlockDefinitions
 import com.rikmuld.camping.Lib._
 import com.rikmuld.camping.objs.ItemDefinitions._
-import net.minecraft.block.state.BlockState
 import net.minecraft.block.properties.IProperty
 import net.minecraft.block.state.IBlockState
 
@@ -72,13 +70,13 @@ object Utils {
     }
     def getCurrentMapData(): MapData = {
       val stacks = loadCampInvItemsFromNBT()
-      for (stack <- stacks if stack.getItem == Items.filled_map) {
-        return Items.filled_map.getMapData(stack, player.worldObj)
+      for (stack <- stacks if stack.getItem == Items.FILLED_MAP) {
+        return Items.FILLED_MAP.getMapData(stack, player.worldObj)
       }
       null
     }
     def hasLantarn(): Boolean = loadCampInvItemsFromNBT().containsStack(new ItemStack(Item.getItemFromBlock(Objs.lantern), 1, BlockDefinitions.Lantern.ON))
-    def hasMap(): Boolean = loadCampInvItemsFromNBT().containsItem(Items.filled_map)
+    def hasMap(): Boolean = loadCampInvItemsFromNBT().containsItem(Items.FILLED_MAP)
     def lanternTick() {
       val stacks = player.loadCampInvItemsFromNBT();
       val slots = player.loadCampInvSlotNumFromNBT();

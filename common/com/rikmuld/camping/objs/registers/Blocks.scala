@@ -28,8 +28,8 @@ import com.rikmuld.corerm.objs.RMBlockContainer
 import com.rikmuld.corerm.objs.RMTile
 import com.rikmuld.corerm.objs.WithModel
 import net.minecraft.block.state.IBlockState
-import net.minecraft.util.AxisAlignedBB
-import net.minecraft.util.BlockPos
+import net.minecraft.util.math.AxisAlignedBB
+import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
 import net.minecraftforge.fml.client.registry.ClientRegistry
 import net.minecraftforge.fml.relauncher.SideOnly

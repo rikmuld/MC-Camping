@@ -13,10 +13,10 @@ import net.minecraft.item.ItemStack
 import java.util.ArrayList
 import net.minecraft.nbt.NBTTagCompound
 import com.rikmuld.camping.objs.tile.TileEntityTent._
-import net.minecraft.util.ChatComponentText
+import net.minecraft.util.text.TextComponentString
 import com.rikmuld.corerm.network.PacketSender
 import net.minecraft.tileentity.TileEntity
-import net.minecraft.util.AxisAlignedBB
+import net.minecraft.util.math.AxisAlignedBB
 import net.minecraft.util.ChatComponentTranslation
 import net.minecraft.entity.player.EntityPlayer.EnumStatus
 import net.minecraftforge.fml.relauncher.SideOnly

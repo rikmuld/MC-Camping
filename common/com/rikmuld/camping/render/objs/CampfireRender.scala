@@ -26,7 +26,7 @@ class CampfireRender extends TileEntitySpecialRenderer[TileCampfire] {
     GL11.glPushMatrix()
     GL11.glEnable(GL12.GL_RESCALE_NORMAL)
     GL11.glTranslatef(x.toFloat + 0.4F, y.toFloat + 0.0625f, z.toFloat + 0.4F)
-    val coalItem = new ItemStack(Items.coal, 1, 0)
+    val coalItem = new ItemStack(Items.COAL, 1, 0)
     for (i <- 0 until 20) {
       GL11.glPushMatrix()
       GL11.glTranslatef(tile.coals(0)(i), 0, tile.coals(1)(i))
@@ -35,7 +35,7 @@ class CampfireRender extends TileEntitySpecialRenderer[TileCampfire] {
       GL11.glRotatef(45, 1F, 1F, 0.4F)
       GL11.glRotatef(10, 0.0F, 1F, 0F)
       GL11.glRotatef(5, 0.0F, 0F, -0.2F)
-      renderer.renderItem(tileentity.getWorld.getClosestPlayer(x, y, z, -1), coalItem, TransformType.FIRST_PERSON)
+      renderer.renderItem(tileentity.getWorld.getClosestPlayer(x, y, z, -1, false), coalItem, TransformType.FIRST_PERSON_RIGHT_HAND)
       GL11.glPopMatrix()
     }
     GL11.glPopMatrix()
@@ -54,7 +54,7 @@ class CampfireCookRender extends TileEntitySpecialRenderer[TileCampfireCook] {
     GL11.glScalef(1.0F, -1F, -1F)
     if (Option(tile.equipment).isDefined) {
       tile.equipment.renderModel
-      val entity = tileentity.getWorld.getClosestPlayer(x, y, z, -1)
+      val entity = tileentity.getWorld.getClosestPlayer(x, y, z, -1, false)
       for (i <- 0 until tile.equipment.maxFood if Option(tile.getStackInSlot(i + 2)).isDefined) {
         tile.equipment.renderFood(i, tile.getStackInSlot(i + 2), entity)
       }
@@ -62,7 +62,7 @@ class CampfireCookRender extends TileEntitySpecialRenderer[TileCampfireCook] {
     GL11.glPopMatrix
     GL11.glPushMatrix
     GL11.glTranslatef(x.toFloat + 0.4F, y.toFloat + 0.0625f, z.toFloat + 0.4F)
-    val coalItem = new ItemStack(Items.coal, 1, 0)
+    val coalItem = new ItemStack(Items.COAL, 1, 0)
     for (i <- 0 until tile.getCoalPieces) {
       GL11.glPushMatrix()
       GL11.glTranslatef(tile.coals(0)(i), 0, tile.coals(1)(i))
@@ -71,7 +71,7 @@ class CampfireCookRender extends TileEntitySpecialRenderer[TileCampfireCook] {
       GL11.glRotatef(45, 1F, 1F, 0.4F)
       GL11.glRotatef(10, 0.0F, 1F, 0F)
       GL11.glRotatef(5, 0.0F, 0F, -0.2F)
-      renderer.renderItem(tileentity.getWorld.getClosestPlayer(x, y, z, -1), coalItem, TransformType.FIRST_PERSON)
+      renderer.renderItem(tileentity.getWorld.getClosestPlayer(x, y, z, -1, false), coalItem, TransformType.FIRST_PERSON_RIGHT_HAND)
       GL11.glPopMatrix()
     }
     GL11.glPopMatrix()

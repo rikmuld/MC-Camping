@@ -4,7 +4,7 @@ import com.rikmuld.corerm.misc.ModRegister
 import com.rikmuld.camping.objs.Objs._
 import com.rikmuld.camping.CampingMod._
 import com.rikmuld.camping.objs.ItemDefinitions._
-import net.minecraft.util.BlockPos
+import net.minecraft.util.math.BlockPos
 import com.rikmuld.camping.objs.item.Kit
 import net.minecraft.entity.player.EntityPlayer
 import com.rikmuld.corerm.objs.RMItemArmor

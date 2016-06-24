@@ -7,8 +7,8 @@ import com.rikmuld.corerm.objs.ObjInfo
 import com.rikmuld.corerm.objs.WithProperties
 import net.minecraft.block.properties.PropertyBool
 import com.rikmuld.corerm.objs.RMBoolProp
-import net.minecraft.util.BlockPos
-import net.minecraft.util.AxisAlignedBB
+import net.minecraft.util.math.BlockPos
+import net.minecraft.util.math.AxisAlignedBB
 import net.minecraft.block.state.IBlockState
 import net.minecraft.world.World
 import net.minecraft.world.IBlockAccess

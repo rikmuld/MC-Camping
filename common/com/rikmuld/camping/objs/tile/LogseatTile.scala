@@ -2,7 +2,7 @@ package com.rikmuld.camping.objs.tile
 
 import com.rikmuld.corerm.objs.RMTile
 import com.rikmuld.camping.objs.entity.Mountable
-import net.minecraft.util.AxisAlignedBB
+import net.minecraft.util.math.AxisAlignedBB
 import net.minecraftforge.fml.relauncher.SideOnly
 import com.rikmuld.camping.objs.entity.Mountable
 import net.minecraftforge.fml.relauncher.Side

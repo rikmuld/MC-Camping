@@ -32,9 +32,9 @@ import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.pathfinding.PathNavigateGround
-import net.minecraft.util.ChatComponentText
+import net.minecraft.util.text.TextComponentString
 import net.minecraft.util.DamageSource
-import net.minecraft.util.MathHelper
+import net.minecraft.util.math.MathHelper
 import net.minecraft.util.ResourceLocation
 import net.minecraft.util.Tuple
 import net.minecraft.village.MerchantRecipe
@@ -43,7 +43,7 @@ import net.minecraft.world.World
 import net.minecraftforge.fml.relauncher.SideOnly
 import net.minecraft.client.Minecraft
 import net.minecraftforge.fml.relauncher.Side
-import net.minecraft.util.BlockPos
+import net.minecraft.util.math.BlockPos
 import com.rikmuld.corerm.misc.WorldBlock._
 import net.minecraftforge.event.terraingen.BiomeEvent.GetWaterColor
 import com.rikmuld.camping.objs.block.Tent
@@ -168,7 +168,7 @@ class Camper(world: World) extends EntityCreature(world) with IMerchant with INp
     }
     recipeList
   }
-  override def getDisplayName = new ChatComponentText("Camper")
+  override def getDisplayName = new TextComponentString("Camper")
   def addBlacksmithItem(merchantRecipeList: MerchantRecipeList, item: Item, meta: Int, random: Random, par3: Float) {
     if (random.nextFloat() < par3) {
       val j = randomCount(item, random)

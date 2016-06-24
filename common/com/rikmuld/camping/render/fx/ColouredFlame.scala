@@ -1,6 +1,5 @@
 package com.rikmuld.camping.render.fx
 
-import net.minecraft.client.particle.EntityFX
 import net.minecraft.client.renderer.Tessellator
 import net.minecraft.util.ResourceLocation
 import net.minecraftforge.fml.client.FMLClientHandler
@@ -10,9 +9,9 @@ import net.minecraft.world.World
 import net.minecraftforge.fml.relauncher.SideOnly
 import net.minecraftforge.fml.relauncher.Side
 import com.rikmuld.camping.Lib.TextureInfo
-import net.minecraft.client.renderer.WorldRenderer
 import net.minecraft.entity.Entity
-import net.minecraft.client.particle.EntityFlameFX
+import net.minecraft.client.particle.ParticleFlame
+import net.minecraft.client.renderer.VertexBuffer
 
 object ColouredFlame {
   final val TEX = new ResourceLocation(TextureInfo.SPRITE_FX)
@@ -20,10 +19,10 @@ object ColouredFlame {
 }
 
 @SideOnly(Side.CLIENT)
-class ColouredFlame(world: World, x: Double, y: Double, z: Double, mX: Double, mY: Double, mZ: Double, color: Int) extends EntityFlameFX(world, x, y, z, mX, mY, mZ) {
+class ColouredFlame(world: World, x: Double, y: Double, z: Double, mX: Double, mY: Double, mZ: Double, color: Int) extends ParticleFlame(world, x, y, z, mX, mY, mZ) {
   setParticleTextureIndex(color)
 
-  override def renderParticle(render: WorldRenderer, entity:Entity, par2: Float, par3: Float, par4: Float, par5: Float, par6: Float, par7: Float) {
+  override def renderParticle(render: VertexBuffer, entity:Entity, par2: Float, par3: Float, par4: Float, par5: Float, par6: Float, par7: Float) {
     val tessellator1 = Tessellator.getInstance
     
     tessellator1.draw()
