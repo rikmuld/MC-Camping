@@ -30,6 +30,9 @@ import com.rikmuld.camping.objs.BlockDefinitions._
 import com.rikmuld.camping.objs.BlockDefinitions
 import com.rikmuld.camping.Lib._
 import com.rikmuld.camping.objs.ItemDefinitions._
+import net.minecraft.block.state.BlockState
+import net.minecraft.block.properties.IProperty
+import net.minecraft.block.state.IBlockState
 
 object Utils {
   implicit class CampingUtils(player: EntityPlayer) {

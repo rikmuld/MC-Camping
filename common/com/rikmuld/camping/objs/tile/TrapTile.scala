@@ -27,14 +27,14 @@ import net.minecraft.entity.passive.EntityAnimal
 import net.minecraft.entity.monster.EntityZombie
 import scala.collection.JavaConversions._
 import com.rikmuld.camping.objs.entity.Bear
-import net.minecraft.server.gui.IUpdatePlayerListBox
 import com.rikmuld.camping.objs.block.Trap
+import net.minecraft.util.ITickable
 
 object TileTrap {
   val UUIDSpeedTrap = new UUID(new Random(242346763).nextLong, new Random(476456556).nextLong)
 }
 
-class TileTrap extends RMTile with WithTileInventory with IUpdatePlayerListBox {
+class TileTrap extends RMTile with WithTileInventory with ITickable {
   var trappedEntity: EntityLivingBase = _
   var random: Random = new Random()
   var cooldown: Int = _

@@ -70,8 +70,8 @@ class ContainerCampfireCook(player: EntityPlayer, tile: IInventory) extends RMCo
   this.addSlots(player.inventory, 0, 1, 9, 8, 164)
   this.addSlots(player.inventory, 9, 3, 9, 8, 106)
 
-  override def addCraftingToCrafters(crafting: ICrafting) {
-    super.addCraftingToCrafters(crafting)
+  override def onCraftGuiOpened(crafting: ICrafting) {
+    super.onCraftGuiOpened(crafting)
     for (i <- 0 until fire.cookProgress.length) {
       crafting.sendProgressBarUpdate(this, i, fire.cookProgress(i))
     }

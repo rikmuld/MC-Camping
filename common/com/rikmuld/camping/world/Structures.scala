@@ -28,8 +28,8 @@ class HempGen extends net.minecraft.world.gen.feature.WorldGenerator {
       if (bd.isAir && (bd.down.north.material == Material.water || bd.down.south.material == Material.water || bd.down.west.material == Material.water || bd.down.east.material == Material.water)) {
        val age = random.nextInt(random.nextInt(4) + 1)
         if (Objs.hemp.asInstanceOf[WithInstable].canStay(world, bd.pos)) {
-          bd.setState(Objs.hemp.getBlockState.getBaseState.withProperty(Hemp.AGE, age))
-          if (age == BlockDefinitions.Hemp.GROWN_BIG_BOTTOM) bd.up.setState(Objs.hemp.getBlockState.getBaseState.withProperty(Hemp.AGE, age + 1))
+          bd.setState(Objs.hemp.getBlockState.getBaseState.withProperty(Hemp.AGE, age.asInstanceOf[java.lang.Integer]))
+          if (age == BlockDefinitions.Hemp.GROWN_BIG_BOTTOM) bd.up.setState(Objs.hemp.getBlockState.getBaseState.withProperty(Hemp.AGE, (age + 1).asInstanceOf[java.lang.Integer]))
         }
       }
     }

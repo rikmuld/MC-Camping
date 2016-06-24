@@ -1,17 +1,14 @@
 package com.rikmuld.camping.render.objs
 
-import net.minecraftforge.client.IItemRenderer.ItemRenderType
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer
 import com.rikmuld.camping.objs.Objs
 import net.minecraft.util.ResourceLocation
 import net.minecraft.tileentity.TileEntity
 import org.lwjgl.opengl.GL11
-import net.minecraftforge.client.IItemRenderer
 import net.minecraft.client.Minecraft
 import net.minecraft.client.renderer.ItemRenderer
 import org.lwjgl.opengl.GL12
 import net.minecraft.item.ItemStack
-import net.minecraftforge.client.IItemRenderer.ItemRendererHelper
 import com.rikmuld.camping.objs.tile.TileTrap
 import com.rikmuld.camping.render.models.ModelTrapOpen
 import com.rikmuld.camping.Lib._
@@ -25,9 +22,9 @@ object TrapRender {
   final val TEX_ALL = new ResourceLocation(TextureInfo.MODEL_TRAP)
 }
 
-class TrapRender extends TileEntitySpecialRenderer {
+class TrapRender extends TileEntitySpecialRenderer[TileTrap] {
   var renderer: ItemRenderer = new ItemRenderer(Minecraft.getMinecraft)
-  override def renderTileEntityAt(tileentity: TileEntity, x: Double, y: Double, z: Double, f: Float, i:Int) {
+  override def renderTileEntityAt(tileentity: TileTrap, x: Double, y: Double, z: Double, f: Float, i:Int) {
     val tile = tileentity.asInstanceOf[TileTrap]
     GL11.glPushMatrix()
     GL11.glEnable(GL12.GL_RESCALE_NORMAL)

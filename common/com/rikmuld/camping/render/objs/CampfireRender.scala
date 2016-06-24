@@ -16,11 +16,11 @@ import com.rikmuld.camping.objs.tile.TileCampfire
 import com.rikmuld.camping.Lib.TextureInfo
 import com.rikmuld.camping.objs.tile.TileCampfireCook
 
-class CampfireRender extends TileEntitySpecialRenderer {
+class CampfireRender extends TileEntitySpecialRenderer[TileCampfire] {
   var renderer: ItemRenderer = Minecraft.getMinecraft.getItemRenderer
   var rand: Random = new Random()
 
-  override def renderTileEntityAt(tileentity: TileEntity, x: Double, y: Double, z: Double, f: Float, i:Int) {
+  override def renderTileEntityAt(tileentity: TileCampfire, x: Double, y: Double, z: Double, f: Float, i:Int) {
     val tile = tileentity.asInstanceOf[TileCampfire]
     if(!tile.renderCoal)return
     GL11.glPushMatrix()
@@ -42,11 +42,11 @@ class CampfireRender extends TileEntitySpecialRenderer {
   }
 }
 
-class CampfireCookRender extends TileEntitySpecialRenderer {
+class CampfireCookRender extends TileEntitySpecialRenderer[TileCampfireCook] {
   var renderer: ItemRenderer = Minecraft.getMinecraft.getItemRenderer
   var rand: Random = new Random()
 
-  override def renderTileEntityAt(tileentity: TileEntity, x: Double, y: Double, z: Double, f: Float, i:Int) {
+  override def renderTileEntityAt(tileentity: TileCampfireCook, x: Double, y: Double, z: Double, f: Float, i:Int) {
     val tile = tileentity.asInstanceOf[TileCampfireCook]
     GL11.glPushMatrix
     GL11.glEnable(GL12.GL_RESCALE_NORMAL)

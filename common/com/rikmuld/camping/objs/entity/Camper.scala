@@ -49,7 +49,7 @@ import net.minecraftforge.event.terraingen.BiomeEvent.GetWaterColor
 import com.rikmuld.camping.objs.block.Tent
 
 object Camper {
-  val recipeListRaw = new HashMap[Item, Tuple]()
+  val recipeListRaw = new HashMap[Item, Tuple[Integer, Integer]]()
 
   recipeListRaw(venisonCooked) = new Tuple(Integer.valueOf(-4), Integer.valueOf(1))
   recipeListRaw(knife) = new Tuple(Integer.valueOf(1), Integer.valueOf(2))
@@ -64,8 +64,8 @@ object Camper {
 class Camper(world: World) extends EntityCreature(world) with IMerchant with INpc {
   setGender(rand.nextInt(2))
   setSize(0.6F, 1.8F)
-  getNavigator.asInstanceOf[PathNavigateGround].func_179688_b(true)
-  getNavigator.asInstanceOf[PathNavigateGround].func_179690_a(true)
+  getNavigator.asInstanceOf[PathNavigateGround].setCanSwim(true)
+  getNavigator.asInstanceOf[PathNavigateGround].setAvoidsWater(true)
   tasks.addTask(1, new EntityAISwimming(this))
   tasks.addTask(2, new EntityAIAttackOnCollide(this, classOf[Bear], 1.0F, false))
   tasks.addTask(3, new EntityAIAttackOnCollide(this, classOf[EntityMob], 1.0F, false))
@@ -126,8 +126,7 @@ class Camper(world: World) extends EntityCreature(world) with IMerchant with INp
       }
       val j = EnchantmentHelper.getFireAspectModifier(this)
       if (j > 0) entity.setFire(j * 4)
-      if (entity.isInstanceOf[EntityLivingBase]) EnchantmentHelper.func_151384_a(entity.asInstanceOf[EntityLivingBase], this)
-      EnchantmentHelper.func_151385_b(this, entity)
+      this.applyEnchantments(this, entity)
     }
     flag
   }
@@ -186,18 +185,18 @@ class Camper(world: World) extends EntityCreature(world) with IMerchant with INp
     }
   }
   private def randomCount(item: Item, random: Random): Int = {
-    val tuple = Camper.recipeListRaw(item).asInstanceOf[Tuple]
+    val tuple = Camper.recipeListRaw(item).asInstanceOf[Tuple[Integer, Integer]]
     if (tuple == null) 1 else (if (tuple.getFirst.asInstanceOf[java.lang.Integer].intValue() >= tuple.getSecond.asInstanceOf[java.lang.Integer].intValue()) tuple.getFirst.asInstanceOf[java.lang.Integer].intValue() else tuple.getFirst.asInstanceOf[java.lang.Integer].intValue() + random.nextInt(tuple.getSecond.asInstanceOf[java.lang.Integer].intValue() - tuple.getFirst.asInstanceOf[java.lang.Integer].intValue()))
   }
   def setCampsite(campsite:Option[Campsite]) = camp = campsite
 }
 
 @SideOnly(Side.CLIENT)
-class CamperRender(model: ModelBase) extends RenderLiving(Minecraft.getMinecraft().getRenderManager(), model, 0.5f) {
-  override def doRender(entity: Entity, d0: Double, d1: Double, d2: Double, f: Float, f1: Float) {
-    super.doRender(entity.asInstanceOf[EntityLiving], d0, d1, d2, f, f1)
+class CamperRender(model: ModelBase) extends RenderLiving[Camper](Minecraft.getMinecraft().getRenderManager(), model, 0.5f) {
+  override def doRender(entity: Camper, d0: Double, d1: Double, d2: Double, f: Float, f1: Float) {
+    super.doRender(entity, d0, d1, d2, f, f1)
   }
-  protected override def getEntityTexture(entity: Entity): ResourceLocation = new ResourceLocation(if (entity.asInstanceOf[Camper].getGender == 0) TextureInfo.MODEL_CAMPER_MALE else TextureInfo.MODEL_CAMPER_FEMALE)
+  protected override def getEntityTexture(entity: Camper): ResourceLocation = new ResourceLocation(if (entity.asInstanceOf[Camper].getGender == 0) TextureInfo.MODEL_CAMPER_MALE else TextureInfo.MODEL_CAMPER_FEMALE)
 }
 
 object Campsite {

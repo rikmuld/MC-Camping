@@ -8,12 +8,13 @@ import net.minecraft.potion.Potion
 import com.rikmuld.camping.objs.Objs
 import net.minecraftforge.fml.relauncher.Side
 import com.rikmuld.camping.Lib._
+import net.minecraft.potion.PotionEffect
 
 object Potions {
-  def getNextFreePotionID(): Int = (0 until Potion.potionTypes.length).find(Potion.potionTypes(_) == null).getOrElse(-1)
+  final val TEXTURE = new ResourceLocation(TextureInfo.SPRITE_POTION)
 }
 
-class PotionBleeding(name: String) extends Potion(Potions.getNextFreePotionID, null, false, 9643043) {
+class PotionBleeding(name: String) extends Potion(Potions.TEXTURE, false, 9643043) {
   setPotionName(name)
   setIconIndex(0, 0)
 

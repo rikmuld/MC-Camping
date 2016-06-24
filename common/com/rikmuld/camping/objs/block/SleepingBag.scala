@@ -41,7 +41,7 @@ import com.rikmuld.camping.objs.BlockDefinitions
 object SleepingBag {
   val IS_HEAD = PropertyBool.create("isHead")
   val IS_OCCUPIED = PropertyBool.create("isOccupied")
-  val FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL.asInstanceOf[Predicate[_]])
+  val FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL.asInstanceOf[Predicate[EnumFacing]])
 }
 
 class SleepingBag(modId:String, info:ObjInfo) extends RMBlock(modId, info) with WithProperties with WithModel {
@@ -51,8 +51,8 @@ class SleepingBag(modId:String, info:ObjInfo) extends RMBlock(modId, info) with 
   override def getProps = Array(new RMBoolProp(IS_HEAD, 0), new RMBoolProp(IS_OCCUPIED, 1), new RMFacingHorizontalProp(FACING, 2))
   override def onBlockPlacedBy(world:World, pos:BlockPos, state:IBlockState, entity:EntityLivingBase, stack:ItemStack) {
     val bd = (world, pos)
-    bd.setState(blockState.getBaseState.withProperty(FACING, entity.facing).withProperty(IS_HEAD, true))
-    if(bd.nw(entity.facing).block == Blocks.air || bd.nw(entity.facing).isReplaceable) bd.nw(entity.facing).setState(blockState.getBaseState.withProperty(IS_HEAD, false).withProperty(FACING, entity.facing.getOpposite))
+    bd.setState(blockState.getBaseState.withProperty(FACING, entity.facing).withProperty(IS_HEAD, true.asInstanceOf[java.lang.Boolean]))
+    if(bd.nw(entity.facing).block == Blocks.air || bd.nw(entity.facing).isReplaceable) bd.nw(entity.facing).setState(blockState.getBaseState.withProperty(IS_HEAD, false.asInstanceOf[java.lang.Boolean]).withProperty(FACING, entity.facing.getOpposite))
     dropIfCantStay(bd)
   }
   def isHead(state:IBlockState):Boolean = state.getValue(IS_HEAD).asInstanceOf[Boolean]
@@ -90,10 +90,10 @@ class SleepingBag(modId:String, info:ObjInfo) extends RMBlock(modId, info) with 
             player.addChatComponentMessage(new ChatComponentTranslation("tile.bed.occupied", new Object))
             return true
           }
-          bd.setState(bd.state.withProperty(IS_OCCUPIED, false))
+          bd.setState(bd.state.withProperty(IS_OCCUPIED, false.asInstanceOf[java.lang.Boolean]))
         }
         val sleepState = player.trySleep(bd.pos)
-        if(sleepState == EntityPlayer.EnumStatus.OK)bd.setState(bd.state.withProperty(IS_OCCUPIED, true), 4)
+        if(sleepState == EntityPlayer.EnumStatus.OK)bd.setState(bd.state.withProperty(IS_OCCUPIED, true.asInstanceOf[java.lang.Boolean]), 4)
         else {
           if(sleepState == EntityPlayer.EnumStatus.NOT_POSSIBLE_NOW) player.addChatComponentMessage(new ChatComponentTranslation("tile.bed.noSleep", new Object))
           else if(sleepState == EntityPlayer.EnumStatus.NOT_SAFE) player.addChatComponentMessage(new ChatComponentTranslation("tile.bed.noSleep", new Object))
@@ -117,7 +117,7 @@ class SleepingBag(modId:String, info:ObjInfo) extends RMBlock(modId, info) with 
     sleepingPlayer
   }
   override def isBed(world:IBlockAccess, pos:BlockPos, player:Entity) = true    
-  override def setBedOccupied(world:IBlockAccess, pos:BlockPos, player:EntityPlayer, occupied:Boolean) = if (world.isInstanceOf[World]) (world.asInstanceOf[World], pos).setState((world.asInstanceOf[World], pos).state.withProperty(IS_OCCUPIED, occupied))
+  override def setBedOccupied(world:IBlockAccess, pos:BlockPos, player:EntityPlayer, occupied:Boolean) = if (world.isInstanceOf[World]) (world.asInstanceOf[World], pos).setState((world.asInstanceOf[World], pos).state.withProperty(IS_OCCUPIED, occupied.asInstanceOf[java.lang.Boolean]))
   override def getBedDirection(world:IBlockAccess, pos:BlockPos) = getFacing(world.getBlockState(pos)).getOpposite
   override def isBedFoot(world:IBlockAccess, pos:BlockPos) = !isHead(world.getBlockState(pos))
 }

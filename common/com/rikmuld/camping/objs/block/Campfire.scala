@@ -81,7 +81,7 @@ class CampfireCook(modId:String, info:ObjInfo) extends RMBlockContainer(modId, i
   setDefaultState(getStateFromMeta(0))
   
   def isOn(world:IBlockAccess, pos:BlockPos) = world.getBlockState(pos).getValue(Campfire.ON).asInstanceOf[Boolean]
-  def setOn(world:World, pos:BlockPos, on:Boolean) = (world, pos).setState((world, pos).state.withProperty(Campfire.ON, on))
+  def setOn(world:World, pos:BlockPos, on:Boolean) = (world, pos).setState((world, pos).state.withProperty(Campfire.ON, on.asInstanceOf[java.lang.Boolean]))
   override def getProps = Array(new RMBoolProp(Campfire.ON, 0))
   override def onBlockActivated(world: World, pos:BlockPos, state:IBlockState, player: EntityPlayer, side: EnumFacing, xHit: Float, yHit: Float, zHit: Float): Boolean = {
     val bd = (world, pos)
@@ -101,7 +101,7 @@ class CampfireCook(modId:String, info:ObjInfo) extends RMBlockContainer(modId, i
 
 class CampfireWood(modId:String, info:ObjInfo) extends Campfire(modId, info) with WithProperties {
   setBlockBounds(0.125F, 0.0F, 0.125F, 0.875F, 0.125F, 0.875F)
-  setDefaultState(this.getStateFromMeta(0).withProperty(Campfire.LIGHT, 0))
+  setDefaultState(this.getStateFromMeta(0).withProperty(Campfire.LIGHT, 0.asInstanceOf[java.lang.Integer]))
   
   def getLight(world:IBlockAccess, pos:BlockPos) = world.getBlockState(pos).getValue(Campfire.LIGHT).asInstanceOf[Integer]
   def setLight(world:World, pos:BlockPos, light:Integer) = (world, pos).setState((world, pos).state.withProperty(Campfire.LIGHT, light))

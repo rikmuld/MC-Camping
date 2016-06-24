@@ -106,23 +106,23 @@ class Bear(world: World) extends EntityAnimal(world) {
       }
       val j = EnchantmentHelper.getFireAspectModifier(this)
       if (j > 0) entity.setFire(j * 4)
-      if (entity.isInstanceOf[EntityLivingBase]) EnchantmentHelper.func_151384_a(entity.asInstanceOf[EntityLivingBase], this)
-      EnchantmentHelper.func_151385_b(this, entity)
+      this.applyEnchantments(this, entity)
     }
     flag
   }
+        
   override def getLivingSound = MOD_ID + ":mob.bear.say"
   override def getHurtSound = MOD_ID + ":mob.bear.say"
   override def getDeathSound = MOD_ID + ":mob.bear.dead"
 }
 
 @SideOnly(Side.CLIENT)
-class BearRenderer(model: ModelBase) extends RenderLiving(Minecraft.getMinecraft.getRenderManager, model, 1) {
-  override def doRender(entity: Entity, d0: Double, d1: Double, d2: Double, f: Float, f1: Float) {
+class BearRenderer(model: ModelBase) extends RenderLiving[Bear](Minecraft.getMinecraft.getRenderManager, model, 1) {
+  override def doRender(entity: Bear, d0: Double, d1: Double, d2: Double, f: Float, f1: Float) {
     GL11.glPushMatrix()
     if (entity.asInstanceOf[EntityAgeable].isChild) GL11.glTranslatef(0, -0.75F, 0)
-    super.doRender(entity.asInstanceOf[EntityLiving], d0, d1, d2, f, f1)
+    super.doRender(entity, d0, d1, d2, f, f1)
     GL11.glPopMatrix()
   }
-  protected override def getEntityTexture(par1Entity: Entity): ResourceLocation = new ResourceLocation(TextureInfo.MODEL_BEAR)
+  protected override def getEntityTexture(par1Entity: Bear): ResourceLocation = new ResourceLocation(TextureInfo.MODEL_BEAR)
 }

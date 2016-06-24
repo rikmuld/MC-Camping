@@ -69,7 +69,6 @@ object ModMisc extends ModRegister {
         }
       } else if(phase==ModRegister.POST){
         
-        //Campfire cooking equipment recipes and cooking recipes
         grill = new Grill(nwsk(kit, Kit.GRILL))
         spit = new Spit(nwsk(kit, Kit.SPIT))
         pan = new Pan(nwsk(kit, Kit.PAN))

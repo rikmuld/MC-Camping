@@ -21,7 +21,7 @@ import com.rikmuld.corerm.objs.PropType._
 import com.rikmuld.corerm.Lib._
 
 class Kit(modId:String, info:ObjInfo) extends RMItem(modId, info) {
-  override def addInformation(stack: ItemStack, player: EntityPlayer, list: java.util.List[_], par4: Boolean) {
+  override def addInformation(stack: ItemStack, player: EntityPlayer, list: java.util.List[String], par4: Boolean) {
     if ((stack.getItemDamage > 0) && stack.hasTagCompound() && Keyboard.isKeyDown(42)) {
       list.clear()
       list.asInstanceOf[java.util.List[String]].add("This kit contains:")
@@ -38,7 +38,7 @@ class Kit(modId:String, info:ObjInfo) extends RMItem(modId, info) {
     }
   }
   @SideOnly(Side.CLIENT)
-  override def getSubItems(item: Item, creativetabs: CreativeTabs, list: java.util.List[_]) {
+  override def getSubItems(item: Item, creativetabs: CreativeTabs, list: java.util.List[ItemStack]) {
     val stick = new ItemStack(Items.stick)
     val stickIron = new ItemStack(Objs.parts, 1, Parts.STICK_IRON)
     val string = new ItemStack(Objs.parts, 1, Parts.PAN)

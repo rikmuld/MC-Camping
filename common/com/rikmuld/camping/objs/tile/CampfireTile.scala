@@ -22,7 +22,6 @@ import net.minecraft.item.ItemStack
 import com.rikmuld.camping.misc.CookingEquipment
 import com.rikmuld.camping.objs.ItemDefinitions
 import com.rikmuld.camping.objs.misc.ItemsData
-import net.minecraft.server.gui.IUpdatePlayerListBox
 import net.minecraft.entity.player.EntityPlayer
 import com.rikmuld.camping.Lib.NBTInfo
 import com.rikmuld.camping.objs.block.CampfireCook
@@ -30,8 +29,9 @@ import net.minecraft.util.BlockPos
 import net.minecraft.block.state.IBlockState
 import net.minecraft.world.World
 import com.rikmuld.camping.objs.block.CampfireWood
+import net.minecraft.util.ITickable
 
-class TileCampfire extends RMTile with IUpdatePlayerListBox {
+class TileCampfire extends RMTile with ITickable {
   var color: Int = 16
   var oldTime: Int = _
   var time: Int = _
@@ -201,7 +201,7 @@ abstract trait Roaster {
   def roastResult(item:ItemStack):ItemStack
 }
 
-class TileCampfireCook extends RMTile with WithTileInventory with IUpdatePlayerListBox with Roaster {
+class TileCampfireCook extends RMTile with WithTileInventory with ITickable with Roaster {
   var maxFeul: Int = config.campfireMaxFuel
   var fuelForCoal: Int = config.campfireCoalFuel
   var fuel: Int = _

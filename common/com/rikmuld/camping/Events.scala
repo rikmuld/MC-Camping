@@ -96,7 +96,7 @@ class EventsS {
   @SubscribeEvent
   def onEntityDeath(event: LivingDeathEvent) {
     if (event.entity.isInstanceOf[EntityPlayer]) {
-      if (event.entity.worldObj.getGameRules().getGameRuleBooleanValue("keepInventory")) {
+      if (event.entity.worldObj.getGameRules().getBoolean("keepInventory")) {
         val tag = event.entity.asInstanceOf[EntityPlayer].getEntityData.getCompoundTag("campInv")
         if (!event.entity.asInstanceOf[EntityPlayer].getEntityData.hasKey(EntityPlayer.PERSISTED_NBT_TAG)) event.entity.asInstanceOf[EntityPlayer].getEntityData.setTag(EntityPlayer.PERSISTED_NBT_TAG, new NBTTagCompound())
         event.entity.asInstanceOf[EntityPlayer].getEntityData.getCompoundTag(EntityPlayer.PERSISTED_NBT_TAG).setTag("campInv", tag)

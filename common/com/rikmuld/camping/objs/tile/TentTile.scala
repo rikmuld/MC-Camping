@@ -22,7 +22,6 @@ import net.minecraft.entity.player.EntityPlayer.EnumStatus
 import net.minecraftforge.fml.relauncher.SideOnly
 import java.util.Random
 import net.minecraftforge.fml.relauncher.Side
-import net.minecraft.server.gui.IUpdatePlayerListBox
 import com.rikmuld.camping.objs.block.Tent
 import net.minecraft.client.renderer.EnumFaceDirection
 import net.minecraft.util.EnumFacing
@@ -34,6 +33,7 @@ import com.rikmuld.camping.objs.misc.PlayerSleepInTent
 import com.rikmuld.camping.objs.block.TentBounds
 import com.rikmuld.camping.objs.BlockDefinitions
 import com.sun.swing.internal.plaf.metal.resources.metal
+import net.minecraft.util.ITickable
 
 object TileEntityTent {
   var bounds: Array[Bounds] = Array(new Bounds(-0.5F, 0, 0, 1.5F, 1.5F, 3), new Bounds(-2, 0, -0.5F, 1, 1.5F, 1.5F), new Bounds(-0.5F, 0, -2, 1.5F, 1.5F, 1), new Bounds(0, 0, -0.5F, 3, 1.5F, 1.5F))
@@ -42,7 +42,7 @@ object TileEntityTent {
   var BEDS: Int = 2
 }
 
-class TileTent extends RMTile with WithTileInventory with IUpdatePlayerListBox {
+class TileTent extends RMTile with WithTileInventory with ITickable {
   final val COST_CHEST = 2
   final val COST_BED = 5
   final val COST_LANTERN = 1

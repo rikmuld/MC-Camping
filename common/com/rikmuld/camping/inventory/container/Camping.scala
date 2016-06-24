@@ -93,10 +93,10 @@ class ContainerCampinv(player:EntityPlayer) extends Container with ContainerTabb
   override def onContainerClosed(player: EntityPlayer) {
     if (!this.player.worldObj.isRemote) {
       for (i <- 0 until 9) {
-        val itemstack = craftMatrix.getStackInSlotOnClosing(i)
+        val itemstack = craftMatrix.removeStackFromSlot(i)
         if (itemstack != null) player.dropPlayerItemWithRandomChoice(itemstack, false)
         if(i<4){
-          val itemstack2 = craftMatrixSmall.getStackInSlotOnClosing(i)
+          val itemstack2 = craftMatrixSmall.removeStackFromSlot(i)
           if (itemstack2 != null) player.dropPlayerItemWithRandomChoice(itemstack2, false)
         }
       }

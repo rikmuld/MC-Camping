@@ -7,10 +7,10 @@ import net.minecraftforge.fml.relauncher.SideOnly
 import com.rikmuld.camping.objs.entity.Mountable
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraft.world.World
-import net.minecraft.server.gui.IUpdatePlayerListBox
+import net.minecraft.util.ITickable
 
 
-class TileLogseat extends RMTile with IUpdatePlayerListBox{
+class TileLogseat extends RMTile with ITickable {
   var mountable: Mountable = _
 
   @SideOnly(Side.CLIENT)

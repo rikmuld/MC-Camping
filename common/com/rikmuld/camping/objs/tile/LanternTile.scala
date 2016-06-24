@@ -4,10 +4,10 @@ import com.rikmuld.corerm.objs.RMTile
 import net.minecraft.nbt.NBTTagCompound
 import com.rikmuld.corerm.misc.WorldBlock._
 import com.rikmuld.camping.objs.BlockDefinitions
-import net.minecraft.server.gui.IUpdatePlayerListBox
 import com.rikmuld.camping.objs.block.Lantern
+import net.minecraft.util.ITickable
 
-class TileLantern extends RMTile with IUpdatePlayerListBox {
+class TileLantern extends RMTile with ITickable {
   var burnTime: Int = _
   var ticker: Int = _
 

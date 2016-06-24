@@ -1,7 +1,6 @@
 package com.rikmuld.camping.objs.block
 
 import scala.collection.JavaConversions._
-import scala.collection.JavaConversions._
 import com.rikmuld.camping.CampingMod._
 import com.rikmuld.camping.Lib._
 import com.rikmuld.camping.Utils._
@@ -46,7 +45,7 @@ import com.sun.org.apache.xalan.internal.xsltc.compiler.WithParam
 import com.rikmuld.corerm.objs.WithProperties
 import com.rikmuld.corerm.objs.RMBoolProp
 import net.minecraft.entity.EntityLivingBase
-    
+
 object Lantern {
   val LIT = PropertyBool.create("lit")
   val TOP = PropertyBool.create("top")
@@ -94,7 +93,7 @@ class Lantern(modId:String, info:ObjInfo) extends RMBlockContainer(modId, info) 
     if (!world.isRemote) {
       val bd = (world, pos)
       if (!state.getValue(LIT).asInstanceOf[Boolean] && (player.getCurrentEquippedItem != null && player.getCurrentEquippedItem.getItem == Items.glowstone_dust)) {
-        bd.setState(state.withProperty(LIT, true))
+        bd.setState(state.withProperty(LIT, true.asInstanceOf[java.lang.Boolean]))
         bd.update
         bd.tile.asInstanceOf[TileLantern].burnTime = 1500
         player.getCurrentEquippedItem.stackSize-=1
@@ -103,17 +102,17 @@ class Lantern(modId:String, info:ObjInfo) extends RMBlockContainer(modId, info) 
     }
     false
   }
-  def setTop(bd:BlockData) = bd.setState(bd.state.withProperty(Lantern.TOP, bd.world.isTouchingBlockSolidForSide(bd.pos, EnumFacing.UP) && !bd.world.isTouchingBlockSolidForSide(bd.pos, EnumFacing.DOWN)))
+  def setTop(bd:BlockData) = bd.setState(bd.state.withProperty(Lantern.TOP, (bd.world.isTouchingBlockSolidForSide(bd.pos, EnumFacing.UP) && !bd.world.isTouchingBlockSolidForSide(bd.pos, EnumFacing.DOWN)).asInstanceOf[java.lang.Boolean]))
   override def getBlockLayer = EnumWorldBlockLayer.CUTOUT
   override def couldStay(bd:BlockData) = setTop(bd)
 }
 
 class LanternItem(block: Block) extends RMItemBlock(MOD_ID, BlockDefinitions.LANTERN, block) {
-  override def addInformation(stack: ItemStack, player: EntityPlayer, list: java.util.List[_], par4: Boolean) {
+  override def addInformation(stack: ItemStack, player: EntityPlayer, list: java.util.List[String], par4: Boolean) {
     if (stack.hasTagCompound()) list.asInstanceOf[java.util.List[String]].add("Burning time left: " + (stack.getTagCompound.getInteger("time") / 2) + " seconds")
   }
   @SideOnly(Side.CLIENT)
-  override def getSubItems(item: Item, creativetabs: CreativeTabs, stackList: java.util.List[_]) {
+  override def getSubItems(item: Item, creativetabs: CreativeTabs, stackList: java.util.List[ItemStack]) {
     val lantern = new ItemStack(item, 1, BlockDefinitions.Lantern.ON)
     lantern.setTagCompound(new NBTTagCompound())
     lantern.getTagCompound.setInteger("time", 1500)

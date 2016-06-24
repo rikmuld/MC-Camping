@@ -56,7 +56,7 @@ import net.minecraft.item.Item
 import scala.collection.JavaConversions._
 
 object Tent {
-  val FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL.asInstanceOf[Predicate[_]])
+  val FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL.asInstanceOf[Predicate[EnumFacing]])
 }
 
 class Tent(modId:String, info:ObjInfo) extends RMBlockContainer(modId, info) with WithModel with WithProperties with WithInstable {
@@ -65,7 +65,7 @@ class Tent(modId:String, info:ObjInfo) extends RMBlockContainer(modId, info) wit
   var facingFlag:Int = _
   
   override def getProps = Array(new RMFacingHorizontalProp(FACING, 0))
-  override def addCollisionBoxesToList(world: World, pos:BlockPos, state:IBlockState, alignedBB: AxisAlignedBB, list: java.util.List[_], entity: Entity) {
+  override def addCollisionBoxesToList(world: World, pos:BlockPos, state:IBlockState, alignedBB: AxisAlignedBB, list: java.util.List[AxisAlignedBB], entity: Entity) {
     TileEntityTent.bounds(getFacing(state)).setBlockCollision(this)
     super.addCollisionBoxesToList(world, pos, state, alignedBB, list, entity)
   }
@@ -134,7 +134,7 @@ class Tent(modId:String, info:ObjInfo) extends RMBlockContainer(modId, info) wit
 
 class TentItem(block:Block) extends RMItemBlock(CampingMod.MOD_ID, BlockDefinitions.TENT, block) {  
   @SideOnly(Side.CLIENT)
-  override def getSubItems(itemIn:Item, tab:CreativeTabs, subItems:java.util.List[_]) {
+  override def getSubItems(itemIn:Item, tab:CreativeTabs, subItems:java.util.List[ItemStack]) {
     subItems.asInstanceOf[java.util.List[ItemStack]].add(new ItemStack(itemIn, 1, 15)) 
   }
   override def placeBlockAt(stack: ItemStack, player: EntityPlayer, world: World, pos: BlockPos, side: EnumFacing, hitX: Float, hitY: Float, hitZ: Float, newState: IBlockState): Boolean = {

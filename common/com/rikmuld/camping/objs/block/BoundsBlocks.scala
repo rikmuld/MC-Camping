@@ -26,7 +26,7 @@ import com.rikmuld.camping.objs.tile.TileTent
 import net.minecraft.world.IWorldAccess
 
 object TentBounds {
-  val FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL.asInstanceOf[Predicate[_]])
+  val FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL.asInstanceOf[Predicate[EnumFacing]])
 }
 
 class TentBounds(modId:String, info:ObjInfo) extends RMBlockContainer(modId, info) with IBoundsBlock with WithModel with WithProperties {

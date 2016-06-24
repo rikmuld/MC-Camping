@@ -14,7 +14,7 @@ class Tab(name: String) extends CreativeTabs(name) {
 
   override def getIconItemStack: ItemStack = new ItemStack(knife)
   override def getTabIconItem: Item = getIconItemStack.getItem
-  override def displayAllReleventItems(list: java.util.List[_]) {
+  override def displayAllReleventItems(list: java.util.List[ItemStack]) {
     super.displayAllReleventItems(list)
     val iterator = EntityList.entityEggs.values.iterator()
     while (iterator.hasNext) {
