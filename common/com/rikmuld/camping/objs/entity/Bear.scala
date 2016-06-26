@@ -17,7 +17,6 @@ import net.minecraft.entity.EntityLiving
 import net.minecraft.entity.EntityLivingBase
 import net.minecraft.entity.EnumCreatureAttribute
 import net.minecraft.entity.SharedMonsterAttributes
-import net.minecraft.entity.ai.EntityAIAttackOnCollide
 import net.minecraft.entity.ai.EntityAIHurtByTarget
 import net.minecraft.entity.ai.EntityAILookIdle
 import net.minecraft.entity.ai.EntityAIMate
@@ -40,18 +39,19 @@ import net.minecraft.world.World
 import net.minecraftforge.fml.relauncher.SideOnly
 import net.minecraftforge.fml.relauncher.Side
 import com.rikmuld.camping.CampingMod
+import net.minecraft.entity.ai.EntityAIAttackMelee
+import net.minecraft.init.Enchantments
+import net.minecraft.util.SoundEvent
+import net.minecraft.item.ItemAxe
 
 class Bear(world: World) extends EntityAnimal(world) {
   setSize(1F, 1.125F)
-  tasks.addTask(1, new EntityAIAttackOnCollide(this, classOf[EntityPlayer], 1.0D, false));
-  tasks.addTask(1, new EntityAIAttackOnCollide(this, classOf[EntityZombie], 1.0D, false))
-  tasks.addTask(1, new EntityAIAttackOnCollide(this, classOf[EntityVillager], 1.0D, false))
-  tasks.addTask(1, new EntityAIAttackOnCollide(this, classOf[Camper], 1.0D, false))
+  tasks.addTask(1, new EntityAIAttackMelee(this, 1.0D, false))
   tasks.addTask(2, new EntityAIWander(this, 1.0D))
   tasks.addTask(3, new EntityAIWatchClosest(this, classOf[EntityPlayer], 8.0F))
   tasks.addTask(4, new EntityAILookIdle(this))
   tasks.addTask(5, new EntityAISwimming(this))
-  tasks.addTask(6, new EntityAITempt(this, 1.2D, Items.fish, false))
+  tasks.addTask(6, new EntityAITempt(this, 1.2D, Items.FISH, false))
   tasks.addTask(7, new EntityAIMate(this, 1.0D))
   targetTasks.addTask(0, new EntityAIHurtByTarget(this, true))
   targetTasks.addTask(1, new EntityAINearestAttackableTarget(this, classOf[EntityPlayer], true))
@@ -61,9 +61,9 @@ class Bear(world: World) extends EntityAnimal(world) {
 
   protected override def applyEntityAttributes() {
     super.applyEntityAttributes()
-    getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.25D)
-    getAttributeMap.registerAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(8.0D)
-    getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(30.0D)
+    getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.25D)
+    getAttributeMap.registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(8.0D)
+    getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(30.0D)
   }
   protected override def canDespawn(): Boolean = false
   override def createChild(entityageable: EntityAgeable): EntityAgeable = new Bear(worldObj)
@@ -85,17 +85,17 @@ class Bear(world: World) extends EntityAnimal(world) {
   override def getCanSpawnHere(): Boolean = (world.getWorldInfo.getDifficulty.getDifficultyId > 0) && super.getCanSpawnHere
   override def getCreatureAttribute(): EnumCreatureAttribute = EnumCreatureAttribute.UNDEFINED
   override def getTotalArmorValue(): Int = 10
-  override def isBreedingItem(stack: ItemStack): Boolean = stack.getItem() == Items.fish
+  override def isBreedingItem(stack: ItemStack): Boolean = stack.getItem() == Items.FISH
   override def onUpdate() {
     super.onUpdate()
     if (!worldObj.isRemote && ((world.getWorldInfo.getDifficulty.getDifficultyId() == 0) || !CampingMod.config.useBears)) setDead()
   }
   override def attackEntityAsMob(entity: Entity): Boolean = {
-    var f = this.getEntityAttribute(SharedMonsterAttributes.attackDamage).getAttributeValue.toFloat
+    var f = this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue.toFloat
     var i = 0
     if (entity.isInstanceOf[EntityLivingBase]) {
-      f += EnchantmentHelper.func_152377_a(getHeldItem, entity.asInstanceOf[EntityLivingBase].getCreatureAttribute)
-      i += EnchantmentHelper.getEnchantmentLevel(Enchantment.knockback.effectId, getHeldItem)
+      f += EnchantmentHelper.getModifierForCreature(this.getHeldItemMainhand(), entity.asInstanceOf[EntityLivingBase].getCreatureAttribute());
+      i += EnchantmentHelper.getKnockbackModifier(this);
     }
     val flag = entity.attackEntityFrom(DamageSource.causeMobDamage(this), f)
     if (flag) {
@@ -106,14 +106,29 @@ class Bear(world: World) extends EntityAnimal(world) {
       }
       val j = EnchantmentHelper.getFireAspectModifier(this)
       if (j > 0) entity.setFire(j * 4)
+      if (entity.isInstanceOf[EntityPlayer]) {
+          val player = entity.asInstanceOf[EntityPlayer]
+          val itemstack = this.getHeldItemMainhand();
+          val itemstack1 = if(player.isHandActive()) player.getActiveItemStack() else null;
+
+          if (itemstack != null && itemstack1 != null && itemstack.getItem.isInstanceOf[ItemAxe] && itemstack1.getItem() == Items.SHIELD) {
+              val f1 = 0.25F + EnchantmentHelper.getEfficiencyModifier(this) * 0.05F;
+
+              if (this.rand.nextFloat() < f1)
+              {
+                  player.getCooldownTracker().setCooldown(Items.SHIELD, 100);
+                  this.worldObj.setEntityState(player, 30.toByte);
+              }
+          }
+      }
       this.applyEnchantments(this, entity)
     }
     flag
   }
         
-  override def getLivingSound = MOD_ID + ":mob.bear.say"
-  override def getHurtSound = MOD_ID + ":mob.bear.say"
-  override def getDeathSound = MOD_ID + ":mob.bear.dead"
+  override def getAmbientSound:SoundEvent = bearAmb
+  override def getHurtSound:SoundEvent = bearAmb
+  override def getDeathSound:SoundEvent = bearDeath
 }
 
 @SideOnly(Side.CLIENT)

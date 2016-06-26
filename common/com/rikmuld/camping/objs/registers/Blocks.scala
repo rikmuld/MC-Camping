@@ -37,6 +37,8 @@ import net.minecraftforge.fml.relauncher.Side
 import com.rikmuld.camping.objs.BlockDefinitions._
 import net.minecraft.init.Blocks
 import net.minecraft.item.ItemStack
+import net.minecraft.world.IBlockAccess
+import net.minecraft.util.EnumBlockRenderType
 
 object ModBlocks extends ModRegister {
   override def register {
@@ -51,12 +53,11 @@ object ModBlocks extends ModRegister {
     tentBounds = new TentBounds(MOD_ID, BOUNDS_TENT)
     hemp = new Hemp(MOD_ID, HEMP)
     light = new RMBlockContainer(MOD_ID, LIGHT) with WithModel {
-      setBlockBounds(0, 0, 0, 0, 0, 0)
-      
+      override def getBoundingBox(state:IBlockState, source:IBlockAccess, pos:BlockPos): AxisAlignedBB = new AxisAlignedBB(0, 0, 0, 0, 0, 0)
       override def createNewTileEntity(world: World, meta: Int): RMTile = new TileLight()
-      override def getCollisionBoundingBox(world: World, pos:BlockPos, state:IBlockState): AxisAlignedBB = null
-      override def getRenderType = -1
-      override def isReplaceable(world: World, pos:BlockPos) = true
+      override def getCollisionBoundingBox(state:IBlockState, world: World, pos:BlockPos): AxisAlignedBB = new AxisAlignedBB(0, 0, 0, 0, 0, 0)
+      override def getRenderType(state:IBlockState) = EnumBlockRenderType.INVISIBLE
+      override def isReplaceable(world: IBlockAccess, pos:BlockPos) = true
       override def canCollideCheck(state:IBlockState, hitIfLiquid:Boolean) = false
     }
   }

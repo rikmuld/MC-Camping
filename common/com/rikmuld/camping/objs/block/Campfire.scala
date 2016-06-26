@@ -2,41 +2,39 @@ package com.rikmuld.camping.objs.block
 
 import java.util.ArrayList
 import java.util.Random
-import com.rikmuld.camping.CampingMod._
+import com.rikmuld.camping.CampingMod.proxy
 import com.rikmuld.camping.Lib.NBTInfo
 import com.rikmuld.camping.objs.Objs
 import com.rikmuld.camping.objs.tile.TileCampfire
 import com.rikmuld.camping.objs.tile.TileCampfireCook
 import com.rikmuld.camping.objs.tile.TileCampfireWood
-import com.rikmuld.corerm.CoreUtils._
-import com.rikmuld.corerm.misc.WorldBlock._
+import com.rikmuld.corerm.misc.WorldBlock.BlockData
+import com.rikmuld.corerm.misc.WorldBlock.IMBlockData
 import com.rikmuld.corerm.objs.ObjInfo
 import com.rikmuld.corerm.objs.RMBlockContainer
+import com.rikmuld.corerm.objs.RMBoolProp
+import com.rikmuld.corerm.objs.RMIntProp
 import com.rikmuld.corerm.objs.RMTile
 import com.rikmuld.corerm.objs.WithInstable
 import com.rikmuld.corerm.objs.WithModel
-import net.minecraft.block.Block
+import com.rikmuld.corerm.objs.WithProperties
+import net.minecraft.block.properties.PropertyBool
+import net.minecraft.block.properties.PropertyInteger
 import net.minecraft.block.state.IBlockState
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.init.Items
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
-import net.minecraft.tileentity.TileEntity
-import net.minecraft.util.math.BlockPos
+import net.minecraft.util.EnumBlockRenderType
 import net.minecraft.util.EnumFacing
+import net.minecraft.util.EnumHand
 import net.minecraft.util.EnumParticleTypes
+import net.minecraft.util.math.AxisAlignedBB
+import net.minecraft.util.math.BlockPos
 import net.minecraft.world.IBlockAccess
 import net.minecraft.world.World
 import net.minecraftforge.fml.relauncher.SideOnly
 import net.minecraftforge.fml.relauncher.Side
-import com.rikmuld.camping.objs.ItemDefinitions
-import net.minecraft.block.properties.PropertyInteger
-import com.rikmuld.corerm.objs.WithProperties
-import com.rikmuld.corerm.objs.RMProp
-import net.minecraft.block.properties.IProperty
-import com.rikmuld.corerm.objs.RMIntProp
-import net.minecraft.block.properties.PropertyBool
-import com.rikmuld.corerm.objs.RMBoolProp
 
 object Campfire {
   val ON = PropertyBool.create("on");
@@ -53,46 +51,49 @@ object Campfire {
 }
 
 class Campfire(modId:String, info: ObjInfo) extends RMBlockContainer(modId, info) with WithModel with WithInstable {
-  setBlockBounds(0.125F, 0.0F, 0.125F, 0.875F, 0.125F, 0.875F)
-
-  override def getRenderType = 3
+  override def getRenderType(state:IBlockState) = EnumBlockRenderType.MODEL
+  override def getBoundingBox(state:IBlockState, source:IBlockAccess, pos:BlockPos): AxisAlignedBB = new AxisAlignedBB(0.125F, 0.0F, 0.125F, 0.875F, 0.125F, 0.875F)
   override def createNewTileEntity(world: World, meta: Int): RMTile = new TileCampfire()
-  override def onBlockActivated(world: World, pos:BlockPos, state:IBlockState, player: EntityPlayer, side: EnumFacing, xHit: Float, yHit: Float, zHit: Float): Boolean = {
+  override def onBlockActivated(world: World, pos:BlockPos, state:IBlockState, player: EntityPlayer, hand:EnumHand, stack:ItemStack, side: EnumFacing, xHit: Float, yHit: Float, zHit: Float): Boolean = {
     val bd = (world, pos)
-    if(!world.isRemote && player.getCurrentEquippedItem != null && player.getCurrentEquippedItem.getItem == Items.dye && bd.tile.asInstanceOf[TileCampfire].addDye(player.getCurrentEquippedItem)) {
-      player.getCurrentEquippedItem.stackSize-=1
+    if(!world.isRemote && stack != null && stack.getItem == Items.DYE && bd.tile.asInstanceOf[TileCampfire].addDye(stack)) {
+      stack.stackSize-=1
       var data = player.getEntityData
       if(!data.hasKey(NBTInfo.ACHIEVEMENTS))data.setTag(NBTInfo.ACHIEVEMENTS, new NBTTagCompound())
       data = data.getTag(NBTInfo.ACHIEVEMENTS).asInstanceOf[NBTTagCompound]
       var dye = if(data.hasKey("dye_burn"))data.getInteger("dye_burn") else 0
-      if(dye == 4)player.triggerAchievement(Objs.achMadCamper)
+      if(dye == 4)player.addStat(Objs.achMadCamper)
       else data.setInteger("dye_burn", dye + 1)
     }
     true
   }
   @SideOnly(Side.CLIENT)
-  override def randomDisplayTick(world: World, pos:BlockPos, state:IBlockState, random: Random) {
+  override def randomDisplayTick(state:IBlockState, world: World, pos:BlockPos, random: Random) {
     for (i <- 0 until 3) Campfire.particleAnimation((world, pos), (world, pos).tile.asInstanceOf[TileCampfire].color, random, true)
   }
 }
   
 class CampfireCook(modId:String, info:ObjInfo) extends RMBlockContainer(modId, info) with WithModel with WithInstable with WithProperties {
-  setBlockBounds(0.125F, 0.0F, 0.125F, 0.875F, 0.125F, 0.875F)
   setDefaultState(getStateFromMeta(0))
   
-  def isOn(world:IBlockAccess, pos:BlockPos) = world.getBlockState(pos).getValue(Campfire.ON).asInstanceOf[Boolean]
+  override def getRenderType(state:IBlockState) = EnumBlockRenderType.MODEL
+  override def getBoundingBox(state:IBlockState, source:IBlockAccess, pos:BlockPos): AxisAlignedBB = new AxisAlignedBB(0.125F, 0.0F, 0.125F, 0.875F, 0.125F, 0.875F)
+  def isOn(world:IBlockAccess, pos:BlockPos):Boolean = {
+    val state = world.getBlockState(pos)
+    if(state.getBlock == this) state.getValue(Campfire.ON).asInstanceOf[Boolean]
+    else false
+  }
   def setOn(world:World, pos:BlockPos, on:Boolean) = (world, pos).setState((world, pos).state.withProperty(Campfire.ON, on.asInstanceOf[java.lang.Boolean]))
   override def getProps = Array(new RMBoolProp(Campfire.ON, 0))
-  override def onBlockActivated(world: World, pos:BlockPos, state:IBlockState, player: EntityPlayer, side: EnumFacing, xHit: Float, yHit: Float, zHit: Float): Boolean = {
+  override def onBlockActivated(world: World, pos:BlockPos, state:IBlockState, player: EntityPlayer, hand:EnumHand, stack:ItemStack, side: EnumFacing, xHit: Float, yHit: Float, zHit: Float): Boolean = {
     val bd = (world, pos)
     bd.tile.asInstanceOf[TileCampfireCook].lastPlayer = player
-    super.onBlockActivated(world, pos, state, player, side, xHit, yHit, zHit)
+    super.onBlockActivated(world, pos, state, player, hand, stack, side, xHit, yHit, zHit)
   }
-  override def getRenderType = 3
   override def createNewTileEntity(world: World, meta: Int): RMTile = new TileCampfireCook()
-  override def getLightValue(world: IBlockAccess, pos:BlockPos): Int = if(isOn(world, pos)) 15 else 0
+  override def getLightValue(state:IBlockState, world: IBlockAccess, pos:BlockPos): Int = if(isOn(world, pos)) 15 else 0
   @SideOnly(Side.CLIENT)
-  override def randomDisplayTick(world: World, pos:BlockPos, state:IBlockState, random: Random) {
+  override def randomDisplayTick(state:IBlockState, world: World, pos:BlockPos, random: Random) {
     if ((world, pos).tile.asInstanceOf[TileCampfireCook].fuel > 0) {
       for (i <- 0 until 3) Campfire.particleAnimation((world, pos), 16, random, true)
     }
@@ -100,53 +101,49 @@ class CampfireCook(modId:String, info:ObjInfo) extends RMBlockContainer(modId, i
 }
 
 class CampfireWood(modId:String, info:ObjInfo) extends Campfire(modId, info) with WithProperties {
-  setBlockBounds(0.125F, 0.0F, 0.125F, 0.875F, 0.125F, 0.875F)
   setDefaultState(this.getStateFromMeta(0).withProperty(Campfire.LIGHT, 0.asInstanceOf[java.lang.Integer]))
   
-  def getLight(world:IBlockAccess, pos:BlockPos) = world.getBlockState(pos).getValue(Campfire.LIGHT).asInstanceOf[Integer]
+  override def getRenderType(state:IBlockState) = EnumBlockRenderType.MODEL
+  override def getBoundingBox(state:IBlockState, source:IBlockAccess, pos:BlockPos): AxisAlignedBB = new AxisAlignedBB(0.125F, 0.0F, 0.125F, 0.875F, 0.125F, 0.875F)
+  def getLight(world:IBlockAccess, pos:BlockPos):Int = {
+    val state = world.getBlockState(pos)
+    if(state.getBlock == this){
+      world.getBlockState(pos).getValue(Campfire.LIGHT).asInstanceOf[Integer]
+    } else 0
+  }
   def setLight(world:World, pos:BlockPos, light:Integer) = (world, pos).setState((world, pos).state.withProperty(Campfire.LIGHT, light))
   override def getProps = Array(new RMIntProp(Campfire.LIGHT, 4, 0))
   override def getDrops(world: IBlockAccess, pos:BlockPos, state:IBlockState, fortune: Int): ArrayList[ItemStack] = {
     val rand = new Random
     val stacks = new ArrayList[ItemStack]()
     
-    stacks.add(new ItemStack(Items.stick, rand.nextInt(3)+1))
+    stacks.add(new ItemStack(Items.STICK, rand.nextInt(3)+1))
     stacks
   }
   
   @SideOnly(Side.CLIENT)
-  override def randomDisplayTick(world: World, pos:BlockPos, state:IBlockState, random: Random) {
+  override def randomDisplayTick(state:IBlockState, world: World, pos:BlockPos, random: Random) {
     val tile = world.getTileEntity(pos).asInstanceOf[TileCampfireWood]
-    if(tile.isOn())super.randomDisplayTick(world, pos, state, random)
+    if(tile.isOn())super.randomDisplayTick(state, world, pos, random)
     else {
       val lid = tile.getLid
       if(lid > 0)for (i <- 0 until (lid/5).toInt + 1) Campfire.particleAnimation((world, pos), (world, pos).tile.asInstanceOf[TileCampfire].color, random, false)
     }
   }
   
-  override def getLightValue(world: IBlockAccess, pos:BlockPos): Int = getLight(world, pos)
-  override def onBlockActivated(world: World, pos:BlockPos, state:IBlockState, player: EntityPlayer, side: EnumFacing, xHit: Float, yHit: Float, zHit: Float): Boolean = {
+  override def getLightValue(state:IBlockState, world: IBlockAccess, pos:BlockPos): Int = getLight(world, pos)
+  override def onBlockActivated(world: World, pos:BlockPos, state:IBlockState, player: EntityPlayer, hand:EnumHand, stack:ItemStack, side: EnumFacing, xHit: Float, yHit: Float, zHit: Float): Boolean = {
     if(!world.isRemote){
       val bd = (world, pos)
-      val item = player.getCurrentEquippedItem
       
-      if(Option(item).isDefined && item.getItem == Items.stick){
+      if(Option(stack).isDefined && stack.getItem == Items.STICK){
         val tile = bd.tile.asInstanceOf[TileCampfireWood]
         tile.tryLid()
       }
     }
     
-    if(!world.isRemote && (world, pos).tile.asInstanceOf[TileCampfireWood].isOn())super.onBlockActivated(world, pos, state, player, side, xHit, yHit, zHit)
+    if(!world.isRemote && (world, pos).tile.asInstanceOf[TileCampfireWood].isOn())super.onBlockActivated(world, pos, state, player, hand, stack, side, xHit, yHit, zHit)
     else true
   }
   override def createNewTileEntity(world: World, meta: Int): RMTile = new TileCampfireWood()
 }
-//current changlog 2.3b
-
-//fixed camping inventory backpack slots not gone after removing backpack
-//added the pouch, it can store up to three items
-//changed the backpack icon and dropped capacity to 9 items
-//added the rucksack, it can store up to 27 items
-//all three of them can be used in the camping inventory
-//fixed tents cannot be colored in crafting tables
-//fixed the default tent that is crafted is the black tent

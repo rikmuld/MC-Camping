@@ -178,15 +178,14 @@ class EventsS {
           val y = mob.get.getBlockPos.getY
           val z = mob.get.getBlockPos.getZ
           val bd = (player.worldObj, mob.get.getBlockPos)
-          val item = player.inventory.getCurrentItem
+          val item = player.getActiveItemStack
           
           if(bd.tile.isInstanceOf[Roaster] && (new Vec3d(x + 0.5F, y + 0.5F, z + 0.5F).distanceTo(new Vec3d(player.posX, player.posY, player.posZ)) <= 2.5F)){
             val roaster = bd.tile.asInstanceOf[Roaster]
             if(roaster.canRoast(item)){
               if(marshupdate > roaster.roastTime(item)){
-                player.inventory.getCurrentItem.stackSize -= 1
-                //TODO CHECK
-                //if (player.inventory.getCurrentItem.stackSize <= 0) player.setCurrentItem(null)
+                player.getActiveItemStack.stackSize -= 1
+                if (player.getActiveItemStack.stackSize <= 0) player.setHeldItem(player.getActiveHand, null)
                 
                 val cooked = roaster.roastResult(item)
                 

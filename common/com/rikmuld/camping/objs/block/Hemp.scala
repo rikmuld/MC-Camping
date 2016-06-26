@@ -38,6 +38,8 @@ import com.sun.org.apache.bcel.internal.generic.GETSTATIC
 import com.rikmuld.corerm.objs.RMIntProp
 import com.rikmuld.camping.objs.block.Hemp._
 import com.rikmuld.corerm.objs.WithProperties
+import net.minecraft.util.BlockRenderLayer
+import net.minecraft.util.EnumBlockRenderType
 
 object Hemp {
   val AGE = PropertyInteger.create("age", 0, 5);
@@ -47,26 +49,26 @@ class Hemp(modId:String, info:ObjInfo) extends RMBlock(modId, info) with IPlanta
   setTickRandomly(true)
   setDefaultState(getStateFromMeta(0))
 
+  override def getRenderType(state:IBlockState) = EnumBlockRenderType.MODEL
   override def getProps = Array(new RMIntProp(AGE, 3, 0))
   override def canPlaceBlockAt(world: World, pos:BlockPos): Boolean = canStay((world, pos))
-  override def canStay(bd:BlockData): Boolean = ((bd.world, bd.pos.down).block==this && bd.down.state.getValue(AGE) == BlockDefinitions.Hemp.GROWN_BIG_BOTTOM)||bd.down.block.canSustainPlant(bd.world, bd.pos.down, EnumFacing.UP, this)
-  override def getCollisionBoundingBox(world: World, pos:BlockPos, state:IBlockState): AxisAlignedBB = null
+  override def canStay(bd:BlockData): Boolean = ((bd.world, bd.pos.down).block==this && bd.down.state.getValue(AGE) == BlockDefinitions.Hemp.GROWN_BIG_BOTTOM)||bd.down.block.canSustainPlant(bd.state, bd.world, bd.pos.down, EnumFacing.UP, this)
+  override def getCollisionBoundingBox(state:IBlockState, world: World, pos:BlockPos): AxisAlignedBB = new AxisAlignedBB(0, 0, 0, 0, 0, 0)
   override def getItemDropped(state: IBlockState, random: Random, pInt: Int): Item = Item.getItemFromBlock(this)
   @SideOnly(Side.CLIENT)
-  override def getItem(world: World, pos:BlockPos): Item = Item.getItemFromBlock(this)
+  override def getItem(world: World, pos:BlockPos, state:IBlockState): ItemStack = new ItemStack(Item.getItemFromBlock(this))
   override def getPlantType(world: IBlockAccess, pos:BlockPos): EnumPlantType = EnumPlantType.Beach
   override def getPlant(world: IBlockAccess, pos:BlockPos): IBlockState = getDefaultState
-  override def setBlockBoundsBasedOnState(world: IBlockAccess, pos:BlockPos) {
-    if (getMetaFromState(world.getBlockState(pos)) == 4) setBlockBounds(0.3F, 0.0F, 0.3F, 0.7F, 1.0F, 0.7F)
-    else if (getMetaFromState(world.getBlockState(pos)) == 3) setBlockBounds(0.3F, 0.0F, 0.3F, 0.7F, 0.8F, 0.7F)
-    else if ((getMetaFromState(world.getBlockState(pos)) == 2) || (getMetaFromState(world.getBlockState(pos)) == 5)) setBlockBounds(0.3F, 0.0F, 0.3F, 0.7F, 0.6F, 0.7F)
-    else if (getMetaFromState(world.getBlockState(pos)) == 1) setBlockBounds(0.3F, 0.0F, 0.3F, 0.7F, 0.4F, 0.7F)
-    else if (getMetaFromState(world.getBlockState(pos)) == 0) setBlockBounds(0.3F, 0.0F, 0.3F, 0.7F, 0.2F, 0.7F)
+  override def getBoundingBox(state:IBlockState, source:IBlockAccess, pos:BlockPos):AxisAlignedBB = {
+    if (getMetaFromState(state) == 4) new AxisAlignedBB(0.3F, 0.0F, 0.3F, 0.7F, 1.0F, 0.7F)
+    else if (getMetaFromState(state) == 3) new AxisAlignedBB(0.3F, 0.0F, 0.3F, 0.7F, 0.8F, 0.7F)
+    else if ((getMetaFromState(state) == 2) || (getMetaFromState(state) == 5)) new AxisAlignedBB(0.3F, 0.0F, 0.3F, 0.7F, 0.6F, 0.7F)
+    else if (getMetaFromState(state) == 1) new AxisAlignedBB(0.3F, 0.0F, 0.3F, 0.7F, 0.4F, 0.7F)
+    else if (getMetaFromState(state) == 0) new AxisAlignedBB(0.3F, 0.0F, 0.3F, 0.7F, 0.2F, 0.7F)
+    else new AxisAlignedBB(0, 0, 0, 0, 0, 0)
   }
   @SideOnly(Side.CLIENT)
-  override def colorMultiplier(world:IBlockAccess, pos:BlockPos, renderPass:Int) = world.getBiomeGenForCoords(pos).getGrassColorAtPos(pos)
-  @SideOnly(Side.CLIENT)
-  override def getBlockLayer = EnumWorldBlockLayer.CUTOUT
+  override def getBlockLayer = BlockRenderLayer.CUTOUT
   override def updateTick(world: World, pos:BlockPos, state:IBlockState, random: Random) {
     super.updateTick(world, pos, state, random)
     if ((world.getLightBrightness(pos.up) * 15) >= 9) {

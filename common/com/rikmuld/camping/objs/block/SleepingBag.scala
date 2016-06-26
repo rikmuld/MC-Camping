@@ -36,17 +36,20 @@ import net.minecraft.entity.Entity
 import com.rikmuld.camping.objs.BlockDefinitions
 import net.minecraft.init.Biomes
 import net.minecraft.util.text.TextComponentTranslation
+import net.minecraft.util.EnumHand
+import net.minecraft.util.EnumBlockRenderType
 
 object SleepingBag {
-  val IS_HEAD = PropertyBool.create("isHead")
-  val IS_OCCUPIED = PropertyBool.create("isOccupied")
+  val IS_HEAD = PropertyBool.create("ishead")
+  val IS_OCCUPIED = PropertyBool.create("isoccupied")
   val FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL.asInstanceOf[Predicate[EnumFacing]])
 }
 
 class SleepingBag(modId:String, info:ObjInfo) extends RMBlock(modId, info) with WithProperties with WithModel {
   setDefaultState(getStateFromMeta(0))
-  setBlockBounds(0, 0, 0, 1, 1f/16f, 1)
     
+  override def getRenderType(state:IBlockState) = EnumBlockRenderType.MODEL 
+  override def getBoundingBox(state:IBlockState, source:IBlockAccess, pos:BlockPos) = new AxisAlignedBB(0, 0, 0, 1, 1f/16f, 1)
   override def getProps = Array(new RMBoolProp(IS_HEAD, 0), new RMBoolProp(IS_OCCUPIED, 1), new RMFacingHorizontalProp(FACING, 2))
   override def onBlockPlacedBy(world:World, pos:BlockPos, state:IBlockState, entity:EntityLivingBase, stack:ItemStack) {
     val bd = (world, pos)
@@ -69,11 +72,11 @@ class SleepingBag(modId:String, info:ObjInfo) extends RMBlock(modId, info) with 
       bd.update
     }
   }
-  override def getCollisionBoundingBox(world: World, pos:BlockPos, state:IBlockState): AxisAlignedBB = null
+  override def getCollisionBoundingBox(state:IBlockState, world: World, pos:BlockPos): AxisAlignedBB = null
   override def canPlaceBlockAt(world: World, pos:BlockPos) = (world, pos).canInstableStand
-  override def onNeighborBlockChange(world: World, pos:BlockPos, state:IBlockState, block: Block) = if (!world.isRemote) dropIfCantStay((world, pos))
+  override def neighborChanged(state:IBlockState, world: World, pos:BlockPos, block: Block) = if (!world.isRemote) dropIfCantStay((world, pos))
   override def quantityDropped(state:IBlockState, fortune:Int, random:Random) = isHead(state).intValue
-  override def onBlockActivated(world: World, pos:BlockPos, state:IBlockState, player: EntityPlayer, side: EnumFacing, xHit: Float, yHit: Float, zHit: Float): Boolean = {
+  override def onBlockActivated(world: World, pos:BlockPos, state:IBlockState, player: EntityPlayer, hand:EnumHand, stack:ItemStack, side: EnumFacing, xHit: Float, yHit: Float, zHit: Float): Boolean = {
     if(!world.isRemote){
       var bd = (world, pos)
 
@@ -115,9 +118,9 @@ class SleepingBag(modId:String, info:ObjInfo) extends RMBlock(modId, info) with 
     
     sleepingPlayer
   }
-  override def isBed(world:IBlockAccess, pos:BlockPos, player:Entity) = true    
+  override def isBed(state:IBlockState, world:IBlockAccess, pos:BlockPos, player:Entity) = true    
   override def setBedOccupied(world:IBlockAccess, pos:BlockPos, player:EntityPlayer, occupied:Boolean) = if (world.isInstanceOf[World]) (world.asInstanceOf[World], pos).setState((world.asInstanceOf[World], pos).state.withProperty(IS_OCCUPIED, occupied.asInstanceOf[java.lang.Boolean]))
-  override def getBedDirection(world:IBlockAccess, pos:BlockPos) = getFacing(world.getBlockState(pos)).getOpposite
+  override def getBedDirection(state:IBlockState, world:IBlockAccess, pos:BlockPos) = getFacing(world.getBlockState(pos)).getOpposite
   override def isBedFoot(world:IBlockAccess, pos:BlockPos) = !isHead(world.getBlockState(pos))
 }
 

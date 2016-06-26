@@ -40,7 +40,7 @@ class TileTrap extends RMTile with WithTileInventory with ITickable {
   var cooldown: Int = _
   var open: Boolean = true
   var captureFlag: Boolean = _
-  var monsterItemAttr = Array(Items.rotten_flesh, Items.chicken, Items.beef, Items.porkchop, Objs.venisonRaw, Items.mutton, Items.rabbit)
+  var monsterItemAttr = Array(Items.ROTTEN_FLESH, Items.CHICKEN, Items.BEEF, Items.PORKCHOP, Objs.venisonRaw, Items.MUTTON, Items.RABBIT)
   var lastPlayer:Option[EntityPlayer] = None 
   
   override def getSizeInventory(): Int = 1
@@ -54,11 +54,11 @@ class TileTrap extends RMTile with WithTileInventory with ITickable {
     captureFlag = tag.getBoolean("captureFlag")
     open = tag.getBoolean("open")
   }
-  override def writeToNBT(tag: NBTTagCompound) {
-    super.writeToNBT(tag)
+  override def writeToNBT(tag: NBTTagCompound):NBTTagCompound = {
     tag.setInteger("cooldown", cooldown)
     tag.setBoolean("captureFlag", trappedEntity != null)
     tag.setBoolean("open", open)
+    super.writeToNBT(tag)
   }
   def forceOpen {
     setOpen(true)
@@ -66,7 +66,7 @@ class TileTrap extends RMTile with WithTileInventory with ITickable {
     trappedEntity = null
   }
   override def setTileData(id: Int, data: Array[Int]) = if (id == 0) open = data(0) == 1
-  def captureBounds = AxisAlignedBB.fromBounds(bd.x + 0.21875, bd.y, bd.z + 0.21875, bd.x + 0.78125, bd.y + 0.1875, bd.z + 0.78125)
+  def captureBounds = new AxisAlignedBB(bd.x + 0.21875, bd.y, bd.z + 0.21875, bd.x + 0.78125, bd.y + 0.1875, bd.z + 0.78125)
   def setOpen(open:Boolean) = {
     this.open = open
     sendTileData(0, true, if (this.open) 1 else 0)
@@ -90,10 +90,10 @@ class TileTrap extends RMTile with WithTileInventory with ITickable {
             lastPlayer.map {player => 
               if(getStackInSlot(0) != null){
                 if (trappedEntity.isInstanceOf[EntityAnimal]) {
-                  if (trappedEntity.asInstanceOf[EntityAnimal].isBreedingItem(getStackInSlot(0)))player.triggerAchievement(Objs.achHunter)
+                  if (trappedEntity.asInstanceOf[EntityAnimal].isBreedingItem(getStackInSlot(0)))player.addStat(Objs.achHunter)
                 }
                 if (trappedEntity.isInstanceOf[Bear] || trappedEntity.isInstanceOf[EntityZombie] || trappedEntity.isInstanceOf[EntityCreeper] || trappedEntity.isInstanceOf[EntitySkeleton] || trappedEntity.isInstanceOf[EntityEnderman] || trappedEntity.isInstanceOf[EntitySpider]) {
-                  if (monsterItemAttr.contains(getStackInSlot(0).getItem()))player.triggerAchievement(Objs.achProtector)
+                  if (monsterItemAttr.contains(getStackInSlot(0).getItem()))player.addStat(Objs.achProtector)
                 }
               }
             }
@@ -107,22 +107,22 @@ class TileTrap extends RMTile with WithTileInventory with ITickable {
         trappedEntity.setInWeb()
         if (trappedEntity.isInstanceOf[EntityPlayer]) {
           trappedEntity.getEntityData().setInteger("isInTrap", 20)
-          if (trappedEntity.getEntityAttribute(SharedMonsterAttributes.movementSpeed).getModifier(TileTrap.UUIDSpeedTrap) != null) trappedEntity.getEntityAttribute(SharedMonsterAttributes.movementSpeed).removeModifier(trappedEntity.getEntityAttribute(SharedMonsterAttributes.movementSpeed).getModifier(TileTrap.UUIDSpeedTrap))
-          trappedEntity.getEntityAttribute(SharedMonsterAttributes.movementSpeed).applyModifier(new AttributeModifier(TileTrap.UUIDSpeedTrap, "trap.speedNeg", -0.95f, 2))
+          if (trappedEntity.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getModifier(TileTrap.UUIDSpeedTrap) != null) trappedEntity.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).removeModifier(trappedEntity.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getModifier(TileTrap.UUIDSpeedTrap))
+          trappedEntity.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).applyModifier(new AttributeModifier(TileTrap.UUIDSpeedTrap, "trap.speedNeg", -0.95f, 2))
         }
         if (random.nextInt(50) == 0) {
           if (!(trappedEntity.isInstanceOf[EntityPlayer]) ||
             !trappedEntity.asInstanceOf[EntityPlayer].capabilities.isCreativeMode) {
             trappedEntity.attackEntityFrom(Objs.bleedingSource, trappedEntity.getMaxHealth / 20F)
           }
-          val effect = new PotionEffect(Objs.bleeding.id, 200, 1)
+          val effect = new PotionEffect(Objs.bleeding, 200, 1)
           effect.getCurativeItems.clear()
           trappedEntity.addPotionEffect(effect)
         }
         if (trappedEntity.isDead) trappedEntity = null
       }
       if ((getStackInSlot(0) != null) && (trappedEntity == null) && open) {
-        val entities = worldObj.getEntitiesWithinAABB(classOf[EntityLivingBase], AxisAlignedBB.fromBounds(bd.x - 20, bd.y - 10, bd.z - 20, bd.x + 20, bd.y + 10, bd.z + 20)).asInstanceOf[java.util.List[EntityLivingBase]]
+        val entities = worldObj.getEntitiesWithinAABB(classOf[EntityLivingBase], new AxisAlignedBB(bd.x - 20, bd.y - 10, bd.z - 20, bd.x + 20, bd.y + 10, bd.z + 20)).asInstanceOf[java.util.List[EntityLivingBase]]
         for (entity <- entities) {
           if (entity.isInstanceOf[EntityAnimal]) {
             if (entity.asInstanceOf[EntityAnimal].isBreedingItem(getStackInSlot(0))) entity.asInstanceOf[EntityAnimal].getMoveHelper.setMoveTo(bd.x + 0.5F, bd.y, bd.z + 0.5F, 1)

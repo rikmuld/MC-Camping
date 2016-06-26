@@ -36,15 +36,17 @@ import net.minecraft.world.IBlockAccess
 import net.minecraft.world.World
 import net.minecraftforge.fml.relauncher.SideOnly
 import net.minecraftforge.fml.relauncher.Side
-import net.minecraft.block.state.BlockState
 import net.minecraft.block.properties.IProperty
 import net.minecraft.init.Blocks
-import net.minecraft.util.EnumWorldBlockLayer
 import net.minecraft.block.properties.PropertyBool
 import com.sun.org.apache.xalan.internal.xsltc.compiler.WithParam
 import com.rikmuld.corerm.objs.WithProperties
 import com.rikmuld.corerm.objs.RMBoolProp
 import net.minecraft.entity.EntityLivingBase
+import net.minecraft.util.BlockRenderLayer
+import net.minecraft.util.EnumHand
+import net.minecraft.util.math.AxisAlignedBB
+import net.minecraft.util.EnumBlockRenderType
 
 object Lantern {
   val LIT = PropertyBool.create("lit")
@@ -56,7 +58,8 @@ class Lantern(modId:String, info:ObjInfo) extends RMBlockContainer(modId, info) 
   var facing:EnumFacing = _
   
   setDefaultState(getStateFromMeta(0))
-  
+
+  override def getRenderType(state:IBlockState) = EnumBlockRenderType.MODEL
   override def onBlockPlacedBy(world:World, pos:BlockPos, state:IBlockState, entity:EntityLivingBase, stack:ItemStack) = setTop((world, pos))
   override def getProps = Array(new RMBoolProp(LIT, 0), new RMBoolProp(TOP, 1))
   override def breakBlock(world: World, pos:BlockPos, state:IBlockState) {
@@ -78,32 +81,32 @@ class Lantern(modId:String, info:ObjInfo) extends RMBlockContainer(modId, info) 
   }
   override def canStay(bd:BlockData) = bd.world.isTouchingBlockSolidForSide(bd.pos, EnumFacing.UP) || bd.world.isTouchingBlockSolidForSide(bd.pos, EnumFacing.DOWN)
   @SideOnly(Side.CLIENT)
-  override def getLightOpacity(world: IBlockAccess, pos:BlockPos): Int = {
+  override def getLightOpacity(state:IBlockState, world: IBlockAccess, pos:BlockPos): Int = {
     if (world.getBlockState(pos).getBlock == Objs.lantern&&isLit(world, pos))255 else 0
   }
-  override def setBlockBoundsBasedOnState(world:IBlockAccess, pos:BlockPos) {
-    if(isTop(world, pos))setBlockBounds(0.3F, 0, 0.3F, 0.7F, 1, 0.7F)
-    else setBlockBounds(0.3F, 0, 0.3F, 0.7F, 0.75625F, 0.7F)
+  override def getBoundingBox(state:IBlockState, source:IBlockAccess, pos:BlockPos):AxisAlignedBB = {
+    if(isTop(source, pos))new AxisAlignedBB(0.3F, 0, 0.3F, 0.7F, 1, 0.7F)
+    else new AxisAlignedBB(0.3F, 0, 0.3F, 0.7F, 0.75625F, 0.7F)
   }
   def isLit(world:IBlockAccess, pos:BlockPos) = getStateValue(world, pos, Lantern.LIT)
   def isTop(world:IBlockAccess, pos:BlockPos) = getStateValue(world, pos, Lantern.TOP)
   def getStateValue(world:IBlockAccess, pos:BlockPos, prop:PropertyBool) = if(world.getBlockState(pos).getBlock.eq(this)) world.getBlockState(pos).getValue(prop).asInstanceOf[Boolean] else false
-  override def getLightValue(world: IBlockAccess, pos:BlockPos): Int = if(isLit(world, pos)) 15 else 0
-  override def onBlockActivated(world: World, pos:BlockPos, state:IBlockState, player: EntityPlayer, side: EnumFacing, xHit: Float, yHit: Float, zHit: Float): Boolean = {
+  override def getLightValue(state:IBlockState, world: IBlockAccess, pos:BlockPos): Int = if(isLit(world, pos)) 15 else 0
+  override def onBlockActivated(world: World, pos:BlockPos, state:IBlockState, player: EntityPlayer, hand:EnumHand, stack:ItemStack, side: EnumFacing, xHit: Float, yHit: Float, zHit: Float): Boolean = {
     if (!world.isRemote) {
       val bd = (world, pos)
-      if (!state.getValue(LIT).asInstanceOf[Boolean] && (player.getCurrentEquippedItem != null && player.getCurrentEquippedItem.getItem == Items.glowstone_dust)) {
+      if (!state.getValue(LIT).asInstanceOf[Boolean] && (stack != null && stack.getItem == Items.GLOWSTONE_DUST)) {
         bd.setState(state.withProperty(LIT, true.asInstanceOf[java.lang.Boolean]))
         bd.update
         bd.tile.asInstanceOf[TileLantern].burnTime = 1500
-        player.getCurrentEquippedItem.stackSize-=1
+        stack.stackSize-=1
         return true
       }
     }
     false
   }
   def setTop(bd:BlockData) = bd.setState(bd.state.withProperty(Lantern.TOP, (bd.world.isTouchingBlockSolidForSide(bd.pos, EnumFacing.UP) && !bd.world.isTouchingBlockSolidForSide(bd.pos, EnumFacing.DOWN)).asInstanceOf[java.lang.Boolean]))
-  override def getBlockLayer = EnumWorldBlockLayer.CUTOUT
+  override def getBlockLayer = BlockRenderLayer.CUTOUT
   override def couldStay(bd:BlockData) = setTop(bd)
 }
 

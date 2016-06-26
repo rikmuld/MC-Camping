@@ -11,6 +11,7 @@ import net.minecraft.item.ItemArmor.ArmorMaterial
 import net.minecraft.inventory.ContainerBrewingStand.Potion
 import com.rikmuld.camping.misc.CookingEquipment
 import net.minecraft.potion.Potion
+import net.minecraft.util.SoundEvent
 
 object Objs {
   var tab:CreativeTabs = _
@@ -66,6 +67,11 @@ object Objs {
   var tentStructure:Array[BoundsStructure] = _
   
   var keyOpenCamping:KeyBinding = _
+  
+  var foxAmb,
+      foxDeath,
+      bearAmb,
+      bearDeath:SoundEvent = _
   
   var achKnife, 
       achCamperFull, 

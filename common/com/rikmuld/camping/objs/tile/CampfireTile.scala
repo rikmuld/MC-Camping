@@ -30,6 +30,8 @@ import com.rikmuld.camping.objs.block.CampfireWood
 import net.minecraft.util.ITickable
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.AxisAlignedBB
+import com.rikmuld.camping.objs.misc.Potions
+import net.minecraft.potion.Potion
 
 class TileCampfire extends RMTile with ITickable {
   var color: Int = 16
@@ -41,7 +43,7 @@ class TileCampfire extends RMTile with ITickable {
   var effectsOrderd: Array[PotionEffect] = new Array[PotionEffect](16)
   var effectsRaw: Array[PotionEffect] = new Array[PotionEffect](23)
 
-  for (i <- 0 until 23) effectsRaw(i) = new PotionEffect(i, 400, 0)
+  for (i <- 0 until 23) effectsRaw(i) = new PotionEffect(Potion.getPotionById(i), 400, 0)
 
   effectsOrderd(0) = effectsRaw(20)
   effectsOrderd(1) = effectsRaw(5)
@@ -72,7 +74,7 @@ class TileCampfire extends RMTile with ITickable {
     if (!worldObj.isRemote) sendTileData(0, true, color)
   }
   @SideOnly(Side.CLIENT)
-  override def getRenderBoundingBox(): AxisAlignedBB = AxisAlignedBB.fromBounds(bd.x, bd.y, bd.z, bd.x + 1, bd.y + 1, bd.z + 1)
+  override def getRenderBoundingBox(): AxisAlignedBB =  new AxisAlignedBB(bd.x, bd.y, bd.z, bd.x + 1, bd.y + 1, bd.z + 1)
   override def readFromNBT(tag: NBTTagCompound) {
     super.readFromNBT(tag)
     color = tag.getInteger("color")
@@ -102,16 +104,16 @@ class TileCampfire extends RMTile with ITickable {
       if (time != 0) time -= 1
       if ((color != 16) && (time == 0)) colorFlame(16)
       if ((time > 0) && ((time % 120) == 0)) {
-        val entitys = worldObj.getEntitiesWithinAABB(classOf[EntityLivingBase], AxisAlignedBB.fromBounds(bd.x - 8, bd.y - 8, bd.z - 8, bd.x + 8, bd.y + 8, bd.z + 8)).asInstanceOf[ArrayList[EntityLivingBase]]
+        val entitys = worldObj.getEntitiesWithinAABB(classOf[EntityLivingBase], new AxisAlignedBB(bd.x - 8, bd.y - 8, bd.z - 8, bd.x + 8, bd.y + 8, bd.z + 8)).asInstanceOf[ArrayList[EntityLivingBase]]
         for (entity <- entitys) entity.addPotionEffect(new PotionEffect(effectsOrderd(color)))
       }
     }
   }
-  override def writeToNBT(tag: NBTTagCompound) {
-    super.writeToNBT(tag)
+  override def writeToNBT(tag: NBTTagCompound):NBTTagCompound = {
     tag.setInteger("color", color)
     tag.setInteger("time", time)
     for (i <- 0 until coals.length; j <- 0 until coals(i).length) tag.setFloat("coals" + i + j, coals(i)(j))
+    super.writeToNBT(tag)    
   }
 }
 
@@ -172,10 +174,10 @@ class TileCampfireWood extends TileCampfire with Roaster {
     worldObj.setBlockToAir(pos)
   }
   override def renderCoal = false
-  override def writeToNBT(tag: NBTTagCompound) {
-    super.writeToNBT(tag)
+  override def writeToNBT(tag: NBTTagCompound):NBTTagCompound= {
     tag.setInteger("fuel", fuel)
     tag.setBoolean("on", on)
+    super.writeToNBT(tag)
   }
   override def readFromNBT(tag: NBTTagCompound) {
     super.readFromNBT(tag)
@@ -254,7 +256,7 @@ class TileCampfireCook extends RMTile with WithTileInventory with ITickable with
   }
   def getCoalPieces(): Int = if (fuel > 0) (if (((fuel / fuelForCoal) + 1) <= 20) (fuel / fuelForCoal) + 1 else 20) else 0
   @SideOnly(Side.CLIENT)
-  override def getRenderBoundingBox(): AxisAlignedBB = AxisAlignedBB.fromBounds(bd.x, bd.y, bd.z, bd.x + 1, bd.y + 1, bd.z + 1)
+  override def getRenderBoundingBox(): AxisAlignedBB = new AxisAlignedBB(bd.x, bd.y, bd.z, bd.x + 1, bd.y + 1, bd.z + 1)
   def getScaledCoal(maxPixels: Int): Float = (fuel.toFloat / maxFeul.toFloat) * maxPixels
   def getScaledcookProgress(maxPixels: Int, foodNum: Int): Float = ((cookProgress(foodNum).toFloat + 1) / equipment.cookTime) * maxPixels
   override def getSizeInventory(): Int = 12
@@ -318,14 +320,14 @@ class TileCampfireCook extends RMTile with WithTileInventory with ITickable with
     if(equipment == Objs.spit)campfires(0) = 1
     else if(equipment == Objs.grill)campfires(1) = 1
     else if(equipment == Objs.pan)campfires(2) = 1
-    if(campfires(0) == 1 && campfires(1) == 1 && campfires(2) == 1) player.triggerAchievement(Objs.achCampfire)
+    if(campfires(0) == 1 && campfires(1) == 1 && campfires(2) == 1) player.addStat(Objs.achCampfire)
     data.setIntArray("camp_make", campfires)
   }
-  override def writeToNBT(tag: NBTTagCompound) {
-    super.writeToNBT(tag)
+  override def writeToNBT(tag: NBTTagCompound):NBTTagCompound = {
     tag.setInteger("fuel", fuel)
     tag.setIntArray("cookProgress", cookProgress)
     for (i <- 0 until coals.length; j <- 0 until coals(i).length) tag.setFloat("coals" + i + j, coals(i)(j))
     super[WithTileInventory].writeToNBT(tag)
+    super.writeToNBT(tag)    
   }
 }

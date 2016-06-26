@@ -64,10 +64,8 @@ object ModEntities extends ModRegister{
   private def registerEntity(entity: Class[Entity], name: String, id: Int, egg: Boolean, colour1: Int, colour2: Int) {
     EntityRegistry.registerModEntity(entity, name, id, CampingMod, 80, 3, false);
     if (egg) {
-      val id2 = CoreUtils.getUniqueEntityId
-      EntityList.idToClassMapping.asInstanceOf[java.util.Map[Int, Class[Entity]]](id2) = entity;
-      EntityList.entityEggs.asInstanceOf[java.util.Map[Int, EntityEggInfo]](id2) = new EntityEggInfo(id2, colour1, colour2);
-      tab.asInstanceOf[com.rikmuld.camping.objs.misc.Tab].eggIds.append(id2)
+      EntityRegistry.registerEgg(entity, colour1, colour2)
+      tab.asInstanceOf[com.rikmuld.camping.objs.misc.Tab].eggIds.append(name)
     }
   }
 }

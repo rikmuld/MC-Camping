@@ -28,7 +28,7 @@ class TileLantern extends RMTile with ITickable {
       }
     }
   }
-  override def writeToNBT(tag: NBTTagCompound) {
+  override def writeToNBT(tag: NBTTagCompound):NBTTagCompound =  {
     tag.setInteger("burnTime", burnTime)
     super.writeToNBT(tag)
   }

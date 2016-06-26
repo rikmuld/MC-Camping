@@ -25,7 +25,7 @@ class BagContainer(player: EntityPlayer) extends RMContainerItem(player) {
     else addSlotToContainer(new Slot(invPlayer, row, 8 + (row * 18), 142))
   }
 
-  override def getItemInv = new RMInventoryItem(player.inventory.getCurrentItem, player, 27, 64, true)
+  override def getItemInv = new RMInventoryItem(player.getActiveItemStack, player, 27, 64, true)
   override def getItem: Item = Objs.backpack;
 }
 

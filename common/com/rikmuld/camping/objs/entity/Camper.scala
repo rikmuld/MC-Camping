@@ -20,7 +20,6 @@ import net.minecraft.entity.EntityLivingBase
 import net.minecraft.entity.IMerchant
 import net.minecraft.entity.INpc
 import net.minecraft.entity.SharedMonsterAttributes
-import net.minecraft.entity.ai.EntityAIAttackOnCollide
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget
 import net.minecraft.entity.ai.EntityAISwimming
 import net.minecraft.entity.ai.EntityAIWander
@@ -47,8 +46,20 @@ import net.minecraft.util.math.BlockPos
 import com.rikmuld.corerm.misc.WorldBlock._
 import net.minecraftforge.event.terraingen.BiomeEvent.GetWaterColor
 import com.rikmuld.camping.objs.block.Tent
+import net.minecraft.entity.ai.EntityAIAttackMelee
+import net.minecraft.init.Enchantments
+import net.minecraft.util.SoundEvent
+import net.minecraft.util.EnumHand
+import net.minecraft.item.ItemAxe
+import net.minecraft.network.datasync.DataParameter
+import net.minecraft.entity.passive.EntityVillager
+import net.minecraft.network.datasync.EntityDataManager
+import net.minecraft.network.datasync.DataSerializers
+import net.minecraft.init.SoundEvents
 
 object Camper {
+  final val GENDER:DataParameter[Integer] = EntityDataManager.createKey(classOf[Camper], DataSerializers.VARINT);
+
   val recipeListRaw = new HashMap[Item, Tuple[Integer, Integer]]()
 
   recipeListRaw(venisonCooked) = new Tuple(Integer.valueOf(-4), Integer.valueOf(1))
@@ -65,10 +76,8 @@ class Camper(world: World) extends EntityCreature(world) with IMerchant with INp
   setGender(rand.nextInt(2))
   setSize(0.6F, 1.8F)
   getNavigator.asInstanceOf[PathNavigateGround].setCanSwim(true)
-  getNavigator.asInstanceOf[PathNavigateGround].setAvoidsWater(true)
   tasks.addTask(1, new EntityAISwimming(this))
-  tasks.addTask(2, new EntityAIAttackOnCollide(this, classOf[Bear], 1.0F, false))
-  tasks.addTask(3, new EntityAIAttackOnCollide(this, classOf[EntityMob], 1.0F, false))
+  tasks.addTask(2, new EntityAIAttackMelee(this, 1.0F, false))
   tasks.addTask(4, new EntityAIWatchClosest2(this, classOf[EntityPlayer], 3.0F, 1.0F))
   tasks.addTask(6, new EntityAIWander(this, 0.6D))
   targetTasks.addTask(0, new EntityAINearestAttackableTarget(this, classOf[EntityMob], false))
@@ -78,8 +87,8 @@ class Camper(world: World) extends EntityCreature(world) with IMerchant with INp
   var recipeList: MerchantRecipeList = _
   var camp:Option[Campsite] = None
 
-  def setGender(gender: Int) = dataWatcher.updateObject(16, Integer.valueOf(gender))
-  def getGender: Int = dataWatcher.getWatchableObjectInt(16)
+  def setGender(gender: Int) = dataManager.set(Camper.GENDER, Integer.valueOf(gender))
+  def getGender: Int = dataManager.get(Camper.GENDER)
   override def writeEntityToNBT(tag: NBTTagCompound) {
     super.writeEntityToNBT(tag)
     tag.setInteger("gender", getGender)
@@ -95,27 +104,27 @@ class Camper(world: World) extends EntityCreature(world) with IMerchant with INp
   }
   protected override def applyEntityAttributes {
     super.applyEntityAttributes();
-    getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.4D)
-    getAttributeMap().registerAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(4.0D)
+    getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.4D)
+    getAttributeMap().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(4.0D)
   }
   override def canDespawn = false
   override def entityInit {
     super.entityInit
-    dataWatcher.addObject(16, Integer.valueOf(0))
+    dataManager.register(Camper.GENDER, Integer.valueOf(0))
   }
   override def onUpdate {
     super.onUpdate
     camp.map {campsite => campsite.update }
   }
-  protected override def getDeathSound = "mob.villager.death"
-  protected override def getHurtSound = "mob.villager.hit"
-  protected override def getLivingSound = "mob.villager.idle"
+  protected override def getDeathSound:SoundEvent = SoundEvents.ENTITY_VILLAGER_DEATH
+  protected override def getHurtSound:SoundEvent = SoundEvents.ENTITY_VILLAGER_HURT
+  protected override def getAmbientSound:SoundEvent = SoundEvents.ENTITY_VILLAGER_AMBIENT
   override def attackEntityAsMob(entity: Entity): Boolean = {
-    var f = this.getEntityAttribute(SharedMonsterAttributes.attackDamage).getAttributeValue.toFloat
+    var f = this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue.toFloat
     var i = 0
     if (entity.isInstanceOf[EntityLivingBase]) {
-      f += EnchantmentHelper.func_152377_a(getHeldItem, entity.asInstanceOf[EntityLivingBase].getCreatureAttribute)
-      i += EnchantmentHelper.getEnchantmentLevel(Enchantment.knockback.effectId, getHeldItem)
+      f += EnchantmentHelper.getModifierForCreature(this.getHeldItemMainhand(), entity.asInstanceOf[EntityLivingBase].getCreatureAttribute());
+      i += EnchantmentHelper.getKnockbackModifier(this);
     }
     val flag = entity.attackEntityFrom(DamageSource.causeMobDamage(this), f)
     if (flag) {
@@ -125,22 +134,37 @@ class Camper(world: World) extends EntityCreature(world) with IMerchant with INp
         this.motionZ *= 0.6D
       }
       val j = EnchantmentHelper.getFireAspectModifier(this)
+      if (entity.isInstanceOf[EntityPlayer]) {
+          val player = entity.asInstanceOf[EntityPlayer]
+          val itemstack = this.getHeldItemMainhand();
+          val itemstack1 = if(player.isHandActive()) player.getActiveItemStack() else null;
+
+          if (itemstack != null && itemstack1 != null && itemstack.getItem.isInstanceOf[ItemAxe] && itemstack1.getItem() == Items.SHIELD) {
+              val f1 = 0.25F + EnchantmentHelper.getEfficiencyModifier(this) * 0.05F;
+
+              if (this.rand.nextFloat() < f1)
+              {
+                  player.getCooldownTracker().setCooldown(Items.SHIELD, 100);
+                  this.worldObj.setEntityState(player, 30.toByte);
+              }
+          }
+      }
       if (j > 0) entity.setFire(j * 4)
       this.applyEnchantments(this, entity)
     }
     flag
   }
-  override def interact(player: EntityPlayer): Boolean = {
-    val itemstack = player.inventory.getCurrentItem
-    val flag = (itemstack != null) && (itemstack.getItem == Items.spawn_egg)
+  override def processInteract(player: EntityPlayer, hand:EnumHand, stack:ItemStack): Boolean = {
+    val itemstack = player.getActiveItemStack
+    val flag = (itemstack != null) && (itemstack.getItem == Items.SPAWN_EGG)
     if (!flag && isEntityAlive && !isTrading && !player.isSneaking) {
       if (!worldObj.isRemote) {
         setCustomer(player)
-        player.triggerAchievement(Objs.achExplorer)
+        player.addStat(Objs.achExplorer)
         player.displayVillagerTradeGui(this)
       }
       true
-    } else super.interact(player)
+    } else super.processInteract(player, hand, stack)
   }
   override def setCustomer(player: EntityPlayer) = playerBuy = player
   override def getCustomer(): EntityPlayer = playerBuy
@@ -175,10 +199,10 @@ class Camper(world: World) extends EntityCreature(world) with IMerchant with INp
       var itemstack: ItemStack = null
       var itemstack1: ItemStack = null
       if (j < 0) {
-        itemstack = new ItemStack(Items.emerald, 1, 0)
+        itemstack = new ItemStack(Items.EMERALD, 1, 0)
         itemstack1 = new ItemStack(item, -j, meta)
       } else {
-        itemstack = new ItemStack(Items.emerald, j, 0)
+        itemstack = new ItemStack(Items.EMERALD, j, 0)
         itemstack1 = new ItemStack(item, 1, meta)
       }
       merchantRecipeList.asInstanceOf[ArrayList[MerchantRecipe]].add(new MerchantRecipe(itemstack, itemstack1))

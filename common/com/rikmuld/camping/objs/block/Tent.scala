@@ -48,12 +48,12 @@ import com.rikmuld.camping.objs.BlockDefinitions
 import com.rikmuld.corerm.objs.RMItemBlock
 import com.rikmuld.camping.CampingMod
 import net.minecraft.block.Block
-import net.minecraft.client.resources.model.ModelResourceLocation
 import net.minecraftforge.fml.relauncher.SideOnly
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraft.creativetab.CreativeTabs
 import net.minecraft.item.Item
 import scala.collection.JavaConversions._
+import net.minecraft.util.EnumHand
 
 object Tent {
   val FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL.asInstanceOf[Predicate[EnumFacing]])
@@ -65,9 +65,9 @@ class Tent(modId:String, info:ObjInfo) extends RMBlockContainer(modId, info) wit
   var facingFlag:Int = _
   
   override def getProps = Array(new RMFacingHorizontalProp(FACING, 0))
-  override def addCollisionBoxesToList(world: World, pos:BlockPos, state:IBlockState, alignedBB: AxisAlignedBB, list: java.util.List[AxisAlignedBB], entity: Entity) {
-    TileEntityTent.bounds(getFacing(state)).setBlockCollision(this)
-    super.addCollisionBoxesToList(world, pos, state, alignedBB, list, entity)
+  override def addCollisionBoxToList(state:IBlockState, world: World, pos:BlockPos, axisAligned: AxisAlignedBB, list: java.util.List[AxisAlignedBB], entity: Entity) {
+    list.add(TileEntityTent.bounds(getFacing(state)).getBlockCollision(this))
+    super.addCollisionBoxToList(state, world, pos, axisAligned, list, entity)
   }
   def getFacing(state:IBlockState) = state.getValue(Tent.FACING).asInstanceOf[EnumFacing].getHorizontalIndex
   override def breakBlock(world: World, pos:BlockPos, state:IBlockState) {
@@ -98,9 +98,9 @@ class Tent(modId:String, info:ObjInfo) extends RMBlockContainer(modId, info) wit
     (world, pos).tile.asInstanceOf[TileTent].createStructure
   }
   override def quantityDropped(random: Random): Int = 0
-  override def setBlockBoundsBasedOnState(world: IBlockAccess, pos:BlockPos) {
-    val tile = world.getTileEntity(pos).asInstanceOf[TileTent]
-    TileEntityTent.bounds(getFacing(world.getBlockState(pos))).setBlockBounds(this)
+  override def getBoundingBox(state:IBlockState, source:IBlockAccess, pos:BlockPos):AxisAlignedBB = {
+    val tile = source.getTileEntity(pos).asInstanceOf[TileTent]
+    TileEntityTent.bounds(getFacing(state)).getBlockBounds(this)
   }
   override def dropIfCantStay(bd:BlockData) {
     val tile = bd.tile.asInstanceOf[TileTent]
@@ -108,24 +108,24 @@ class Tent(modId:String, info:ObjInfo) extends RMBlockContainer(modId, info) wit
       breakBlock(bd.world, bd.pos, bd.state)
     }
   }
-  override def getLightValue(world: IBlockAccess, pos:BlockPos): Int = {
+  override def getLightValue(state:IBlockState, world: IBlockAccess, pos:BlockPos): Int = {
     val tile = world.getTileEntity(pos).asInstanceOf[TileTent]
     if (Option(tile).isDefined && (tile.lanternDamage == BlockDefinitions.Lantern.ON) && (tile.lanterns > 0)) 15 else 0
   }
-  override def onBlockActivated(world: World, pos:BlockPos, state:IBlockState, player: EntityPlayer, side: EnumFacing, xHit: Float, yHit: Float, zHit: Float): Boolean = {
+  override def onBlockActivated(world: World, pos:BlockPos, state:IBlockState, player: EntityPlayer, hand:EnumHand, stack:ItemStack, side: EnumFacing, xHit: Float, yHit: Float, zHit: Float): Boolean = {
     if (!world.isRemote) {
       val bd = (world, pos)
       val tile = bd.tile.asInstanceOf[TileTent]
-      if ((player.getCurrentEquippedItem != null) && tile.addContends(player.getCurrentEquippedItem)) {
-        player.getCurrentEquippedItem.stackSize -= 1
-        if(tile.lanterns == 1 && tile.chests == 2 && tile.beds == 1) player.triggerAchievement(Objs.achLuxury)
-        if (player.getCurrentEquippedItem.stackSize < 0) player.setCurrentItem(null)
+      if ((stack != null) && tile.addContends(stack)) {
+        stack.stackSize -= 1
+        if(tile.lanterns == 1 && tile.chests == 2 && tile.beds == 1) player.addStat(Objs.achLuxury)
+        if (stack.stackSize < 0) player.setCurrentItem(null)
         return true
-      } else if ((player.getCurrentEquippedItem != null) && (player.getCurrentEquippedItem.getItem() == Items.dye) && (bd.tile.asInstanceOf[TileTent].color != player.getCurrentEquippedItem.getItemDamage)) {
-        bd.tile.asInstanceOf[TileTent].setColor(player.getCurrentEquippedItem.getItemDamage)
-        player.getCurrentEquippedItem.stackSize -= 1
+      } else if ((stack != null) && (stack.getItem() == Items.DYE) && (bd.tile.asInstanceOf[TileTent].color != stack.getItemDamage)) {
+        bd.tile.asInstanceOf[TileTent].setColor(stack.getItemDamage)
+        stack.stackSize -= 1
         return true
-      } else super.onBlockActivated(world, pos, state, player, side, xHit, yHit, zHit)
+      } else super.onBlockActivated(world, pos, state, player, hand, stack, side, xHit, yHit, zHit)
     }
     true
   }

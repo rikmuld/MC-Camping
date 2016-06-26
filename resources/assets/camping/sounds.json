@@ -1,18 +1,18 @@
 {
   "mob.bear.say": {
   	"category": "hostile", 
-  	"sounds": ["bear-1", "bear-2", "bear-3", "bear-4"]
+  	"sounds": ["camping:bear-1", "camping:bear-2", "camping:bear-3", "camping:bear-4"]
   }, 
   "mob.bear.dead": {
   	"category": "hostile", 
-  	"sounds": ["bear-attack"]
+  	"sounds": ["camping:bear-attack"]
   },
   "mob.fox.say": {
   	"category": "neutral", 
-  	"sounds": ["fox"]
+  	"sounds": ["camping:fox"]
   },
   "mob.fox.dead": {
   	"category": "neutral", 
-  	"sounds": ["fox-attack"]
+  	"sounds": ["camping:fox-attack"]
   }
 }

@@ -25,6 +25,7 @@ import net.minecraft.util.text.TextComponentTranslation
 import net.minecraft.world.biome.Biome
 import net.minecraftforge.common.BiomeDictionary
 import net.minecraft.init.Biomes
+import net.minecraft.util.EnumBlockRenderType
 
 object TentBounds {
   val FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL.asInstanceOf[Predicate[EnumFacing]])
@@ -32,11 +33,12 @@ object TentBounds {
 
 class TentBounds(modId:String, info:ObjInfo) extends RMBlockContainer(modId, info) with IBoundsBlock with WithModel with WithProperties {
   setDefaultState(getStateFromMeta(0))
-   
+
+  override def getRenderType(state:IBlockState) = EnumBlockRenderType.MODEL
   override def getProps = Array(new RMFacingHorizontalProp(TentBounds.FACING, 0))
-  override def isBed(world:IBlockAccess, pos:BlockPos, player:Entity) = true    
+  override def isBed(state:IBlockState, world:IBlockAccess, pos:BlockPos, player:Entity) = true    
   override def setBedOccupied(world:IBlockAccess, pos:BlockPos, player:EntityPlayer, occupied:Boolean) = getBaseTile(world, pos).setOccupied(occupied)
-  override def getBedDirection(world:IBlockAccess, pos:BlockPos) = world.getBlockState(world.getTileEntity(pos).asInstanceOf[TileBounds].basePos).getValue(Tent.FACING).asInstanceOf[EnumFacing]
+  override def getBedDirection(state:IBlockState, world:IBlockAccess, pos:BlockPos) = world.getBlockState(world.getTileEntity(pos).asInstanceOf[TileBounds].basePos).getValue(Tent.FACING).asInstanceOf[EnumFacing]
   override def isBedFoot(world:IBlockAccess, pos:BlockPos) = false
   def isOccupied(bd:BlockData) = getBaseTile(bd).isOccupied
   def getBaseTile(world:IBlockAccess, pos:BlockPos) = world.getTileEntity(world.getTileEntity(pos).asInstanceOf[TileBounds].basePos).asInstanceOf[TileTent]

@@ -39,7 +39,7 @@ class KitContainer(player: EntityPlayer) extends RMContainerItem(player) {
     else addSlotToContainer(new Slot(player.inventory, row, 8 + (row * 18), 157))
   }
 
-  override def getItemInv = new RMInventoryItem(player.inventory.getCurrentItem, player, 14, 1, true)
+  override def getItemInv = new RMInventoryItem(player.getActiveItemStack, player, 14, 1, true)
   override def getItem = Objs.kit
   override def transferStackInSlot(p: EntityPlayer, i: Int): ItemStack = {
     var itemstack: ItemStack = null
@@ -60,7 +60,7 @@ class KitContainer(player: EntityPlayer) extends RMContainerItem(player) {
     super.onContainerClosed(player)
     if (!player.worldObj.isRemote) {
       inv.closeInventory(player)
-      if (player.inventory.getCurrentItem != null && player.inventory.getCurrentItem.getItem == Objs.kit) {
+      if (player.getActiveItemStack != null && player.getActiveItemStack.getItem == Objs.kit) {
         val items = new ArrayList[ItemStack]
         val containingItems = inv.asInstanceOf[RMInventoryItem].tag.getTag("Items").asInstanceOf[NBTTagList]
         for (itemCound <- 0 until containingItems.tagCount) {
@@ -74,7 +74,7 @@ class KitContainer(player: EntityPlayer) extends RMContainerItem(player) {
         } else {
           player.setCurrentItem(new ItemStack(Objs.kit, 1, Kit.EMPTY))
         }
-        inv.asInstanceOf[RMInventoryItem].setNBT(player.inventory.getCurrentItem)
+        inv.asInstanceOf[RMInventoryItem].setNBT(player.getActiveItemStack)
       }
     }
   }

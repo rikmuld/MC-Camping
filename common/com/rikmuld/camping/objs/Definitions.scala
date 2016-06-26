@@ -11,6 +11,8 @@ import com.rikmuld.camping.objs.block.TentItem
 import com.rikmuld.camping.objs.block.SleepingBagItem
 import net.minecraft.block.material.Material
 import net.minecraft.block.Block
+import net.minecraft.init.SoundEvents
+import net.minecraft.inventory.EntityEquipmentSlot
 
 object BlockDefinitions {
   final val LANTERN        = new ObjInfo(Tab(tab), 
@@ -44,7 +46,7 @@ object BlockDefinitions {
   final val LOGSEAT        = new ObjInfo(Tab(tab), 
                                          Name("logseat"), 
                                          Materia(Material.WOOD), 
-                                         StepSound(Block.soundTypeWood), 
+                                         StepSound(SoundEvents.BLOCK_WOOD_STEP), 
                                          Hardness(2.0f), 
                                          HarvestLevel("axe", 0))
    
@@ -69,14 +71,14 @@ object BlockDefinitions {
                                          Name("campfire"), 
                                          Materia(Material.FIRE), 
                                          Hardness(2f), 
-                                         StepSound(Block.soundTypeStone), 
+                                         StepSound(SoundEvents.BLOCK_STONE_STEP), 
                                          LightLevel(1.0f))
   
   final val CAMPFIRE_WOOD  = new ObjInfo(Tab(tab), 
                                          Name("campfireWood"), 
                                          Materia(Material.FIRE), 
                                          Hardness(1f), 
-                                         StepSound(Block.soundTypeStone),
+                                         StepSound(SoundEvents.BLOCK_STONE_STEP),
                                          LightLevel(1.0f),
                                          HarvestLevel("axe", 0))
   
@@ -84,7 +86,7 @@ object BlockDefinitions {
                                          Name("campfireCook"), 
                                          Materia(Material.FIRE), 
                                          Hardness(2f), 
-                                         StepSound(Block.soundTypeStone), 
+                                         StepSound(SoundEvents.BLOCK_STONE_STEP), 
                                          LightLevel(1.0f), 
                                          HarvestLevel("pickaxe", 0),
                                          GuiTrigger(guiCampfireCook))
@@ -183,25 +185,25 @@ object ItemDefinitions {
   
   final val FUR_BOOT       = new ObjInfo(Tab(tab), 
                                          Name("armorFurBoots"), 
-                                         ArmorTyp(3), 
+                                         ArmorTyp(EntityEquipmentSlot.FEET), 
                                          ArmorMateria(fur), 
                                          ArmorTexture(TextureInfo.ARMOR_FUR_MAIN))
     
   final val FUR_LEG        = new ObjInfo(Tab(tab), 
                                          Name("armorFurLeg"), 
-                                         ArmorTyp(2), 
+                                         ArmorTyp(EntityEquipmentSlot.LEGS), 
                                          ArmorMateria(fur), 
                                          ArmorTexture(TextureInfo.ARMOR_FUR_LEG))
     
   final val FUR_CHEST      = new ObjInfo(Tab(tab), 
                                          Name("armorFurChest"), 
-                                         ArmorTyp(1),
+                                         ArmorTyp(EntityEquipmentSlot.CHEST),
                                          ArmorMateria(fur), 
                                          ArmorTexture(TextureInfo.ARMOR_FUR_MAIN))
   
   final val FUR_HEAD       = new ObjInfo(Tab(tab), 
                                          Name("armorFurHelm"), 
-                                         ArmorTyp(0), 
+                                         ArmorTyp(EntityEquipmentSlot.HEAD), 
                                          ArmorMateria(fur), 
                                          ArmorTexture(TextureInfo.ARMOR_FUR_MAIN))
       

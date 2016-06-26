@@ -119,8 +119,8 @@ class PlayerExitLog(var x: Int, var y: Int, var z: Int) extends BasicPacketData 
   def this() = this(0, 0, 0)
  
   override def handlePacket(player: EntityPlayer, ctx: MessageContext) {
-    if(!player.worldObj.isRemote&&player.worldObj.getBlockState(new BlockPos(x, y, z)).getBlock==Objs.logseat&&player.worldObj.getTileEntity(new BlockPos(x, y, z)).asInstanceOf[TileLogseat].mountable.riddenByEntity!=null){
-      player.worldObj.getTileEntity(new BlockPos(x, y, z)).asInstanceOf[TileLogseat].mountable.riddenByEntity.mountEntity(null) 
+    if(!player.worldObj.isRemote&&player.worldObj.getBlockState(new BlockPos(x, y, z)).getBlock==Objs.logseat&&player.worldObj.getTileEntity(new BlockPos(x, y, z)).asInstanceOf[TileLogseat].mountable.getPassengers.size()>0){
+      player.worldObj.getTileEntity(new BlockPos(x, y, z)).asInstanceOf[TileLogseat].mountable.removePassenger2(player) 
       player.worldObj.getTileEntity(new BlockPos(x, y, z)).asInstanceOf[TileLogseat].mountable.player = null;
     }
   }

@@ -17,8 +17,6 @@ import net.minecraft.util.text.TextComponentString
 import com.rikmuld.corerm.network.PacketSender
 import net.minecraft.tileentity.TileEntity
 import net.minecraft.util.math.AxisAlignedBB
-import net.minecraft.util.ChatComponentTranslation
-import net.minecraft.entity.player.EntityPlayer.EnumStatus
 import net.minecraftforge.fml.relauncher.SideOnly
 import java.util.Random
 import net.minecraftforge.fml.relauncher.Side
@@ -50,7 +48,7 @@ class TileTent extends RMTile with WithTileInventory with ITickable {
   final val MAX_CHESTS: Int = 5
   final val MAX_BEDS: Int = 1
   final val MAX_LANTERNS: Int = 1
-  final val ALOWED_ITEMS = Array(Objs.lantern, Blocks.chest, Objs.sleepingBag)
+  final val ALOWED_ITEMS = Array(Objs.lantern, Blocks.CHEST, Objs.sleepingBag)
 
   var slots: Array[Array[SlotState]] = _
   var structures: Array[BoundsStructure] = _
@@ -126,7 +124,7 @@ class TileTent extends RMTile with WithTileInventory with ITickable {
       }
       return lanternStack
     }
-    if (block == Blocks.chest) return new ItemStack(ALOWED_ITEMS(1), 1, 0)
+    if (block == Blocks.CHEST) return new ItemStack(ALOWED_ITEMS(1), 1, 0)
     if (block == Objs.sleepingBag) return new ItemStack(ALOWED_ITEMS(2), 1, 0)
     null
   }
@@ -141,10 +139,8 @@ class TileTent extends RMTile with WithTileInventory with ITickable {
   }
   @SideOnly(Side.CLIENT)
   override def getRenderBoundingBox(): AxisAlignedBB = {
-    val bb = TileEntity.INFINITE_EXTENT_AABB
     val bound = TileEntityTent.bounds(getRotation)
-    AxisAlignedBB.fromBounds(bound.xMin, bound.yMin, bound.zMin, bound.xMax, bound.yMax, bound.zMax)
-    bb
+    new AxisAlignedBB(bound.xMin, bound.yMin, bound.zMin, bound.xMax, bound.yMax, bound.zMax)
   }
   override def getSizeInventory(): Int = 151
   def initalize() {
@@ -207,7 +203,7 @@ class TileTent extends RMTile with WithTileInventory with ITickable {
   def removeChest(): Boolean = {
     if (chests > 0) {
       setContends(chests - 1, CHEST, true, 1)
-      worldObj.dropItemInWorld(getContendsFor(Blocks.chest), bd.x, bd.y, bd.z, new Random())
+      worldObj.dropItemInWorld(getContendsFor(Blocks.CHEST), bd.x, bd.y, bd.z, new Random())
       return true
     }
     false
@@ -266,7 +262,7 @@ class TileTent extends RMTile with WithTileInventory with ITickable {
   }
   def sleep(player: EntityPlayer) {
     if(!worldObj.isRemote) {
-      player.triggerAchievement(Objs.achBackBasic)
+      player.addStat(Objs.achBackBasic)
       if (getRotation == 0) bd.south.block.asInstanceOf[TentBounds].sleep(bd.south, player)
       else if (getRotation == 1) bd.west.block.asInstanceOf[TentBounds].sleep(bd.west, player)
       else if (getRotation == 2) bd.north.block.asInstanceOf[TentBounds].sleep(bd.north, player)
@@ -327,8 +323,7 @@ class TileTent extends RMTile with WithTileInventory with ITickable {
       if (time != oldTime) sendTileData(5, true, time)
     }
   }
-  override def writeToNBT(tag: NBTTagCompound) {
-    super.writeToNBT(tag)
+  override def writeToNBT(tag: NBTTagCompound):NBTTagCompound = {
     tag.setInteger("contends", contends)
     tag.setBoolean("occupied", occupied)
     tag.setInteger("beds", beds)
@@ -338,5 +333,6 @@ class TileTent extends RMTile with WithTileInventory with ITickable {
     tag.setInteger("time", time)
     tag.setInteger("color", color)
     super[WithTileInventory].writeToNBT(tag)
+    super.writeToNBT(tag)   
   }
 }

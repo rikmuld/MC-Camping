@@ -9,14 +9,15 @@ import com.rikmuld.camping.objs.Objs
 import com.rikmuld.camping.CampingMod._
 import net.minecraft.world.biome.Biome.TempCategory
 import net.minecraft.util.math.BlockPos
+import net.minecraft.world.chunk.IChunkGenerator
 
 class WorldGenerator extends IWorldGenerator {
   val hemp = new HempGen
   val camp = new CampsiteGen
 
   var xBlock, yBlock, zBlock: Int = _
-
-  override def generate(random: Random, chunkX: Int, chunkZ: Int, world: World, chunkGenerator: IChunkProvider, chunkProvider: IChunkProvider) {
+  
+  override def generate(random: Random, chunkX: Int, chunkZ: Int, world: World, chunkGenerator: IChunkGenerator, chunkProvider: IChunkProvider) {
     if (config.hasWorldGen) world.provider.getDimension match {
       case -1 => generateNether(world, random, chunkX * 16, chunkZ * 16)
       case 0 => generateSurface(world, random, chunkX * 16, chunkZ * 16)

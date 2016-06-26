@@ -15,19 +15,22 @@ import com.rikmuld.corerm.objs.RMItem
 import net.minecraft.item.ItemStack
 import net.minecraft.world.World
 import com.rikmuld.corerm.misc.Rotation
+import net.minecraft.util.EnumHand
+import net.minecraft.util.EnumActionResult
 
 object ModItems extends ModRegister {   
   override def register {      
     knife = new RMItem(MOD_ID, KNIFE){
-      override def onItemUse(item: ItemStack, player: EntityPlayer, world: World, pos:BlockPos, sideHit: EnumFacing, xHit: Float, yHit: Float, zHit: Float): Boolean = {
-        !world.isRemote && Rotation.rotateBlock(world, pos)
+      override def onItemUse(item: ItemStack, player: EntityPlayer, world: World, pos:BlockPos, hand:EnumHand, sideHit: EnumFacing, xHit: Float, yHit: Float, zHit: Float): EnumActionResult = {
+        if(!world.isRemote && Rotation.rotateBlock(world, pos)) EnumActionResult.SUCCESS
+        else EnumActionResult.PASS
       }
     }
     parts = new RMItem(MOD_ID, PARTS)
     marshmallow = new RMItemFood(MOD_ID, MARSHMALLOW){
         override def onFoodEaten(stack: ItemStack, world: World, player: EntityPlayer) {
         if (!world.isRemote && (!player.inventory.addItemStackToInventory(nwsk(parts, 1, Parts.STICK_IRON)))) {
-          player.dropPlayerItemWithRandomChoice(nwsk(parts, 1, Parts.STICK_IRON), false)
+          player.dropItem(nwsk(parts, 1, Parts.STICK_IRON), false)
         }
       }
     }

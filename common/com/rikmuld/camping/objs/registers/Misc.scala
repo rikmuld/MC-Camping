@@ -33,6 +33,7 @@ import com.rikmuld.camping.Lib._
 import net.minecraft.init.Items._
 import net.minecraft.init.Blocks._
 import scala.collection.JavaConversions._
+import net.minecraft.init.SoundEvents
 
 object ModMisc extends ModRegister {
     @SideOnly(Side.CLIENT)
@@ -51,9 +52,8 @@ object ModMisc extends ModRegister {
         tentStructure = BoundsStructure.regsisterStructure(xLine, yLine, zLine, true)
       
         tab = new com.rikmuld.camping.objs.misc.Tab(MOD_ID)
-        fur = EnumHelper.addArmorMaterial("FUR", "", 20, Array(2, 5, 4, 2), 20)
+        fur = EnumHelper.addArmorMaterial("FUR", "", 20, Array(2, 5, 4, 2), 20, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 0)
         
-        //packats
         RMMod.registerPacket(classOf[OpenGui])
         RMMod.registerPacket(classOf[NBTPlayer])
         RMMod.registerPacket(classOf[KeyData])
@@ -75,22 +75,22 @@ object ModMisc extends ModRegister {
         
         val ironStick = nwsk(parts, Parts.STICK_IRON)
         
-        CookingEquipment.addEquipmentRecipe(spit, nwsk(stick), nwsk(stick), ironStick)
-        CookingEquipment.addEquipmentRecipe(grill, nwsk(stick), nwsk(stick), nwsk(stick), nwsk(stick), ironStick, ironStick, nwsk(iron_bars))
-        CookingEquipment.addEquipmentRecipe(pan, nwsk(stick), nwsk(stick), ironStick, nwsk(string), nwsk(parts, 1, Parts.PAN))
+        CookingEquipment.addEquipmentRecipe(spit, nwsk(STICK), nwsk(STICK), ironStick)
+        CookingEquipment.addEquipmentRecipe(grill, nwsk(STICK), nwsk(STICK), nwsk(STICK), nwsk(STICK), ironStick, ironStick, nwsk(IRON_BARS))
+        CookingEquipment.addEquipmentRecipe(pan, nwsk(STICK), nwsk(STICK), ironStick, nwsk(STICK), nwsk(parts, 1, Parts.PAN))
         
-        grill.addFood(nwsk(fish), nwsk(cooked_fish))
-        grill.addFood(nwsk(fish, 1), nwsk(cooked_fish, 1))
-        grill.addFood(nwsk(beef), nwsk(cooked_beef))
-        grill.addFood(nwsk(porkchop), nwsk(cooked_porkchop))
+        grill.addFood(nwsk(FISH), nwsk(COOKED_FISH))
+        grill.addFood(nwsk(FISH, 1), nwsk(COOKED_FISH, 1))
+        grill.addFood(nwsk(BEEF), nwsk(COOKED_BEEF))
+        grill.addFood(nwsk(PORKCHOP), nwsk(COOKED_PORKCHOP))
         grill.addFood(nwsk(venisonRaw), nwsk(venisonCooked))
-        grill.addFood(nwsk(mutton), nwsk(cooked_mutton))
-        pan.addFood(nwsk(potato), nwsk(baked_potato))
-        pan.addFood(nwsk(rotten_flesh), nwsk(leather))
-        spit.addFood(nwsk(chicken), nwsk(cooked_chicken))
-        spit.addFood(nwsk(rabbit), nwsk(cooked_rabbit))
-        spit.addFood(nwsk(fish), nwsk(cooked_fish))
-        spit.addFood(nwsk(fish, 1), nwsk(cooked_fish, 1))
+        grill.addFood(nwsk(MUTTON), nwsk(COOKED_MUTTON))
+        pan.addFood(nwsk(POTATO), nwsk(BAKED_POTATO))
+        pan.addFood(nwsk(ROTTEN_FLESH), nwsk(LEATHER))
+        spit.addFood(nwsk(CHICKEN), nwsk(COOKED_CHICKEN))
+        spit.addFood(nwsk(RABBIT), nwsk(COOKED_RABBIT))
+        spit.addFood(nwsk(FISH), nwsk(COOKED_FISH))
+        spit.addFood(nwsk(FISH, 1), nwsk(COOKED_FISH, 1))
         
         FurnaceRecipes.instance.getSmeltingList.asInstanceOf[java.util.Map[ItemStack, ItemStack]].foreach(stacks => {
           if (stacks._1.getItem.isInstanceOf[ItemFood] && stacks._1.getItem.getUnlocalizedName != null) {

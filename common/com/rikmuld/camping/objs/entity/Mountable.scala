@@ -12,7 +12,11 @@ import com.sun.beans.decoder.TrueElementHandler
 import net.minecraft.util.math.BlockPos
 import com.rikmuld.corerm.network.PacketSender
 import com.rikmuld.camping.objs.misc.PlayerExitLog
+import scala.collection.JavaConversions._
+import net.minecraft.item.ItemStack
+import net.minecraft.util.EnumHand
 
+//TODO REDO, SYSTEM IMPROVED SO IMPROVE
 class Mountable(world: World) extends Entity(world) {
   var plX: Double = _
   var plY: Double = _
@@ -30,11 +34,13 @@ class Mountable(world: World) extends Entity(world) {
     setPosition(pos.getX + 0.5F, pos.getY + 0.1F, pos.getZ + 0.5F)
   }
   protected override def entityInit() {}
-  override def interactFirst(player: EntityPlayer): Boolean = {
-    if (riddenByEntity != null && riddenByEntity.isInstanceOf[EntityPlayer] && this.riddenByEntity != player) return true
+  override def processInitialInteract(player: EntityPlayer, stack:ItemStack, hand:EnumHand): Boolean = {
+    val pass = this.getPassengers
+    this.getRidingEntity
+    if (pass.size() > 0 && pass.find(entity => entity.isInstanceOf[EntityPlayer]).isDefined && !pass.contains(player)) return true
     else {
       if (!world.isRemote) {
-        player.mountEntity(this)
+        this.addPassenger(player)
       } else {
         this.player = player
         this.update = 5;
@@ -42,19 +48,21 @@ class Mountable(world: World) extends Entity(world) {
     }
     true
   }
+  def removePassenger2(entity:Entity) {
+    this.removePassenger(entity)
+  }
   override def onUpdate() {
     super.onUpdate()
     if(pos!=null){
       if (world.getBlockState(pos).getBlock != Objs.logseat) setDead()
-      if (riddenByEntity != null) {
+      if (this.getPassengers.size() > 0) {
         if (worldObj.isRemote && Minecraft.getMinecraft.gameSettings.keyBindSneak.isPressed && Minecraft.getMinecraft.inGameHasFocus) {
-          riddenByEntity.asInstanceOf[EntityPlayer].mountEntity(null)
           PacketSender.toServer(new PlayerExitLog(pos.getX, pos.getY, pos.getZ))
-          riddenByEntity = null
+          this.removePassenger(player)
           player = null
         }
       } else if (player != null&&update==0) {
-        player.mountEntity(this);
+        this.addPassenger(player)
         update = -1;
       }
       

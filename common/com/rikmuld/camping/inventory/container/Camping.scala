@@ -66,13 +66,14 @@ class ContainerCampinv(player:EntityPlayer) extends Container with ContainerTabb
   for (row <- 0 until 3; collom <- 0 until 3) addSlotToContainer(new SlotTabbed(craftMatrix, collom + (row * 3), 53 + (collom * 18), 17 + (row * 18), 2, 0))
   for (row <- 0 until 2; collom <- 0 until 2) addSlotToContainer(new SlotTabbed(craftMatrixSmall, collom + (row * 2), 110 + (collom * 18), 26 + (row * 18), 0, 0))
 
+  val armorSlots = List(EntityEquipmentSlot.FEET, EntityEquipmentSlot.LEGS, EntityEquipmentSlot.CHEST, EntityEquipmentSlot.HEAD)
   for (i <- 0 until 4) {
       val k:Int = i
       this.addSlotToContainer(new SlotTabbed(player.inventory, player.inventory.getSizeInventory() - 1 - i, 30, 8 + i * 18, 0, 0){
           override def getSlotStackLimit =  1
           override def isItemValid(stack:ItemStack):Boolean = {
               if (stack == null) return false;
-              return stack.getItem().isValidArmor(stack, k, player)
+              return stack.getItem().isValidArmor(stack, EntityEquipmentSlot.values()(k + 2), player)
           }
           @SideOnly(Side.CLIENT)
           override def getSlotTexture  = ItemArmor.EMPTY_SLOT_NAMES(k)

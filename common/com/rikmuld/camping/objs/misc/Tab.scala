@@ -8,18 +8,27 @@ import scala.collection.mutable.ListBuffer
 import net.minecraft.entity.EntityList
 import net.minecraft.entity.EntityList.EntityEggInfo
 import net.minecraft.init.Items
+import net.minecraftforge.fml.relauncher.SideOnly
+import net.minecraftforge.fml.relauncher.Side
+import net.minecraft.item.ItemMonsterPlacer
 
 class Tab(name: String) extends CreativeTabs(name) {
-  val eggIds = new ListBuffer[Int]
+  val eggIds = new ListBuffer[String]
 
   override def getIconItemStack: ItemStack = new ItemStack(knife)
   override def getTabIconItem: Item = getIconItemStack.getItem
-  override def displayAllReleventItems(list: java.util.List[ItemStack]) {
-    super.displayAllReleventItems(list)
-    val iterator = EntityList.entityEggs.values.iterator()
+  
+  @SideOnly(Side.CLIENT)
+  override def displayAllRelevantItems(list: java.util.List[ItemStack]) {
+    super.displayAllRelevantItems(list)
+    val iterator = EntityList.ENTITY_EGGS.values.iterator()
     while (iterator.hasNext) {
       val entityegginfo = iterator.next().asInstanceOf[EntityEggInfo]
-      if (eggIds.contains(entityegginfo.spawnedID)) list.asInstanceOf[java.util.List[ItemStack]].add(new ItemStack(Items.spawn_egg, 1, entityegginfo.spawnedID))
+      
+      val stack = new ItemStack(Items.SPAWN_EGG, 1)
+      ItemMonsterPlacer.applyEntityIdToItemStack(stack, entityegginfo.spawnedID);
+
+      if (eggIds.contains(entityegginfo.spawnedID)) list.asInstanceOf[java.util.List[ItemStack]].add(stack)
     }
   }
 }

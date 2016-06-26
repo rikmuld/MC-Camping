@@ -28,6 +28,7 @@ import com.rikmuld.camping.objs.registers.ModItems
 import com.rikmuld.camping.objs.registers.ModEntities
 import com.rikmuld.camping.objs.registers.ModTiles
 import com.rikmuld.camping.objs.registers.ModMisc
+import com.rikmuld.camping.objs.registers.ModSounds
 
 @Mod(modid = MOD_ID, name = MOD_NAME, version = MOD_VERSION, dependencies = MOD_DEPENDENCIES, modLanguage = MOD_LANUAGE, guiFactory = MOD_GUIFACTORY)
 object CampingMod {
@@ -63,6 +64,7 @@ object CampingMod {
     register(event.getSide, ModItems, ModRegister.PERI)
     register(event.getSide, ModRecipes, ModRegister.PERI)
     register(event.getSide, ModAchievements, ModRegister.PERI)
+    register(event.getSide, ModSounds, ModRegister.PERI)
   }
   @EventHandler
   def PosInit(event: FMLPostInitializationEvent) {
@@ -176,3 +178,12 @@ object Lib {
     final val MODEL_CAMPER_MALE = MODEL_LOCATION + "ModelCamperMale.png"
   }
 }
+
+//check item models if correct in hand third/first
+//mountaing/logsteat
+//current item for click on blocks, and currnet item when opening inventory bag or so
+//block bounds
+//sounds
+//presisteance, write nbt
+//item actions, check knife
+//neigbo change updates, check instable and logs
