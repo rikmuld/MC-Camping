@@ -53,9 +53,9 @@ object ModBlocks extends ModRegister {
     tentBounds = new TentBounds(MOD_ID, BOUNDS_TENT)
     hemp = new Hemp(MOD_ID, HEMP)
     light = new RMBlockContainer(MOD_ID, LIGHT) with WithModel {
-      override def getBoundingBox(state:IBlockState, source:IBlockAccess, pos:BlockPos): AxisAlignedBB = new AxisAlignedBB(0, 0, 0, 0, 0, 0)
+      override def getBoundingBox(state:IBlockState, source:IBlockAccess, pos:BlockPos): AxisAlignedBB = null
       override def createNewTileEntity(world: World, meta: Int): RMTile = new TileLight()
-      override def getCollisionBoundingBox(state:IBlockState, world: World, pos:BlockPos): AxisAlignedBB = new AxisAlignedBB(0, 0, 0, 0, 0, 0)
+      override def getCollisionBoundingBox(state:IBlockState, world: World, pos:BlockPos): AxisAlignedBB = null
       override def getRenderType(state:IBlockState) = EnumBlockRenderType.INVISIBLE
       override def isReplaceable(world: IBlockAccess, pos:BlockPos) = true
       override def canCollideCheck(state:IBlockState, hitIfLiquid:Boolean) = false

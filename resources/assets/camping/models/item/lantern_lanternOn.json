@@ -2,8 +2,8 @@
     "parent": "camping:block/lanternOn",
     "display": {
         "thirdperson_righthand": {
-            "rotation": [ 75, 315, 0 ],
-            "translation": [ 0, 2, 3 ],
+            "rotation": [ 180, 0, 180 ],
+            "translation": [ 0, 4, 2 ],
             "scale": [ 0.55, 0.55, 0.55 ]
         },
         "firstperson_righthand": {
