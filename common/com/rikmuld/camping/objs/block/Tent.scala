@@ -65,9 +65,8 @@ class Tent(modId:String, info:ObjInfo) extends RMBlockContainer(modId, info) wit
   var facingFlag:Int = _
   
   override def getProps = Array(new RMFacingHorizontalProp(FACING, 0))
-  override def addCollisionBoxToList(state:IBlockState, world: World, pos:BlockPos, axisAligned: AxisAlignedBB, list: java.util.List[AxisAlignedBB], entity: Entity) {
-    list.add(TileEntityTent.bounds(getFacing(state)).getBlockCollision(this))
-    super.addCollisionBoxToList(state, world, pos, axisAligned, list, entity)
+  override def getCollisionBoundingBox(state:IBlockState, source:World, pos:BlockPos):AxisAlignedBB = {
+    TileEntityTent.bounds(getFacing(state)).getBlockCollision
   }
   def getFacing(state:IBlockState) = state.getValue(Tent.FACING).asInstanceOf[EnumFacing].getHorizontalIndex
   override def breakBlock(world: World, pos:BlockPos, state:IBlockState) {
@@ -100,7 +99,7 @@ class Tent(modId:String, info:ObjInfo) extends RMBlockContainer(modId, info) wit
   override def quantityDropped(random: Random): Int = 0
   override def getBoundingBox(state:IBlockState, source:IBlockAccess, pos:BlockPos):AxisAlignedBB = {
     val tile = source.getTileEntity(pos).asInstanceOf[TileTent]
-    TileEntityTent.bounds(getFacing(state)).getBlockBounds(this)
+    TileEntityTent.bounds(getFacing(state)).getBlockBounds
   }
   override def dropIfCantStay(bd:BlockData) {
     val tile = bd.tile.asInstanceOf[TileTent]

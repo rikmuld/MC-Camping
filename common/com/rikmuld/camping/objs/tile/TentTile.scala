@@ -138,10 +138,7 @@ class TileTent extends RMTile with WithTileInventory with ITickable {
     list
   }
   @SideOnly(Side.CLIENT)
-  override def getRenderBoundingBox(): AxisAlignedBB = {
-    val bound = TileEntityTent.bounds(getRotation)
-    new AxisAlignedBB(bound.xMin, bound.yMin, bound.zMin, bound.xMax, bound.yMax, bound.zMax)
-  }
+  override def getRenderBoundingBox(): AxisAlignedBB = TileEntity.INFINITE_EXTENT_AABB
   override def getSizeInventory(): Int = 151
   def initalize() {
     if (!worldObj.isRemote) {

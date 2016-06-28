@@ -137,7 +137,7 @@ class Camper(world: World) extends EntityCreature(world) with IMerchant with INp
       if (entity.isInstanceOf[EntityPlayer]) {
           val player = entity.asInstanceOf[EntityPlayer]
           val itemstack = this.getHeldItemMainhand();
-          val itemstack1 = if(player.isHandActive()) player.getActiveItemStack() else null;
+          val itemstack1 = if(player.isHandActive()) player.inventory.getCurrentItem else null;
 
           if (itemstack != null && itemstack1 != null && itemstack.getItem.isInstanceOf[ItemAxe] && itemstack1.getItem() == Items.SHIELD) {
               val f1 = 0.25F + EnchantmentHelper.getEfficiencyModifier(this) * 0.05F;
@@ -155,7 +155,7 @@ class Camper(world: World) extends EntityCreature(world) with IMerchant with INp
     flag
   }
   override def processInteract(player: EntityPlayer, hand:EnumHand, stack:ItemStack): Boolean = {
-    val itemstack = player.getActiveItemStack
+    val itemstack = player.inventory.getCurrentItem
     val flag = (itemstack != null) && (itemstack.getItem == Items.SPAWN_EGG)
     if (!flag && isEntityAlive && !isTrading && !player.isSneaking) {
       if (!worldObj.isRemote) {

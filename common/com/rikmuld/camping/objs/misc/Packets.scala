@@ -11,13 +11,13 @@ import com.rikmuld.camping.objs.tile.TileTent
 import com.rikmuld.corerm.RMMod
 import com.rikmuld.corerm.network.BasicPacketData
 import com.rikmuld.corerm.objs.WithTileInventory
-
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.network.PacketBuffer
 import net.minecraft.util.math.BlockPos
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext
+import com.rikmuld.camping.objs.entity.Mountable
 
 class OpenGui(var id: Int) extends BasicPacketData {
   var x: Int = 0
@@ -119,10 +119,7 @@ class PlayerExitLog(var x: Int, var y: Int, var z: Int) extends BasicPacketData 
   def this() = this(0, 0, 0)
  
   override def handlePacket(player: EntityPlayer, ctx: MessageContext) {
-    if(!player.worldObj.isRemote&&player.worldObj.getBlockState(new BlockPos(x, y, z)).getBlock==Objs.logseat&&player.worldObj.getTileEntity(new BlockPos(x, y, z)).asInstanceOf[TileLogseat].mountable.getPassengers.size()>0){
-      player.worldObj.getTileEntity(new BlockPos(x, y, z)).asInstanceOf[TileLogseat].mountable.removePassenger2(player) 
-      player.worldObj.getTileEntity(new BlockPos(x, y, z)).asInstanceOf[TileLogseat].mountable.player = null;
-    }
+    if(player.getRidingEntity.isInstanceOf[Mountable])player.dismountRidingEntity()
   }
   override def getData(stream: PacketBuffer) {
     x = stream.readInt

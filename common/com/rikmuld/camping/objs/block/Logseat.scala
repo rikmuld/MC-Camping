@@ -62,7 +62,7 @@ class Logseat(modId:String, info:ObjInfo) extends RMBlockContainer(modId, info) 
   }
   override def onBlockActivated(world: World, pos:BlockPos, state:IBlockState, player: EntityPlayer, hand:EnumHand, stack:ItemStack, side: EnumFacing, xHit: Float, yHit: Float, zHit: Float): Boolean = {
     if (!player.isRiding && (new Vec3d(pos.getX + 0.5F, pos.getY + 0.5F, pos.getZ + 0.5F).distanceTo(new Vec3d(player.posX, player.posY, player.posZ)) <= 2.5F)) {
-      world.getTileEntity(pos).asInstanceOf[TileLogseat].mountable.processInitialInteract(player, stack, hand)
+      world.getTileEntity(pos).asInstanceOf[TileLogseat].mountable.tryAddPlayer(player)
     }
     true
   }

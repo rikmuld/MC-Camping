@@ -285,12 +285,14 @@ class TileCampfireCook extends RMTile with WithTileInventory with ITickable with
       fuel += fuelForCoal
     }
   }
-  override def readFromNBT(tag: NBTTagCompound) {
-    super.readFromNBT(tag)
+  override def readFromNBT(tag: NBTTagCompound) {    
+    super[RMTile].readFromNBT(tag)
+    super[WithTileInventory].readFromNBT(tag)
+        
     fuel = tag.getInteger("fuel")
     cookProgress = tag.getIntArray("cookProgress")
+    
     for (i <- 0 until coals.length; j <- 0 until coals(i).length) coals(i)(j) = tag.getFloat("coals" + i + j)
-    super[WithTileInventory].readFromNBT(tag)
   }
   def setSlots(slots: ArrayList[SlotCooking]) = this.slots = slots
   override def setTileData(id: Int, data: Array[Int]) {
@@ -328,6 +330,6 @@ class TileCampfireCook extends RMTile with WithTileInventory with ITickable with
     tag.setIntArray("cookProgress", cookProgress)
     for (i <- 0 until coals.length; j <- 0 until coals(i).length) tag.setFloat("coals" + i + j, coals(i)(j))
     super[WithTileInventory].writeToNBT(tag)
-    super.writeToNBT(tag)    
+    super[RMTile].writeToNBT(tag)    
   }
 }

@@ -34,7 +34,7 @@ object TentBounds {
 class TentBounds(modId:String, info:ObjInfo) extends RMBlockContainer(modId, info) with IBoundsBlock with WithModel with WithProperties {
   setDefaultState(getStateFromMeta(0))
 
-  override def getRenderType(state:IBlockState) = EnumBlockRenderType.MODEL
+  override def getRenderType(state:IBlockState) = EnumBlockRenderType.INVISIBLE
   override def getProps = Array(new RMFacingHorizontalProp(TentBounds.FACING, 0))
   override def isBed(state:IBlockState, world:IBlockAccess, pos:BlockPos, player:Entity) = true    
   override def setBedOccupied(world:IBlockAccess, pos:BlockPos, player:EntityPlayer, occupied:Boolean) = getBaseTile(world, pos).setOccupied(occupied)
