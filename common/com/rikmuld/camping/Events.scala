@@ -153,7 +153,7 @@ class EventsS {
       }
       if (!world.isRemote && player.hasLantarn()) {
         tickLight += 1
-        if (tickLight >= 10) {
+        if (tickLight >= 20) {
           tickLight = 0
           player.lanternTick()
           val bd = (player.worldObj, new BlockPos(player.posX.toInt, player.posY.toInt, player.posZ.toInt))

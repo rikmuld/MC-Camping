@@ -26,6 +26,7 @@ import com.rikmuld.camping.inventory.objs.PouchContainer
 import com.rikmuld.camping.inventory.objs.KitGui
 import com.rikmuld.camping.inventory.objs.KitContainer
 import com.rikmuld.camping.inventory.objs.GuiTentSleeping
+import com.rikmuld.camping.inventory.objs.ContainerEmpty
 
 object ModGuis extends ModRegister{
   override def registerServer {
@@ -36,7 +37,7 @@ object ModGuis extends ModRegister{
     guiCamping = RMMod.proxy.registerGui(classOf[ContainerCampinv], null)
     guiTrap = RMMod.proxy.registerGui(classOf[ContainerTrap], null)
     guiCampfireCook = RMMod.proxy.registerGui(classOf[ContainerCampfireCook], null)
-    guiTent = RMMod.proxy.registerGui(null, null)
+    guiTent = RMMod.proxy.registerGui(classOf[ContainerEmpty], null)
     guiTentSleep = RMMod.proxy.registerGui(null, null)
     guiTentChests = RMMod.proxy.registerGui(classOf[ContainerTentChests], null)
     guiTentLantern = RMMod.proxy.registerGui(classOf[ContainerTentLanterns], null)
@@ -52,7 +53,7 @@ object ModGuis extends ModRegister{
     guiCamping = RMMod.proxy.registerGui(classOf[ContainerCampinv], classOf[GuiCampinginv])
     guiTrap = RMMod.proxy.registerGui(classOf[ContainerTrap], classOf[GuiTrap])
     guiCampfireCook = RMMod.proxy.registerGui(classOf[ContainerCampfireCook], classOf[GuiCampfireCook])
-    guiTent = RMMod.proxy.registerGui(null, classOf[GuiTent])
+    guiTent = RMMod.proxy.registerGui(classOf[ContainerEmpty], classOf[GuiTent])
     guiTentSleep = RMMod.proxy.registerGui(null, classOf[GuiTentSleeping])
     guiTentChests = RMMod.proxy.registerGui(classOf[ContainerTentChests], classOf[GuiTentChests])
     guiTentLantern = RMMod.proxy.registerGui(classOf[ContainerTentLanterns], classOf[GuiTentLanterns])

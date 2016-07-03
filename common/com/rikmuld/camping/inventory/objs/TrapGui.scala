@@ -33,8 +33,14 @@ class ContainerTrap(player: EntityPlayer, inv: IInventory) extends RMContainerTi
       val itemstack1 = slot.getStack
       itemstack = itemstack1.copy
       if (slotNum < inv.getSizeInventory) {
-        if (!mergeItemStack(itemstack1, inv.getSizeInventory, inventorySlots.size, true)) return null
-      } else if (Block.getBlockFromItem(itemstack1.getItem()) != null || (!mergeItemStack(itemstack1, 0, inv.getSizeInventory, false))) return null
+        if (!mergeItemStack(itemstack1, inv.getSizeInventory, inventorySlots.size, false)) return null
+      } else if (Block.getBlockFromItem(itemstack1.getItem()) != null || (!mergeItemStack(itemstack1, 0, inv.getSizeInventory, false))) {
+        if(slotNum < inv.getSizeInventory + 9){
+          if(!mergeItemStack(itemstack1, inv.getSizeInventory + 9, inv.getSizeInventory + 9 + 27, false)) return null
+        } else {
+          if(!mergeItemStack(itemstack1, inv.getSizeInventory, inv.getSizeInventory + 9, false)) return null
+        }
+      } 
       if (itemstack1.stackSize == 0) {
         slot.putStack(null)
       } else {

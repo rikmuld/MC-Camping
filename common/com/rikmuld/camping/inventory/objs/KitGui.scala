@@ -32,12 +32,12 @@ class KitContainer(player: EntityPlayer) extends RMContainerItem(player) {
   this.addSlots(inv, 5, 2, 1, 44, 34)
   this.addSlots(inv, 7, 2, 1, 116, 34)
   this.addSlots(inv, 9, 1, 5, 44, 70)
-  this.addSlots(player.inventory, 9, 3, 9, 8, 99)
 
   for (row <- 0 until 9) {
     if (row == player.inventory.currentItem) addSlotToContainer(new SlotNoPickup(player.inventory, row, 8 + (row * 18), 157))
     else addSlotToContainer(new Slot(player.inventory, row, 8 + (row * 18), 157))
   }
+  this.addSlots(player.inventory, 9, 3, 9, 8, 99)
 
   override def getItemInv = new RMInventoryItem(player.getCurrentEquippedItem, player, 14, 1, true)
   override def getItem = Objs.kit
@@ -49,8 +49,14 @@ class KitContainer(player: EntityPlayer) extends RMContainerItem(player) {
       itemstack = itemstack1.copy()
       val size = itemstack1.stackSize
       if (i < inv.getSizeInventory()) {
-        if (!mergeItemStack(itemstack1, inv.getSizeInventory(), inventorySlots.size(), true)) return null
-      } else return null
+        if (!mergeItemStack(itemstack1, inv.getSizeInventory(), inventorySlots.size(), false)) return null
+      } else {
+        if(i < inv.getSizeInventory + 9){
+          if(!mergeItemStack(itemstack1, inv.getSizeInventory + 9, inv.getSizeInventory + 9 + 27, false)) return null
+        } else {
+          if(!mergeItemStack(itemstack1, inv.getSizeInventory, inv.getSizeInventory + 9, false)) return null
+        }
+      }
       if (itemstack1.stackSize == 0) slot.putStack(null)
       else slot.onSlotChanged()
     }
