@@ -186,8 +186,8 @@ class ContainerTentLanterns(player: EntityPlayer, tile: IInventory) extends RMCo
   var tent = tile.asInstanceOf[TileTent]
 
   addSlotToContainer(new SlotItemsOnly(tile, 0, 80, 88, Items.GLOWSTONE_DUST))
-  this.addSlots(player.inventory, 9, 3, 9, 8, 113)
   this.addSlots(player.inventory, 0, 1, 9, 8, 171)
+  this.addSlots(player.inventory, 9, 3, 9, 8, 113)
 
   override def transferStackInSlot(p: EntityPlayer, i: Int): ItemStack = {
     var itemstack: ItemStack = null
@@ -195,10 +195,16 @@ class ContainerTentLanterns(player: EntityPlayer, tile: IInventory) extends RMCo
     if ((slot != null) && slot.getHasStack) {
       val itemstack1 = slot.getStack
       itemstack = itemstack1.copy()
-      if (i < tent.getSizeInventory) {
-        if (!mergeItemStack(itemstack1, tent.getSizeInventory, inventorySlots.size, true)) return null
-      } else if (itemstack1.getItem() == Items.GLOWSTONE_DUST) {
-        if (!mergeItemStack(itemstack1, 0, tent.getSizeInventory, true)) return null
+      if (i < 1) {
+        if (!mergeItemStack(itemstack1, 1, this.inventorySlots.size, false)) return null
+      } else {
+        if (!(itemstack1.getItem() == Items.GLOWSTONE_DUST && mergeItemStack(itemstack1, 0, 1, true))) {  
+          if(i < 10){
+            if(!mergeItemStack(itemstack1, 10, this.inventorySlots.size, false)) return null
+          } else {
+            if(!mergeItemStack(itemstack1, 1, 10, false)) return null
+          }
+        }
       }
       if (itemstack1.stackSize == 0) slot.putStack(null)
       else slot.onSlotChanged()

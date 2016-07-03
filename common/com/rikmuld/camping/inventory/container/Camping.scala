@@ -75,7 +75,7 @@ class ContainerCampinv(player:EntityPlayer) extends Container with ContainerTabb
               return stack.getItem().isValidArmor(stack, armorSlots(i), player)
           }
           @SideOnly(Side.CLIENT)
-          override def getSlotTexture  = ItemArmor.EMPTY_SLOT_NAMES(i)
+          override def getSlotTexture  = ItemArmor.EMPTY_SLOT_NAMES(3-i)
       })
   }
   
@@ -140,15 +140,15 @@ class ContainerCampinv(player:EntityPlayer) extends Container with ContainerTabb
         }
         if(!success){
           success = false
-          if (slotNum < 9) {
-            if(getCurrentTabTop == GuiCampinginv.TAB_BACKPACK && Option(getSlot(36).getStack).getOrElse(nwsk(Blocks.AIR)).getItem.eq(Objs.backpack)) {
-              if(this.mergeItemStack(itemstack1, 40, 67, false))success = true
+          if(slotNum < 36 && getCurrentTabTop == GuiCampinginv.TAB_BACKPACK){
+            val slots = campinv.getEnabledBackpackSlots()
+            slots.foreach { slot =>  
+              if(!success&&this.mergeItemStack(itemstack1, 4 + 36 + slot, 4 + 36 + slot + 1, false))success = true    
             }
+          }
+          if (slotNum < 9) {
             if (!success && !this.mergeItemStack(itemstack1, 9, 36, false))return null
           } else if (slotNum >= 9 && slotNum < 36) {
-            if(getCurrentTabTop == GuiCampinginv.TAB_BACKPACK && Option(getSlot(36).getStack).getOrElse(nwsk(Blocks.AIR)).getItem.eq(Objs.backpack)) {
-              if(this.mergeItemStack(itemstack1, 40, 67, false))success = true
-            }
             if (!success && !this.mergeItemStack(itemstack1, 0, 9, false))return null
           }
         }
@@ -166,6 +166,10 @@ class ContainerCampinv(player:EntityPlayer) extends Container with ContainerTabb
 }
 
 object InventoryCampinv {
+  final val POUCH = List(12, 13, 14)
+  final val BACKPACK = List(3, 4, 5, 12, 13, 14, 21, 22, 23)
+  final val RUCKSACK = List.range(0, 27)
+  
   def dropItems(player: EntityPlayer) {
     if (player.getEntityData.hasKey("campInv") == false) return
     val tag = player.getEntityData.getCompoundTag("campInv")
@@ -184,10 +188,16 @@ class InventoryCampinv(player: EntityPlayer, var slots: ArrayList[SlotWithDisabl
 
   final val SLOT_BACKPACK = 0
   
-  final val POUCH = List(12, 13, 14)
-  final val BACKPACK = List(3, 4, 5, 21, 22, 23) ::: POUCH
-  final val RUCKSACK = List.range(0, 27)
-  
+  def getEnabledBackpackSlots():List[Int] = {
+    val pack = getStackInSlot(SLOT_BACKPACK)
+    if(pack != null){
+      pack.getItemDamage match {
+        case ItemDefinitions.Backpack.POUCH => InventoryCampinv.POUCH
+        case ItemDefinitions.Backpack.BACKPACK => InventoryCampinv.BACKPACK
+        case ItemDefinitions.Backpack.RUCKSACK => InventoryCampinv.RUCKSACK
+      }
+    } else List[Int]()
+  }
   override def onChange(slotNum: Int) {
     super.onChange(slotNum)
     if (slotNum == SLOT_BACKPACK) {
@@ -220,9 +230,9 @@ class InventoryCampinv(player: EntityPlayer, var slots: ArrayList[SlotWithDisabl
   def enableBackpackSlots(damage:Int){
     var set:List[Int] = List()
     damage match {
-      case ItemDefinitions.Backpack.POUCH => set = POUCH
-      case ItemDefinitions.Backpack.BACKPACK => set = BACKPACK
-      case ItemDefinitions.Backpack.RUCKSACK => set = RUCKSACK
+      case ItemDefinitions.Backpack.POUCH => set = InventoryCampinv.POUCH
+      case ItemDefinitions.Backpack.BACKPACK => set = InventoryCampinv.BACKPACK
+      case ItemDefinitions.Backpack.RUCKSACK => set = InventoryCampinv.RUCKSACK
     }
     for (slot <- slots) slot.disable
     for(slot <- set) slots(slot).enable

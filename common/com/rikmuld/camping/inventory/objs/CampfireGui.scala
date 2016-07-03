@@ -22,6 +22,7 @@ import com.rikmuld.camping.objs.tile.TileCampfire
 import com.rikmuld.camping.objs.tile.TileCampfireCook
 import com.rikmuld.camping.inventory.SlotCooking
 import net.minecraft.inventory.IContainerListener
+import com.rikmuld.camping.objs.ItemDefinitions
 
 class GuiCampfireCook(player: EntityPlayer, tile: IInventory) extends GuiContainer(new ContainerCampfireCook(player, tile)) {
   ySize = 188
@@ -87,7 +88,7 @@ class ContainerCampfireCook(player: EntityPlayer, tile: IInventory) extends RMCo
         var merged = false
         if (itemstack.getItem == Items.COAL) {
           if (mergeItemStack(itemstack1, 0, 1, false)) merged = true
-        } else if (itemstack.getItem == Objs.kit) {
+        } else if (itemstack.getItem == Objs.kit && itemstack.getItemDamage != ItemDefinitions.Kit.USELESS && itemstack.getItemDamage != ItemDefinitions.Kit.EMPTY) {
           if (mergeItemStack(itemstack1, 1, 2, false)) merged = true
         } else if(!merged){
             if(slotNum < fire.getSizeInventory + 9){

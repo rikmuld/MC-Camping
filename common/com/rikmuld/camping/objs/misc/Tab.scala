@@ -21,14 +21,10 @@ class Tab(name: String) extends CreativeTabs(name) {
   @SideOnly(Side.CLIENT)
   override def displayAllRelevantItems(list: java.util.List[ItemStack]) {
     super.displayAllRelevantItems(list)
-    val iterator = EntityList.ENTITY_EGGS.values.iterator()
-    while (iterator.hasNext) {
-      val entityegginfo = iterator.next().asInstanceOf[EntityEggInfo]
-      
+    eggIds.foreach { id => 
       val stack = new ItemStack(Items.SPAWN_EGG, 1)
-      ItemMonsterPlacer.applyEntityIdToItemStack(stack, entityegginfo.spawnedID);
-
-      if (eggIds.contains(entityegginfo.spawnedID)) list.asInstanceOf[java.util.List[ItemStack]].add(stack)
+      ItemMonsterPlacer.applyEntityIdToItemStack(stack, "camping." + id)
+      list.asInstanceOf[java.util.List[ItemStack]].add(stack)
     }
   }
 }
