@@ -66,7 +66,7 @@ class CampfireCookRender extends TileEntitySpecialRenderer[TileCampfireCook] {
     for (i <- 0 until tile.getCoalPieces) {
       GL11.glPushMatrix()
       GL11.glTranslatef(tile.coals(0)(i), 0, tile.coals(1)(i))
-      GL11.glScalef(0.2F, 0.15F, 0.15F)
+      GL11.glScalef(0.3F, 0.3F, 0.3F)
       GL11.glRotatef(tile.coals(2)(i), 0, 1, 0)
       GL11.glRotatef(45, 1F, 1F, 0.4F)
       GL11.glRotatef(10, 0.0F, 1F, 0F)

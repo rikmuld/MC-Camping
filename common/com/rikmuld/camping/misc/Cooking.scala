@@ -96,17 +96,15 @@ class Grill(item: ItemStack) extends CookingEquipment(CampingMod.config.cookTime
   override def doRenderFood(foodIndex: Int, stack: ItemStack, entity: EntityLivingBase) {
     val item = new ItemStack(stack.getItem, 1, stack.getItemDamage)
     GL11.glPushMatrix()
-    GL11.glTranslatef(-0.0725F, -0.5f, 0.0225F)
+    GL11.glTranslatef(0.05f, -0.475f, 0.0225F)
     foodIndex match {
       case 0 => GL11.glTranslatef(-0.109375F, 0F, 0.046875F)
       case 1 => GL11.glTranslatef(0.109375F, 0F, 0.046875F)
       case 2 => GL11.glTranslatef(-0.109375F, 0F, -0.171875F)
       case 3 => GL11.glTranslatef(0.109375F, 0F, -0.171875F)
     }
-    GL11.glScalef(0.15F, 0.25F, 0.15F)
-    GL11.glRotatef(-90, 1, 0, 0)
-    GL11.glRotatef(45, 0, -1, 0)
-    GL11.glRotatef(-155, 1, 0, 1)
+    GL11.glScalef(0.3F, 0.3F, 0.3F)
+    GL11.glRotatef(90, 0, 0, 1)
     if(entity!=null)renderer.renderItem(entity, item, TransformType.FIRST_PERSON_RIGHT_HAND)
     GL11.glPopMatrix()
   }
@@ -250,12 +248,12 @@ class Spit(item: ItemStack) extends CookingEquipment(CampingMod.config.cookTimeS
   override def doRenderFood(foodIndex: Int, stack: ItemStack, entity: EntityLivingBase) {
     val item = new ItemStack(stack.getItem, 1, stack.getItemDamage)
     GL11.glPushMatrix()
-    GL11.glTranslatef(-0.0525F, -0.435f, -0.045F)
+    GL11.glTranslatef(-0.0525F, -0.435f, -0.025F)
     foodIndex match {
       case 0 => GL11.glTranslatef(-0.125F, 0F, 0F)
       case 1 => GL11.glTranslatef(0.125F, 0F, 0)
     }
-    GL11.glScalef(0.15F, 0.15F, 0.25F)
+    GL11.glScalef(0.35F, 0.35F, 0.35F)
     GL11.glRotatef(45, 0, -1, 0)
     GL11.glRotatef(-150, 1, 0, 1)
     if(entity!=null)renderer.renderItem(entity, item, TransformType.FIRST_PERSON_RIGHT_HAND)

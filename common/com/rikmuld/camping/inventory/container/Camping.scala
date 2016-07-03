@@ -62,23 +62,27 @@ class ContainerCampinv(player:EntityPlayer) extends Container with ContainerTabb
   }
 
   addSlotToContainer(new SlotTabbedCrafting(player, craftMatrix, craftResult, 0, 147, 35, 2, 0))  
-  addSlotToContainer(new SlotTabbedCrafting(player, craftMatrixSmall, craftResultSmall, 0, 166, 36, 0, 0))  
+  addSlotToContainer(new SlotTabbedCrafting(player, craftMatrixSmall, craftResultSmall, 0, 176, 28, 0, 0))  
   for (row <- 0 until 3; collom <- 0 until 3) addSlotToContainer(new SlotTabbed(craftMatrix, collom + (row * 3), 53 + (collom * 18), 17 + (row * 18), 2, 0))
-  for (row <- 0 until 2; collom <- 0 until 2) addSlotToContainer(new SlotTabbed(craftMatrixSmall, collom + (row * 2), 110 + (collom * 18), 26 + (row * 18), 0, 0))
+  for (row <- 0 until 2; collom <- 0 until 2) addSlotToContainer(new SlotTabbed(craftMatrixSmall, collom + (row * 2), 120 + (collom * 18), 18 + (row * 18), 0, 0))
 
-  val armorSlots = List(EntityEquipmentSlot.FEET, EntityEquipmentSlot.LEGS, EntityEquipmentSlot.CHEST, EntityEquipmentSlot.HEAD)
+  val armorSlots = List(EntityEquipmentSlot.HEAD, EntityEquipmentSlot.CHEST, EntityEquipmentSlot.LEGS, EntityEquipmentSlot.FEET)
   for (i <- 0 until 4) {
-      val k:Int = i
-      this.addSlotToContainer(new SlotTabbed(player.inventory, player.inventory.getSizeInventory() - 1 - i, 30, 8 + i * 18, 0, 0){
+      this.addSlotToContainer(new SlotTabbed(player.inventory, 36 + (3 - i), 30, 8 + i * 18, 0, 0){
           override def getSlotStackLimit =  1
           override def isItemValid(stack:ItemStack):Boolean = {
               if (stack == null) return false;
-              return stack.getItem().isValidArmor(stack, EntityEquipmentSlot.values()(k + 2), player)
+              return stack.getItem().isValidArmor(stack, armorSlots(i), player)
           }
           @SideOnly(Side.CLIENT)
-          override def getSlotTexture  = ItemArmor.EMPTY_SLOT_NAMES(k)
+          override def getSlotTexture  = ItemArmor.EMPTY_SLOT_NAMES(i)
       })
   }
+  
+  addSlotToContainer(new SlotTabbed(player.inventory, 40, 99, 62, 0, 0) {
+    @SideOnly(Side.CLIENT)
+    override def getSlotTexture = "minecraft:items/empty_armor_slot_shield";
+  })
   
   updateTab(player, 0, 0)
   onCraftMatrixChanged(this.craftMatrix)

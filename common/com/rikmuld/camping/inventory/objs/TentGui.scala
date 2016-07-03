@@ -257,8 +257,8 @@ class ContainerTentChests(player: EntityPlayer, tile: IInventory) extends RMCont
     slot.disable
     slots(collom)(row) = slot
   }
-  this.addSlots(player.inventory, 9, 3, 9, 27, 146)
   this.addSlots(player.inventory, 0, 1, 9, 27, 204)
+  this.addSlots(player.inventory, 9, 3, 9, 27, 146)
   tent.setSlots(slots)
   tent.manageSlots()
 
@@ -269,9 +269,15 @@ class ContainerTentChests(player: EntityPlayer, tile: IInventory) extends RMCont
       val itemstack1 = slot.getStack
       itemstack = itemstack1.copy()
       if (i < tent.getSizeInventory - 1) {
-        if (!mergeItemStack(itemstack1, tent.getSizeInventory - 1, inventorySlots.size, true)) return null
+        if (!mergeItemStack(itemstack1, tent.getSizeInventory - 1, inventorySlots.size, false)) return null
       } else {
-        if (!mergeItemStack(itemstack1, 0, tent.chests * 5 * 6, false)) return null
+        if (!mergeItemStack(itemstack1, 0, tent.chests * 5 * 6, false)) {
+          if(i < tent.getSizeInventory - 1 + 9){
+            if(!mergeItemStack(itemstack1, tent.getSizeInventory - 1 + 9, tent.getSizeInventory - 1 + 9 + 27, false)) return null
+          } else {
+            if(!mergeItemStack(itemstack1, tent.getSizeInventory - 1, tent.getSizeInventory - 1 + 9, false)) return null
+          } 
+        }
       }
       if (itemstack1.stackSize == 0) slot.putStack(null)
       else slot.onSlotChanged()

@@ -49,22 +49,25 @@ class TileTrap extends RMTile with WithTileInventory with ITickable {
     if (!worldObj.isRemote) PacketSender.toClient(new ItemsData(0, bd.x, bd.y, bd.z, getStackInSlot(0)))
   }
   override def readFromNBT(tag: NBTTagCompound) {
-    super.readFromNBT(tag)
     cooldown = tag.getInteger("cooldown")
     captureFlag = tag.getBoolean("captureFlag")
     open = tag.getBoolean("open")
+    super[WithTileInventory].readFromNBT(tag)
+    super[RMTile].readFromNBT(tag)
   }
   override def writeToNBT(tag: NBTTagCompound):NBTTagCompound = {
     tag.setInteger("cooldown", cooldown)
     tag.setBoolean("captureFlag", trappedEntity != null)
     tag.setBoolean("open", open)
-    super.writeToNBT(tag)
+    super[WithTileInventory].writeToNBT(tag)
+    super[RMTile].writeToNBT(tag)
   }
   def forceOpen {
     setOpen(true)
     cooldown = 5
     trappedEntity = null
   }
+  
   override def setTileData(id: Int, data: Array[Int]) = if (id == 0) open = data(0) == 1
   def captureBounds = new AxisAlignedBB(bd.x + 0.21875, bd.y, bd.z + 0.21875, bd.x + 0.78125, bd.y + 0.1875, bd.z + 0.78125)
   def setOpen(open:Boolean) = {

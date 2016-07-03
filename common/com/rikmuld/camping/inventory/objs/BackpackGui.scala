@@ -18,16 +18,18 @@ import com.rikmuld.camping.objs.ItemDefinitions
 import net.minecraft.item.ItemStack
 import net.minecraft.inventory.Container
 
-class BagContainer(player: EntityPlayer) extends RMContainerItem(player) {
-  this.addSlots(invPlayer, 9, 3, 9, 8, 84)
-  for (row <- 0 until 9) {
-    if (row == invPlayer.currentItem) addSlotToContainer(new SlotNoPickup(invPlayer, row, 8 + (row * 18), 142))
-    else addSlotToContainer(new Slot(invPlayer, row, 8 + (row * 18), 142))
+abstract class BagContainer(player: EntityPlayer) extends RMContainerItem(player) {
+  def addPlayerSlots(){
+    for (row <- 0 until 9) {
+      if (row == invPlayer.currentItem) addSlotToContainer(new SlotNoPickup(invPlayer, row, 8 + (row * 18), 142))
+      else addSlotToContainer(new Slot(invPlayer, row, 8 + (row * 18), 142))
+    }
+    this.addSlots(invPlayer, 9, 3, 9, 8, 84)
   }
-
   override def getItemInv = {
-    new RMInventoryItem(player.inventory.getCurrentItem, player, 27, 64, true)
+    new RMInventoryItem(player.inventory.getCurrentItem, player, getSize(), 64, true)
   }
+  def getSize():Int
   override def getItem: Item = Objs.backpack;
 }
 
@@ -48,9 +50,11 @@ class BackpackGui(player: EntityPlayer) extends BagGui(new BackpackContainer(pla
 }
 
 class BackpackContainer(player: EntityPlayer) extends BagContainer(player) {
-  for (row <- 0 until 3; collom <- 3 until 6) this.addSlot(new SlotItemsNot(inv, collom + (row * 9), 8 + (collom * 18), 26 + (row * 18), Objs.backpack))
-
+  for (row <- 0 until 3; collom <- 0 until 3) this.addSlot(new SlotItemsNot(inv, collom + (row * 3), 8 + ((collom + 3) * 18), 26 + (row * 18), Objs.backpack))
+  addPlayerSlots()
+  
   override def getItemDamage: Int = ItemDefinitions.Backpack.BACKPACK
+  def getSize = 9
 }
 
 class PouchGui(player: EntityPlayer) extends BagGui(new PouchContainer(player)) {
@@ -63,9 +67,13 @@ class PouchGui(player: EntityPlayer) extends BagGui(new PouchContainer(player)) 
 }
 
 class PouchContainer(player: EntityPlayer) extends BagContainer(player) {
-  for (row <- 1 until 2; collom <- 3 until 6) this.addSlot(new SlotItemsNot(inv, collom + (row * 9), 8 + (collom * 18), 26 + (row * 18), Objs.backpack))
+  for (collom <- 0 until 3) {
+    this.addSlot(new SlotItemsNot(inv, collom, 8 + ((collom + 3) * 18), 26 + 18, Objs.backpack))
+  }
+  addPlayerSlots()
 
   override def getItemDamage: Int = ItemDefinitions.Backpack.POUCH
+  def getSize = 3
 }
 
 class RucksackGui(player: EntityPlayer) extends BagGui(new RucksackContainer(player)) {
@@ -79,6 +87,8 @@ class RucksackGui(player: EntityPlayer) extends BagGui(new RucksackContainer(pla
 
 class RucksackContainer(player: EntityPlayer) extends BagContainer(player) {
   for (row <- 0 until 3; collom <- 0 until 9) this.addSlot(new SlotItemsNot(inv, collom + (row * 9), 8 + (collom * 18), 26 + (row * 18), Objs.backpack))
-
+  addPlayerSlots()
+  
   override def getItemDamage: Int = ItemDefinitions.Backpack.RUCKSACK
+  def getSize = 27
 }
