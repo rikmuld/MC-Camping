@@ -31,6 +31,7 @@ import net.minecraft.client.Minecraft
 import net.minecraft.init.Blocks
 import com.rikmuld.camping.objs.BlockDefinitions
 import net.minecraft.util.text.translation.I18n
+import net.minecraft.inventory.Container
 
 class GuiTent(player: EntityPlayer, tile: IInventory) extends GuiScreen {
   var tent = tile.asInstanceOf[TileTent]
@@ -284,4 +285,8 @@ class ContainerTentChests(player: EntityPlayer, tile: IInventory) extends RMCont
     }
     itemstack
   }
+}
+
+class ContainerEmpty(player: EntityPlayer, tile: IInventory) extends RMContainerTile(player, tile) {
+
 }

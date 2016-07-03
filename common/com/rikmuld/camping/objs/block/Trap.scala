@@ -32,7 +32,7 @@ class Trap(modId:String, info:ObjInfo) extends RMBlockContainer(modId, info) wit
       else new AxisAlignedBB(0.21875f, 0, 0.34375f, 0.78125f, 0.25f, 0.65f)
     }.getOrElse(new AxisAlignedBB(0, 0, 0, 0, 0, 0))
   }
-  override def createTileEntity(world: World, meta: IBlockState): RMTile = new TileTrap
+  override def createNewTileEntity(world: World, meta: Int): RMTile = new TileTrap
   override def onBlockActivated(world: World, pos:BlockPos, state:IBlockState, player: EntityPlayer, hand:EnumHand, stack:ItemStack, side: EnumFacing, xHit: Float, yHit: Float, zHit: Float): Boolean = {
     val tile = (world, pos).tile.asInstanceOf[TileTrap]
     tile.lastPlayer = Some(player)

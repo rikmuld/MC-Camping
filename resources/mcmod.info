@@ -3,8 +3,8 @@
   "modid": "camping",
   "name": "The Camping Mod 2",
   "description": "This mod adds a some camping elements to minecraft",
-  "version": "2.3c",
-  "mcversion": "1.8.9",
+  "version": "2.3d-1.9.4",
+  "mcversion": "1.9.4",
   "url": "rikmuld.com",
   "updateUrl": "",
   "authors": [

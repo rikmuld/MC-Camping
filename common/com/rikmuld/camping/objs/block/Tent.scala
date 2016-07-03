@@ -128,7 +128,6 @@ class Tent(modId:String, info:ObjInfo) extends RMBlockContainer(modId, info) wit
     }
     true
   }
-  override def openGui(bd:BlockData, player:EntityPlayer, id:Int) = PacketSender.to(new OpenGui(id, bd.x, bd.y, bd.z), player)
 }
 
 class TentItem(block:Block) extends RMItemBlock(CampingMod.MOD_ID, BlockDefinitions.TENT, block) {  

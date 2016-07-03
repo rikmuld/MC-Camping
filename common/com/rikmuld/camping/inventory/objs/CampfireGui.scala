@@ -82,13 +82,20 @@ class ContainerCampfireCook(player: EntityPlayer, tile: IInventory) extends RMCo
       val itemstack1 = slot.getStack
       itemstack = itemstack1.copy()
       if (slotNum < fire.getSizeInventory) {
-        if (!mergeItemStack(itemstack1, fire.getSizeInventory, inventorySlots.size, true)) return null
+        if (!mergeItemStack(itemstack1, fire.getSizeInventory, inventorySlots.size, false)) return null
       } else {
+        var merged = false
         if (itemstack.getItem == Items.COAL) {
-          if (!mergeItemStack(itemstack1, 0, 1, false)) return null
+          if (mergeItemStack(itemstack1, 0, 1, false)) merged = true
         } else if (itemstack.getItem == Objs.kit) {
-          if (!mergeItemStack(itemstack1, 1, 2, false)) return null
-        } else return null
+          if (mergeItemStack(itemstack1, 1, 2, false)) merged = true
+        } else if(!merged){
+            if(slotNum < fire.getSizeInventory + 9){
+              if(!mergeItemStack(itemstack1, fire.getSizeInventory + 9, fire.getSizeInventory + 9 + 27, false)) return null
+            } else {
+              if(!mergeItemStack(itemstack1, fire.getSizeInventory, fire.getSizeInventory + 9, false)) return null
+            }
+        }
       }
       if (itemstack1.stackSize == 0) {
         slot.putStack(null)

@@ -34,9 +34,9 @@ import com.rikmuld.camping.objs.registers.ModSounds
 object CampingMod {
   final val MOD_ID = "camping"
   final val MOD_NAME = "The Camping Mod 2"
-  final val MOD_VERSION = "2.3c"
+  final val MOD_VERSION = "2.3d-1.9.4"
   final val MOD_LANUAGE = "scala"
-  final val MOD_DEPENDENCIES = "required-after:Forge@[v11.14.1.1397,);required-after:corerm@[1.2c,)"
+  final val MOD_DEPENDENCIES = "required-after:Forge@[v12.17.0.1976,);required-after:corerm@[1.2e-1.9.4,)"
   final val MOD_SERVER_PROXY = "com.rikmuld."+MOD_ID+".ProxyServer"
   final val MOD_CLIENT_PROXY = "com.rikmuld."+MOD_ID+".ProxyClient"
   final val MOD_GUIFACTORY = "com.rikmuld.camping.GuiFactory"

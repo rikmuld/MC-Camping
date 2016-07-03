@@ -53,7 +53,7 @@ object Campfire {
 class Campfire(modId:String, info: ObjInfo) extends RMBlockContainer(modId, info) with WithModel with WithInstable {
   override def getRenderType(state:IBlockState) = EnumBlockRenderType.MODEL
   override def getBoundingBox(state:IBlockState, source:IBlockAccess, pos:BlockPos): AxisAlignedBB = new AxisAlignedBB(0.125F, 0.0F, 0.125F, 0.875F, 0.125F, 0.875F)
-  override def createTileEntity(world: World, meta: IBlockState): RMTile = new TileCampfire()
+  override def createNewTileEntity(world: World, meta: Int): RMTile = new TileCampfire()
   override def onBlockActivated(world: World, pos:BlockPos, state:IBlockState, player: EntityPlayer, hand:EnumHand, stack:ItemStack, side: EnumFacing, xHit: Float, yHit: Float, zHit: Float): Boolean = {
     val bd = (world, pos)
     if(!world.isRemote && stack != null && stack.getItem == Items.DYE && bd.tile.asInstanceOf[TileCampfire].addDye(stack)) {
