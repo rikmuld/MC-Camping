@@ -1,6 +1,6 @@
 {
     "parent": "block/tall_grass",
     "textures": {
-        "cross": "camping:blocks/plantHemp_2"
+        "cross": "camping:blocks/plant_hemp_2"
     }
 }

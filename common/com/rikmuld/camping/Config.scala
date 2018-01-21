@@ -14,28 +14,20 @@ import com.rikmuld.camping.Lib.ConfigInfo._
 import com.rikmuld.camping.CampingMod._
 
 class Config(val file: Configuration) {
-  var toolUse = 200
   var useBears = true
   var campfireMaxFuel = 20000
   var campfireCoalFuel = 1000
   var cookTimeSpit = 300
   var cookTimePan = 1000
   var cookTimeGrill = 600
-  var marshSaturation = 1f
-  var marshHeal = 3
   var hempSpeed = 1f
   var hasWorldGen = true
   var worldGenHemp = true
-  var hempGenMulti = 3
-  var venisonSaturation = 14f
-  var venisonHeal = 10
-  var venisonRawSaturation = 2f
-  var venisonRawHeal = 4
+  var hempGenMulti = 5
   var useFoxes = true
   var trapPlayer = true
   var worldGenCampsite = true
   var campsiteRareness = 5
-  var coreOnly = false
   var prmInv = 0
   var secInv = 0
   var welcomeMess = true
@@ -44,28 +36,20 @@ class Config(val file: Configuration) {
   var elements: java.util.List[IConfigElement] = new ArrayList[IConfigElement];
 
   def sync = {    
-    toolUse = getVar("Knife Durability", "The durability of the pocket knife.", CAT_TOOLS, toolUse).asInstanceOf[Integer]
     campfireMaxFuel = getVar("Campfire Max Fuel", "Max fuel of a campfire in ticks.", CAT_CAMPFIRE, campfireMaxFuel).asInstanceOf[Integer]
     campfireCoalFuel = getVar("Coal Fuel", "Fuel worth of 1 coal pice in ticks.", CAT_CAMPFIRE, campfireCoalFuel).asInstanceOf[Integer]
     cookTimeSpit = getVar("Spit cook time", "Time in ticks to complete spit cook cycle.", CAT_CAMPFIRE, cookTimeSpit).asInstanceOf[Integer]
     cookTimePan = getVar("Pan cook time", "Time in ticks to complete pan cook cycle.", CAT_CAMPFIRE, cookTimePan).asInstanceOf[Integer]
     cookTimeGrill = getVar("Grill cook time", "Time in ticks to complete grill cook cycle.", CAT_CAMPFIRE, cookTimeGrill).asInstanceOf[Integer]
-    marshSaturation = getVar("Marshmallow Saturation Amount", "The amount of saturation a marshmallow gives.", CAT_FOOD, marshSaturation).asInstanceOf[Float]
-    marshHeal = getVar("Marshmallow Heal Amount", "The amount of lives a marshmallow heals (in half harts).", CAT_FOOD, marshHeal).asInstanceOf[Integer]
     hempSpeed = getVar("Hemp Growth Speed", "The growth rate of the hemp plant.", CAT_WORLD, hempSpeed).asInstanceOf[Float]
     hasWorldGen = getVar("Enable World generation", "Enable/Disable all of the world generation of this mod.", CAT_WORLD, hasWorldGen).asInstanceOf[Boolean]
     worldGenHemp = getVar("Enable Hemp generation", "Enable/Disable the world generation for Hemp plants.", CAT_WORLD, worldGenHemp).asInstanceOf[Boolean]
     hempGenMulti = getVar("Hemp Generation Multiplier", "Multiplier for the hemp world generaion.", CAT_WORLD, hempGenMulti).asInstanceOf[Integer]
-    venisonSaturation = getVar("Venison Saturation Amount", "The amount of saturation a cooked venison gives.", CAT_FOOD, venisonSaturation).asInstanceOf[Float]
-    venisonHeal = getVar("Venison Heal Amount", "The amount of lives a cooked venison heals (in half harts).", CAT_FOOD, venisonHeal).asInstanceOf[Integer]
-    venisonRawSaturation = getVar("Raw Venison Saturation Amount", "The amount of saturation a raw venison gives.", CAT_FOOD, venisonRawSaturation).asInstanceOf[Float]
-    venisonRawHeal = getVar("Raw Venison Heal Amount", "The amount of lives a raw venison heals (in half harts).", CAT_FOOD, venisonRawHeal).asInstanceOf[Integer]
     useBears = getVar("Spawn Bears", "Spawn Grizzly Bears in forrests", CAT_WORLD, useBears).asInstanceOf[Boolean]
     useFoxes = getVar("Spawn Foxes", "Spawn Arctic Foxes in snowy regions", CAT_WORLD, useFoxes).asInstanceOf[Boolean]
     trapPlayer = getVar("Trap players in Bear Trap", "Bear traps can trap players.", CAT_TOOLS, trapPlayer).asInstanceOf[Boolean]
     worldGenHemp = getVar("Enable Campsite generation", "Enable/Disable the world generation for Campsites.", CAT_WORLD, worldGenCampsite).asInstanceOf[Boolean]
     campsiteRareness = getVar("Campsite Rareness", "Rareness of the campsite world generation", CAT_WORLD, campsiteRareness).asInstanceOf[Integer]
-    coreOnly = getVar("Core Features Only", "Only use the core features of the camping mod. WARNING! use carfully!", CAT_GENERAL, coreOnly).asInstanceOf[Boolean]
     prmInv = getVar("Primary Inventory Option", "0: Replace MC Inventory; 1: Open by Button; 2: Open by Key (default 'C')", CAT_GENERAL, prmInv, 0, 2).asInstanceOf[Integer]
     secInv = getVar("Secundairy Inventory Option", "Button location if primary inventory option is set to 1. 0:In inventory, 1:left-top, 2:right-top, 3:left-bottom, 4:right-bottom", CAT_GENERAL, secInv, 0, 4).asInstanceOf[Integer]
     welcomeMess = getVar("Welcome Message", "Print the welcome message", CAT_GENERAL, welcomeMess).asInstanceOf[Boolean]
@@ -105,6 +89,8 @@ class GuiFactory extends IModGuiFactory {
   override def mainConfigGuiClass(): Class[GuiScreen] = classOf[ConfigGUI].asInstanceOf[Class[GuiScreen]]
   override def runtimeGuiCategories: java.util.Set[RuntimeOptionCategoryElement] = null
   override def getHandlerFor(element: RuntimeOptionCategoryElement): RuntimeOptionGuiHandler = null;
+  override def createConfigGui(parentScreen: GuiScreen): GuiScreen = new ConfigGUI(parentScreen)
+  override def hasConfigGui: Boolean = true
 }
 
 class ConfigGUI(parent: GuiScreen) extends GuiConfig(parent, config.elements, MOD_ID, false, false, "Camping Config!")

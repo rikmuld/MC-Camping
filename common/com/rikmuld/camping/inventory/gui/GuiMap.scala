@@ -45,9 +45,9 @@ class GuiMapHUD extends GuiScreen {
     mc.renderEngine.bindTexture(TEX_UTILS)
     drawTexturedModalRect((width * 2) - 133, 5, 0, 42, 128, 128)
     GL11.glScalef(2F, 2F, 2F)
-    if (mc.thePlayer.worldObj.isRemote && (colorData != null) && (posData != null) && (colorData.contains(mc.thePlayer)) && (posData.contains(mc.thePlayer)) && (colorData(mc.thePlayer) != null) && (posData(mc.thePlayer) != null)) {
-      for (i <- 0 until colorData(mc.thePlayer).length) {
-        val colorIndex = colorData(mc.thePlayer)(i)
+    if (mc.player.world.isRemote && (colorData != null) && (posData != null) && (colorData.contains(mc.player)) && (posData.contains(mc.player)) && (colorData(mc.player) != null) && (posData(mc.player) != null)) {
+      for (i <- 0 until colorData(mc.player).length) {
+        val colorIndex = colorData(mc.player)(i)
         if ((colorIndex / 4) == 0) rgbColors(i) = ((((i + (i / 128)) & 1) * 8) + 16) << 24
         else if (colorIndex >= 0) {
           val colorValue = MapColor.COLORS(colorIndex / 4).colorValue
@@ -86,16 +86,16 @@ class GuiMapHUD extends GuiScreen {
       GL11.glTexCoord2f(1f, 0f)
       GL11.glVertex2f(width - (12f / 2), 12f / 2)
       GL11.glEnd()
-      for (i <- 0 until mc.theWorld.playerEntities.size) {
-        val player = mc.theWorld.playerEntities.get(i).asInstanceOf[EntityPlayer]
-        val scale = (57F / (64F * (Math.pow(2, posData(mc.thePlayer)(0))))).toFloat
-        var xDivision = (scale * (player.posX - posData(mc.thePlayer)(1))).toInt
-        var zDivision = (scale * (player.posZ - posData(mc.thePlayer)(2))).toInt
+      for (i <- 0 until mc.world.playerEntities.size) {
+        val player = mc.world.playerEntities.get(i).asInstanceOf[EntityPlayer]
+        val scale = (57F / (64F * (Math.pow(2, posData(mc.player)(0))))).toFloat
+        var xDivision = (scale * (player.posX - posData(mc.player)(1))).toInt
+        var zDivision = (scale * (player.posZ - posData(mc.player)(2))).toInt
         if (xDivision > 57) xDivision = 57
         else if (xDivision < -57) xDivision = -57
         if (zDivision > 57) zDivision = 57
         else if (zDivision < -57) zDivision = -57
-        if (mc.thePlayer == player) mc.renderEngine.bindTexture(TEX_RED_DOT)
+        if (mc.player == player) mc.renderEngine.bindTexture(TEX_RED_DOT)
         else mc.renderEngine.bindTexture(TEX_BLUE_DOT)
 
         GL11.glBegin(GL11.GL_QUADS)

@@ -46,7 +46,7 @@ class TileTrap extends RMTile with WithTileInventory with ITickable {
   override def getSizeInventory(): Int = 1
   override def onInventoryChanged(slot: Int) {
     super[WithTileInventory].onInventoryChanged(slot)
-    if (!worldObj.isRemote) PacketSender.toClient(new ItemsData(0, bd.x, bd.y, bd.z, getStackInSlot(0)))
+    if (!world.isRemote) PacketSender.toClient(new ItemsData(0, bd.x, bd.y, bd.z, getStackInSlot(0)))
   }
   override def readFromNBT(tag: NBTTagCompound) {
     cooldown = tag.getInteger("cooldown")
@@ -75,23 +75,23 @@ class TileTrap extends RMTile with WithTileInventory with ITickable {
     sendTileData(0, true, if (this.open) 1 else 0)
   }
   override def update() {
-    if (!worldObj.isRemote) {
-      if (trappedEntity != null) {
-        val entities = worldObj.getEntitiesWithinAABB(classOf[EntityLivingBase], captureBounds).asInstanceOf[java.util.List[EntityLivingBase]]
+    if (!world.isRemote) {
+      if (world != null) {
+        val entities = world.getEntitiesWithinAABB(classOf[EntityLivingBase], captureBounds).asInstanceOf[java.util.List[EntityLivingBase]]
         if (!entities.contains(trappedEntity)) trappedEntity = null
       }
       if (cooldown > 0) cooldown -= 1
       if ((trappedEntity != null) && open) setOpen(false)
       if ((open || captureFlag) && (cooldown <= 0)) {
         captureFlag = false
-        val entities = worldObj.getEntitiesWithinAABB(classOf[EntityLivingBase], captureBounds).asInstanceOf[java.util.List[EntityLivingBase]]
+        val entities = world.getEntitiesWithinAABB(classOf[EntityLivingBase], captureBounds).asInstanceOf[java.util.List[EntityLivingBase]]
         if (entities.size > 0) {
           if ((entities.get(0).isInstanceOf[EntityPlayer]) && config.trapPlayer) {
             trappedEntity = entities.get(0)
           } else if (!(entities.get(0).isInstanceOf[EntityPlayer])) {
             trappedEntity = entities.get(0)
             lastPlayer.map {player => 
-              if(getStackInSlot(0) != null){
+              if(!getStackInSlot(0).isEmpty){
                 if (trappedEntity.isInstanceOf[EntityAnimal]) {
                   if (trappedEntity.asInstanceOf[EntityAnimal].isBreedingItem(getStackInSlot(0)))player.addStat(Objs.achHunter)
                 }
@@ -100,7 +100,7 @@ class TileTrap extends RMTile with WithTileInventory with ITickable {
                 }
               }
             }
-            if (getStackInSlot(0) != null) getStackInSlot(0).stackSize -= 1
+            if (!getStackInSlot(0).isEmpty) getStackInSlot(0).setCount(getStackInSlot(0).getCount - 1)
           }
         }
         if (trappedEntity != null) setOpen(false)
@@ -124,8 +124,8 @@ class TileTrap extends RMTile with WithTileInventory with ITickable {
         }
         if (trappedEntity.isDead) trappedEntity = null
       }
-      if ((getStackInSlot(0) != null) && (trappedEntity == null) && open) {
-        val entities = worldObj.getEntitiesWithinAABB(classOf[EntityLivingBase], new AxisAlignedBB(bd.x - 20, bd.y - 10, bd.z - 20, bd.x + 20, bd.y + 10, bd.z + 20)).asInstanceOf[java.util.List[EntityLivingBase]]
+      if (!getStackInSlot(0).isEmpty && (trappedEntity == null) && open) {
+        val entities = world.getEntitiesWithinAABB(classOf[EntityLivingBase], new AxisAlignedBB(bd.x - 20, bd.y - 10, bd.z - 20, bd.x + 20, bd.y + 10, bd.z + 20)).asInstanceOf[java.util.List[EntityLivingBase]]
         for (entity <- entities) {
           if (entity.isInstanceOf[EntityAnimal]) {
             if (entity.asInstanceOf[EntityAnimal].isBreedingItem(getStackInSlot(0))) entity.asInstanceOf[EntityAnimal].getMoveHelper.setMoveTo(bd.x + 0.5F, bd.y, bd.z + 0.5F, 1)

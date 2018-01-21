@@ -18,7 +18,7 @@ object BlockDefinitions {
   final val LANTERN        = new ObjInfo(Tab(tab), 
                                          Name("lantern"),
                                          Materia(Material.GLASS),
-                                         Metadata("lanternOff", "lanternOn"), 
+                                         Metadata("lantern_off", "lantern_on"),
                                          MaxStacksize(1), 
                                          Hardness(.5f), 
                                          LightOpacity(255), 
@@ -32,7 +32,7 @@ object BlockDefinitions {
   final val HEMP           = new ObjInfo(Tab(tab), 
                                          Name("hemp"), 
                                          Materia(Material.PLANTS), 
-                                         Metadata("plantHemp_0", "plantHemp_1", "plantHemp_2", "plantHemp_3", "plantHemp_4", "plantHemp_5"))
+                                         Metadata("plant_hemp_0", "plant_hemp_1", "plant_hemp_2", "plant_hemp_3", "plant_hemp_4", "plant_hemp_5"))
   
   object Hemp {
     final val INFANT_1         = 0
@@ -55,7 +55,7 @@ object BlockDefinitions {
                                          LightLevel(1.0f))
   
   final val SLEEPING_BAG   = new ObjInfo(Tab(tab), 
-                                         Name("sleepingBag"), 
+                                         Name("sleeping_bag"),
                                          Materia(Material.CLOTH), 
                                          Hardness(0.1f), 
                                          MaxStacksize(4), 
@@ -75,7 +75,7 @@ object BlockDefinitions {
                                          LightLevel(1.0f))
   
   final val CAMPFIRE_WOOD  = new ObjInfo(Tab(tab), 
-                                         Name("campfireWood"), 
+                                         Name("campfire_wood"),
                                          Materia(Material.FIRE), 
                                          Hardness(1f), 
                                          StepSound(SoundEvents.BLOCK_STONE_STEP),
@@ -83,7 +83,7 @@ object BlockDefinitions {
                                          HarvestLevel("axe", 0))
   
   final val CAMPFIRE_COOK  = new ObjInfo(Tab(tab),
-                                         Name("campfireCook"), 
+                                         Name("campfire_cook"),
                                          Materia(Material.FIRE), 
                                          Hardness(2f), 
                                          StepSound(SoundEvents.BLOCK_STONE_STEP), 
@@ -96,7 +96,7 @@ object BlockDefinitions {
                                          Materia(Material.CLOTH), 
                                          Hardness(0.2f), 
                                          GuiTrigger(guiTent), 
-                                         Metadata("black", "red", "green", "brown", "blue", "purple", "cyan", "grayLight", "grayDark", "pink", "lime", "yellow", "blueLight", "magenta", "orange", "white"), 
+                                         Metadata("black", "red", "green", "brown", "blue", "purple", "cyan", "gray_light", "gray_dark", "pink", "lime", "yellow", "blue_light", "magenta", "orange", "white"),
                                          ItemBl(classOf[TentItem]))
   object Tent {
     final val BLACK       = 0
@@ -117,19 +117,19 @@ object BlockDefinitions {
     final val WHITE       = 15
   }
   
-  final val BOUNDS_TENT   = new ObjInfo(Name("tentBounds"), 
+  final val BOUNDS_TENT   = new ObjInfo(Name("tent_bounds"),
                                          Materia(Material.CLOTH))
 }
 
 object ItemDefinitions {
-  final val KNIFE          = new ObjInfo(Tab(tab), 
-                                         MaxDamage(config.toolUse), 
-                                         MaxStacksize(1), 
+  final val KNIFE          = new ObjInfo(Tab(tab),
+                                         MaxDamage(200),
+                                         MaxStacksize(1),
                                          Name("knife"))
     
   final val PARTS          = new ObjInfo(Tab(tab),
                                          Name("parts"), 
-                                         Metadata("canvas", "stickIron", "peg", "pan", "ash", "marshmallows", "marshmallowStickRaw"))
+                                         Metadata("canvas", "stick_iron", "peg", "pan", "ash", "marshmallows", "marshmallow_stick_raw"))
     
   object Parts {
     final val CANVAS            = 0
@@ -159,7 +159,7 @@ object ItemDefinitions {
                                          Name("kit"), 
                                          ForceSubtype(true), 
                                          GuiTrigger(guiKit), 
-                                         Metadata("kit", "spitKit", "grillKit", "panKit", "uselessKit"))
+                                         Metadata("kit", "spit", "grill", "pan", "useless"))
   object Kit {
     final val EMPTY   = 0
     final val SPIT    = 1
@@ -169,14 +169,14 @@ object ItemDefinitions {
   }
   
   final val MARSHMALLOW    = new ObjInfo(Tab(tab), 
-                                         Name("marshmallowStickCooked"), 
-                                         WolfMeat(false), 
-                                         Heal(config.marshHeal), 
-                                         Saturation(config.marshSaturation))
+                                         Name("marshmallow_stick_cooked"),
+                                         WolfMeat(false),
+                                         Heal(3),
+                                         Saturation(1f))
   
   final val PARTS_ANIMAL   = new ObjInfo(Tab(tab), 
-                                         Name("partsAnimal"), 
-                                         Metadata("furWhite", "furBrown"))
+                                         Name("parts_animal"),
+                                         Metadata("fur_white", "fur_brown"))
     
   object PartsAnimal {
     final val FUR_WHITE = 0
@@ -184,39 +184,38 @@ object ItemDefinitions {
   }
   
   final val FUR_BOOT       = new ObjInfo(Tab(tab), 
-                                         Name("armorFurBoots"), 
+                                         Name("armor_fur_boots"),
                                          ArmorTyp(EntityEquipmentSlot.FEET), 
                                          ArmorMateria(fur), 
                                          ArmorTexture(TextureInfo.ARMOR_FUR_MAIN))
-    
-  final val FUR_LEG        = new ObjInfo(Tab(tab), 
-                                         Name("armorFurLeg"), 
+
+  final val FUR_LEG        = new ObjInfo(Tab(tab),
+                                         Name("armor_fur_leg"),
                                          ArmorTyp(EntityEquipmentSlot.LEGS), 
                                          ArmorMateria(fur), 
                                          ArmorTexture(TextureInfo.ARMOR_FUR_LEG))
     
   final val FUR_CHEST      = new ObjInfo(Tab(tab), 
-                                         Name("armorFurChest"), 
+                                         Name("armor_fur_chest"),
                                          ArmorTyp(EntityEquipmentSlot.CHEST),
                                          ArmorMateria(fur), 
                                          ArmorTexture(TextureInfo.ARMOR_FUR_MAIN))
   
   final val FUR_HEAD       = new ObjInfo(Tab(tab), 
-                                         Name("armorFurHelm"), 
+                                         Name("armor_fur_helm"),
                                          ArmorTyp(EntityEquipmentSlot.HEAD), 
                                          ArmorMateria(fur), 
                                          ArmorTexture(TextureInfo.ARMOR_FUR_MAIN))
       
   final val VENISON_RAW    = new ObjInfo(Tab(tab), 
-                                         Name("venisonRaw"), 
-                                         WolfMeat(true), 
-                                         Heal(config.venisonRawHeal), 
-                                         Saturation(config.venisonRawSaturation))
-    
+                                         Name("venison_raw"),
+                                         WolfMeat(true),
+                                         Heal(4),
+                                         Saturation(2f))
+
   final val VENISON_COOKED = new ObjInfo(Tab(tab), 
-                                         Name("venisonCooked"), 
-                                         WolfMeat(true), 
-                                         Heal(config.venisonHeal), 
-                                         Saturation(config.venisonSaturation))
-  
+                                         Name("venison_cooked"),
+                                         WolfMeat(true),
+                                         Heal(10),
+                                         Saturation(14f))
 }

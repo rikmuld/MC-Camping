@@ -8,10 +8,11 @@ import com.rikmuld.camping.Lib._
 import com.rikmuld.camping.objs.ItemDefinitions._
 import com.rikmuld.camping.objs.Objs._
 import com.rikmuld.camping.objs.Objs
+import com.rikmuld.camping.render.models.FoxModel
 import com.rikmuld.corerm.CoreUtils._
 import net.minecraft.client.Minecraft
 import net.minecraft.client.model.ModelBase
-import net.minecraft.client.renderer.entity.RenderLiving
+import net.minecraft.client.renderer.entity.{RenderLiving, RenderManager}
 import net.minecraft.entity.Entity
 import net.minecraft.entity.EntityAgeable
 import net.minecraft.entity.EntityLiving
@@ -38,7 +39,7 @@ import net.minecraftforge.fml.relauncher.SideOnly
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraft.util.SoundEvent
 
-class Fox(world: World) extends EntityAnimal(world) {
+class Fox(worldIn: World) extends EntityAnimal(worldIn) {
 
   setSize(0.8F, 0.5F)
   getNavigator.asInstanceOf[PathNavigateGround].setCanSwim(true)
@@ -74,7 +75,7 @@ class Fox(world: World) extends EntityAnimal(world) {
   }
   override def onUpdate() {
     super.onUpdate()
-    if (!worldObj.isRemote && !CampingMod.config.useFoxes) setDead()
+    if (!world.isRemote && !CampingMod.config.useFoxes) setDead()
   }
   override def attackEntityAsMob(entity: Entity): Boolean = entity.attackEntityFrom(DamageSource.causeMobDamage(this), 3.0F)
   override protected def dropFewItems(playerAttack: Boolean, loot: Int) {
@@ -92,7 +93,7 @@ class Fox(world: World) extends EntityAnimal(world) {
       drops += 1
     }
   }
-  override def createChild(entity: EntityAgeable): EntityAgeable = new Fox(this.worldObj)
+  override def createChild(entity: EntityAgeable): EntityAgeable = new Fox(this.world)
   override def isBreedingItem(stack: ItemStack): Boolean = stack.getItem() == Items.CHICKEN
   override def getAmbientSound:SoundEvent = foxAmb
   override def getHurtSound:SoundEvent = foxDeath
@@ -100,7 +101,7 @@ class Fox(world: World) extends EntityAnimal(world) {
 }
 
 @SideOnly(Side.CLIENT)
-class FoxRenderer(model: ModelBase) extends RenderLiving[Fox](Minecraft.getMinecraft.getRenderManager, model, .4f) {
+class FoxRenderer(manager: RenderManager) extends RenderLiving[Fox](manager, new FoxModel(), .4f) {
   override def doRender(entity: Fox, d0: Double, d1: Double, d2: Double, f: Float, f1: Float) {
     GL11.glPushMatrix()
     if (entity.asInstanceOf[EntityAgeable].isChild) GL11.glTranslatef(0, -0.75F, 0)

@@ -22,7 +22,6 @@ object ModTiles extends ModRegister {
       GameRegistry.registerTileEntity(classOf[TileCampfire], MOD_ID + "_tileCampfire")
       GameRegistry.registerTileEntity(classOf[TileCampfireCook], MOD_ID + "_tileCampfireCook")
       GameRegistry.registerTileEntity(classOf[TileCampfireWood], MOD_ID + "_tileCampfireWood")
-      GameRegistry.registerTileEntity(classOf[TileBounds], MOD_ID + "_tileBounds")
       GameRegistry.registerTileEntity(classOf[TileTent], MOD_ID + "_tileTent")
     }
   }

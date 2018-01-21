@@ -1,8 +1,8 @@
 {
     "variants": {
-        "lit=true,top=false": { "model": "camping:lanternOn" },
-        "lit=false,top=false": { "model": "camping:lanternOff" },
-		"lit=true,top=true": { "model": "camping:lanternHangOn" },
-        "lit=false,top=true": { "model": "camping:lanternHangOff" }
+        "lit=true,top=false": { "model": "camping:lantern_on" },
+        "lit=false,top=false": { "model": "camping:lantern_off" },
+		"lit=true,top=true": { "model": "camping:lantern_hang_on" },
+        "lit=false,top=true": { "model": "camping:lantern_hang_off" }
     }
 }

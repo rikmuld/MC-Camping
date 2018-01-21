@@ -1,0 +1,20 @@
+{
+    "variants": {
+        "facing=south,ishead=true,isoccupied=false": { "model": "camping:sleeping_bag_head", "y": 0 },
+        "facing=south,ishead=false,isoccupied=false": { "model": "camping:sleeping_bag_tail", "y": 180 },
+        "facing=north,ishead=true,isoccupied=false": { "model": "camping:sleeping_bag_head", "y": 180 },
+        "facing=north,ishead=false,isoccupied=false": { "model": "camping:sleeping_bag_tail", "y": 0 },
+        "facing=east,ishead=true,isoccupied=false": { "model": "camping:sleeping_bag_head", "y": 270 },
+        "facing=east,ishead=false,isoccupied=false": { "model": "camping:sleeping_bag_tail", "y": 90 },
+        "facing=west,ishead=true,isoccupied=false": { "model": "camping:sleeping_bag_head", "y": 90 },
+        "facing=west,ishead=false,isoccupied=false": { "model": "camping:sleeping_bag_tail", "y": 270 },
+        "facing=south,ishead=true,isoccupied=true": { "model": "camping:sleeping_bag_head", "y": 0 },
+        "facing=south,ishead=false,isoccupied=true": { "model": "camping:sleeping_bag_tail", "y": 180 },
+        "facing=north,ishead=true,isoccupied=true": { "model": "camping:sleeping_bag_head", "y": 180 },
+        "facing=north,ishead=false,isoccupied=true": { "model": "camping:sleeping_bag_tail", "y": 0 },
+        "facing=east,ishead=true,isoccupied=true": { "model": "camping:sleeping_bag_head", "y": 270 },
+        "facing=east,ishead=false,isoccupied=true": { "model": "camping:sleeping_bag_tail", "y": 90 },
+        "facing=west,ishead=true,isoccupied=true": { "model": "camping:sleeping_bag_head", "y": 90 },
+        "facing=west,ishead=false,isoccupied=true": { "model": "camping:sleeping_bag_tail", "y": 270 }
+    }
+}

@@ -16,7 +16,7 @@ class TileLantern extends RMTile with ITickable {
     super.readFromNBT(tag)
   }
   override def update {
-    if (!worldObj.isRemote) {
+    if (!world.isRemote) {
       ticker += 1
       if (ticker >= 10) {
         ticker = 0

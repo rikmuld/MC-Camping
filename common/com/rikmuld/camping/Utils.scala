@@ -42,7 +42,7 @@ object Utils {
       for (i <- 0 until inventory.tagCount()) {
         val Slots = inventory.getCompoundTagAt(i).asInstanceOf[NBTTagCompound]
         Slots.getByte("Slot")
-        stacks.add(ItemStack.loadItemStackFromNBT(Slots))
+        stacks.add(new ItemStack(Slots))
       }
       stacks
     }
@@ -71,7 +71,7 @@ object Utils {
     def getCurrentMapData(): MapData = {
       val stacks = loadCampInvItemsFromNBT()
       for (stack <- stacks if stack.getItem == Items.FILLED_MAP) {
-        return Items.FILLED_MAP.getMapData(stack, player.worldObj)
+        return Items.FILLED_MAP.getMapData(stack, player.world)
       }
       null
     }

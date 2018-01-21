@@ -71,7 +71,7 @@ class TileCampfire extends RMTile with ITickable {
   def renderCoal = false
   private def colorFlame(color: Int) {
     this.color = color
-    if (!worldObj.isRemote) sendTileData(0, true, color)
+    if (!world.isRemote) sendTileData(0, true, color)
   }
   @SideOnly(Side.CLIENT)
   override def getRenderBoundingBox(): AxisAlignedBB =  new AxisAlignedBB(bd.x, bd.y, bd.z, bd.x + 1, bd.y + 1, bd.z + 1)
@@ -87,14 +87,14 @@ class TileCampfire extends RMTile with ITickable {
     if (id == 0) colorFlame(data(0))
   }
   def addDye(stack:ItemStack):Boolean = {
-    if ((stack != null) && ((time == 0)) || color != stack.getItemDamage ) {
+    if (!stack.isEmpty && ((time == 0)) || color != stack.getItemDamage ) {
       colorFlame(stack.getItemDamage)
       time = 3000
       true
     } else false
   }
   override def update() {
-    if (!worldObj.isRemote) {
+    if (!world.isRemote) {
       if (active > 0) {
         active -= 1
         bd.update
@@ -104,7 +104,7 @@ class TileCampfire extends RMTile with ITickable {
       if (time != 0) time -= 1
       if ((color != 16) && (time == 0)) colorFlame(16)
       if ((time > 0) && ((time % 120) == 0)) {
-        val entitys = worldObj.getEntitiesWithinAABB(classOf[EntityLivingBase], new AxisAlignedBB(bd.x - 8, bd.y - 8, bd.z - 8, bd.x + 8, bd.y + 8, bd.z + 8)).asInstanceOf[ArrayList[EntityLivingBase]]
+        val entitys = world.getEntitiesWithinAABB(classOf[EntityLivingBase], new AxisAlignedBB(bd.x - 8, bd.y - 8, bd.z - 8, bd.x + 8, bd.y + 8, bd.z + 8)).asInstanceOf[ArrayList[EntityLivingBase]]
         for (entity <- entitys) entity.addPotionEffect(new PotionEffect(effectsOrderd(color)))
       }
     }
@@ -135,7 +135,7 @@ class TileCampfireWood extends TileCampfire with Roaster {
   override def roastTime(item:ItemStack):Int = 350
 
   override def update() {
-    if (!worldObj.isRemote) {
+    if (!world.isRemote) {
       oldLightState = lightState
       
       if(on){
@@ -167,11 +167,11 @@ class TileCampfireWood extends TileCampfire with Roaster {
   def setOn(){
     this.on = true
     this.fuel = maxFeul
-    this.sendTileData(4, !worldObj.isRemote, 1)
+    this.sendTileData(4, !world.isRemote, 1)
   }
   def break(){
-    worldObj.dropItemInWorld(new ItemStack(Objs.parts, rand.nextInt(3), ItemDefinitions.Parts.ASH), pos.getX, pos.getY, pos.getZ, rand)
-    worldObj.setBlockToAir(pos)
+    world.dropItemInWorld(new ItemStack(Objs.parts, rand.nextInt(3), ItemDefinitions.Parts.ASH), pos.getX, pos.getY, pos.getZ, rand)
+    world.setBlockToAir(pos)
   }
   override def renderCoal = false
   override def writeToNBT(tag: NBTTagCompound):NBTTagCompound= {
@@ -243,13 +243,13 @@ class TileCampfireCook extends RMTile with WithTileInventory with ITickable with
           PacketSender.toClient(new ItemsData(i + 2, bd.x, bd.y, bd.z, getStackInSlot(i + 2)))
         }
         if (fuel > 0) {
-          if ((getStackInSlot(i + 2) != null) &&
+          if (!getStackInSlot(i + 2).isEmpty &&
             (!(getStackInSlot(i + 2).getItem == Objs.parts) ||
               getStackInSlot(i + 2).getItemDamage != ItemDefinitions.Parts.ASH)) {
             cookProgress(i) += 1
           }
         } else if (cookProgress(i) > 0) cookProgress(i) = 0
-        if ((getStackInSlot(i + 2) == null) && (cookProgress(i) > 0)) cookProgress(i) = 0
+        if (getStackInSlot(i + 2).isEmpty && (cookProgress(i) > 0)) cookProgress(i) = 0
         if (oldCookProgress(i) != cookProgress(i)) sendTileData(1, true, cookProgress(i), i)
       }
     }
@@ -261,8 +261,8 @@ class TileCampfireCook extends RMTile with WithTileInventory with ITickable with
   def getScaledcookProgress(maxPixels: Int, foodNum: Int): Float = ((cookProgress(foodNum).toFloat + 1) / equipment.cookTime) * maxPixels
   override def getSizeInventory(): Int = 12
   def manageCookingEquipment() {
-    if ((equipment == null) && (getStackInSlot(1) != null)) equipment = CookingEquipment.getCooking(getStackInSlot(1))
-    else if ((equipment != null) && (getStackInSlot(1) == null)) equipment = null
+    if ((equipment == null) && (!getStackInSlot(1).isEmpty)) equipment = CookingEquipment.getCooking(getStackInSlot(1))
+    else if ((equipment != null) && (getStackInSlot(1).isEmpty)) equipment = null
     if (slots != null) {
       if (equipment != null) {
         for (i <- 0 until equipment.maxFood if !slots.get(i).active) slots.get(i).activate(equipment.slots(0)(i), equipment.slots(1)(i), equipment, this)
@@ -270,7 +270,7 @@ class TileCampfireCook extends RMTile with WithTileInventory with ITickable with
       if (equipment == null) {
         for (i <- 0 until 10 if slots.get(i).active) {
           slots.get(i).deActivate()
-          if (slots.get(i).getStack != null) bd.world.dropItemInWorld(slots.get(i).getStack, bd.x, bd.y, bd.z, new Random())
+          if (!slots.get(i).getStack.isEmpty) bd.world.dropItemInWorld(slots.get(i).getStack, bd.x, bd.y, bd.z, new Random())
         }
       }
     }
@@ -280,7 +280,7 @@ class TileCampfireCook extends RMTile with WithTileInventory with ITickable with
       fuel -= 1
       sendTileData(0, true, fuel)
     }
-    if (((fuel + fuelForCoal) <= maxFeul) && (getStackInSlot(0) != null)) {
+    if (((fuel + fuelForCoal) <= maxFeul) && !getStackInSlot(0).isEmpty) {
       decrStackSize(0, 1)
       fuel += fuelForCoal
     }
@@ -303,7 +303,7 @@ class TileCampfireCook extends RMTile with WithTileInventory with ITickable with
   override def update(){
     var equipOld = equipment
     manageCookingEquipment()
-    if (!worldObj.isRemote) {
+    if (!world.isRemote) {
       if(equipOld != equipment)Option(lastPlayer).map(checkCampfireAch)
       oldFuel = fuel
       manageFuel()

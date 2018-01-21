@@ -50,15 +50,13 @@ object ModRecipes extends ModRegister {
     GameRegistry.addShapelessRecipe(prts(Parts.CANVAS), hemp, nwsk(knife).getWildValue)
     for(i <- 0 until 16) GameRegistry.addShapelessRecipe(nwsk(tent, 1, i), nwsk(tent).getWildValue, nwsk(Items.DYE, 1, i))
 
-    if (!config.coreOnly) {
-      val partsAnimal = animalParts.getMetaCycle(animalParts.getItemInfo.getValue(PropType.METADATA).asInstanceOf[Array[_]].length)
+    val partsAnimal = animalParts.getMetaCycle(animalParts.getItemInfo.getValue(PropType.METADATA).asInstanceOf[Array[_]].length)
 
-      GameRegistry.addSmelting(nwsk(venisonRaw), nwsk(venisonCooked), 3)
-      GameRegistry.addRecipe(nwsk(trap), " 1 ", "101", " 1 ", '0': Character, IRON_INGOT, '1': Character, prts(Parts.STICK_IRON))
-      GameRegistry.addRecipe(nwsk(furHead), "000", "010", '0': Character, partsAnimal(PartsAnimal.FUR_WHITE), '1': Character, LEATHER_HELMET)
-      GameRegistry.addRecipe(nwsk(furChest), "0 0", "010", "222", '0': Character, partsAnimal(PartsAnimal.FUR_WHITE), '1': Character, LEATHER_CHESTPLATE, '2': Character, partsAnimal(PartsAnimal.FUR_BROWN))
-      GameRegistry.addRecipe(nwsk(furLeg), "000", "010", "0 0", '0': Character, partsAnimal(PartsAnimal.FUR_BROWN), '1': Character, LEATHER_LEGGINGS)
-      GameRegistry.addRecipe(nwsk(furBoot), "0 0", "010", '0': Character, partsAnimal(PartsAnimal.FUR_BROWN), '1': Character, LEATHER_BOOTS)
-    }
+    GameRegistry.addSmelting(nwsk(venisonRaw), nwsk(venisonCooked), 3)
+    GameRegistry.addRecipe(nwsk(trap), " 1 ", "101", " 1 ", '0': Character, IRON_INGOT, '1': Character, prts(Parts.STICK_IRON))
+    GameRegistry.addRecipe(nwsk(furHead), "000", "010", '0': Character, partsAnimal(PartsAnimal.FUR_WHITE), '1': Character, LEATHER_HELMET)
+    GameRegistry.addRecipe(nwsk(furChest), "0 0", "010", "222", '0': Character, partsAnimal(PartsAnimal.FUR_WHITE), '1': Character, LEATHER_CHESTPLATE, '2': Character, partsAnimal(PartsAnimal.FUR_BROWN))
+    GameRegistry.addRecipe(nwsk(furLeg), "000", "010", "0 0", '0': Character, partsAnimal(PartsAnimal.FUR_BROWN), '1': Character, LEATHER_LEGGINGS)
+    GameRegistry.addRecipe(nwsk(furBoot), "0 0", "010", '0': Character, partsAnimal(PartsAnimal.FUR_BROWN), '1': Character, LEATHER_BOOTS)
   }
 }

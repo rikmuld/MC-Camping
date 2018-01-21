@@ -43,13 +43,13 @@ class OpenGui(var id: Int) extends BasicPacketData {
     y = stream.readInt
     z = stream.readInt
   }
-  override def handlePacket(player: EntityPlayer, ctx: MessageContext) = player.openGui(RMMod, id, player.worldObj, x, y, z)
+  override def handlePacket(player: EntityPlayer, ctx: MessageContext) = player.openGui(RMMod, id, player.world, x, y, z)
 }
 
 class NBTPlayer(var tag: NBTTagCompound) extends BasicPacketData {
   def this() = this(null);
-  override def setData(stream: PacketBuffer) = stream.writeNBTTagCompoundToBuffer(tag)
-  override def getData(stream: PacketBuffer) = tag = stream.readNBTTagCompoundFromBuffer()
+  override def setData(stream: PacketBuffer) = stream.writeCompoundTag(tag)
+  override def getData(stream: PacketBuffer) = tag = stream.readCompoundTag()
   override def handlePacket(player: EntityPlayer, ctx: MessageContext) = if(player!=null)player.getEntityData.setTag(NBTInfo.INV_CAMPING, tag)
 }
 
@@ -83,18 +83,18 @@ class ItemsData(var slot: Int, var x: Int, var y: Int, var z: Int, var stack: It
     stream.writeInt(x)
     stream.writeInt(y)
     stream.writeInt(z)
-    stream.writeItemStackToBuffer(stack)
+    stream.writeItemStack(stack)
   }
   override def getData(stream: PacketBuffer) {
     slot = stream.readInt
     x = stream.readInt
     y = stream.readInt
     z = stream.readInt
-    stack = stream.readItemStackFromBuffer()
+    stack = stream.readItemStack()
   }
   override def handlePacket(player: EntityPlayer, ctx: MessageContext) {
-    if (player.worldObj.getTileEntity(new BlockPos(x, y, z)) != null) {
-      player.worldObj.getTileEntity(new BlockPos(x, y, z)).asInstanceOf[WithTileInventory].setInventorySlotContents(slot, stack)
+    if (player.world.getTileEntity(new BlockPos(x, y, z)) != null) {
+      player.world.getTileEntity(new BlockPos(x, y, z)).asInstanceOf[WithTileInventory].setInventorySlotContents(slot, stack)
     }
   }
 }
@@ -102,7 +102,7 @@ class ItemsData(var slot: Int, var x: Int, var y: Int, var z: Int, var stack: It
 class PlayerSleepInTent(var x: Int, var y: Int, var z: Int) extends BasicPacketData {
   def this() = this(0, 0, 0)
 
-  override def handlePacket(player: EntityPlayer, ctx: MessageContext) = player.worldObj.getTileEntity(new BlockPos(x, y, z)).asInstanceOf[TileTent].sleep(player)
+  override def handlePacket(player: EntityPlayer, ctx: MessageContext) = player.world.getTileEntity(new BlockPos(x, y, z)).asInstanceOf[TileTent].sleep(player)
   override def getData(stream: PacketBuffer) {
     x = stream.readInt
     y = stream.readInt

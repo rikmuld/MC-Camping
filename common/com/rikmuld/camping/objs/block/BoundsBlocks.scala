@@ -44,11 +44,11 @@ class TentBounds(modId:String, info:ObjInfo) extends RMBlockContainer(modId, inf
   def getBaseTile(world:IBlockAccess, pos:BlockPos) = world.getTileEntity(world.getTileEntity(pos).asInstanceOf[TileBounds].basePos).asInstanceOf[TileTent]
   def getBaseTile(bd:BlockData) = (bd.world, bd.tile.asInstanceOf[TileBounds].basePos).tile.asInstanceOf[TileTent]
   def sleep(bd:BlockData, player:EntityPlayer){
-    if(bd.world.provider.canRespawnHere && bd.world.getBiomeGenForCoords(bd.pos) != Biomes.HELL){ 
+    if(bd.world.provider.canRespawnHere && bd.world.getBiomeForCoordsBody(bd.pos) != Biomes.HELL){
       if(isOccupied(bd)){
         val sleepingPlayer = getPlayerInBed((bd.world, bd.pos))
         if(sleepingPlayer != null) {
-          player.addChatComponentMessage(new TextComponentTranslation("tile.bed.occupied", new Object))
+          player.sendMessage(new TextComponentTranslation("tile.bed.occupied", new Object))
           return
         }
        getBaseTile(bd).setOccupied(false)
@@ -56,8 +56,8 @@ class TentBounds(modId:String, info:ObjInfo) extends RMBlockContainer(modId, inf
       val sleepState = player.trySleep(bd.pos)
       if(sleepState == EntityPlayer.SleepResult.OK)getBaseTile(bd).setOccupied(true)
       else {
-        if(sleepState == EntityPlayer.SleepResult.NOT_POSSIBLE_NOW) player.addChatComponentMessage(new TextComponentTranslation("tile.bed.noSleep", new Object))
-        else if(sleepState == EntityPlayer.SleepResult.NOT_SAFE) player.addChatComponentMessage(new TextComponentTranslation("tile.bed.noSleep", new Object))
+        if(sleepState == EntityPlayer.SleepResult.NOT_POSSIBLE_NOW) player.sendMessage(new TextComponentTranslation("tile.bed.noSleep", new Object))
+        else if(sleepState == EntityPlayer.SleepResult.NOT_SAFE) player.sendMessage(new TextComponentTranslation("tile.bed.noSleep", new Object))
       }
     } else {
       bd.toAir
@@ -67,11 +67,11 @@ class TentBounds(modId:String, info:ObjInfo) extends RMBlockContainer(modId, inf
   def getPlayerInBed(bd:BlockData):EntityPlayer = {
     val players = bd.world.playerEntities.iterator
     var sleepingPlayer:EntityPlayer = null
-    
+
     do {
       if(!players.hasNext)return null
-      sleepingPlayer = players.next.asInstanceOf[EntityPlayer]
-    } while (!sleepingPlayer.isPlayerSleeping || !sleepingPlayer.playerLocation.equals(bd.pos))
+      sleepingPlayer = players.next
+    } while (!sleepingPlayer.isPlayerSleeping || !new BlockPos(sleepingPlayer.posX, sleepingPlayer.posY, sleepingPlayer.posZ).equals(bd.pos))
     
     sleepingPlayer
   }

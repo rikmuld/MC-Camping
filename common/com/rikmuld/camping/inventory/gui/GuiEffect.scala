@@ -18,7 +18,7 @@ trait GuiWithEffect extends GuiContainer {
   var fontRenderer:FontRenderer = _
   
   def init(left:Int, top:Int, fontRender:FontRenderer) {
-    if (!this.mc.thePlayer.getActivePotionEffects().isEmpty())activeEffects = true
+    if (!this.mc.player.getActivePotionEffects().isEmpty())activeEffects = true
     leftGui = left
     topGui = top
     fontRenderer = fontRender
@@ -28,13 +28,13 @@ trait GuiWithEffect extends GuiContainer {
       val i = leftGui - 124
       var j = topGui
       val flag = true
-      val collection = this.mc.thePlayer.getActivePotionEffects
+      val collection = this.mc.player.getActivePotionEffects
       if (!collection.isEmpty()){
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F)
         GL11.glDisable(GL11.GL_LIGHTING)
         var k = 33
         if (collection.size() > 5) k = 132 / (collection.size() - 1);
-        this.mc.thePlayer.getActivePotionEffects.asInstanceOf[Collection[PotionEffect]].foreach { potioneffect =>
+        this.mc.player.getActivePotionEffects.asInstanceOf[Collection[PotionEffect]].foreach { potioneffect =>
           val potion = potioneffect.getPotion
           GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F)
           this.mc.getTextureManager().bindTexture(inventoryTexture)

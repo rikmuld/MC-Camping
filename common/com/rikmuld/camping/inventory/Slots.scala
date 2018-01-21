@@ -20,8 +20,8 @@ class SlotState(inv: IInventory, id: Int, x: Int, y: Int) extends Slot(inv, id, 
   var stateY: Int = yFlag
 
   override def enable() {
-    xDisplayPosition = stateX
-    yDisplayPosition = stateY
+    xPos = stateX
+    yPos = stateY
   }
   def setStateX(state: Int) = stateX = xFlag - (18 * state)
   def setStateY(state: Int) = stateY = yFlag - (18 * state)
@@ -38,15 +38,15 @@ class SlotCooking(inv: IInventory, id: Int, x: Int, y: Int) extends Slot(inv, id
     active = true
     this.equipment = equipment
     this.fire = fire
-    xDisplayPosition = x
-    yDisplayPosition = y
+    xPos = x
+    yPos = y
   }
   def deActivate() {
     active = false
     equipment = null
     fire = null
-    xDisplayPosition = -1000
-    yDisplayPosition = -1000
+    xPos = -1000
+    yPos = -1000
   }
   override def getSlotStackLimit(): Int = 1
   override def isItemValid(stack: ItemStack): Boolean = if ((equipment != null) && (fire != null)) equipment.canCook(stack) else false

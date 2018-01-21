@@ -50,10 +50,7 @@ object ModMisc extends ModRegister {
         val yLine = Array(0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1)
         val zLine = Array(0, 0, 1, 1, 1, 2, 2, 2, 0, 0, 0, 1, 1, 1, 2, 2, 2)
         tentStructure = BoundsStructure.regsisterStructure(xLine, yLine, zLine, true)
-      
-        tab = new com.rikmuld.camping.objs.misc.Tab(MOD_ID)
-        fur = EnumHelper.addArmorMaterial("FUR", "", 20, Array(2, 5, 4, 2), 20, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 0)
-        
+
         RMMod.registerPacket(classOf[OpenGui])
         RMMod.registerPacket(classOf[NBTPlayer])
         RMMod.registerPacket(classOf[KeyData])
@@ -63,10 +60,8 @@ object ModMisc extends ModRegister {
         RMMod.registerPacket(classOf[PlayerSleepInTent])
         RMMod.registerPacket(classOf[MapData])
                         
-        if(!config.coreOnly){
-          bleedingSource = new DamageSourceBleeding(DamageInfo.BLEEDING)
-          bleeding = new PotionBleeding(PotionInfo.BLEEDING)
-        }
+        bleedingSource = new DamageSourceBleeding(DamageInfo.BLEEDING)
+        bleeding = new PotionBleeding(PotionInfo.BLEEDING)
       } else if(phase==ModRegister.POST){
         
         grill = new Grill(nwsk(kit, Kit.GRILL))

@@ -2,6 +2,7 @@ package com.rikmuld.camping.objs.entity
 
 import java.util.ArrayList
 import java.util.Random
+
 import scala.collection.mutable.HashMap
 import com.rikmuld.camping.CampingMod._
 import com.rikmuld.camping.Lib._
@@ -9,8 +10,8 @@ import com.rikmuld.camping.objs.Objs._
 import com.rikmuld.camping.objs.Objs
 import com.rikmuld.camping.objs.ItemDefinitions._
 import com.rikmuld.corerm.CoreUtils._
-import net.minecraft.client.model.ModelBase
-import net.minecraft.client.renderer.entity.RenderLiving
+import net.minecraft.client.model.{ModelBase, ModelBiped}
+import net.minecraft.client.renderer.entity.{RenderLiving, RenderManager}
 import net.minecraft.enchantment.Enchantment
 import net.minecraft.enchantment.EnchantmentHelper
 import net.minecraft.entity.Entity
@@ -72,7 +73,7 @@ object Camper {
   recipeListRaw(parts) = new Tuple(Integer.valueOf(1), Integer.valueOf(2))
 }
 
-class Camper(world: World) extends EntityCreature(world) with IMerchant with INpc {
+class Camper(worldIn: World) extends EntityCreature(worldIn) with IMerchant with INpc {
   setGender(rand.nextInt(2))
   setSize(0.6F, 1.8F)
   getNavigator.asInstanceOf[PathNavigateGround].setCanSwim(true)
@@ -87,8 +88,10 @@ class Camper(world: World) extends EntityCreature(world) with IMerchant with INp
   var recipeList: MerchantRecipeList = _
   var camp:Option[Campsite] = None
 
+  override def getWorld: World = world
   def setGender(gender: Int) = dataManager.set(Camper.GENDER, Integer.valueOf(gender))
   def getGender: Int = dataManager.get(Camper.GENDER)
+  override def getPos: BlockPos = new BlockPos(this)
   override def writeEntityToNBT(tag: NBTTagCompound) {
     super.writeEntityToNBT(tag)
     tag.setInteger("gender", getGender)
@@ -145,7 +148,7 @@ class Camper(world: World) extends EntityCreature(world) with IMerchant with INp
               if (this.rand.nextFloat() < f1)
               {
                   player.getCooldownTracker().setCooldown(Items.SHIELD, 100);
-                  this.worldObj.setEntityState(player, 30.toByte);
+                  this.world.setEntityState(player, 30.toByte);
               }
           }
       }
@@ -154,17 +157,17 @@ class Camper(world: World) extends EntityCreature(world) with IMerchant with INp
     }
     flag
   }
-  override def processInteract(player: EntityPlayer, hand:EnumHand, stack:ItemStack): Boolean = {
+  override def processInteract(player: EntityPlayer, hand:EnumHand): Boolean = {
     val itemstack = player.inventory.getCurrentItem
     val flag = (itemstack != null) && (itemstack.getItem == Items.SPAWN_EGG)
     if (!flag && isEntityAlive && !isTrading && !player.isSneaking) {
-      if (!worldObj.isRemote) {
+      if (!world.isRemote) {
         setCustomer(player)
         player.addStat(Objs.achExplorer)
         player.displayVillagerTradeGui(this)
       }
       true
-    } else super.processInteract(player, hand, stack)
+    } else super.processInteract(player, hand)
   }
   override def setCustomer(player: EntityPlayer) = playerBuy = player
   override def getCustomer(): EntityPlayer = playerBuy
@@ -216,7 +219,7 @@ class Camper(world: World) extends EntityCreature(world) with IMerchant with INp
 }
 
 @SideOnly(Side.CLIENT)
-class CamperRender(model: ModelBase) extends RenderLiving[Camper](Minecraft.getMinecraft().getRenderManager(), model, 0.5f) {
+class CamperRender(manager: RenderManager) extends RenderLiving[Camper](manager, new ModelBiped(), 0.5f) {
   override def doRender(entity: Camper, d0: Double, d1: Double, d2: Double, f: Float, f1: Float) {
     super.doRender(entity, d0, d1, d2, f, f1)
   }
@@ -236,7 +239,7 @@ class Campsite(camper:Camper, center:BlockPos, tent:BlockPos) {
     if(!(getWorld, tent).block.isInstanceOf[Tent])camper.setCampsite(None)
     else if(Math.sqrt(camper.getDistanceSqToCenter(center)) > 15 && !camper.getMoveHelper.isUpdating)camper.getMoveHelper.setMoveTo(center.getX, center.getY, center.getZ, .8)
   }
-  def getWorld = camper.worldObj
+  def getWorld = camper.world
   def toNBT(tag:NBTTagCompound):NBTTagCompound = {
     tag.setIntArray("center", Array(center.getX, center.getY, center.getZ))
     tag.setIntArray("tent", Array(tent.getX, tent.getY, tent.getZ))

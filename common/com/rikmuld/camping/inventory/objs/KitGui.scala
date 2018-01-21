@@ -5,10 +5,12 @@ import com.rikmuld.corerm.client.GuiContainerSimple
 import com.rikmuld.corerm.inventory.RMContainerItem
 import com.rikmuld.camping.objs.Objs
 import com.rikmuld.camping.inventory._
+import scala.collection.JavaConversions._
 import net.minecraft.nbt.NBTTagList
 import com.rikmuld.corerm.inventory.SlotNoPickup
 import net.minecraft.item.ItemStack
 import java.util.ArrayList
+
 import net.minecraft.inventory.Slot
 import net.minecraft.nbt.NBTTagCompound
 import com.rikmuld.corerm.inventory.RMInventoryItem
@@ -16,6 +18,8 @@ import com.rikmuld.camping.Lib._
 import com.rikmuld.camping.objs.ItemDefinitions._
 import com.rikmuld.corerm.CoreUtils._
 import com.rikmuld.camping.misc.CookingEquipment
+import net.minecraft.init.Items
+
 import scala.collection.JavaConversions._
 import scala.collection.mutable.ListBuffer
   
@@ -42,37 +46,38 @@ class KitContainer(player: EntityPlayer) extends RMContainerItem(player) {
   override def getItemInv = new RMInventoryItem(player.inventory.getCurrentItem, player, 14, 1, true)
   override def getItem = Objs.kit
   override def transferStackInSlot(p: EntityPlayer, i: Int): ItemStack = {
-    var itemstack: ItemStack = null
+    var itemstack: ItemStack = ItemStack.EMPTY
     var slot = inventorySlots.get(i).asInstanceOf[Slot]
     if ((slot != null) && slot.getHasStack()) {
       val itemstack1 = slot.getStack()
       itemstack = itemstack1.copy()
-      val size = itemstack1.stackSize
+      val size = itemstack1.getCount
       if (i < inv.getSizeInventory()) {
-        if (!mergeItemStack(itemstack1, inv.getSizeInventory(), inventorySlots.size(), false)) return null
+        if (!mergeItemStack(itemstack1, inv.getSizeInventory(), inventorySlots.size(), false)) return ItemStack.EMPTY
       } else {
         if(i < inv.getSizeInventory + 9){
-          if(!mergeItemStack(itemstack1, inv.getSizeInventory + 9, inv.getSizeInventory + 9 + 27, false)) return null
+          if(!mergeItemStack(itemstack1, inv.getSizeInventory + 9, inv.getSizeInventory + 9 + 27, false)) return ItemStack.EMPTY
         } else {
-          if(!mergeItemStack(itemstack1, inv.getSizeInventory, inv.getSizeInventory + 9, false)) return null
+          if(!mergeItemStack(itemstack1, inv.getSizeInventory, inv.getSizeInventory + 9, false)) return ItemStack.EMPTY
         }
       }
-      if (itemstack1.stackSize == 0) slot.putStack(null)
+      if (itemstack1.getCount == 0) slot.putStack(new ItemStack(Items.AIR, 0))
       else slot.onSlotChanged()
     }
     itemstack
   }
   override def onContainerClosed(player: EntityPlayer) {
     super.onContainerClosed(player)
-    if (!player.worldObj.isRemote) {
+    if (!player.world.isRemote) {
       inv.closeInventory(player)
-      if (player.inventory.getCurrentItem != null && player.inventory.getCurrentItem.getItem == Objs.kit) {
-        val items = new ArrayList[ItemStack]
+      if (player.inventory.getCurrentItem.getItem == Objs.kit) {
+        var items = new ArrayList[ItemStack]
         val containingItems = inv.asInstanceOf[RMInventoryItem].tag.getTag("Items").asInstanceOf[NBTTagList]
         for (itemCound <- 0 until containingItems.tagCount) {
-          items.add(ItemStack.loadItemStackFromNBT(containingItems.getCompoundTagAt(itemCound).asInstanceOf[NBTTagCompound]))
+          val stack = new ItemStack(containingItems.getCompoundTagAt(itemCound))
+          if(!stack.isEmpty)items.add(stack)
         }
-                
+
         if (CookingEquipment.getCookingForRecipe(items) != null) {
           player.setCurrentItem(CookingEquipment.getCookingForRecipe(items).itemInfo)
         } else if (items.size > 0) {

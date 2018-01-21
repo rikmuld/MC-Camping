@@ -51,8 +51,6 @@ class GuiCampfireCook(player: EntityPlayer, tile: IInventory) extends GuiContain
       }
     }
   }
-  def getGuiLeft(): Int = guiLeft
-  def getGuiTop(): Int = guiTop
 }
 
 class ContainerCampfireCook(player: EntityPlayer, tile: IInventory) extends RMContainerTile(player, tile) {
@@ -77,13 +75,13 @@ class ContainerCampfireCook(player: EntityPlayer, tile: IInventory) extends RMCo
     }
   }
   override def transferStackInSlot(player: EntityPlayer, slotNum: Int): ItemStack = {
-    var itemstack: ItemStack = null
+    var itemstack: ItemStack = ItemStack.EMPTY
     val slot = inventorySlots.get(slotNum).asInstanceOf[Slot]
     if ((slot != null) && slot.getHasStack) {
       val itemstack1 = slot.getStack
       itemstack = itemstack1.copy()
       if (slotNum < fire.getSizeInventory) {
-        if (!mergeItemStack(itemstack1, fire.getSizeInventory, inventorySlots.size, false)) return null
+        if (!mergeItemStack(itemstack1, fire.getSizeInventory, inventorySlots.size, false)) return ItemStack.EMPTY
       } else {
         var merged = false
         if (itemstack.getItem == Items.COAL) {
@@ -92,14 +90,14 @@ class ContainerCampfireCook(player: EntityPlayer, tile: IInventory) extends RMCo
           if (mergeItemStack(itemstack1, 1, 2, false)) merged = true
         } else if(!merged){
             if(slotNum < fire.getSizeInventory + 9){
-              if(!mergeItemStack(itemstack1, fire.getSizeInventory + 9, fire.getSizeInventory + 9 + 27, false)) return null
+              if(!mergeItemStack(itemstack1, fire.getSizeInventory + 9, fire.getSizeInventory + 9 + 27, false)) return ItemStack.EMPTY
             } else {
-              if(!mergeItemStack(itemstack1, fire.getSizeInventory, fire.getSizeInventory + 9, false)) return null
+              if(!mergeItemStack(itemstack1, fire.getSizeInventory, fire.getSizeInventory + 9, false)) return ItemStack.EMPTY
             }
         }
       }
-      if (itemstack1.stackSize == 0) {
-        slot.putStack(null)
+      if (itemstack1.getCount == 0) {
+        slot.putStack(new ItemStack(Items.AIR, 0))
       } else {
         slot.onSlotChanged()
       }

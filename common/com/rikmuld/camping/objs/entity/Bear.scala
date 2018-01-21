@@ -8,7 +8,7 @@ import com.rikmuld.camping.objs.ItemDefinitions._
 import com.rikmuld.corerm.CoreUtils._
 import net.minecraft.client.Minecraft
 import net.minecraft.client.model.ModelBase
-import net.minecraft.client.renderer.entity.RenderLiving
+import net.minecraft.client.renderer.entity.{RenderLiving, RenderManager}
 import net.minecraft.enchantment.Enchantment
 import net.minecraft.enchantment.EnchantmentHelper
 import net.minecraft.entity.Entity
@@ -39,12 +39,14 @@ import net.minecraft.world.World
 import net.minecraftforge.fml.relauncher.SideOnly
 import net.minecraftforge.fml.relauncher.Side
 import com.rikmuld.camping.CampingMod
+import com.rikmuld.camping.render.models.BearModel
 import net.minecraft.entity.ai.EntityAIAttackMelee
 import net.minecraft.init.Enchantments
 import net.minecraft.util.SoundEvent
 import net.minecraft.item.ItemAxe
+import net.minecraftforge.fml.client.registry.IRenderFactory
 
-class Bear(world: World) extends EntityAnimal(world) {
+class Bear(worldIn: World) extends EntityAnimal(worldIn) {
   setSize(1F, 1.125F)
   tasks.addTask(1, new EntityAIAttackMelee(this, 1.0D, false))
   tasks.addTask(2, new EntityAIWander(this, 1.0D))
@@ -66,7 +68,7 @@ class Bear(world: World) extends EntityAnimal(world) {
     getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(30.0D)
   }
   protected override def canDespawn(): Boolean = false
-  override def createChild(entityageable: EntityAgeable): EntityAgeable = new Bear(worldObj)
+  override def createChild(entityageable: EntityAgeable): EntityAgeable = new Bear(world)
   protected override def dropFewItems(par1: Boolean, par2: Int) {
     var dropChance = rand.nextInt(3) + rand.nextInt(1 + par2)
     var drops: Int = 0
@@ -88,7 +90,7 @@ class Bear(world: World) extends EntityAnimal(world) {
   override def isBreedingItem(stack: ItemStack): Boolean = stack.getItem() == Items.FISH
   override def onUpdate() {
     super.onUpdate()
-    if (!worldObj.isRemote && ((world.getWorldInfo.getDifficulty.getDifficultyId() == 0) || !CampingMod.config.useBears)) setDead()
+    if (!world.isRemote && ((world.getWorldInfo.getDifficulty.getDifficultyId() == 0) || !CampingMod.config.useBears)) setDead()
   }
   override def attackEntityAsMob(entity: Entity): Boolean = {
     var f = this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue.toFloat
@@ -117,7 +119,7 @@ class Bear(world: World) extends EntityAnimal(world) {
               if (this.rand.nextFloat() < f1)
               {
                   player.getCooldownTracker().setCooldown(Items.SHIELD, 100);
-                  this.worldObj.setEntityState(player, 30.toByte);
+                  this.world.setEntityState(player, 30.toByte);
               }
           }
       }
@@ -132,7 +134,7 @@ class Bear(world: World) extends EntityAnimal(world) {
 }
 
 @SideOnly(Side.CLIENT)
-class BearRenderer(model: ModelBase) extends RenderLiving[Bear](Minecraft.getMinecraft.getRenderManager, model, 1) {
+class BearRenderer(renderManager: RenderManager) extends RenderLiving[Bear](renderManager, new BearModel(), 1) {
   override def doRender(entity: Bear, d0: Double, d1: Double, d2: Double, f: Float, f1: Float) {
     GL11.glPushMatrix()
     if (entity.asInstanceOf[EntityAgeable].isChild) GL11.glTranslatef(0, -0.75F, 0)

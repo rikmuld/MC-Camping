@@ -10,6 +10,7 @@ import net.minecraft.creativetab.CreativeTabs
 import net.minecraft.item.ItemArmor.ArmorMaterial
 import net.minecraft.inventory.ContainerBrewingStand.Potion
 import com.rikmuld.camping.misc.CookingEquipment
+import com.rikmuld.corerm.misc.DataContainer
 import net.minecraft.potion.Potion
 import net.minecraft.util.SoundEvent
 
@@ -43,7 +44,7 @@ object Objs {
       campfireCook, 
       tentBounds:RMCoreBlock = _
       
-  var guiPouch,
+  val guiPouch,
       guiBackpack,
       guiRucksack, 
       guiConfig, 
@@ -54,7 +55,7 @@ object Objs {
       guiTentSleep, 
       guiTentChests, 
       guiTentLantern, 
-      guiTent:Int = _
+      guiTent: DataContainer[Int] = new DataContainer[Int]()
       
   var spit, 
       grill, 

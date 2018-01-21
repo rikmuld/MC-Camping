@@ -2,9 +2,10 @@ package com.rikmuld.camping.objs.block
 
 import com.rikmuld.corerm.objs.RMBlockContainer
 import java.io.ObjectInput
+
 import com.rikmuld.corerm.objs.ObjInfo
 import net.minecraft.block.properties.PropertyDirection
-import net.minecraft.util.EnumFacing
+import net.minecraft.util.{EnumFacing, EnumHand, NonNullList}
 import com.google.common.base.Predicate
 import com.rikmuld.corerm.objs.WithProperties
 import com.rikmuld.corerm.objs.WithModel
@@ -25,6 +26,7 @@ import net.minecraft.block.state.IBlockState
 import net.minecraft.init.Blocks
 import java.util.ArrayList
 import java.util.Random
+
 import net.minecraft.item.ItemStack
 import com.rikmuld.camping.objs.Objs
 import net.minecraft.util.math.MathHelper
@@ -33,6 +35,7 @@ import net.minecraft.world.IBlockAccess
 import net.minecraft.entity.EntityLivingBase
 import com.rikmuld.camping.objs.tile.TileEntityTent
 import net.minecraft.nbt.NBTTagCompound
+
 import scala.collection.JavaConversions._
 import net.minecraft.entity.player.EntityPlayer
 import com.rikmuld.camping.objs.tile.TileEntityTent
@@ -52,8 +55,8 @@ import net.minecraftforge.fml.relauncher.SideOnly
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraft.creativetab.CreativeTabs
 import net.minecraft.item.Item
+
 import scala.collection.JavaConversions._
-import net.minecraft.util.EnumHand
 
 object Tent {
   val FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL.asInstanceOf[Predicate[EnumFacing]])
@@ -65,7 +68,7 @@ class Tent(modId:String, info:ObjInfo) extends RMBlockContainer(modId, info) wit
   var facingFlag:Int = _
   
   override def getProps = Array(new RMFacingHorizontalProp(FACING, 0))
-  override def getCollisionBoundingBox(state:IBlockState, source:World, pos:BlockPos):AxisAlignedBB = {
+  override def getCollisionBoundingBox(state:IBlockState, source:IBlockAccess, pos:BlockPos):AxisAlignedBB = {
     TileEntityTent.bounds(getFacing(state)).getBlockCollision
   }
   def getFacing(state:IBlockState) = state.getValue(Tent.FACING).asInstanceOf[EnumFacing].getHorizontalIndex
@@ -111,20 +114,21 @@ class Tent(modId:String, info:ObjInfo) extends RMBlockContainer(modId, info) wit
     val tile = world.getTileEntity(pos).asInstanceOf[TileTent]
     if (Option(tile).isDefined && (tile.lanternDamage == BlockDefinitions.Lantern.ON) && (tile.lanterns > 0)) 15 else 0
   }
-  override def onBlockActivated(world: World, pos:BlockPos, state:IBlockState, player: EntityPlayer, hand:EnumHand, stack:ItemStack, side: EnumFacing, xHit: Float, yHit: Float, zHit: Float): Boolean = {
+  override def onBlockActivated(world: World, pos:BlockPos, state:IBlockState, player: EntityPlayer, hand:EnumHand, side: EnumFacing, xHit: Float, yHit: Float, zHit: Float): Boolean = {
     if (!world.isRemote) {
       val bd = (world, pos)
+      val stack = player.getHeldItem(hand)
       val tile = bd.tile.asInstanceOf[TileTent]
       if ((stack != null) && tile.addContends(stack)) {
-        stack.stackSize -= 1
+        stack.setCount(stack.getCount - 1)
         if(tile.lanterns == 1 && tile.chests == 2 && tile.beds == 1) player.addStat(Objs.achLuxury)
-        if (stack.stackSize < 0) player.setCurrentItem(null)
+        if (stack.getCount < 0) player.setCurrentItem(null)
         return true
       } else if ((stack != null) && (stack.getItem() == Items.DYE) && (bd.tile.asInstanceOf[TileTent].color != stack.getItemDamage)) {
         bd.tile.asInstanceOf[TileTent].setColor(stack.getItemDamage)
-        stack.stackSize -= 1
+        stack.setCount(stack.getCount - 1)
         return true
-      } else super.onBlockActivated(world, pos, state, player, hand, stack, side, xHit, yHit, zHit)
+      } else super.onBlockActivated(world, pos, state, player, hand, side, xHit, yHit, zHit)
     }
     true
   }
@@ -132,7 +136,7 @@ class Tent(modId:String, info:ObjInfo) extends RMBlockContainer(modId, info) wit
 
 class TentItem(block:Block) extends RMItemBlock(CampingMod.MOD_ID, BlockDefinitions.TENT, block) {  
   @SideOnly(Side.CLIENT)
-  override def getSubItems(itemIn:Item, tab:CreativeTabs, subItems:java.util.List[ItemStack]) {
+  override def getSubItems(itemIn:Item, tab:CreativeTabs, subItems:NonNullList[ItemStack]) {
     subItems.asInstanceOf[java.util.List[ItemStack]].add(new ItemStack(itemIn, 1, 15)) 
   }
   override def placeBlockAt(stack: ItemStack, player: EntityPlayer, world: World, pos: BlockPos, side: EnumFacing, hitX: Float, hitY: Float, hitZ: Float, newState: IBlockState): Boolean = {

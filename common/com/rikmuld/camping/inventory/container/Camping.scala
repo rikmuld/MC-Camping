@@ -93,11 +93,11 @@ class ContainerCampinv(player:EntityPlayer) extends Container with ContainerTabb
     campinv.backpackChange()
   }
   override def onCraftMatrixChanged(par1IInventory: IInventory) {
-    craftResult.setInventorySlotContents(0, CraftingManager.getInstance.findMatchingRecipe(this.craftMatrix, this.player.worldObj))
-    craftResultSmall.setInventorySlotContents(0, CraftingManager.getInstance.findMatchingRecipe(this.craftMatrixSmall, this.player.worldObj))
+    craftResult.setInventorySlotContents(0, CraftingManager.getInstance.findMatchingRecipe(this.craftMatrix, this.player.world))
+    craftResultSmall.setInventorySlotContents(0, CraftingManager.getInstance.findMatchingRecipe(this.craftMatrixSmall, this.player.world))
   }
   override def onContainerClosed(player: EntityPlayer) {
-    if (!this.player.worldObj.isRemote) {
+    if (!this.player.world.isRemote) {
       for (i <- 0 until 9) {
         val itemstack = craftMatrix.removeStackFromSlot(i)
         if (itemstack != null) player.dropItem(itemstack, false)
@@ -113,13 +113,13 @@ class ContainerCampinv(player:EntityPlayer) extends Container with ContainerTabb
   }
   override def canInteractWith(player: EntityPlayer): Boolean = !player.isDead
   override def transferStackInSlot(player: EntityPlayer, slotNum: Int): ItemStack = {
-    var itemstack: ItemStack = null
+    var itemstack: ItemStack = ItemStack.EMPTY
     val slot = inventorySlots.get(slotNum).asInstanceOf[Slot]
     if ((slot != null) && slot.getHasStack) {
       val itemstack1 = slot.getStack
       itemstack = itemstack1.copy()
       if (slotNum >= 36) {
-        if (!this.mergeItemStack(itemstack1, 0, 36, false))return null
+        if (!this.mergeItemStack(itemstack1, 0, 36, false))return ItemStack.EMPTY
         if(slotNum == 67||slotNum==68)slot.onSlotChange(itemstack1, itemstack)
       } else if(slotNum < 36){
         var success = false
@@ -147,19 +147,19 @@ class ContainerCampinv(player:EntityPlayer) extends Container with ContainerTabb
             }
           }
           if (slotNum < 9) {
-            if (!success && !this.mergeItemStack(itemstack1, 9, 36, false))return null
+            if (!success && !this.mergeItemStack(itemstack1, 9, 36, false))return ItemStack.EMPTY
           } else if (slotNum >= 9 && slotNum < 36) {
-            if (!success && !this.mergeItemStack(itemstack1, 0, 9, false))return null
+            if (!success && !this.mergeItemStack(itemstack1, 0, 9, false))return ItemStack.EMPTY
           }
         }
-      } else return null
-      if (itemstack1.stackSize == 0) {
-        slot.putStack(null)
+      } else return ItemStack.EMPTY
+      if (itemstack1.getCount == 0) {
+        slot.putStack(new ItemStack(Items.AIR, 0))
       } else {
         slot.onSlotChanged()
       }
-      if (itemstack1.stackSize == itemstack.stackSize)return null
-      slot.onPickupFromSlot(player, itemstack1)
+      if (itemstack1.getCount == itemstack.getCount)return ItemStack.EMPTY
+      slot.onTake(player, itemstack1)
     }
     itemstack
   }
@@ -177,7 +177,7 @@ object InventoryCampinv {
     for (i <- 0 until inventory.tagCount()) {
       val Slots = inventory.getCompoundTagAt(i).asInstanceOf[NBTTagCompound]
       Slots.getByte("Slot")
-      player.worldObj.dropItemsInWorld(Array(ItemStack.loadItemStackFromNBT(Slots)), player.posX.toInt, player.posY.toInt, player.posZ.toInt, new Random())
+      player.world.dropItemsInWorld(Array(new ItemStack(Slots)), player.posX.toInt, player.posY.toInt, player.posZ.toInt, new Random())
     }
   }
 }
@@ -187,10 +187,10 @@ class InventoryCampinv(player: EntityPlayer, var slots: ArrayList[SlotWithDisabl
   tag = player.getEntityData.getCompoundTag("campInv")
 
   final val SLOT_BACKPACK = 0
-  
+
   def getEnabledBackpackSlots():List[Int] = {
     val pack = getStackInSlot(SLOT_BACKPACK)
-    if(pack != null){
+    if(!pack.isEmpty){
       pack.getItemDamage match {
         case ItemDefinitions.Backpack.POUCH => InventoryCampinv.POUCH
         case ItemDefinitions.Backpack.BACKPACK => InventoryCampinv.BACKPACK
@@ -203,7 +203,7 @@ class InventoryCampinv(player: EntityPlayer, var slots: ArrayList[SlotWithDisabl
     if (slotNum == SLOT_BACKPACK) {
       backpackChange()
     }
-    if(getInventory.filter { stack => stack==null }.size == 0)player.addStat(Objs.achCamperFull)
+    if(!getStackInSlot(0).isEmpty&& !getStackInSlot(1).isEmpty&& !getStackInSlot(2).isEmpty && !getStackInSlot(3).isEmpty)player.addStat(Objs.achCamperFull)
   }
   override def openInventory(player:EntityPlayer) {
     super.openInventory(player)
@@ -211,8 +211,8 @@ class InventoryCampinv(player: EntityPlayer, var slots: ArrayList[SlotWithDisabl
   }
   override def getInventoryStackLimit = 1
   def backpackChange(){
-    var pack = getStackInSlot(SLOT_BACKPACK)
-    if (pack != null) {
+    val pack = getStackInSlot(SLOT_BACKPACK)
+    if (!pack.isEmpty) {
       if (!pack.hasTagCompound()) pack.setTagCompound(new NBTTagCompound())
       backpack.tag = pack.getTagCompound
       backpack.readFromNBT(backpack.tag)

@@ -11,6 +11,7 @@ import net.minecraft.item.ItemStack
 import net.minecraft.init.Blocks
 import net.minecraft.init.Items
 import net.minecraftforge.fml.relauncher.SideOnly
+
 import scala.collection.mutable.HashMap
 import net.minecraft.item.Item
 import net.minecraftforge.fml.relauncher.Side
@@ -19,6 +20,7 @@ import com.rikmuld.camping.objs.ItemDefinitions._
 import com.rikmuld.corerm.objs.Properties
 import com.rikmuld.corerm.objs.PropType._
 import com.rikmuld.corerm.Lib._
+import net.minecraft.util.NonNullList
 
 class Kit(modId:String, info:ObjInfo) extends RMItem(modId, info) {
   override def addInformation(stack: ItemStack, player: EntityPlayer, list: java.util.List[String], par4: Boolean) {
@@ -28,7 +30,7 @@ class Kit(modId:String, info:ObjInfo) extends RMItem(modId, info) {
       val itemMap = new HashMap[String, Integer]()
       val containingItems = stack.getTagCompound.getTag("Items").asInstanceOf[NBTTagList]
       for (itemCound <- 0 until containingItems.tagCount()) {
-        val item = ItemStack.loadItemStackFromNBT(containingItems.getCompoundTagAt(itemCound).asInstanceOf[NBTTagCompound])
+        val item = new ItemStack(containingItems.getCompoundTagAt(itemCound))
         if (!itemMap.contains(item.getDisplayName)) itemMap(item.getDisplayName) = 1
         else itemMap(item.getDisplayName) = itemMap(item.getDisplayName) + 1
       }
@@ -38,7 +40,7 @@ class Kit(modId:String, info:ObjInfo) extends RMItem(modId, info) {
     }
   }
   @SideOnly(Side.CLIENT)
-  override def getSubItems(item: Item, creativetabs: CreativeTabs, list: java.util.List[ItemStack]) {
+  override def getSubItems(item: Item, creativetabs: CreativeTabs, list: NonNullList[ItemStack]) {
     val stick = new ItemStack(Items.STICK)
     val stickIron = new ItemStack(Objs.parts, 1, Parts.STICK_IRON)
     val string = new ItemStack(Objs.parts, 1, Parts.PAN)

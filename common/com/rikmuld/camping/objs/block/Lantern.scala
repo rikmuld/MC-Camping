@@ -30,8 +30,7 @@ import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.tileentity.TileEntity
 import net.minecraft.util.math.BlockPos
-import net.minecraft.util.EnumFacing
-import net.minecraft.util.IStringSerializable
+import net.minecraft.util._
 import net.minecraft.world.IBlockAccess
 import net.minecraft.world.World
 import net.minecraftforge.fml.relauncher.SideOnly
@@ -43,10 +42,7 @@ import com.sun.org.apache.xalan.internal.xsltc.compiler.WithParam
 import com.rikmuld.corerm.objs.WithProperties
 import com.rikmuld.corerm.objs.RMBoolProp
 import net.minecraft.entity.EntityLivingBase
-import net.minecraft.util.BlockRenderLayer
-import net.minecraft.util.EnumHand
 import net.minecraft.util.math.AxisAlignedBB
-import net.minecraft.util.EnumBlockRenderType
 
 object Lantern {
   val LIT = PropertyBool.create("lit")
@@ -92,14 +88,15 @@ class Lantern(modId:String, info:ObjInfo) extends RMBlockContainer(modId, info) 
   def isTop(world:IBlockAccess, pos:BlockPos) = getStateValue(world, pos, Lantern.TOP)
   def getStateValue(world:IBlockAccess, pos:BlockPos, prop:PropertyBool) = if(world.getBlockState(pos).getBlock.eq(this)) world.getBlockState(pos).getValue(prop).asInstanceOf[Boolean] else false
   override def getLightValue(state:IBlockState, world: IBlockAccess, pos:BlockPos): Int = if(isLit(world, pos)) 15 else 0
-  override def onBlockActivated(world: World, pos:BlockPos, state:IBlockState, player: EntityPlayer, hand:EnumHand, stack:ItemStack, side: EnumFacing, xHit: Float, yHit: Float, zHit: Float): Boolean = {
+  override def onBlockActivated(world: World, pos:BlockPos, state:IBlockState, player: EntityPlayer, hand:EnumHand, side: EnumFacing, xHit: Float, yHit: Float, zHit: Float): Boolean = {
     if (!world.isRemote) {
+      val stack = player.getHeldItem(hand)
       val bd = (world, pos)
       if (!state.getValue(LIT).asInstanceOf[Boolean] && (stack != null && stack.getItem == Items.GLOWSTONE_DUST)) {
         bd.setState(state.withProperty(LIT, true.asInstanceOf[java.lang.Boolean]))
         bd.update
         bd.tile.asInstanceOf[TileLantern].burnTime = 1500
-        stack.stackSize-=1
+        stack.setCount(stack.getCount - 1)
         return true
       }
     }
@@ -115,7 +112,7 @@ class LanternItem(block: Block) extends RMItemBlock(MOD_ID, BlockDefinitions.LAN
     if (stack.hasTagCompound()) list.asInstanceOf[java.util.List[String]].add("Burning time left: " + (stack.getTagCompound.getInteger("time") / 2) + " seconds")
   }
   @SideOnly(Side.CLIENT)
-  override def getSubItems(item: Item, creativetabs: CreativeTabs, stackList: java.util.List[ItemStack]) {
+  override def getSubItems(item: Item, creativetabs: CreativeTabs, stackList: NonNullList[ItemStack]) {
     val lantern = new ItemStack(item, 1, BlockDefinitions.Lantern.ON)
     lantern.setTagCompound(new NBTTagCompound())
     lantern.getTagCompound.setInteger("time", 1500)

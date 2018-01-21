@@ -16,7 +16,7 @@ import scala.collection.JavaConversions._
 import net.minecraft.item.ItemStack
 import net.minecraft.util.EnumHand
 
-class Mountable(world: World) extends Entity(world) {
+class Mountable(worldIn: World) extends Entity(worldIn) {
   var pos:BlockPos = _
 
   setSize(0.25F, 0.25F)
@@ -35,7 +35,7 @@ class Mountable(world: World) extends Entity(world) {
     if(pos!=null){
       if (world.getBlockState(pos).getBlock != Objs.logseat) setDead()
       if (this.getPassengers.size() > 0 && 
-          worldObj.isRemote && Minecraft.getMinecraft.gameSettings.keyBindSneak.isPressed && 
+          world.isRemote && Minecraft.getMinecraft.gameSettings.keyBindSneak.isPressed &&
           Minecraft.getMinecraft.inGameHasFocus) {
           PacketSender.toServer(new PlayerExitLog(pos.getX, pos.getY, pos.getZ))
           this.getPassengers.get(0).dismountRidingEntity()

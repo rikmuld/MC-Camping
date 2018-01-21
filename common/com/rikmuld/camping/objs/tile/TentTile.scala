@@ -131,9 +131,9 @@ class TileTent extends RMTile with WithTileInventory with ITickable {
   
   private def getExcesChestContends(): ArrayList[ItemStack] = {
     val list = new ArrayList[ItemStack]()
-    for (i <- chests * 5 * 6 until 150 if getStackInSlot(i + 1) != null) {
+    for (i <- chests * 5 * 6 until 150 if !getStackInSlot(i + 1).isEmpty) {
       list.add(getStackInSlot(i + 1))
-      setInventorySlotContents(i + 1, null)
+      setInventorySlotContents(i + 1, ItemStack.EMPTY)
     }
     list
   }
@@ -141,7 +141,7 @@ class TileTent extends RMTile with WithTileInventory with ITickable {
   override def getRenderBoundingBox(): AxisAlignedBB = TileEntity.INFINITE_EXTENT_AABB
   override def getSizeInventory(): Int = 151
   def initalize() {
-    if (!worldObj.isRemote) {
+    if (!world.isRemote) {
       structures = Objs.tentStructure
       for (i <- 0 until 4) {
         tracker(i) = new BoundsTracker(bd.x, bd.y, bd.z, bounds(i))
@@ -192,7 +192,7 @@ class TileTent extends RMTile with WithTileInventory with ITickable {
   def removeBed(): Boolean = {
     if (beds > 0) {
       setContends(beds - 1, BEDS, true, 1)
-      worldObj.dropItemInWorld(getContendsFor(Objs.sleepingBag), bd.x, bd.y, bd.z, new Random())
+      world.dropItemInWorld(getContendsFor(Objs.sleepingBag), bd.x, bd.y, bd.z, new Random())
       return true
     }
     false
@@ -200,7 +200,7 @@ class TileTent extends RMTile with WithTileInventory with ITickable {
   def removeChest(): Boolean = {
     if (chests > 0) {
       setContends(chests - 1, CHEST, true, 1)
-      worldObj.dropItemInWorld(getContendsFor(Blocks.CHEST), bd.x, bd.y, bd.z, new Random())
+      world.dropItemInWorld(getContendsFor(Blocks.CHEST), bd.x, bd.y, bd.z, new Random())
       return true
     }
     false
@@ -208,26 +208,26 @@ class TileTent extends RMTile with WithTileInventory with ITickable {
   def removeLantern(): Boolean = {
     if (lanterns > 0) {
       setContends(lanterns - 1, LANTERN, true, 1)
-      worldObj.dropItemInWorld(getContendsFor(Objs.lantern), bd.x, bd.y, bd.z, new Random())
+      world.dropItemInWorld(getContendsFor(Objs.lantern), bd.x, bd.y, bd.z, new Random())
       return true
     }
     false
   }
   def setColor(color: Int) {
-    if (!worldObj.isRemote) {
+    if (!world.isRemote) {
       this.color = color
       sendTileData(6, true, color)
     }
   }
   def setContends(contendNum: Int, contendId: Int, sendData: Boolean, drop: Int) {
-    if (drop == 1) worldObj.dropItemInWorld(getContendsFor(ALOWED_ITEMS(contendId)), bd.x, bd.y, bd.z, new Random())
-    if (drop == 2) worldObj.dropItemsInWorld(getContends, bd.x, bd.y, bd.z, new Random())
-    if (sendData) sendTileData(1, !worldObj.isRemote, contendNum, contendId, drop)
+    if (drop == 1) world.dropItemInWorld(getContendsFor(ALOWED_ITEMS(contendId)), bd.x, bd.y, bd.z, new Random())
+    if (drop == 2) world.dropItemsInWorld(getContends, bd.x, bd.y, bd.z, new Random())
+    if (sendData) sendTileData(1, !world.isRemote, contendNum, contendId, drop)
     if (contendId == LANTERN) lanterns = contendNum
     if (contendId == CHEST) chests = contendNum
     if (contendId == BEDS) beds = contendNum
     contends = (beds * COST_BED) + (chests * COST_CHEST) + (lanterns * COST_LANTERN)
-    sendTileData(2, !worldObj.isRemote, contends)
+    sendTileData(2, !world.isRemote, contends)
     bd.update
     bd.updateRender
     updateLight
@@ -258,7 +258,7 @@ class TileTent extends RMTile with WithTileInventory with ITickable {
     getWorld.theProfiler.endSection
   }
   def sleep(player: EntityPlayer) {
-    if(!worldObj.isRemote) {
+    if(!world.isRemote) {
       player.addStat(Objs.achBackBasic)
       if (getRotation == 0) bd.south.block.asInstanceOf[TentBounds].sleep(bd.south, player)
       else if (getRotation == 1) bd.west.block.asInstanceOf[TentBounds].sleep(bd.west, player)
@@ -269,25 +269,25 @@ class TileTent extends RMTile with WithTileInventory with ITickable {
     }
   }
   def createStructure {
-    if (!worldObj.isRemote) {
+    if (!world.isRemote) {
       if (isNew) initalize()
-      structures(getRotation).createStructure(worldObj, tracker(getRotation), Objs.tentBounds.getDefaultState.withProperty(TentBounds.FACING, bd.state.getValue(Tent.FACING)))
+      structures(getRotation).createStructure(world, tracker(getRotation), Objs.tentBounds.getDefaultState.withProperty(TentBounds.FACING, bd.state.getValue(Tent.FACING)))
     }
   }
   override def update() {
-    if (!worldObj.isRemote) {
+    if (!world.isRemote) {
       oldTime = time
       if (chestTracker != chests) {
         chestTracker = chests
-        worldObj.dropItemsInWorld(getExcesChestContends, bd.x, bd.y, bd.z, new Random())
+        world.dropItemsInWorld(getExcesChestContends, bd.x, bd.y, bd.z, new Random())
       }
       if (lanternTracker != lanterns) {
         lanternTracker = lanterns
         if (lanterns == 0) {
-          if (getStackInSlot(0) != null) {
-            worldObj.dropItemInWorld(getStackInSlot(0), bd.x, bd.y, bd.z, new Random())
+          if (!getStackInSlot(0).isEmpty) {
+            world.dropItemInWorld(getStackInSlot(0), bd.x, bd.y, bd.z, new Random())
           }
-          setInventorySlotContents(0, null)
+          setInventorySlotContents(0, ItemStack.EMPTY)
         }
       }
       if (needLightUpdate) {
@@ -309,7 +309,7 @@ class TileTent extends RMTile with WithTileInventory with ITickable {
         bd.update
         bd.updateRender
       }
-      if ((time <= 0) && (getStackInSlot(0) != null)) {
+      if ((time <= 0) && (!getStackInSlot(0).isEmpty)) {
         decrStackSize(0, 1)
         time = 1500
         lanternDamage = BlockDefinitions.Lantern.ON

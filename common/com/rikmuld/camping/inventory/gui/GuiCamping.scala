@@ -68,8 +68,8 @@ class GuiCampinginv(var player: EntityPlayer) extends GuiTabbed(player, new Cont
   def setContents(){
     val backpack = this.inventorySlots.asInstanceOf[ContainerCampinv].campinv.getStackInSlot(0)
     
-    hasKnife = (this.inventorySlots.asInstanceOf[ContainerCampinv].campinv.getStackInSlot(1) != null)
-    if(backpack!=null){
+    hasKnife = !this.inventorySlots.asInstanceOf[ContainerCampinv].campinv.getStackInSlot(1).isEmpty
+    if(!backpack.isEmpty){
       hasBackpack = true
       pack = backpack.getItemDamage
     } else hasBackpack = false
@@ -137,7 +137,7 @@ class GuiCampinginv(var player: EntityPlayer) extends GuiTabbed(player, new Cont
     if(id==0){ 
       this.mc.getTextureManager().bindTexture(inventoryTexture)
       this.drawTexturedModalRect(guiLeft + 29, guiTop+7, 7, 7, 164, 72);
-      GuiInventory.drawEntityOnScreen(guiLeft + 51 + 22, guiTop + 75, 30, (guiLeft + 51 + 22 - lastMouseX).asInstanceOf[Float], (guiTop + 75 - 50 - lastMouseY).asInstanceOf[Float], this.mc.thePlayer);
+      GuiInventory.drawEntityOnScreen(guiLeft + 51 + 22, guiTop + 75, 30, (guiLeft + 51 + 22 - lastMouseX).asInstanceOf[Float], (guiTop + 75 - 50 - lastMouseY).asInstanceOf[Float], this.mc.player)
     } else if(id==1){
       if(hasBackpack){
         if(pack==ItemDefinitions.Backpack.RUCKSACK)drawTexturedModalRect(guiLeft+29, guiTop+16, 29, 83, 162, 54)

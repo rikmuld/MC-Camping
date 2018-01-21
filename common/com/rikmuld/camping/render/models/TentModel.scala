@@ -2,7 +2,6 @@ package com.rikmuld.camping.render.models
 
 import com.rikmuld.corerm.client.RMModel
 import com.rikmuld.camping.render.models.TentModel._
-import com.rikmuld.corerm.CoreUtils._
 import scala.collection.mutable.ListBuffer
 
 object TentModel {

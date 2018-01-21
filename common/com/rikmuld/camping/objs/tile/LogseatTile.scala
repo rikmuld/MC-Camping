@@ -17,9 +17,9 @@ class TileLogseat extends RMTile with ITickable {
   override def getRenderBoundingBox(): AxisAlignedBB = new AxisAlignedBB(pos.getX, pos.getY, pos.getZ, pos.getX+ 1, pos.getY + 1, pos.getZ + 1)
   override def update {
     if(mountable==null){
-      mountable = new Mountable(worldObj)
+      mountable = new Mountable(world)
       mountable.setPos(pos)
-      worldObj.spawnEntityInWorld(mountable)
+      world.spawnEntity(mountable)
     }
   }
 }

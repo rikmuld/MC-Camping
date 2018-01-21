@@ -81,15 +81,15 @@ class GuiTent(player: EntityPlayer, tile: IInventory) extends GuiScreen {
     drawCenteredString(fontRendererObj, manage + " " + sleeping, ((width / 2) * 1.25F).toInt + (80 * 1.25F).toInt, (guiTop * 1.25F).toInt + (142 * 1.25F).toInt, 0)
     GL11.glPopMatrix()
     if (isPointInRegion(172, 78, 51, 53, mouseX, mouseY, guiLeft, guiTop) && (tent.beds > 0)) {
-      if (Mouse.isButtonDown(0) && canClick(0)) mc.thePlayer.openGui(RMMod, Objs.guiTentSleep, tent.getWorld, tent.getPos.getX, tent.getPos.getY, tent.getPos.getZ)
+      if (Mouse.isButtonDown(0) && canClick(0)) mc.player.openGui(RMMod, Objs.guiTentSleep.get.get, tent.getWorld, tent.getPos.getX, tent.getPos.getY, tent.getPos.getZ)
       if (!Mouse.isButtonDown(0)) canClick(0) = true
     } else canClick(0) = false
     if (isPointInRegion(102, 78, 51, 53, mouseX, mouseY, guiLeft, guiTop) && (tent.chests > 0)) {
-      if (Mouse.isButtonDown(0) && canClick(1)) PacketSender.toServer(new OpenGui(Objs.guiTentChests, tent.getPos.getX, tent.getPos.getY, tent.getPos.getZ))
+      if (Mouse.isButtonDown(0) && canClick(1)) PacketSender.toServer(new OpenGui(Objs.guiTentChests.get.get, tent.getPos.getX, tent.getPos.getY, tent.getPos.getZ))
       if (!Mouse.isButtonDown(0)) canClick(1) = true
     } else canClick(1) = false
     if (isPointInRegion(32, 78, 51, 53, mouseX, mouseY, guiLeft, guiTop) && (tent.lanterns > 0)) {
-      if (Mouse.isButtonDown(0) && canClick(2)) PacketSender.toServer(new OpenGui(Objs.guiTentLantern, tent.getPos.getX, tent.getPos.getY, tent.getPos.getZ))
+      if (Mouse.isButtonDown(0) && canClick(2)) PacketSender.toServer(new OpenGui(Objs.guiTentLantern.get.get, tent.getPos.getX, tent.getPos.getY, tent.getPos.getZ))
       if (!Mouse.isButtonDown(0)) canClick(2) = true
     } else canClick(2) = false
     super.drawScreen(mouseX, mouseY, partitialTicks)
@@ -110,7 +110,7 @@ class GuiTent(player: EntityPlayer, tile: IInventory) extends GuiScreen {
   override def updateScreen() {
     super.updateScreen()
     checkMc
-    if (!mc.thePlayer.isEntityAlive || mc.thePlayer.isDead) mc.thePlayer.closeScreen()
+    if (!mc.player.isEntityAlive || mc.player.isDead) mc.player.closeScreen()
   }
 }
 
@@ -120,7 +120,7 @@ class GuiTentSleeping(player: EntityPlayer, tile: IInventory) extends GuiScreen 
   val sleep = I18n.translateToLocal("camping.tent.sleep")  
 
   protected override def actionPerformed(button: GuiButton): Unit = button.id match {
-    case 0 => tent.sleep(mc.thePlayer)
+    case 0 => tent.sleep(mc.player)
     case _ => 
   }
   def checkMc = if(Option(mc).isEmpty) mc = Minecraft.getMinecraft
@@ -136,7 +136,7 @@ class GuiTentSleeping(player: EntityPlayer, tile: IInventory) extends GuiScreen 
     drawTexturedModalRect(guiLeft, guiTop, 0, 116, 97, 30)
     if (isPointInRegion(5, 5, 20, 20, mouseX, mouseY, guiLeft, guiTop)) {
       drawTexturedModalRect(guiLeft + 5, guiTop + 5, 75, 0, 20, 20)
-      if (Mouse.isButtonDown(0) && canClick) mc.thePlayer.openGui(RMMod, Objs.guiTent, tent.getWorld, tent.getPos.getX, tent.getPos.getY, tent.getPos.getZ)
+      if (Mouse.isButtonDown(0) && canClick) mc.player.openGui(RMMod, Objs.guiTent.get.get, tent.getWorld, tent.getPos.getX, tent.getPos.getY, tent.getPos.getZ)
       if (!Mouse.isButtonDown(0)) canClick = true
     } else canClick = false
     super.drawScreen(mouseX, mouseY, partitialTicks)
@@ -154,7 +154,7 @@ class GuiTentSleeping(player: EntityPlayer, tile: IInventory) extends GuiScreen 
   override def updateScreen {
     super.updateScreen
     checkMc
-    if (!mc.thePlayer.isEntityAlive || mc.thePlayer.isDead) mc.thePlayer.closeScreen()
+    if (!mc.player.isEntityAlive || mc.player.isDead) mc.player.closeScreen()
   }
 }
 
@@ -174,7 +174,7 @@ class GuiTentLanterns(player: EntityPlayer, inv: IInventory) extends GuiContaine
     drawTexturedModalRect(guiLeft, guiTop + 104, 80, 165, xSize, 91)
     if (isPointInRegion(63 + 15, 8, 20, 20, mouseX, mouseY)) {
       drawTexturedModalRect(guiLeft + 63 + 15, guiTop + 8, 75, 0, 20, 20)
-      if (Mouse.isButtonDown(0) && canClick) mc.thePlayer.openGui(RMMod, Objs.guiTent, tent.getWorld, tent.getPos.getX, tent.getPos.getY, tent.getPos.getZ)
+      if (Mouse.isButtonDown(0) && canClick) mc.player.openGui(RMMod, Objs.guiTent.get.get, tent.getWorld, tent.getPos.getX, tent.getPos.getY, tent.getPos.getZ)
       if (!Mouse.isButtonDown(0)) canClick = true
     } else canClick = false
     val scale = tent.time.getScaledNumber(1500, 22).toInt
@@ -190,23 +190,23 @@ class ContainerTentLanterns(player: EntityPlayer, tile: IInventory) extends RMCo
   this.addSlots(player.inventory, 9, 3, 9, 8, 113)
 
   override def transferStackInSlot(p: EntityPlayer, i: Int): ItemStack = {
-    var itemstack: ItemStack = null
+    var itemstack: ItemStack = ItemStack.EMPTY
     val slot = inventorySlots.get(i).asInstanceOf[Slot]
     if ((slot != null) && slot.getHasStack) {
       val itemstack1 = slot.getStack
       itemstack = itemstack1.copy()
       if (i < 1) {
-        if (!mergeItemStack(itemstack1, 1, this.inventorySlots.size, false)) return null
+        if (!mergeItemStack(itemstack1, 1, this.inventorySlots.size, false)) return ItemStack.EMPTY
       } else {
         if (!(itemstack1.getItem() == Items.GLOWSTONE_DUST && mergeItemStack(itemstack1, 0, 1, true))) {  
           if(i < 10){
-            if(!mergeItemStack(itemstack1, 10, this.inventorySlots.size, false)) return null
+            if(!mergeItemStack(itemstack1, 10, this.inventorySlots.size, false)) return ItemStack.EMPTY
           } else {
-            if(!mergeItemStack(itemstack1, 1, 10, false)) return null
+            if(!mergeItemStack(itemstack1, 1, 10, false)) return ItemStack.EMPTY
           }
         }
       }
-      if (itemstack1.stackSize == 0) slot.putStack(null)
+      if (itemstack1.getCount == 0) slot.putStack(new ItemStack(Items.AIR, 0))
       else slot.onSlotChanged()
     }
     itemstack
@@ -232,7 +232,7 @@ class GuiTentChests(player: EntityPlayer, inv: IInventory) extends GuiContainer(
     drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize)
     if (isPointInRegion(15, 8, 20, 20, mouseX, mouseY)) {
       drawTexturedModalRect(guiLeft + 15, guiTop + 8, 214, 0, 20, 20)
-      if (Mouse.isButtonDown(0) && canClick(0)) mc.thePlayer.openGui(RMMod, Objs.guiTent, tent.getWorld, tent.getPos.getX, tent.getPos.getY, tent.getPos.getZ)
+      if (Mouse.isButtonDown(0) && canClick(0)) mc.player.openGui(RMMod, Objs.guiTent.get.get, tent.getWorld, tent.getPos.getX, tent.getPos.getY, tent.getPos.getZ)
       if (!Mouse.isButtonDown(0)) canClick(0) = true
     } else canClick(0) = false
     if (isPointInRegion(39 + slideState, 12, 15, 12, mouseX, mouseY)) {
@@ -270,23 +270,23 @@ class ContainerTentChests(player: EntityPlayer, tile: IInventory) extends RMCont
   tent.manageSlots()
 
   override def transferStackInSlot(p: EntityPlayer, i: Int): ItemStack = {
-    var itemstack: ItemStack = null
+    var itemstack: ItemStack = ItemStack.EMPTY
     val slot = inventorySlots.get(i).asInstanceOf[Slot]
     if ((slot != null) && slot.getHasStack) {
       val itemstack1 = slot.getStack
       itemstack = itemstack1.copy()
       if (i < tent.getSizeInventory - 1) {
-        if (!mergeItemStack(itemstack1, tent.getSizeInventory - 1, inventorySlots.size, false)) return null
+        if (!mergeItemStack(itemstack1, tent.getSizeInventory - 1, inventorySlots.size, false)) return ItemStack.EMPTY
       } else {
         if (!mergeItemStack(itemstack1, 0, tent.chests * 5 * 6, false)) {
           if(i < tent.getSizeInventory - 1 + 9){
-            if(!mergeItemStack(itemstack1, tent.getSizeInventory - 1 + 9, tent.getSizeInventory - 1 + 9 + 27, false)) return null
+            if(!mergeItemStack(itemstack1, tent.getSizeInventory - 1 + 9, tent.getSizeInventory - 1 + 9 + 27, false)) return ItemStack.EMPTY
           } else {
-            if(!mergeItemStack(itemstack1, tent.getSizeInventory - 1, tent.getSizeInventory - 1 + 9, false)) return null
+            if(!mergeItemStack(itemstack1, tent.getSizeInventory - 1, tent.getSizeInventory - 1 + 9, false)) return ItemStack.EMPTY
           } 
         }
       }
-      if (itemstack1.stackSize == 0) slot.putStack(null)
+      if (itemstack1.getCount == 0) slot.putStack(new ItemStack(Items.AIR, 0))
       else slot.onSlotChanged()
     }
     itemstack

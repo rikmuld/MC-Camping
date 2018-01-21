@@ -47,8 +47,8 @@ object SleepingBag {
 
 class SleepingBag(modId:String, info:ObjInfo) extends RMBlock(modId, info) with WithProperties with WithModel {
   setDefaultState(getStateFromMeta(0))
-    
-  override def getRenderType(state:IBlockState) = EnumBlockRenderType.MODEL 
+
+  override def getRenderType(state:IBlockState) = EnumBlockRenderType.MODEL
   override def getBoundingBox(state:IBlockState, source:IBlockAccess, pos:BlockPos) = new AxisAlignedBB(0, 0, 0, 1, 1f/16f, 1)
   override def getProps = Array(new RMBoolProp(IS_HEAD, 0), new RMBoolProp(IS_OCCUPIED, 1), new RMFacingHorizontalProp(FACING, 2))
   override def onBlockPlacedBy(world:World, pos:BlockPos, state:IBlockState, entity:EntityLivingBase, stack:ItemStack) {
@@ -72,11 +72,11 @@ class SleepingBag(modId:String, info:ObjInfo) extends RMBlock(modId, info) with 
       bd.update
     }
   }
-  override def getCollisionBoundingBox(state:IBlockState, world: World, pos:BlockPos): AxisAlignedBB = null
+  override def getCollisionBoundingBox(state:IBlockState, world: IBlockAccess, pos:BlockPos): AxisAlignedBB = null
   override def canPlaceBlockAt(world: World, pos:BlockPos) = (world, pos).canInstableStand
-  override def neighborChanged(state:IBlockState, world: World, pos:BlockPos, block: Block) = if (!world.isRemote) dropIfCantStay((world, pos))
+  override def neighborChanged(state:IBlockState, world: World, pos:BlockPos, block: Block, fromPos: BlockPos) = if (!world.isRemote) dropIfCantStay((world, pos))
   override def quantityDropped(state:IBlockState, fortune:Int, random:Random) = isHead(state).intValue
-  override def onBlockActivated(world: World, pos:BlockPos, state:IBlockState, player: EntityPlayer, hand:EnumHand, stack:ItemStack, side: EnumFacing, xHit: Float, yHit: Float, zHit: Float): Boolean = {
+  override def onBlockActivated(world: World, pos:BlockPos, state:IBlockState, player: EntityPlayer, hand:EnumHand, side: EnumFacing, xHit: Float, yHit: Float, zHit: Float): Boolean = {
     if(!world.isRemote){
       var bd = (world, pos)
 
@@ -85,11 +85,11 @@ class SleepingBag(modId:String, info:ObjInfo) extends RMBlock(modId, info) with 
         if(bd.block!=this)return true
       }
       
-      if(bd.world.provider.canRespawnHere && bd.world.getBiomeGenForCoords(bd.pos) != Biomes.HELL){ 
+      if(bd.world.provider.canRespawnHere && bd.world.getBiomeForCoordsBody(bd.pos) != Biomes.HELL){
         if(isOccupied(bd.state)){
           val sleepingPlayer = getPlayerInBed((bd.world, bd.pos))
           if(sleepingPlayer != null) {
-            player.addChatComponentMessage(new TextComponentTranslation("tile.bed.occupied", new Object))
+            player.sendMessage(new TextComponentTranslation("tile.bed.occupied", new Object))
             return true
           }
           bd.setState(bd.state.withProperty(IS_OCCUPIED, false.asInstanceOf[java.lang.Boolean]))
@@ -97,8 +97,8 @@ class SleepingBag(modId:String, info:ObjInfo) extends RMBlock(modId, info) with 
         val sleepState = player.trySleep(bd.pos)
         if(sleepState == EntityPlayer.SleepResult.OK)bd.setState(bd.state.withProperty(IS_OCCUPIED, true.asInstanceOf[java.lang.Boolean]), 4)
         else {
-          if(sleepState == EntityPlayer.SleepResult.NOT_POSSIBLE_NOW) player.addChatComponentMessage(new TextComponentTranslation("tile.bed.noSleep", new Object))
-          else if(sleepState == EntityPlayer.SleepResult.NOT_SAFE) player.addChatComponentMessage(new TextComponentTranslation("tile.bed.noSleep", new Object))
+          if(sleepState == EntityPlayer.SleepResult.NOT_POSSIBLE_NOW) player.sendMessage(new TextComponentTranslation("tile.bed.noSleep", new Object))
+          else if(sleepState == EntityPlayer.SleepResult.NOT_SAFE) player.sendMessage(new TextComponentTranslation("tile.bed.noSleep", new Object))
         }
       } else {
         bd.toAir
@@ -113,8 +113,8 @@ class SleepingBag(modId:String, info:ObjInfo) extends RMBlock(modId, info) with 
     
     do {
       if(!players.hasNext)return null
-      sleepingPlayer = players.next.asInstanceOf[EntityPlayer]
-    } while (!sleepingPlayer.isPlayerSleeping || !sleepingPlayer.playerLocation.equals(bd.pos))
+      sleepingPlayer = players.next
+    } while (!sleepingPlayer.isPlayerSleeping || !new BlockPos(sleepingPlayer.posX, sleepingPlayer.posY, sleepingPlayer.posZ).equals(bd.pos))
     
     sleepingPlayer
   }

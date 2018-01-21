@@ -53,7 +53,7 @@ class Hemp(modId:String, info:ObjInfo) extends RMBlock(modId, info) with IPlanta
   override def getProps = Array(new RMIntProp(AGE, 3, 0))
   override def canPlaceBlockAt(world: World, pos:BlockPos): Boolean = canStay((world, pos))
   override def canStay(bd:BlockData): Boolean = ((bd.world, bd.pos.down).block==this && bd.down.state.getValue(AGE) == BlockDefinitions.Hemp.GROWN_BIG_BOTTOM)||bd.down.block.canSustainPlant(bd.state, bd.world, bd.pos.down, EnumFacing.UP, this)
-  override def getCollisionBoundingBox(state:IBlockState, world: World, pos:BlockPos): AxisAlignedBB = new AxisAlignedBB(0, 0, 0, 0, 0, 0)
+  override def getCollisionBoundingBox(state:IBlockState, world: IBlockAccess, pos:BlockPos): AxisAlignedBB = new AxisAlignedBB(0, 0, 0, 0, 0, 0)
   override def getItemDropped(state: IBlockState, random: Random, pInt: Int): Item = Item.getItemFromBlock(this)
   @SideOnly(Side.CLIENT)
   override def getItem(world: World, pos:BlockPos, state:IBlockState): ItemStack = new ItemStack(Item.getItemFromBlock(this))

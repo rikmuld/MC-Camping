@@ -46,7 +46,7 @@ class Logseat(modId:String, info:ObjInfo) extends RMBlockContainer(modId, info) 
   override def createNewTileEntity(world:World, meta:Int):RMTile = new TileLogseat
   override def isWood(world: IBlockAccess, pos:BlockPos): Boolean = true
   override def onBlockPlacedBy(world:World, pos:BlockPos, state:IBlockState, entity:EntityLivingBase, stack:ItemStack) = updateState((world, pos), (entity.facing.getHorizontalIndex & 1) == 0)
-  override def neighborChanged(state:IBlockState, world:World, pos:BlockPos, block:Block) = updateState((world, pos), getTurn((world, pos).state))
+  override def neighborChanged(state:IBlockState, world:World, pos:BlockPos, block:Block, fromPos: BlockPos) = updateState((world, pos), getTurn((world, pos).state))
   def getLong(state:IBlockState):Int = state.getValue(LONG).asInstanceOf[Int]
   def getTurn(state:IBlockState):Boolean = state.getValue(IS_TURNED).asInstanceOf[Boolean]
   def updateState(bd:BlockData, turn:Boolean){
@@ -60,7 +60,7 @@ class Logseat(modId:String, info:ObjInfo) extends RMBlockContainer(modId, info) 
     if(getTurn(state)) new AxisAlignedBB((if(!((long & 2) > 0)) 2f/16f else 0), 0, 5f/16f, 1-(if(!((long & 1) > 0)) 2f/16f else 0), 6f/16f, 1-5f/16f)
     else new AxisAlignedBB(5f/16f, 0, (if(!((long & 1) > 0)) 2f/16f else 0), 1-5f/16f, 6f/16f, 1-(if(!((long & 2) > 0)) 2f/16f else 0))
   }
-  override def onBlockActivated(world: World, pos:BlockPos, state:IBlockState, player: EntityPlayer, hand:EnumHand, stack:ItemStack, side: EnumFacing, xHit: Float, yHit: Float, zHit: Float): Boolean = {
+  override def onBlockActivated(world: World, pos:BlockPos, state:IBlockState, player: EntityPlayer, hand:EnumHand, side: EnumFacing, xHit: Float, yHit: Float, zHit: Float): Boolean = {
     if (!player.isRiding && (new Vec3d(pos.getX + 0.5F, pos.getY + 0.5F, pos.getZ + 0.5F).distanceTo(new Vec3d(player.posX, player.posY, player.posZ)) <= 2.5F)) {
       world.getTileEntity(pos).asInstanceOf[TileLogseat].mountable.tryAddPlayer(player)
     }

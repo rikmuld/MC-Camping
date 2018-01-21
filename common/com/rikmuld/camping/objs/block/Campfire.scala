@@ -37,8 +37,8 @@ import net.minecraftforge.fml.relauncher.SideOnly
 import net.minecraftforge.fml.relauncher.Side
 
 object Campfire {
-  val ON = PropertyBool.create("on");
-  val LIGHT = PropertyInteger.create("light", 0, 15);
+  val ON = PropertyBool.create("on")
+  val LIGHT = PropertyInteger.create("light", 0, 15)
 
   def particleAnimation(bd:BlockData, color:Int, random:Random, flame:Boolean){
     val motionY = (random.nextFloat() / 40F) + 0.025F
@@ -54,10 +54,11 @@ class Campfire(modId:String, info: ObjInfo) extends RMBlockContainer(modId, info
   override def getRenderType(state:IBlockState) = EnumBlockRenderType.MODEL
   override def getBoundingBox(state:IBlockState, source:IBlockAccess, pos:BlockPos): AxisAlignedBB = new AxisAlignedBB(0.125F, 0.0F, 0.125F, 0.875F, 0.125F, 0.875F)
   override def createNewTileEntity(world: World, meta: Int): RMTile = new TileCampfire()
-  override def onBlockActivated(world: World, pos:BlockPos, state:IBlockState, player: EntityPlayer, hand:EnumHand, stack:ItemStack, side: EnumFacing, xHit: Float, yHit: Float, zHit: Float): Boolean = {
+  override def onBlockActivated(world: World, pos:BlockPos, state:IBlockState, player: EntityPlayer, hand:EnumHand, side: EnumFacing, xHit: Float, yHit: Float, zHit: Float): Boolean = {
     val bd = (world, pos)
+    val stack = player.getHeldItem(hand)
     if(!world.isRemote && stack != null && stack.getItem == Items.DYE && bd.tile.asInstanceOf[TileCampfire].addDye(stack)) {
-      stack.stackSize-=1
+      stack.setCount(stack.getCount - 1)
       var data = player.getEntityData
       if(!data.hasKey(NBTInfo.ACHIEVEMENTS))data.setTag(NBTInfo.ACHIEVEMENTS, new NBTTagCompound())
       data = data.getTag(NBTInfo.ACHIEVEMENTS).asInstanceOf[NBTTagCompound]
@@ -85,10 +86,10 @@ class CampfireCook(modId:String, info:ObjInfo) extends RMBlockContainer(modId, i
   }
   def setOn(world:World, pos:BlockPos, on:Boolean) = (world, pos).setState((world, pos).state.withProperty(Campfire.ON, on.asInstanceOf[java.lang.Boolean]))
   override def getProps = Array(new RMBoolProp(Campfire.ON, 0))
-  override def onBlockActivated(world: World, pos:BlockPos, state:IBlockState, player: EntityPlayer, hand:EnumHand, stack:ItemStack, side: EnumFacing, xHit: Float, yHit: Float, zHit: Float): Boolean = {
+  override def onBlockActivated(world: World, pos:BlockPos, state:IBlockState, player: EntityPlayer, hand:EnumHand, side: EnumFacing, xHit: Float, yHit: Float, zHit: Float): Boolean = {
     val bd = (world, pos)
     bd.tile.asInstanceOf[TileCampfireCook].lastPlayer = player
-    super.onBlockActivated(world, pos, state, player, hand, stack, side, xHit, yHit, zHit)
+    super.onBlockActivated(world, pos, state, player, hand, side, xHit, yHit, zHit)
   }
   override def createNewTileEntity(world: World, meta: Int): RMTile = new TileCampfireCook()
   override def getLightValue(state:IBlockState, world: IBlockAccess, pos:BlockPos): Int = if(isOn(world, pos)) 15 else 0
@@ -132,17 +133,18 @@ class CampfireWood(modId:String, info:ObjInfo) extends Campfire(modId, info) wit
   }
   
   override def getLightValue(state:IBlockState, world: IBlockAccess, pos:BlockPos): Int = getLight(world, pos)
-  override def onBlockActivated(world: World, pos:BlockPos, state:IBlockState, player: EntityPlayer, hand:EnumHand, stack:ItemStack, side: EnumFacing, xHit: Float, yHit: Float, zHit: Float): Boolean = {
+  override def onBlockActivated(world: World, pos:BlockPos, state:IBlockState, player: EntityPlayer, hand:EnumHand, side: EnumFacing, xHit: Float, yHit: Float, zHit: Float): Boolean = {
     if(!world.isRemote){
       val bd = (world, pos)
-      
+      val stack = player.getHeldItem(hand)
+
       if(Option(stack).isDefined && stack.getItem == Items.STICK){
         val tile = bd.tile.asInstanceOf[TileCampfireWood]
         tile.tryLid()
       }
     }
     
-    if(!world.isRemote && (world, pos).tile.asInstanceOf[TileCampfireWood].isOn())super.onBlockActivated(world, pos, state, player, hand, stack, side, xHit, yHit, zHit)
+    if(!world.isRemote && (world, pos).tile.asInstanceOf[TileCampfireWood].isOn())super.onBlockActivated(world, pos, state, player, hand, side, xHit, yHit, zHit)
     else true
   }
   override def createNewTileEntity(world: World, meta: Int): RMTile = new TileCampfireWood()
