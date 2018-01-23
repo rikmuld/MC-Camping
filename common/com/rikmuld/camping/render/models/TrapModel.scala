@@ -1,11 +1,8 @@
 package com.rikmuld.camping.render.models
 
-import net.minecraft.client.model.ModelBase
-import net.minecraft.client.model.ModelRenderer
-import net.minecraft.entity.Entity
-import com.rikmuld.corerm.client.RMModel
+import com.rikmuld.corerm.misc.RMModel
 
-class ModelTrapClosed extends RMModel(32, 16) {    
+class ModelTrapClosed extends RMModel(32, 16) {
   addBox("sideHigh1", 0, 0, 7, 1, 1, -3.5F, 20F, 1.5F, 0, 0, 0)
   addBox("sideHigh2", 0, 0, 7, 1, 1, -3.5F, 20F, -2.5F, 0F, 0F, 0F)
   addBox("side1", 0, 0, 1, 1, 3, 3.5F, 23F, -1.5F, 0, 0, 0)

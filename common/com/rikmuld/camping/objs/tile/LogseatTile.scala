@@ -1,13 +1,10 @@
 package com.rikmuld.camping.objs.tile
 
-import com.rikmuld.corerm.objs.RMTile
 import com.rikmuld.camping.objs.entity.Mountable
-import net.minecraft.util.math.AxisAlignedBB
-import net.minecraftforge.fml.relauncher.SideOnly
-import com.rikmuld.camping.objs.entity.Mountable
-import net.minecraftforge.fml.relauncher.Side
-import net.minecraft.world.World
+import com.rikmuld.corerm.tileentity.RMTile
 import net.minecraft.util.ITickable
+import net.minecraft.util.math.AxisAlignedBB
+import net.minecraftforge.fml.relauncher.{Side, SideOnly}
 
 
 class TileLogseat extends RMTile with ITickable {

@@ -1,39 +1,23 @@
 package com.rikmuld.camping.objs.registers
 
-import com.rikmuld.camping.objs.misc.PlayerExitLog
-import com.rikmuld.corerm.RMMod
-import net.minecraftforge.fml.client.registry.ClientRegistry
-import net.minecraft.item.ItemFood
-import net.minecraft.item.crafting.FurnaceRecipes
-import com.rikmuld.camping.objs.misc.ItemsData
-import com.rikmuld.camping.objs.misc.KeyData
-import com.rikmuld.camping.objs.misc.NBTPlayer
-import net.minecraft.item.ItemStack
-import com.rikmuld.camping.objs.misc.PlayerSleepInTent
-import com.rikmuld.corerm.bounds.BoundsData
-import net.minecraftforge.fml.relauncher.SideOnly
-import com.rikmuld.corerm.misc.ModRegister
-import com.rikmuld.camping.objs.misc.MapData
-import com.rikmuld.camping.objs.misc.OpenGui
-import com.rikmuld.camping.misc.CookingEquipment
-import net.minecraftforge.fml.relauncher.Side
+import com.rikmuld.camping.Lib._
+import com.rikmuld.camping.misc.{CookingEquipment, Grill, Pan, Spit}
 import com.rikmuld.camping.objs.ItemDefinitions._
 import com.rikmuld.camping.objs.Objs._
-import com.rikmuld.camping.CampingMod._
-import com.rikmuld.corerm.CoreUtils._
+import com.rikmuld.camping.objs.misc._
+import com.rikmuld.corerm.RMMod
+import com.rikmuld.corerm.features.bounds.{BoundsData, BoundsStructure}
+import com.rikmuld.corerm.misc.ModRegister
+import com.rikmuld.corerm.utils.CoreUtils._
 import net.minecraft.client.settings.KeyBinding
-import com.rikmuld.camping.objs.misc.PotionBleeding
-import com.rikmuld.camping.objs.misc.DamageSourceBleeding
-import com.rikmuld.camping.misc.Pan
-import com.rikmuld.corerm.bounds.BoundsStructure
-import com.rikmuld.camping.misc.Spit
-import net.minecraftforge.common.util.EnumHelper
-import com.rikmuld.camping.misc.Grill
-import com.rikmuld.camping.Lib._
-import net.minecraft.init.Items._
 import net.minecraft.init.Blocks._
+import net.minecraft.init.Items._
+import net.minecraft.item.{ItemFood, ItemStack}
+import net.minecraft.item.crafting.FurnaceRecipes
+import net.minecraftforge.fml.client.registry.ClientRegistry
+import net.minecraftforge.fml.relauncher.{Side, SideOnly}
+
 import scala.collection.JavaConversions._
-import net.minecraft.init.SoundEvents
 
 object ModMisc extends ModRegister {
     @SideOnly(Side.CLIENT)

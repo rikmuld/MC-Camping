@@ -1,92 +1,46 @@
 package com.rikmuld.camping.inventory.objs
 
-import net.minecraft.entity.player.EntityPlayer
-import com.rikmuld.corerm.client.GuiContainerSimple
-import com.rikmuld.corerm.inventory.RMContainerItem
-import com.rikmuld.camping.objs.Objs
-import com.rikmuld.camping.inventory._
-import scala.collection.JavaConversions._
-import net.minecraft.nbt.NBTTagList
-import com.rikmuld.corerm.inventory.SlotNoPickup
-import net.minecraft.item.ItemStack
-import java.util.ArrayList
-
-import net.minecraft.inventory.Slot
-import net.minecraft.nbt.NBTTagCompound
-import com.rikmuld.corerm.inventory.RMInventoryItem
 import com.rikmuld.camping.Lib._
+import com.rikmuld.camping.misc.CookingEquipment._
 import com.rikmuld.camping.objs.ItemDefinitions._
-import com.rikmuld.corerm.CoreUtils._
-import com.rikmuld.camping.misc.CookingEquipment
-import net.minecraft.init.Items
-
-import scala.collection.JavaConversions._
-import scala.collection.mutable.ListBuffer
+import com.rikmuld.camping.objs.Objs
+import com.rikmuld.corerm.inventory.container.ContainerItem
+import com.rikmuld.corerm.inventory.gui.GuiContainerSimple
+import com.rikmuld.corerm.inventory.inventory.InventoryItem
+import com.rikmuld.corerm.utils.CoreUtils._
+import net.minecraft.entity.player.EntityPlayer
+import net.minecraft.item.ItemStack
+import net.minecraft.util.ResourceLocation
   
 class KitGui(player: EntityPlayer) extends GuiContainerSimple(new KitContainer(player)) {
   ySize = 181
 
-  def getTexture: String = TextureInfo.GUI_KIT
-  def getName: String = ""
-  def hasName: Boolean = false
+  override def getTexture: ResourceLocation =
+    new ResourceLocation(TextureInfo.GUI_KIT)
 }
 
-class KitContainer(player: EntityPlayer) extends RMContainerItem(player) {
-  this.addSlots(inv, 0, 1, 5, 44, 16)
-  this.addSlots(inv, 5, 2, 1, 44, 34)
-  this.addSlots(inv, 7, 2, 1, 116, 34)
-  this.addSlots(inv, 9, 1, 5, 44, 70)
+class KitContainer(player: EntityPlayer) extends ContainerItem(player) {
+  override def playerInvY: Int =
+    99
 
-  for (row <- 0 until 9) {
-    if (row == player.inventory.currentItem) addSlotToContainer(new SlotNoPickup(player.inventory, row, 8 + (row * 18), 157))
-    else addSlotToContainer(new Slot(player.inventory, row, 8 + (row * 18), 157))
+  override def addInventorySlots(): Unit = {
+    addSlots(getIInventory, 0, 1, 5, 44, 16)
+    addSlots(getIInventory, 5, 2, 1, 44, 34)
+    addSlots(getIInventory, 7, 2, 1, 116, 34)
+    addSlots(getIInventory, 9, 1, 5, 44, 70)
   }
-  this.addSlots(player.inventory, 9, 3, 9, 8, 99)
 
-  override def getItemInv = new RMInventoryItem(player.inventory.getCurrentItem, player, 14, 1, true)
-  override def getItem = Objs.kit
-  override def transferStackInSlot(p: EntityPlayer, i: Int): ItemStack = {
-    var itemstack: ItemStack = ItemStack.EMPTY
-    var slot = inventorySlots.get(i).asInstanceOf[Slot]
-    if ((slot != null) && slot.getHasStack()) {
-      val itemstack1 = slot.getStack()
-      itemstack = itemstack1.copy()
-      val size = itemstack1.getCount
-      if (i < inv.getSizeInventory()) {
-        if (!mergeItemStack(itemstack1, inv.getSizeInventory(), inventorySlots.size(), false)) return ItemStack.EMPTY
-      } else {
-        if(i < inv.getSizeInventory + 9){
-          if(!mergeItemStack(itemstack1, inv.getSizeInventory + 9, inv.getSizeInventory + 9 + 27, false)) return ItemStack.EMPTY
-        } else {
-          if(!mergeItemStack(itemstack1, inv.getSizeInventory, inv.getSizeInventory + 9, false)) return ItemStack.EMPTY
-        }
-      }
-      if (itemstack1.getCount == 0) slot.putStack(new ItemStack(Items.AIR, 0))
-      else slot.onSlotChanged()
-    }
-    itemstack
-  }
+  override def initIInventory =
+    new InventoryItem(player.inventory.getCurrentItem, 14, 1)
+
   override def onContainerClosed(player: EntityPlayer) {
-    super.onContainerClosed(player)
-    if (!player.world.isRemote) {
-      inv.closeInventory(player)
-      if (player.inventory.getCurrentItem.getItem == Objs.kit) {
-        var items = new ArrayList[ItemStack]
-        val containingItems = inv.asInstanceOf[RMInventoryItem].tag.getTag("Items").asInstanceOf[NBTTagList]
-        for (itemCound <- 0 until containingItems.tagCount) {
-          val stack = new ItemStack(containingItems.getCompoundTagAt(itemCound))
-          if(!stack.isEmpty)items.add(stack)
-        }
+    val equipment = getCookingForRecipe(getIInventory.getContents)
 
-        if (CookingEquipment.getCookingForRecipe(items) != null) {
-          player.setCurrentItem(CookingEquipment.getCookingForRecipe(items).itemInfo)
-        } else if (items.size > 0) {
-          player.setCurrentItem(new ItemStack(Objs.kit, 1, Kit.USELESS))
-        } else {
-          player.setCurrentItem(new ItemStack(Objs.kit, 1, Kit.EMPTY))
-        }
-        inv.asInstanceOf[RMInventoryItem].setNBT(player.inventory.getCurrentItem)
-      }
-    }
+    player.inventory.getCurrentItem.setItemDamage(equipment.map(_.itemInfo.getItemDamage).getOrElse(
+      if(!getIInventory.isEmpty) Kit.USELESS
+      else Kit.EMPTY
+    ))
+
+    super.onContainerClosed(player)
   }
 }

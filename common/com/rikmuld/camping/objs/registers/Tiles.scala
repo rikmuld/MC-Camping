@@ -1,17 +1,9 @@
 package com.rikmuld.camping.objs.registers
 
-import com.rikmuld.camping.objs.tile.TileTent
-import com.rikmuld.camping.objs.tile.TileCampfireCook
-import com.rikmuld.camping.objs.tile.TileTrap
-import com.rikmuld.corerm.bounds.TileBounds
-import net.minecraftforge.fml.common.registry.GameRegistry
-import com.rikmuld.camping.objs.tile.TileCampfireWood
-import com.rikmuld.camping.objs.tile.TileLantern
-import com.rikmuld.camping.objs.tile.TileLight
-import com.rikmuld.camping.objs.tile.TileLogseat
-import com.rikmuld.camping.objs.tile.TileCampfire
 import com.rikmuld.camping.CampingMod._
+import com.rikmuld.camping.objs.tile._
 import com.rikmuld.corerm.misc.ModRegister
+import net.minecraftforge.fml.common.registry.GameRegistry
 
 object ModTiles extends ModRegister {
     override def register {

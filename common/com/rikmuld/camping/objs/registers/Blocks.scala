@@ -1,50 +1,26 @@
 package com.rikmuld.camping.objs.registers
 
 import com.rikmuld.camping.CampingMod._
-import com.rikmuld.camping.objs.ItemDefinitions._
-import com.rikmuld.camping.objs.Objs._
-import com.rikmuld.corerm.CoreUtils._
-import com.rikmuld.camping.objs.block.Campfire
-import com.rikmuld.camping.objs.block.CampfireCook
-import com.rikmuld.camping.objs.block.CampfireWood
-import com.rikmuld.camping.objs.block.Hemp
-import com.rikmuld.camping.objs.block.Lantern
-import com.rikmuld.camping.objs.block.Logseat
-import com.rikmuld.camping.objs.block.SleepingBag
-import com.rikmuld.camping.objs.block.Tent
-import com.rikmuld.camping.objs.block.TentBounds
-import com.rikmuld.camping.objs.block.Trap
-import com.rikmuld.camping.objs.tile.TileCampfire
-import com.rikmuld.camping.objs.tile.TileCampfireCook
-import com.rikmuld.camping.objs.tile.TileLight
-import com.rikmuld.camping.objs.tile.TileTent
-import com.rikmuld.camping.objs.tile.TileTrap
-import com.rikmuld.camping.render.objs.CampfireCookRender
-import com.rikmuld.camping.render.objs.CampfireRender
-import com.rikmuld.camping.render.objs.TentRender
-import com.rikmuld.camping.render.objs.TrapRender
-import com.rikmuld.corerm.misc.ModRegister
-import com.rikmuld.corerm.objs.RMBlockContainer
-import com.rikmuld.corerm.objs.RMTile
-import com.rikmuld.corerm.objs.WithModel
-import net.minecraft.block.state.IBlockState
-import net.minecraft.util.math.AxisAlignedBB
-import net.minecraft.util.math.BlockPos
-import net.minecraft.world.World
-import net.minecraftforge.fml.client.registry.ClientRegistry
-import net.minecraftforge.fml.relauncher.SideOnly
-import net.minecraftforge.fml.relauncher.Side
 import com.rikmuld.camping.objs.BlockDefinitions._
-import com.rikmuld.camping.objs.Objs
+import com.rikmuld.camping.objs.Objs._
+import com.rikmuld.camping.objs.block._
+import com.rikmuld.camping.objs.tile._
+import com.rikmuld.camping.render.objs.{CampfireCookRender, CampfireRender, TentRender, TrapRender}
 import com.rikmuld.corerm.RMMod
+import com.rikmuld.corerm.objs.blocks.{RMBlockContainer, WithModel}
+import com.rikmuld.corerm.tileentity.RMTile
 import net.minecraft.block.Block
-import net.minecraft.init.{Blocks, SoundEvents}
-import net.minecraft.item.{Item, ItemBlock, ItemStack}
-import net.minecraft.world.IBlockAccess
+import net.minecraft.block.state.IBlockState
+import net.minecraft.init.SoundEvents
+import net.minecraft.item.{Item, ItemBlock}
 import net.minecraft.util.EnumBlockRenderType
+import net.minecraft.util.math.{AxisAlignedBB, BlockPos}
+import net.minecraft.world.{IBlockAccess, World}
 import net.minecraftforge.client.event.ModelRegistryEvent
 import net.minecraftforge.common.util.EnumHelper
 import net.minecraftforge.event.RegistryEvent
+import net.minecraftforge.fml.client.registry.ClientRegistry
+import net.minecraftforge.fml.relauncher.{Side, SideOnly}
 
 object ModBlocks {
   var

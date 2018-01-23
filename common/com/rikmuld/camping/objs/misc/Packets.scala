@@ -1,23 +1,19 @@
 package com.rikmuld.camping.objs.misc
 
 import com.rikmuld.camping.CampingMod._
-import com.rikmuld.camping.CampingMod
 import com.rikmuld.camping.EventsC
-import com.rikmuld.camping.EventsS
 import com.rikmuld.camping.Lib._
-import com.rikmuld.camping.objs.Objs
-import com.rikmuld.camping.objs.tile.TileLogseat
+import com.rikmuld.camping.objs.entity.Mountable
 import com.rikmuld.camping.objs.tile.TileTent
 import com.rikmuld.corerm.RMMod
 import com.rikmuld.corerm.network.BasicPacketData
-import com.rikmuld.corerm.objs.WithTileInventory
+import com.rikmuld.corerm.tileentity.WithTileInventory
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.network.PacketBuffer
 import net.minecraft.util.math.BlockPos
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext
-import com.rikmuld.camping.objs.entity.Mountable
 
 class OpenGui(var id: Int) extends BasicPacketData {
   var x: Int = 0

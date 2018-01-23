@@ -1,20 +1,14 @@
 package com.rikmuld.camping.objs.entity
 
+import com.rikmuld.camping.objs.Objs
+import com.rikmuld.camping.objs.misc.PlayerExitLog
+import com.rikmuld.corerm.network.PacketSender
 import net.minecraft.client.Minecraft
 import net.minecraft.entity.Entity
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.nbt.NBTTagCompound
-import net.minecraft.world.World
-import org.lwjgl.input.Keyboard
-import com.rikmuld.camping.objs.Objs
-import net.minecraft.client.settings.GameSettings
-import com.sun.beans.decoder.TrueElementHandler
 import net.minecraft.util.math.BlockPos
-import com.rikmuld.corerm.network.PacketSender
-import com.rikmuld.camping.objs.misc.PlayerExitLog
-import scala.collection.JavaConversions._
-import net.minecraft.item.ItemStack
-import net.minecraft.util.EnumHand
+import net.minecraft.world.World
 
 class Mountable(worldIn: World) extends Entity(worldIn) {
   var pos:BlockPos = _

@@ -1,11 +1,11 @@
 package com.rikmuld.camping.objs.misc
 
-import net.minecraft.util.text.TextComponentString
-import net.minecraft.util.DamageSource
-import net.minecraft.entity.EntityLivingBase
-import net.minecraft.util.text.ITextComponent
-import net.minecraft.entity.player.EntityPlayer
 import java.util.Random
+
+import net.minecraft.entity.EntityLivingBase
+import net.minecraft.entity.player.EntityPlayer
+import net.minecraft.util.DamageSource
+import net.minecraft.util.text.{ITextComponent, TextComponentString}
 
 class DamageSourceBleeding(name: String) extends DamageSource(name) {
   override def getDeathMessage(entity: EntityLivingBase): ITextComponent = {

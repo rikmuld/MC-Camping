@@ -1,14 +1,12 @@
 package com.rikmuld.camping.objs.misc
 
-import net.minecraft.entity.EntityLivingBase
-import net.minecraft.util.ResourceLocation
-import net.minecraft.client.Minecraft
-import net.minecraftforge.fml.relauncher.SideOnly
-import net.minecraft.potion.Potion
-import com.rikmuld.camping.objs.Objs
-import net.minecraftforge.fml.relauncher.Side
 import com.rikmuld.camping.Lib._
-import net.minecraft.potion.PotionEffect
+import com.rikmuld.camping.objs.Objs
+import net.minecraft.client.Minecraft
+import net.minecraft.entity.EntityLivingBase
+import net.minecraft.potion.Potion
+import net.minecraft.util.ResourceLocation
+import net.minecraftforge.fml.relauncher.{Side, SideOnly}
 
 object Potions {
   final val TEXTURE = new ResourceLocation(TextureInfo.SPRITE_POTION)

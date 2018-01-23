@@ -1,29 +1,16 @@
-package com.rikmuld.camping.inventory.gui
+package com.rikmuld.camping.inventory.camping
 
-import net.minecraft.entity.player.EntityPlayer
-import com.rikmuld.corerm.client.GuiContainerSimple
-import com.rikmuld.corerm.inventory.RMContainerItem
-import com.rikmuld.camping.objs.Objs
-import com.rikmuld.camping.inventory._
-import net.minecraft.nbt.NBTTagList
-import com.rikmuld.corerm.inventory.SlotNoPickup
-import net.minecraft.item.ItemStack
-import java.util.ArrayList
-import net.minecraft.inventory.Slot
-import net.minecraft.nbt.NBTTagCompound
-import com.rikmuld.corerm.inventory.RMInventoryItem
+import java.awt.Color
+
 import com.rikmuld.camping.Lib._
-import com.rikmuld.camping.objs.ItemDefinitions._
-import com.rikmuld.corerm.CoreUtils._
-import com.rikmuld.camping.misc.CookingEquipment
 import net.minecraft.block.material.MapColor
 import net.minecraft.client.gui.GuiScreen
+import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.util.ResourceLocation
-import org.lwjgl.opengl.GL11
 import org.lwjgl.BufferUtils
-import org.lwjgl.opengl.GL12
+import org.lwjgl.opengl.{GL11, GL12}
+
 import scala.collection.mutable.HashMap
-import java.awt.Color
 
 class GuiMapHUD extends GuiScreen {
   final val TEX_UTILS = new ResourceLocation(TextureInfo.GUI_UTILS)

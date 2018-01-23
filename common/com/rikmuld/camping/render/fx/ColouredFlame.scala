@@ -1,17 +1,14 @@
 package com.rikmuld.camping.render.fx
 
-import net.minecraft.client.renderer.Tessellator
-import net.minecraft.util.ResourceLocation
-import net.minecraftforge.fml.client.FMLClientHandler
-import org.lwjgl.opengl.GL11
-import net.minecraft.client.Minecraft
-import net.minecraft.world.World
-import net.minecraftforge.fml.relauncher.SideOnly
-import net.minecraftforge.fml.relauncher.Side
 import com.rikmuld.camping.Lib.TextureInfo
-import net.minecraft.entity.Entity
+import net.minecraft.client.Minecraft
 import net.minecraft.client.particle.ParticleFlame
-import net.minecraft.client.renderer.VertexBuffer
+import net.minecraft.client.renderer.{Tessellator, VertexBuffer}
+import net.minecraft.entity.Entity
+import net.minecraft.util.ResourceLocation
+import net.minecraft.world.World
+import net.minecraftforge.fml.relauncher.{Side, SideOnly}
+import org.lwjgl.opengl.GL11
 
 object ColouredFlame {
   final val TEX = new ResourceLocation(TextureInfo.SPRITE_FX)

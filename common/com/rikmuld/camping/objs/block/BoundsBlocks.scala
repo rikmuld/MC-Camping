@@ -1,31 +1,20 @@
 package com.rikmuld.camping.objs.block
 
-import com.rikmuld.corerm.bounds.IBoundsBlock
-import com.rikmuld.corerm.objs.ObjInfo
-import com.rikmuld.corerm.objs.RMBlockContainer
-import com.rikmuld.corerm.objs.WithModel
-import net.minecraft.util.math.BlockPos
-import net.minecraft.entity.player.EntityPlayer
-import net.minecraft.world.IBlockAccess
-import net.minecraft.world.World
-import net.minecraft.entity.Entity
-import com.rikmuld.camping.objs.tile.TileTent
-import com.rikmuld.corerm.bounds.TileBounds
-import net.minecraft.util.EnumFacing
-import com.rikmuld.corerm.misc.WorldBlock._
-import com.rikmuld.corerm.objs.WithProperties
-import net.minecraft.block.properties.PropertyDirection
 import com.google.common.base.Predicate
-import com.rikmuld.corerm.objs.RMFacingHorizontalProp
-import net.minecraft.block.properties.PropertyBool
-import com.rikmuld.corerm.objs.RMBoolProp
-import net.minecraft.block.state.IBlockState
 import com.rikmuld.camping.objs.tile.TileTent
-import net.minecraft.util.text.TextComponentTranslation
-import net.minecraft.world.biome.Biome
-import net.minecraftforge.common.BiomeDictionary
+import com.rikmuld.corerm.features.bounds.{IBoundsBlock, TileBounds}
+import com.rikmuld.corerm.objs.ObjInfo
+import com.rikmuld.corerm.objs.blocks.{RMBlockContainer, RMFacingHorizontalProp, WithModel, WithProperties}
+import com.rikmuld.corerm.utils.WorldBlock._
+import net.minecraft.block.properties.PropertyDirection
+import net.minecraft.block.state.IBlockState
+import net.minecraft.entity.Entity
+import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.init.Biomes
-import net.minecraft.util.EnumBlockRenderType
+import net.minecraft.util.math.BlockPos
+import net.minecraft.util.text.TextComponentTranslation
+import net.minecraft.util.{EnumBlockRenderType, EnumFacing}
+import net.minecraft.world.IBlockAccess
 
 object TentBounds {
   val FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL.asInstanceOf[Predicate[EnumFacing]])

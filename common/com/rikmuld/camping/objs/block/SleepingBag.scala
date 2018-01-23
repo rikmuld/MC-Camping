@@ -1,43 +1,27 @@
 package com.rikmuld.camping.objs.block
 
-import com.rikmuld.corerm.objs.WithInstable
-import com.rikmuld.corerm.objs.ObjInfo
-import com.rikmuld.corerm.objs.RMBlock
-import com.rikmuld.corerm.objs.Properties
-import net.minecraft.block.properties.PropertyBool
-import net.minecraft.block.properties.PropertyEnum
-import net.minecraft.block.properties.PropertyDirection
-import net.minecraft.client.renderer.EnumFaceDirection
-import net.minecraft.util.EnumFacing
-import com.google.common.base.Predicate
-import com.rikmuld.camping.objs.block.SleepingBag._
-import net.minecraft.block.state.IBlockState
-import com.rikmuld.corerm.CoreUtils._
-import com.rikmuld.corerm.objs.WithProperties
-import com.rikmuld.corerm.objs.RMBoolProp
-import com.rikmuld.corerm.objs.RMFacingHorizontalProp
-import net.minecraft.util.math.BlockPos
-import net.minecraft.item.ItemStack
-import net.minecraft.entity.EntityLivingBase
-import net.minecraft.world.World
-import com.rikmuld.corerm.misc.WorldBlock._
-import net.minecraft.init.Blocks
-import com.rikmuld.corerm.objs.WithModel
-import net.minecraft.block.Block
-import net.minecraft.util.math.AxisAlignedBB
 import java.util.Random
-import com.rikmuld.corerm.objs.RMItemBlock
-import com.rikmuld.camping.objs.Objs
+
+import com.google.common.base.Predicate
 import com.rikmuld.camping.CampingMod._
-import net.minecraft.entity.player.EntityPlayer
-import net.minecraft.block.BlockBed
-import net.minecraft.world.IBlockAccess
-import net.minecraft.entity.Entity
 import com.rikmuld.camping.objs.BlockDefinitions
-import net.minecraft.init.Biomes
+import com.rikmuld.camping.objs.block.SleepingBag._
+import com.rikmuld.corerm.objs.ObjInfo
+import com.rikmuld.corerm.objs.blocks._
+import com.rikmuld.corerm.objs.items.RMItemBlock
+import com.rikmuld.corerm.utils.CoreUtils._
+import com.rikmuld.corerm.utils.WorldBlock._
+import net.minecraft.block.Block
+import net.minecraft.block.properties.{PropertyBool, PropertyDirection}
+import net.minecraft.block.state.IBlockState
+import net.minecraft.entity.player.EntityPlayer
+import net.minecraft.entity.{Entity, EntityLivingBase}
+import net.minecraft.init.{Biomes, Blocks}
+import net.minecraft.item.ItemStack
+import net.minecraft.util.math.{AxisAlignedBB, BlockPos}
 import net.minecraft.util.text.TextComponentTranslation
-import net.minecraft.util.EnumHand
-import net.minecraft.util.EnumBlockRenderType
+import net.minecraft.util.{EnumBlockRenderType, EnumFacing, EnumHand}
+import net.minecraft.world.{IBlockAccess, World}
 
 object SleepingBag {
   val IS_HEAD = PropertyBool.create("ishead")

@@ -1,37 +1,28 @@
 package com.rikmuld.camping.objs.tile
 
-import com.rikmuld.corerm.objs.WithTileInventory
-import com.rikmuld.corerm.misc.WorldBlock._
-import com.rikmuld.corerm.CoreUtils._
-import com.rikmuld.corerm.objs.RMTile
-import com.rikmuld.camping.objs.Objs
-import net.minecraft.entity.player.EntityPlayer
+import java.util.{ArrayList, Random}
+
 import com.rikmuld.camping.inventory.SlotState
-import net.minecraft.init.Blocks
-import net.minecraft.block.Block
-import net.minecraft.item.ItemStack
-import java.util.ArrayList
-import net.minecraft.nbt.NBTTagCompound
-import com.rikmuld.camping.objs.tile.TileEntityTent._
-import net.minecraft.util.text.TextComponentString
-import com.rikmuld.corerm.network.PacketSender
-import net.minecraft.tileentity.TileEntity
-import net.minecraft.util.math.AxisAlignedBB
-import net.minecraftforge.fml.relauncher.SideOnly
-import java.util.Random
-import net.minecraftforge.fml.relauncher.Side
-import com.rikmuld.camping.objs.block.Tent
-import net.minecraft.client.renderer.EnumFaceDirection
-import net.minecraft.util.EnumFacing
-import com.rikmuld.corerm.bounds.BoundsTracker
-import com.rikmuld.corerm.bounds.BoundsStructure
-import com.rikmuld.corerm.bounds.Bounds
-import com.rikmuld.corerm.bounds.IBoundsBlock
+import com.rikmuld.camping.objs.{BlockDefinitions, Objs}
+import com.rikmuld.camping.objs.block.{Tent, TentBounds}
 import com.rikmuld.camping.objs.misc.PlayerSleepInTent
-import com.rikmuld.camping.objs.block.TentBounds
-import com.rikmuld.camping.objs.BlockDefinitions
-import com.sun.swing.internal.plaf.metal.resources.metal
-import net.minecraft.util.ITickable
+import com.rikmuld.camping.objs.tile.TileEntityTent._
+import com.rikmuld.corerm.features.bounds.{Bounds, BoundsStructure, BoundsTracker}
+import com.rikmuld.corerm.network.PacketSender
+import com.rikmuld.corerm.tileentity.{RMTile, WithTileInventory}
+import com.rikmuld.corerm.utils.CoreUtils._
+import com.rikmuld.corerm.utils.WorldBlock._
+import net.minecraft.block.Block
+import net.minecraft.block.state.IBlockState
+import net.minecraft.entity.player.EntityPlayer
+import net.minecraft.init.Blocks
+import net.minecraft.item.ItemStack
+import net.minecraft.nbt.NBTTagCompound
+import net.minecraft.tileentity.TileEntity
+import net.minecraft.util.{EnumFacing, ITickable}
+import net.minecraft.util.math.{AxisAlignedBB, BlockPos}
+import net.minecraft.world.World
+import net.minecraftforge.fml.relauncher.{Side, SideOnly}
 
 object TileEntityTent {
   var bounds: Array[Bounds] = Array(new Bounds(-0.5F, 0, 0, 1.5F, 1.5F, 3), new Bounds(-2, 0, -0.5F, 1, 1.5F, 1.5F), new Bounds(-0.5F, 0, -2, 1.5F, 1.5F, 1), new Bounds(0, 0, -0.5F, 3, 1.5F, 1.5F))
@@ -97,6 +88,7 @@ class TileTent extends RMTile with WithTileInventory with ITickable {
     if (((contends + COST_LANTERN) <= MAX_COST) && (lanterns < MAX_LANTERNS)) {
       time = if (stack.hasTagCompound()) stack.getTagCompound.getInteger("time") else -1
       lanternDamage = if (time > 0) BlockDefinitions.Lantern.ON else BlockDefinitions.Lantern.OFF
+
       sendTileData(3, true, lanternDamage)
       setContends(lanterns + 1, LANTERN, true, 0)
       return true
@@ -228,9 +220,12 @@ class TileTent extends RMTile with WithTileInventory with ITickable {
     if (contendId == BEDS) beds = contendNum
     contends = (beds * COST_BED) + (chests * COST_CHEST) + (lanterns * COST_LANTERN)
     sendTileData(2, !world.isRemote, contends)
+
+    if(lanterns > 0 && time > 0) Objs.tent.asInstanceOf[Tent].setOn(getWorld, pos, true)
+    else Objs.tent.asInstanceOf[Tent].setOn(getWorld, pos, false)
+
     bd.update
     bd.updateRender
-    updateLight
   }
   def setSlideState(slideState: Int) {
     slide = slideState
@@ -243,19 +238,15 @@ class TileTent extends RMTile with WithTileInventory with ITickable {
     if (id == 1) setContends(data(0), data(1), false, data(2))
     else if (id == 2) {
       contends = data(0)
-      updateLight
     }
-    else if (id == 3) lanternDamage = data(0)
+    else if (id == 3) {
+      lanternDamage = data(0)
+    }
     else if (id == 4) {
       slide = data(0)
       manageSlots()
     } else if (id == 5) time = data(0)
     else if (id == 6) color = data(0)
-  }
-  def updateLight() {
-    getWorld.theProfiler.startSection("checkLight")
-    getWorld.checkLight(pos)
-    getWorld.theProfiler.endSection
   }
   def sleep(player: EntityPlayer) {
     if(!world.isRemote) {
@@ -290,12 +281,6 @@ class TileTent extends RMTile with WithTileInventory with ITickable {
           setInventorySlotContents(0, ItemStack.EMPTY)
         }
       }
-      if (needLightUpdate) {
-        bd.update
-        bd.updateRender
-        if (lanternUpdateTick == 0) needLightUpdate = false
-        else if (lanternUpdateTick > 0) lanternUpdateTick -= 1
-      }
       if (isNew) initalize()
       updateTick += 1
       if ((updateTick > 10) && (time > 0)) {
@@ -305,6 +290,7 @@ class TileTent extends RMTile with WithTileInventory with ITickable {
       if (time == 0) {
         time = -1
         lanternDamage = BlockDefinitions.Lantern.OFF
+        Objs.tent.asInstanceOf[Tent].setOn(getWorld, pos, true)
         sendTileData(3, true, lanternDamage)
         bd.update
         bd.updateRender
@@ -314,12 +300,16 @@ class TileTent extends RMTile with WithTileInventory with ITickable {
         time = 1500
         lanternDamage = BlockDefinitions.Lantern.ON
         sendTileData(3, true, lanternDamage)
+        Objs.tent.asInstanceOf[Tent].setOn(getWorld, pos, true)
         bd.update
         bd.updateRender
       }
       if (time != oldTime) sendTileData(5, true, time)
     }
   }
+
+  override def shouldRefresh(world:World, pos:BlockPos, oldState:IBlockState, newState:IBlockState) =
+    oldState.getBlock != newState.getBlock
   override def writeToNBT(tag: NBTTagCompound):NBTTagCompound = {
     tag.setInteger("contends", contends)
     tag.setBoolean("occupied", occupied)

@@ -1,48 +1,30 @@
 package com.rikmuld.camping.objs.block
 
-import scala.collection.JavaConversions._
 import com.rikmuld.camping.CampingMod._
-import com.rikmuld.camping.Lib._
-import com.rikmuld.camping.Utils._
-import com.rikmuld.camping.objs.Objs
-import com.rikmuld.camping.objs.BlockDefinitions._
-import com.rikmuld.camping.objs.BlockDefinitions
-import com.rikmuld.camping.objs.ItemDefinitions._
 import com.rikmuld.camping.objs.block.Lantern._
 import com.rikmuld.camping.objs.tile.TileLantern
-import com.rikmuld.corerm.CoreUtils._
-import com.rikmuld.corerm.misc.WorldBlock._
+import com.rikmuld.camping.objs.{BlockDefinitions, Objs}
 import com.rikmuld.corerm.objs.ObjInfo
-import com.rikmuld.corerm.objs.RMBlockContainer
-import com.rikmuld.corerm.objs.RMItemBlock
-import com.rikmuld.corerm.objs.RMTile
-import com.rikmuld.corerm.objs.WithInstable
-import com.rikmuld.corerm.objs.WithModel
+import com.rikmuld.corerm.objs.blocks._
+import com.rikmuld.corerm.objs.items.RMItemBlock
+import com.rikmuld.corerm.tileentity.RMTile
+import com.rikmuld.corerm.utils.CoreUtils._
+import com.rikmuld.corerm.utils.WorldBlock._
 import net.minecraft.block.Block
-import net.minecraft.block.properties.PropertyEnum
+import net.minecraft.block.properties.PropertyBool
 import net.minecraft.block.state.IBlockState
 import net.minecraft.creativetab.CreativeTabs
+import net.minecraft.entity.EntityLivingBase
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.init.Items
-import net.minecraft.item.Item
-import net.minecraft.item.ItemBlock
-import net.minecraft.item.ItemStack
+import net.minecraft.item.{Item, ItemStack}
 import net.minecraft.nbt.NBTTagCompound
-import net.minecraft.tileentity.TileEntity
-import net.minecraft.util.math.BlockPos
 import net.minecraft.util._
-import net.minecraft.world.IBlockAccess
-import net.minecraft.world.World
-import net.minecraftforge.fml.relauncher.SideOnly
-import net.minecraftforge.fml.relauncher.Side
-import net.minecraft.block.properties.IProperty
-import net.minecraft.init.Blocks
-import net.minecraft.block.properties.PropertyBool
-import com.sun.org.apache.xalan.internal.xsltc.compiler.WithParam
-import com.rikmuld.corerm.objs.WithProperties
-import com.rikmuld.corerm.objs.RMBoolProp
-import net.minecraft.entity.EntityLivingBase
-import net.minecraft.util.math.AxisAlignedBB
+import net.minecraft.util.math.{AxisAlignedBB, BlockPos}
+import net.minecraft.world.{IBlockAccess, World}
+import net.minecraftforge.fml.relauncher.{Side, SideOnly}
+
+import scala.collection.JavaConversions._
 
 object Lantern {
   val LIT = PropertyBool.create("lit")

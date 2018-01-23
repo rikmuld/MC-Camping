@@ -1,18 +1,16 @@
 package com.rikmuld.camping.objs
 
-import net.minecraft.util.DamageSource
+import com.rikmuld.camping.misc.CookingEquipment
+import com.rikmuld.corerm.features.bounds.BoundsStructure
+import com.rikmuld.corerm.objs.blocks.RMCoreBlock
+import com.rikmuld.corerm.objs.items.RMCoreItem
+import com.rikmuld.corerm.utils.DataContainer
 import net.minecraft.client.settings.KeyBinding
-import net.minecraft.stats.Achievement
-import com.rikmuld.corerm.objs.RMCoreItem
-import com.rikmuld.corerm.bounds.BoundsStructure
-import com.rikmuld.corerm.objs.RMCoreBlock
 import net.minecraft.creativetab.CreativeTabs
 import net.minecraft.item.ItemArmor.ArmorMaterial
-import net.minecraft.inventory.ContainerBrewingStand.Potion
-import com.rikmuld.camping.misc.CookingEquipment
-import com.rikmuld.corerm.misc.DataContainer
 import net.minecraft.potion.Potion
-import net.minecraft.util.SoundEvent
+import net.minecraft.stats.Achievement
+import net.minecraft.util.{DamageSource, SoundEvent}
 
 object Objs {
   var tab:CreativeTabs = _

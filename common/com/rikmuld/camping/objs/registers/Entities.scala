@@ -1,31 +1,19 @@
 package com.rikmuld.camping.objs.registers
 
-import com.rikmuld.camping.objs.entity.FoxRenderer
-import com.rikmuld.camping.objs.entity.BearRenderer
-import net.minecraftforge.fml.common.registry.GameRegistry
-import com.rikmuld.corerm.CoreUtils
-import com.rikmuld.camping.objs.entity.Fox
-import com.rikmuld.camping.objs.entity.Bear
-import com.rikmuld.camping.render.models.FoxModel
-import net.minecraftforge.fml.client.registry.{IRenderFactory, RenderingRegistry}
-import net.minecraftforge.fml.common.registry.EntityRegistry
-import com.rikmuld.camping.render.models.BearModel
-import net.minecraft.entity.EntityList
-import com.rikmuld.camping.objs.entity.CamperRender
 import com.rikmuld.camping.CampingMod
-import com.rikmuld.camping.objs.entity.Camper
-import net.minecraftforge.common.BiomeDictionary
-import net.minecraftforge.fml.relauncher.SideOnly
-import com.rikmuld.corerm.misc.ModRegister
-import net.minecraft.entity.Entity
-import com.rikmuld.camping.world.WorldGenerator
-import net.minecraftforge.common.BiomeDictionary.Type
-import net.minecraft.entity.EnumCreatureType
-import net.minecraftforge.fml.relauncher.Side
-import com.rikmuld.camping.Lib._
 import com.rikmuld.camping.CampingMod._
+import com.rikmuld.camping.Lib._
+import com.rikmuld.camping.objs.entity._
+import com.rikmuld.camping.world.WorldGenerator
+import com.rikmuld.corerm.misc.ModRegister
 import net.minecraft.client.renderer.entity.{Render, RenderManager}
+import net.minecraft.entity.{Entity, EnumCreatureType}
 import net.minecraft.util.ResourceLocation
+import net.minecraftforge.common.BiomeDictionary
+import net.minecraftforge.common.BiomeDictionary.Type
+import net.minecraftforge.fml.client.registry.{IRenderFactory, RenderingRegistry}
+import net.minecraftforge.fml.common.registry.{EntityRegistry, GameRegistry}
+import net.minecraftforge.fml.relauncher.{Side, SideOnly}
 
 import scala.collection.JavaConversions._
 

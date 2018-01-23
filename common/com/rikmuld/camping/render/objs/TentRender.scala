@@ -1,18 +1,15 @@
 package com.rikmuld.camping.render.objs
 
-import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer
-import com.rikmuld.camping.objs.Objs
-import net.minecraft.util.ResourceLocation
-import net.minecraft.tileentity.TileEntity
-import org.lwjgl.opengl.GL11
-import net.minecraft.client.Minecraft
-import net.minecraft.client.renderer.ItemRenderer
-import org.lwjgl.opengl.GL12
-import net.minecraft.item.ItemStack
-import com.rikmuld.camping.render.models.TentModel
 import com.rikmuld.camping.Lib._
-import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType
+import com.rikmuld.camping.objs.Objs
 import com.rikmuld.camping.objs.tile.TileTent
+import com.rikmuld.camping.render.models.TentModel
+import net.minecraft.client.Minecraft
+import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType
+import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer
+import net.minecraft.item.ItemStack
+import net.minecraft.util.ResourceLocation
+import org.lwjgl.opengl.{GL11, GL12}
 
 object TentRender {
   final val MODEL = new TentModel

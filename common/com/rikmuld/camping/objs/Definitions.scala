@@ -1,16 +1,11 @@
 package com.rikmuld.camping.objs
 
-import com.rikmuld.camping.objs.misc.Tab
+import com.rikmuld.camping.Lib._
+import com.rikmuld.camping.objs.Objs._
+import com.rikmuld.camping.objs.block.{LanternItem, SleepingBagItem, TentItem}
 import com.rikmuld.corerm.objs.ObjInfo
 import com.rikmuld.corerm.objs.Properties._
-import com.rikmuld.camping.objs.Objs._
-import com.rikmuld.camping.CampingMod._
-import com.rikmuld.camping.Lib._
-import com.rikmuld.camping.objs.block.LanternItem
-import com.rikmuld.camping.objs.block.TentItem
-import com.rikmuld.camping.objs.block.SleepingBagItem
 import net.minecraft.block.material.Material
-import net.minecraft.block.Block
 import net.minecraft.init.SoundEvents
 import net.minecraft.inventory.EntityEquipmentSlot
 

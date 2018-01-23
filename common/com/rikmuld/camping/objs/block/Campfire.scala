@@ -1,40 +1,25 @@
 package com.rikmuld.camping.objs.block
 
-import java.util.ArrayList
-import java.util.Random
+import java.util.{ArrayList, Random}
+
 import com.rikmuld.camping.CampingMod.proxy
 import com.rikmuld.camping.Lib.NBTInfo
 import com.rikmuld.camping.objs.Objs
-import com.rikmuld.camping.objs.tile.TileCampfire
-import com.rikmuld.camping.objs.tile.TileCampfireCook
-import com.rikmuld.camping.objs.tile.TileCampfireWood
-import com.rikmuld.corerm.misc.WorldBlock.BlockData
-import com.rikmuld.corerm.misc.WorldBlock.IMBlockData
+import com.rikmuld.camping.objs.tile.{TileCampfire, TileCampfireCook, TileCampfireWood}
 import com.rikmuld.corerm.objs.ObjInfo
-import com.rikmuld.corerm.objs.RMBlockContainer
-import com.rikmuld.corerm.objs.RMBoolProp
-import com.rikmuld.corerm.objs.RMIntProp
-import com.rikmuld.corerm.objs.RMTile
-import com.rikmuld.corerm.objs.WithInstable
-import com.rikmuld.corerm.objs.WithModel
-import com.rikmuld.corerm.objs.WithProperties
-import net.minecraft.block.properties.PropertyBool
-import net.minecraft.block.properties.PropertyInteger
+import com.rikmuld.corerm.objs.blocks._
+import com.rikmuld.corerm.tileentity.RMTile
+import com.rikmuld.corerm.utils.WorldBlock.{BlockData, IMBlockData}
+import net.minecraft.block.properties.{PropertyBool, PropertyInteger}
 import net.minecraft.block.state.IBlockState
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.init.Items
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
-import net.minecraft.util.EnumBlockRenderType
-import net.minecraft.util.EnumFacing
-import net.minecraft.util.EnumHand
-import net.minecraft.util.EnumParticleTypes
-import net.minecraft.util.math.AxisAlignedBB
-import net.minecraft.util.math.BlockPos
-import net.minecraft.world.IBlockAccess
-import net.minecraft.world.World
-import net.minecraftforge.fml.relauncher.SideOnly
-import net.minecraftforge.fml.relauncher.Side
+import net.minecraft.util.math.{AxisAlignedBB, BlockPos}
+import net.minecraft.util.{EnumBlockRenderType, EnumFacing, EnumHand, EnumParticleTypes}
+import net.minecraft.world.{IBlockAccess, World}
+import net.minecraftforge.fml.relauncher.{Side, SideOnly}
 
 object Campfire {
   val ON = PropertyBool.create("on")

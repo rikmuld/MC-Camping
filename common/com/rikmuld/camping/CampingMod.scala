@@ -1,41 +1,21 @@
 package com.rikmuld.camping
 
-import scala.collection.mutable.ListBuffer
 import com.rikmuld.camping.CampingMod._
-import com.rikmuld.camping.Lib._
-import com.rikmuld.camping.objs.Objs
+import com.rikmuld.camping.objs.registers._
 import com.rikmuld.corerm.misc.ModRegister
-import com.rikmuld.corerm.objs.ObjInfo
-import com.rikmuld.corerm.objs.Properties._
-import net.minecraftforge.common.config.Configuration
-import net.minecraftforge.fml.common.Mod
-import net.minecraftforge.fml.common.event.FMLInitializationEvent
-import net.minecraftforge.fml.common.event.FMLPostInitializationEvent
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent
-import net.minecraftforge.fml.relauncher.Side
-import net.minecraftforge.fml.common.Mod.EventHandler
-import net.minecraft.client.settings.KeyBinding
-import org.lwjgl.input.Keyboard
-import net.minecraftforge.fml.client.registry.ClientRegistry
-import net.minecraftforge.fml.common.FMLCommonHandler
-import net.minecraftforge.common.MinecraftForge
-import net.minecraftforge.fml.common.SidedProxy
-import net.minecraftforge.fml.relauncher.SideOnly
-import com.rikmuld.camping.objs.registers.ModAchievements
-import com.rikmuld.camping.objs.registers.ModGuis
-import com.rikmuld.camping.objs.registers.ModBlocks
-import com.rikmuld.camping.objs.registers.ModRecipes
-import com.rikmuld.camping.objs.registers.ModItems
-import com.rikmuld.camping.objs.registers.ModEntities
-import com.rikmuld.camping.objs.registers.ModTiles
-import com.rikmuld.camping.objs.registers.ModMisc
-import com.rikmuld.camping.objs.registers.ModSounds
-import com.rikmuld.corerm.RMMod
 import net.minecraft.block.Block
 import net.minecraft.item.Item
 import net.minecraftforge.client.event.ModelRegistryEvent
+import net.minecraftforge.common.config.Configuration
 import net.minecraftforge.event.RegistryEvent
+import net.minecraftforge.fml.common.Mod.EventHandler
+import net.minecraftforge.fml.common.{Mod, SidedProxy}
+import net.minecraftforge.fml.common.event.{FMLInitializationEvent, FMLPostInitializationEvent, FMLPreInitializationEvent}
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
+import net.minecraftforge.fml.relauncher.Side
+import org.lwjgl.input.Keyboard
+
+import scala.collection.mutable.ListBuffer
 
 @Mod.EventBusSubscriber@Mod(modid = MOD_ID, name = MOD_NAME, version = MOD_VERSION, dependencies = MOD_DEPENDENCIES, modLanguage = MOD_LANUAGE, guiFactory = MOD_GUIFACTORY)
 object CampingMod {
@@ -171,12 +151,14 @@ object Lib {
     final val MODEL_LOCATION = MOD_ID + ":textures/models/"
     final val SPRITE_LOCATION = MOD_ID + ":textures/sprite/"
     final val MC_LOCATION = "minecraft:textures/"
+    final val MC_ITEM_LOCATION = "minecraft:items/"
     final val MC_GUI_LOCATION = MC_LOCATION + "gui/"
   
     final val SPRITE_FX = SPRITE_LOCATION + "fx.png"
     final val SPRITE_POTION = SPRITE_LOCATION + "potion.png"
 
     final val MC_INVENTORY = MC_GUI_LOCATION + "inventory.png"
+    final val MC_INVENTORY_SHIELD = MC_ITEM_LOCATION + "empty_armor_slot_shield"
 
     final val GUI_CAMPINV_BACK = GUI_LOCATION + "camping_backpack.png"
     final val GUI_CAMPINV_TOOL = GUI_LOCATION + "camping_tool.png"

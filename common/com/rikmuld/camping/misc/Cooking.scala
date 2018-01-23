@@ -1,24 +1,23 @@
 package com.rikmuld.camping.misc
 
-import java.util.HashMap
+import java.util.{ArrayList, HashMap}
+
+import com.rikmuld.camping.CampingMod
+import com.rikmuld.camping.Lib._
+import com.rikmuld.camping.inventory.objs.GuiCampfireCook
+import com.rikmuld.camping.objs.ItemDefinitions._
+import com.rikmuld.camping.objs.Objs
+import com.rikmuld.corerm.misc.AbstractBox
 import net.minecraft.client.Minecraft
-import net.minecraft.client.renderer.ItemRenderer
+import net.minecraft.client.renderer.{ItemRenderer, Tessellator}
+import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType
 import net.minecraft.entity.EntityLivingBase
 import net.minecraft.item.ItemStack
-import java.util.ArrayList
-import java.util.Arrays
-import net.minecraft.client.renderer.Tessellator
 import net.minecraft.util.ResourceLocation
 import org.lwjgl.opengl.GL11
-import scala.collection.mutable.ListBuffer
-import com.rikmuld.corerm.misc.AbstractBox
-import com.rikmuld.camping.objs.Objs
-import com.rikmuld.camping.objs.ItemDefinitions._
-import com.rikmuld.camping.Lib._
-import com.rikmuld.camping.CampingMod
-import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType
-import com.rikmuld.camping.inventory.objs.GuiCampfireCook
+
 import scala.collection.JavaConversions._
+import scala.collection.mutable.ListBuffer
 
 abstract class CookingEquipment(var cookTime: Int, var maxFood: Int, var itemInfo: ItemStack) {
   var slots: Array[Array[Int]] = Array.ofDim[Int](2, maxFood)
@@ -64,7 +63,7 @@ object CookingEquipment {
     equipmentRecipes.put(key, equipment)
   }
   def getCooking(item: ItemStack): CookingEquipment = equipment.keySet.find(_.isItemEqual(item)).map(equipment.get(_)).getOrElse(null)
-  def getCookingForRecipe(items: ArrayList[ItemStack]): CookingEquipment = {
+  def getCookingForRecipe(items: Seq[ItemStack]): Option[CookingEquipment] = {
     var i = 0
     var flag = false
     for (list <- equipmentRecipes.keySet) {
@@ -82,7 +81,7 @@ object CookingEquipment {
       }
       if (!flag) i += 1
     }
-    if (i < 3 && flag) equipmentRecipes.values().toArray()(i).asInstanceOf[CookingEquipment] else null
+    if (i < 3 && flag) Some(equipmentRecipes.values().toArray()(i).asInstanceOf[CookingEquipment]) else None
   }
 }
 

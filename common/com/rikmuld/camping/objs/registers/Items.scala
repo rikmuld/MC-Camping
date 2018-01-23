@@ -1,22 +1,18 @@
 package com.rikmuld.camping.objs.registers
 
-import com.rikmuld.camping.objs.Objs._
 import com.rikmuld.camping.CampingMod._
 import com.rikmuld.camping.objs.ItemDefinitions._
-import net.minecraft.util.math.BlockPos
+import com.rikmuld.camping.objs.Objs._
 import com.rikmuld.camping.objs.item.Kit
-import net.minecraft.entity.player.EntityPlayer
-import com.rikmuld.corerm.objs.RMItemArmor
-import com.rikmuld.corerm.objs.RMItemFood
-import com.rikmuld.corerm.CoreUtils._
 import com.rikmuld.corerm.RMMod
-import net.minecraft.util.EnumFacing
-import com.rikmuld.corerm.objs.RMItem
+import com.rikmuld.corerm.objs.items.{RMItem, RMItemArmor, RMItemFood}
+import com.rikmuld.corerm.utils.CoreUtils._
+import com.rikmuld.corerm.utils.Rotation
+import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.{Item, ItemStack}
+import net.minecraft.util.{EnumActionResult, EnumFacing, EnumHand}
+import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
-import com.rikmuld.corerm.misc.Rotation
-import net.minecraft.util.EnumHand
-import net.minecraft.util.EnumActionResult
 import net.minecraftforge.client.event.ModelRegistryEvent
 import net.minecraftforge.event.RegistryEvent
 

@@ -1,15 +1,14 @@
-package com.rikmuld.camping.inventory.gui
+package com.rikmuld.camping.inventory.camping
 
-import org.lwjgl.opengl.GL11
+import com.rikmuld.camping.CampingMod
+import com.rikmuld.camping.Lib._
+import com.rikmuld.corerm.features.tabbed.ButtonWithTab
 import net.minecraft.client.Minecraft
 import net.minecraft.client.gui.GuiButton
+import net.minecraft.client.renderer.OpenGlHelper
 import net.minecraft.item.ItemStack
 import net.minecraft.util.ResourceLocation
-import net.minecraft.client.renderer.OpenGlHelper
-import com.rikmuld.camping.Lib._
-import com.rikmuld.camping.CampingMod
-import com.rikmuld.camping.objs.Objs
-import com.rikmuld.corerm.tabbed.ButtonWithTab
+import org.lwjgl.opengl.GL11
 
 class ButtonItem(id:Int, x:Int, y:Int, stack:ItemStack) extends GuiButton(id, x, y, 16, 16, "") {
   val render = Minecraft.getMinecraft.getRenderItem
@@ -30,18 +29,4 @@ class ButtonItem(id:Int, x:Int, y:Int, stack:ItemStack) extends GuiButton(id, x,
   }
 }
 
-class ButtonCampinv(gui:GuiCampinginv, id:Int, x:Int, y:Int, width:Int, height:Int, imgId:Int) extends GuiButton(id, x, y, width, height, "") with ButtonWithTab {
-  setTab(0, 3)
-  enabled = CampingMod.config.prmInv!=id
-  
-  val imgW = 27
-  val imgH = 16
-  final val tex = new ResourceLocation(TextureInfo.GUI_CAMPINV)
-
-  override def drawButton(mc:Minecraft, mouseX:Int, mouseY:Int){
-    super.drawButton(mc, mouseX, mouseY)
-    mc.renderEngine.bindTexture(tex)
-    if(visible)drawTexturedModalRect(xPosition+(width-27)/2, yPosition+(height-16)/2, imgW*imgId, 220, imgW, imgH)
-  }
-  def drawHoverd(mouseX:Int, mouseY:Int) = if(this.getHoverState(hovered)==2)gui.drawHoverdButton(id, mouseX, mouseY)
-}
+class ButtonTabbed(i:Int, xPos:Int, yPos:Int, w:Int, h:Int, val left: Int, val top: Int) extends GuiButton(i, xPos, yPos, w, h, "") with ButtonWithTab

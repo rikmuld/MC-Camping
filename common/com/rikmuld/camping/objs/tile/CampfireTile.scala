@@ -1,37 +1,30 @@
 package com.rikmuld.camping.objs.tile
 
-import com.rikmuld.corerm.objs.RMTile
+import java.util.{ArrayList, Random}
+
 import com.rikmuld.camping.CampingMod._
-import com.rikmuld.corerm.objs.WithTileInventory
-import net.minecraft.entity.EntityLivingBase
-import net.minecraft.nbt.NBTTagCompound
-import net.minecraft.potion.PotionEffect
-import net.minecraftforge.fml.relauncher.SideOnly
-import java.util.Random
-import java.util.ArrayList
-import net.minecraftforge.fml.relauncher.Side
-import com.rikmuld.corerm.misc.WorldBlock._
-import com.rikmuld.corerm.CoreUtils._
-import scala.collection.JavaConversions._
-import com.rikmuld.camping.objs.Objs
-import com.rikmuld.corerm.network.PacketSender
-import com.rikmuld.camping.inventory.SlotCooking
-import com.rikmuld.corerm.CoreUtils._
-import net.minecraft.item.ItemStack
-import com.rikmuld.camping.misc.CookingEquipment
-import com.rikmuld.camping.objs.ItemDefinitions
-import com.rikmuld.camping.objs.misc.ItemsData
-import net.minecraft.entity.player.EntityPlayer
 import com.rikmuld.camping.Lib.NBTInfo
-import com.rikmuld.camping.objs.block.CampfireCook
+import com.rikmuld.camping.inventory.SlotCooking
+import com.rikmuld.camping.misc.CookingEquipment
+import com.rikmuld.camping.objs.{ItemDefinitions, Objs}
+import com.rikmuld.camping.objs.block.{CampfireCook, CampfireWood}
+import com.rikmuld.camping.objs.misc.ItemsData
+import com.rikmuld.corerm.network.PacketSender
+import com.rikmuld.corerm.tileentity.{RMTile, WithTileInventory}
+import com.rikmuld.corerm.utils.CoreUtils._
+import com.rikmuld.corerm.utils.WorldBlock._
 import net.minecraft.block.state.IBlockState
-import net.minecraft.world.World
-import com.rikmuld.camping.objs.block.CampfireWood
+import net.minecraft.entity.EntityLivingBase
+import net.minecraft.entity.player.EntityPlayer
+import net.minecraft.item.ItemStack
+import net.minecraft.nbt.NBTTagCompound
+import net.minecraft.potion.{Potion, PotionEffect}
 import net.minecraft.util.ITickable
-import net.minecraft.util.math.BlockPos
-import net.minecraft.util.math.AxisAlignedBB
-import com.rikmuld.camping.objs.misc.Potions
-import net.minecraft.potion.Potion
+import net.minecraft.util.math.{AxisAlignedBB, BlockPos}
+import net.minecraft.world.World
+import net.minecraftforge.fml.relauncher.{Side, SideOnly}
+
+import scala.collection.JavaConversions._
 
 class TileCampfire extends RMTile with ITickable {
   var color: Int = 16
@@ -213,7 +206,7 @@ class TileCampfireCook extends RMTile with WithTileInventory with ITickable with
   var cookProgress: Array[Int] = new Array[Int](10)
   var oldCookProgress: Array[Int] = new Array[Int](10)
   var equipment: CookingEquipment = _
-  var slots: ArrayList[SlotCooking] = _
+  var slots: Seq[SlotCooking] = _
   var lastPlayer:EntityPlayer = _
   
   for (i <- 0 until 20) {
@@ -229,6 +222,9 @@ class TileCampfireCook extends RMTile with WithTileInventory with ITickable with
   override def roastResult(item:ItemStack) = new ItemStack(Objs.marshmallow)
   override def roastSpeed(item:ItemStack) = ((Math.log10((100*fuel)/maxFeul + 1) + 0.25)/2).toFloat
   override def roastTime(item:ItemStack):Int = 150
+
+  def getEquipment: Option[CookingEquipment] =
+    Option(equipment)
 
   private def cookFood() {
     if (equipment != null) {
@@ -261,17 +257,29 @@ class TileCampfireCook extends RMTile with WithTileInventory with ITickable with
   def getScaledcookProgress(maxPixels: Int, foodNum: Int): Float = ((cookProgress(foodNum).toFloat + 1) / equipment.cookTime) * maxPixels
   override def getSizeInventory(): Int = 12
   def manageCookingEquipment() {
+    var flag = false
     if ((equipment == null) && (!getStackInSlot(1).isEmpty)) equipment = CookingEquipment.getCooking(getStackInSlot(1))
-    else if ((equipment != null) && (getStackInSlot(1).isEmpty)) equipment = null
-    if (slots != null) {
-      if (equipment != null) {
-        for (i <- 0 until equipment.maxFood if !slots.get(i).active) slots.get(i).activate(equipment.slots(0)(i), equipment.slots(1)(i), equipment, this)
+    else if (equipment != null){
+      if(getStackInSlot(1).isEmpty){
+        equipment = null
+      } else {
+        val newEquip = CookingEquipment.getCooking(getStackInSlot(1))
+        if(newEquip != equipment){
+          flag = true
+          equipment = newEquip
+        }
       }
-      if (equipment == null) {
+    }
+
+    if (slots != null) {
+      if (equipment == null || flag) {
         for (i <- 0 until 10 if slots.get(i).active) {
           slots.get(i).deActivate()
           if (!slots.get(i).getStack.isEmpty) bd.world.dropItemInWorld(slots.get(i).getStack, bd.x, bd.y, bd.z, new Random())
         }
+      }
+      if (equipment != null) {
+        for (i <- 0 until equipment.maxFood if !slots.get(i).active) slots.get(i).activate(equipment.slots(0)(i), equipment.slots(1)(i), equipment, this)
       }
     }
   }
@@ -294,7 +302,9 @@ class TileCampfireCook extends RMTile with WithTileInventory with ITickable with
     
     for (i <- 0 until coals.length; j <- 0 until coals(i).length) coals(i)(j) = tag.getFloat("coals" + i + j)
   }
-  def setSlots(slots: ArrayList[SlotCooking]) = this.slots = slots
+  def setSlots(newSlots: Seq[SlotCooking]) =
+    slots = newSlots
+
   override def setTileData(id: Int, data: Array[Int]) {
     if (id == 0) fuel = data(0)
     if (id == 1) cookProgress(data(1)) = data(0)
@@ -314,6 +324,7 @@ class TileCampfireCook extends RMTile with WithTileInventory with ITickable with
       }
     }
   }
+
   def checkCampfireAch(player:EntityPlayer){
     var data = player.getEntityData
     if(!data.hasKey(NBTInfo.ACHIEVEMENTS))data.setTag(NBTInfo.ACHIEVEMENTS, new NBTTagCompound())

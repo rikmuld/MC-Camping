@@ -1,15 +1,13 @@
 package com.rikmuld.camping.objs.misc
 
-import net.minecraft.creativetab.CreativeTabs
-import net.minecraft.item.ItemStack
 import com.rikmuld.camping.objs.Objs._
+import net.minecraft.creativetab.CreativeTabs
+import net.minecraft.init.Items
+import net.minecraft.item.{ItemMonsterPlacer, ItemStack}
+import net.minecraft.util.{NonNullList, ResourceLocation}
+import net.minecraftforge.fml.relauncher.{Side, SideOnly}
 
 import scala.collection.mutable.ListBuffer
-import net.minecraft.init.Items
-import net.minecraftforge.fml.relauncher.SideOnly
-import net.minecraftforge.fml.relauncher.Side
-import net.minecraft.item.ItemMonsterPlacer
-import net.minecraft.util.{NonNullList, ResourceLocation}
 
 object TabData {
   val eggIds = new ListBuffer[ResourceLocation]

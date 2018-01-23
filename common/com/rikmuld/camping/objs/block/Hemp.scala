@@ -1,45 +1,25 @@
 package com.rikmuld.camping.objs.block
 
-import java.util.ArrayList
 import java.util.Random
-import net.minecraft.block.Block
-import net.minecraft.block.material.Material
-import net.minecraft.init.Blocks
-import net.minecraft.item.Item
-import net.minecraft.item.ItemStack
-import net.minecraft.util.math.AxisAlignedBB
-import net.minecraft.world.IBlockAccess
-import net.minecraft.world.World
-import net.minecraftforge.common.EnumPlantType
-import net.minecraftforge.common.IPlantable
-import com.rikmuld.camping.objs.Objs
-import net.minecraftforge.fml.relauncher.SideOnly
-import com.rikmuld.corerm.objs.RMBlock
-import java.io.ObjectInput
-import com.rikmuld.corerm.objs.ObjInfo
-import com.rikmuld.camping.objs.Objs
-import com.rikmuld.corerm.objs.ObjInfo
-import com.rikmuld.corerm.objs.RMBlock
-import net.minecraftforge.fml.relauncher.Side
-import com.rikmuld.corerm.objs.WithModel
+
 import com.rikmuld.camping.CampingMod._
-import net.minecraft.block.BlockReed
-import net.minecraft.util.math.BlockPos
-import com.rikmuld.corerm.misc.WorldBlock._
-import net.minecraft.util.EnumFacing
-import com.rikmuld.corerm.objs.WithInstable
-import net.minecraft.block.state.IBlockState
-import scala.collection.JavaConversions._
-import net.minecraft.block.properties.PropertyInteger
 import com.rikmuld.camping.objs.BlockDefinitions
-import com.rikmuld.corerm.objs.RMItemBlock
-import net.minecraft.entity.player.EntityPlayer
-import com.sun.org.apache.bcel.internal.generic.GETSTATIC
-import com.rikmuld.corerm.objs.RMIntProp
 import com.rikmuld.camping.objs.block.Hemp._
-import com.rikmuld.corerm.objs.WithProperties
-import net.minecraft.util.BlockRenderLayer
-import net.minecraft.util.EnumBlockRenderType
+import com.rikmuld.corerm.objs.ObjInfo
+import com.rikmuld.corerm.objs.blocks._
+import com.rikmuld.corerm.utils.WorldBlock._
+import net.minecraft.block.material.Material
+import net.minecraft.block.properties.PropertyInteger
+import net.minecraft.block.state.IBlockState
+import net.minecraft.init.Blocks
+import net.minecraft.item.{Item, ItemStack}
+import net.minecraft.util.math.{AxisAlignedBB, BlockPos}
+import net.minecraft.util.{BlockRenderLayer, EnumBlockRenderType, EnumFacing}
+import net.minecraft.world.{IBlockAccess, World}
+import net.minecraftforge.common.{EnumPlantType, IPlantable}
+import net.minecraftforge.fml.relauncher.{Side, SideOnly}
+
+import scala.collection.JavaConversions._
 
 object Hemp {
   val AGE = PropertyInteger.create("age", 0, 5);

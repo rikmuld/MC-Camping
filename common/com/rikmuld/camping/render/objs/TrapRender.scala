@@ -1,20 +1,14 @@
 package com.rikmuld.camping.render.objs
 
-import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer
-import com.rikmuld.camping.objs.Objs
-import net.minecraft.util.ResourceLocation
-import net.minecraft.tileentity.TileEntity
-import org.lwjgl.opengl.GL11
+import com.rikmuld.camping.Lib._
+import com.rikmuld.camping.objs.tile.TileTrap
+import com.rikmuld.camping.render.models.{ModelTrapClosed, ModelTrapOpen}
 import net.minecraft.client.Minecraft
 import net.minecraft.client.renderer.ItemRenderer
-import org.lwjgl.opengl.GL12
-import net.minecraft.item.ItemStack
-import com.rikmuld.camping.objs.tile.TileTrap
-import com.rikmuld.camping.render.models.ModelTrapOpen
-import com.rikmuld.camping.Lib._
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType
-import com.rikmuld.camping.render.models.ModelTrapClosed
-import net.minecraft.entity.Entity
+import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer
+import net.minecraft.util.ResourceLocation
+import org.lwjgl.opengl.{GL11, GL12}
 
 object TrapRender {
   final val OPEN = new ModelTrapOpen

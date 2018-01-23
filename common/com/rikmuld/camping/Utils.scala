@@ -1,47 +1,31 @@
 package com.rikmuld.camping
 
 import java.util.ArrayList
-import java.util.Random
-import net.minecraft.block.Block
-import net.minecraft.entity.EntityList
-import net.minecraft.entity.item.EntityItem
-import net.minecraft.entity.player.EntityPlayer
-import net.minecraft.entity.player.EntityPlayerMP
-import net.minecraft.init.Blocks
-import net.minecraft.init.Items
-import net.minecraft.inventory.Container
-import net.minecraft.inventory.IInventory
-import net.minecraft.inventory.Slot
-import net.minecraft.item.Item
-import net.minecraft.item.ItemStack
-import net.minecraft.nbt.NBTTagCompound
-import net.minecraft.nbt.NBTTagList
-import net.minecraft.util.math.MathHelper
-import net.minecraft.util.math.Vec3d
-import net.minecraft.world.World
-import net.minecraft.world.storage.MapData
-import net.minecraftforge.oredict.OreDictionary
-import scala.collection.JavaConversions._
-import net.minecraftforge.common.util.Constants
-import com.rikmuld.corerm.CoreUtils._
-import com.rikmuld.camping.objs.Objs
-import com.rikmuld.camping.objs.BlockDefinitions._
-import com.rikmuld.camping.objs.BlockDefinitions
+
 import com.rikmuld.camping.Lib._
-import com.rikmuld.camping.objs.ItemDefinitions._
-import net.minecraft.block.properties.IProperty
-import net.minecraft.block.state.IBlockState
+import com.rikmuld.camping.objs.BlockDefinitions._
+import com.rikmuld.camping.objs.{BlockDefinitions, Objs}
+import com.rikmuld.corerm.utils.CoreUtils._
+import net.minecraft.entity.player.EntityPlayer
+import net.minecraft.init.Items
+import net.minecraft.item.{Item, ItemStack}
+import net.minecraft.nbt.NBTTagCompound
+import net.minecraft.world.storage.MapData
+import net.minecraftforge.common.util.Constants
+
+import scala.collection.JavaConversions._
 
 object Utils {
   implicit class CampingUtils(player: EntityPlayer) {
+    //same as the readitems in inventorytag, generalize
     def loadCampInvItemsFromNBT(): ArrayList[ItemStack] = {
       val tag = player.getEntityData.getCompoundTag(NBTInfo.INV_CAMPING)
       if (tag == null) return null
       val stacks = new ArrayList[ItemStack]()
-      val inventory = tag.getTagList("Items", Constants.NBT.TAG_COMPOUND)
+      val inventory = tag.getTagList("items", Constants.NBT.TAG_COMPOUND)
       for (i <- 0 until inventory.tagCount()) {
         val Slots = inventory.getCompoundTagAt(i).asInstanceOf[NBTTagCompound]
-        Slots.getByte("Slot")
+        Slots.getByte("slotIndex")
         stacks.add(new ItemStack(Slots))
       }
       stacks
@@ -50,10 +34,10 @@ object Utils {
       val tag = player.getEntityData.getCompoundTag(NBTInfo.INV_CAMPING)
       if (tag == null) return null
       val slots = new ArrayList[Byte]()
-      val inventory = tag.getTagList("Items", Constants.NBT.TAG_COMPOUND)
+      val inventory = tag.getTagList("items", Constants.NBT.TAG_COMPOUND)
       for (i <- 0 until inventory.tagCount()) {
         val Slots = inventory.getCompoundTagAt(i).asInstanceOf[NBTTagCompound]
-        slots.add(Slots.getByte("Slot"))
+        slots.add(Slots.getByte("slotIndex"))
       }
       slots
     }

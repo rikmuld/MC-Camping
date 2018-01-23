@@ -1,26 +1,15 @@
 package com.rikmuld.camping.objs.block
 
-import com.rikmuld.corerm.objs.RMBlockContainer
-import com.rikmuld.corerm.objs.WithInstable
-import com.rikmuld.corerm.objs.WithModel
-import com.rikmuld.corerm.objs.ObjInfo
-import com.rikmuld.corerm.objs.WithProperties
-import net.minecraft.block.properties.PropertyBool
-import com.rikmuld.corerm.objs.RMBoolProp
-import net.minecraft.util.math.BlockPos
-import net.minecraft.util.math.AxisAlignedBB
-import net.minecraft.block.state.IBlockState
-import net.minecraft.world.World
-import net.minecraft.world.IBlockAccess
 import com.rikmuld.camping.objs.tile.TileTrap
-import com.rikmuld.corerm.objs.RMTile
+import com.rikmuld.corerm.objs.ObjInfo
+import com.rikmuld.corerm.objs.blocks.{RMBlockContainer, WithInstable, WithModel}
+import com.rikmuld.corerm.tileentity.RMTile
+import com.rikmuld.corerm.utils.WorldBlock._
+import net.minecraft.block.state.IBlockState
 import net.minecraft.entity.player.EntityPlayer
-import net.minecraft.client.renderer.EnumFaceDirection
-import com.rikmuld.camping.CampingMod
-import net.minecraft.util.EnumFacing
-import com.rikmuld.corerm.misc.WorldBlock._
-import net.minecraft.util.EnumHand
-import net.minecraft.item.ItemStack
+import net.minecraft.util.math.{AxisAlignedBB, BlockPos}
+import net.minecraft.util.{EnumFacing, EnumHand}
+import net.minecraft.world.{IBlockAccess, World}
 
 class Trap(modId:String, info:ObjInfo) extends RMBlockContainer(modId, info) with WithInstable with WithModel {
   setDefaultState(getStateFromMeta(0))

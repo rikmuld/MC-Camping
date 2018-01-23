@@ -1,20 +1,15 @@
 package com.rikmuld.camping.render.objs
 
-import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer
-import com.rikmuld.camping.objs.Objs
-import net.minecraft.util.ResourceLocation
-import net.minecraft.tileentity.TileEntity
-import org.lwjgl.opengl.GL11
+import java.util.Random
+
+import com.rikmuld.camping.objs.tile.{TileCampfire, TileCampfireCook}
 import net.minecraft.client.Minecraft
 import net.minecraft.client.renderer.ItemRenderer
-import org.lwjgl.opengl.GL12
-import net.minecraft.item.ItemStack
-import net.minecraft.init.Items
-import java.util.Random
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType
-import com.rikmuld.camping.objs.tile.TileCampfire
-import com.rikmuld.camping.Lib.TextureInfo
-import com.rikmuld.camping.objs.tile.TileCampfireCook
+import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer
+import net.minecraft.init.Items
+import net.minecraft.item.ItemStack
+import org.lwjgl.opengl.{GL11, GL12}
 
 class CampfireRender extends TileEntitySpecialRenderer[TileCampfire] {
   var renderer: ItemRenderer = Minecraft.getMinecraft.getItemRenderer

@@ -1,26 +1,21 @@
 package com.rikmuld.camping.objs.item
 
-import com.rikmuld.corerm.objs.ObjInfo
+import com.rikmuld.camping.objs.ItemDefinitions._
 import com.rikmuld.camping.objs.Objs
-import net.minecraft.nbt.NBTTagList
-import net.minecraft.nbt.NBTTagCompound
-import net.minecraft.entity.player.EntityPlayer
-import com.rikmuld.corerm.objs.RMItem
+import com.rikmuld.corerm.Lib._
+import com.rikmuld.corerm.objs.PropType._
+import com.rikmuld.corerm.objs.items.RMItem
+import com.rikmuld.corerm.objs.{ObjInfo, Properties}
 import net.minecraft.creativetab.CreativeTabs
-import net.minecraft.item.ItemStack
-import net.minecraft.init.Blocks
-import net.minecraft.init.Items
-import net.minecraftforge.fml.relauncher.SideOnly
+import net.minecraft.entity.player.EntityPlayer
+import net.minecraft.init.{Blocks, Items}
+import net.minecraft.item.{Item, ItemStack}
+import net.minecraft.nbt.{NBTTagCompound, NBTTagList}
+import net.minecraft.util.NonNullList
+import net.minecraftforge.fml.relauncher.{Side, SideOnly}
+import org.lwjgl.input.Keyboard
 
 import scala.collection.mutable.HashMap
-import net.minecraft.item.Item
-import net.minecraftforge.fml.relauncher.Side
-import org.lwjgl.input.Keyboard
-import com.rikmuld.camping.objs.ItemDefinitions._
-import com.rikmuld.corerm.objs.Properties
-import com.rikmuld.corerm.objs.PropType._
-import com.rikmuld.corerm.Lib._
-import net.minecraft.util.NonNullList
 
 class Kit(modId:String, info:ObjInfo) extends RMItem(modId, info) {
   override def addInformation(stack: ItemStack, player: EntityPlayer, list: java.util.List[String], par4: Boolean) {
@@ -28,7 +23,7 @@ class Kit(modId:String, info:ObjInfo) extends RMItem(modId, info) {
       list.clear()
       list.asInstanceOf[java.util.List[String]].add("This kit contains:")
       val itemMap = new HashMap[String, Integer]()
-      val containingItems = stack.getTagCompound.getTag("Items").asInstanceOf[NBTTagList]
+      val containingItems = stack.getTagCompound.getTag("items").asInstanceOf[NBTTagList]
       for (itemCound <- 0 until containingItems.tagCount()) {
         val item = new ItemStack(containingItems.getCompoundTagAt(itemCound))
         if (!itemMap.contains(item.getDisplayName)) itemMap(item.getDisplayName) = 1
@@ -53,12 +48,12 @@ class Kit(modId:String, info:ObjInfo) extends RMItem(modId, info) {
       val inventory = new NBTTagList()
       for (slot <- 0 until inventoryContents(meta - 1).length if inventoryContents(meta - 1)(slot) != null) {
         val Slots = new NBTTagCompound()
-        Slots.setByte("Slot", slot.toByte)
+        Slots.setByte("slotIndex", slot.toByte)
         inventoryContents(meta - 1)(slot).writeToNBT(Slots)
         inventory.appendTag(Slots)
       }
       stack.setTagCompound(new NBTTagCompound())
-      stack.getTagCompound.setTag("Items", inventory)
+      stack.getTagCompound.setTag("items", inventory)
       list.asInstanceOf[java.util.List[ItemStack]].add(stack)
     }
   } 

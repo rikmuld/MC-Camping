@@ -3,21 +3,16 @@ package com.rikmuld.camping.world
 import java.util.Random
 
 import com.rikmuld.camping.CampingMod
-import com.rikmuld.camping.objs.Objs
-import com.rikmuld.camping.objs.ItemDefinitions._
-import com.rikmuld.camping.objs.BlockDefinitions
+import com.rikmuld.camping.objs.{BlockDefinitions, Objs}
 import com.rikmuld.camping.objs.block.Hemp
-import com.rikmuld.camping.objs.entity.Camper
-import com.rikmuld.camping.objs.entity.Campsite
-import com.rikmuld.camping.objs.tile.TileEntityTent
-import com.rikmuld.camping.objs.tile.TileTent
-import com.rikmuld.corerm.misc.WorldBlock.BlockData
-import com.rikmuld.corerm.misc.WorldBlock.IMBlockData
-import com.rikmuld.corerm.objs.WithInstable
+import com.rikmuld.camping.objs.entity.{Camper, Campsite}
+import com.rikmuld.camping.objs.tile.{TileEntityTent, TileTent}
+import com.rikmuld.corerm.objs.blocks.WithInstable
+import com.rikmuld.corerm.utils.WorldBlock.{BlockData, IMBlockData}
 import net.minecraft.block.material.Material
 import net.minecraft.init.Blocks
-import net.minecraft.world.World
 import net.minecraft.util.math.BlockPos
+import net.minecraft.world.World
 
 class HempGen extends net.minecraft.world.gen.feature.WorldGenerator {
   override def generate(world: World, random: Random, pos: BlockPos): Boolean = {

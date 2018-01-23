@@ -1,43 +1,24 @@
 package com.rikmuld.camping.objs.entity
 
-import org.lwjgl.opengl.GL11
 import com.google.common.base.Predicate
-import com.rikmuld.camping.CampingMod._
 import com.rikmuld.camping.CampingMod
 import com.rikmuld.camping.Lib._
 import com.rikmuld.camping.objs.ItemDefinitions._
 import com.rikmuld.camping.objs.Objs._
-import com.rikmuld.camping.objs.Objs
 import com.rikmuld.camping.render.models.FoxModel
-import com.rikmuld.corerm.CoreUtils._
-import net.minecraft.client.Minecraft
-import net.minecraft.client.model.ModelBase
+import com.rikmuld.corerm.utils.CoreUtils._
 import net.minecraft.client.renderer.entity.{RenderLiving, RenderManager}
-import net.minecraft.entity.Entity
-import net.minecraft.entity.EntityAgeable
-import net.minecraft.entity.EntityLiving
-import net.minecraft.entity.EntityLivingBase
-import net.minecraft.entity.SharedMonsterAttributes
-import net.minecraft.entity.ai.EntityAIAttackMelee
-import net.minecraft.entity.ai.EntityAIAvoidEntity
-import net.minecraft.entity.ai.EntityAILeapAtTarget
-import net.minecraft.entity.ai.EntityAINearestAttackableTarget
-import net.minecraft.entity.ai.EntityAISwimming
-import net.minecraft.entity.ai.EntityAITempt
-import net.minecraft.entity.ai.EntityAIWander
-import net.minecraft.entity.ai.EntityAIWatchClosest
-import net.minecraft.entity.passive.EntityAnimal
-import net.minecraft.entity.passive.EntityChicken
+import net.minecraft.entity.{Entity, EntityAgeable, EntityLivingBase, SharedMonsterAttributes}
+import net.minecraft.entity.ai._
+import net.minecraft.entity.passive.{EntityAnimal, EntityChicken}
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.init.Items
 import net.minecraft.item.ItemStack
 import net.minecraft.pathfinding.PathNavigateGround
-import net.minecraft.util.DamageSource
-import net.minecraft.util.ResourceLocation
+import net.minecraft.util.{DamageSource, ResourceLocation, SoundEvent}
 import net.minecraft.world.World
-import net.minecraftforge.fml.relauncher.SideOnly
-import net.minecraftforge.fml.relauncher.Side
-import net.minecraft.util.SoundEvent
+import net.minecraftforge.fml.relauncher.{Side, SideOnly}
+import org.lwjgl.opengl.GL11
 
 class Fox(worldIn: World) extends EntityAnimal(worldIn) {
 

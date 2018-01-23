@@ -1,15 +1,14 @@
 package com.rikmuld.camping.world
 
-import net.minecraft.world.chunk.IChunkProvider
-import net.minecraft.world.World
 import java.util.Random
+
+import com.rikmuld.camping.CampingMod._
+import net.minecraft.util.math.BlockPos
+import net.minecraft.world.World
+import net.minecraft.world.biome.Biome.TempCategory
+import net.minecraft.world.chunk.{IChunkGenerator, IChunkProvider}
 import net.minecraftforge.common.BiomeDictionary
 import net.minecraftforge.fml.common.IWorldGenerator
-import com.rikmuld.camping.objs.Objs
-import com.rikmuld.camping.CampingMod._
-import net.minecraft.world.biome.Biome.TempCategory
-import net.minecraft.util.math.BlockPos
-import net.minecraft.world.chunk.IChunkGenerator
 
 class WorldGenerator extends IWorldGenerator {
   val hemp = new HempGen

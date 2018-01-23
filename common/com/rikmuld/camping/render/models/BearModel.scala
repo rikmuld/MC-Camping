@@ -1,12 +1,9 @@
 package com.rikmuld.camping.render.models
 
-import net.minecraft.client.model.ModelBase
-import net.minecraft.client.model.ModelRenderer
+import com.rikmuld.corerm.misc.RMModel
 import net.minecraft.entity.Entity
-import org.lwjgl.opengl.GL11
-import com.rikmuld.corerm.client.RMModel
-import com.rikmuld.camping.objs.entity.Bear
 import net.minecraft.util.math.MathHelper
+import org.lwjgl.opengl.GL11
 
 object BearModel {
   final val LEG_1 = "leg1"

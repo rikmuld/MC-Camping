@@ -1,77 +1,48 @@
 package com.rikmuld.camping
 
-import java.util.ArrayList
-import java.util.Random
-import java.util.UUID
+import java.util.{ArrayList, Random, UUID}
 
-import scala.collection.JavaConversions._
 import com.rikmuld.camping.CampingMod._
 import com.rikmuld.camping.Lib._
 import com.rikmuld.camping.Utils._
-import com.rikmuld.corerm.CoreUtils._
-import com.rikmuld.camping.inventory.container.InventoryCampinv
-import com.rikmuld.camping.inventory.gui.ButtonItem
-import com.rikmuld.camping.inventory.gui.GuiMapHUD
+import com.rikmuld.camping.inventory.camping.{ButtonItem, GuiMapHUD, InventoryCamping}
 import com.rikmuld.camping.objs.BlockDefinitions._
 import com.rikmuld.camping.objs.ItemDefinitions._
 import com.rikmuld.camping.objs.Objs
-import com.rikmuld.camping.objs.block.Hemp
-import com.rikmuld.camping.objs.block.Tent
+import com.rikmuld.camping.objs.block.{Hemp, Tent}
 import com.rikmuld.camping.objs.entity.Mountable
-import com.rikmuld.camping.objs.misc.KeyData
-import com.rikmuld.camping.objs.misc.MapData
-import com.rikmuld.camping.objs.misc.NBTPlayer
-import com.rikmuld.camping.objs.misc.OpenGui
-import com.rikmuld.camping.objs.tile.Roaster
-import com.rikmuld.camping.objs.tile.TileTrap
+import com.rikmuld.camping.objs.misc.{KeyData, MapData, NBTPlayer, OpenGui}
+import com.rikmuld.camping.objs.tile.{Roaster, TileTrap}
 import com.rikmuld.corerm.RMMod
-import com.rikmuld.corerm.misc.WorldBlock._
 import com.rikmuld.corerm.network.PacketSender
-import net.minecraft.block.Block
+import com.rikmuld.corerm.utils.CoreUtils._
+import com.rikmuld.corerm.utils.WorldBlock._
 import net.minecraft.client.Minecraft
-import net.minecraft.client.gui.GuiButton
-import net.minecraft.client.gui.GuiChat
-import net.minecraft.client.gui.GuiScreen
-import net.minecraft.client.gui.inventory.GuiContainer
-import net.minecraft.client.gui.inventory.GuiInventory
+import net.minecraft.client.gui.{GuiButton, GuiChat, GuiScreen}
+import net.minecraft.client.gui.inventory.{GuiContainer, GuiInventory}
 import net.minecraft.entity.SharedMonsterAttributes
 import net.minecraft.entity.ai.attributes.AttributeModifier
-import net.minecraft.entity.player.EntityPlayer
-import net.minecraft.entity.player.EntityPlayerMP
-import net.minecraft.init.Blocks
-import net.minecraft.init.Items
-import net.minecraft.item.Item
-import net.minecraft.item.ItemArmor
-import net.minecraft.item.ItemStack
+import net.minecraft.entity.player.{EntityPlayer, EntityPlayerMP}
+import net.minecraft.init.{Blocks, Items}
+import net.minecraft.item.{Item, ItemArmor, ItemStack}
 import net.minecraft.nbt.NBTTagCompound
-import net.minecraft.util.math.BlockPos
+import net.minecraft.util.math.{BlockPos, Vec3d}
 import net.minecraft.util.text.TextComponentString
-import net.minecraftforge.client.event.GuiOpenEvent
 import net.minecraftforge.client.event.GuiScreenEvent.ActionPerformedEvent
-import net.minecraftforge.client.event.RenderGameOverlayEvent
+import net.minecraftforge.client.event.{GuiOpenEvent, RenderGameOverlayEvent}
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType
 import net.minecraftforge.event.entity.living.LivingDeathEvent
-import net.minecraftforge.event.entity.player.BonemealEvent
-import net.minecraftforge.event.entity.player.PlayerDropsEvent
+import net.minecraftforge.event.entity.player.{BonemealEvent, PlayerDropsEvent}
 import net.minecraftforge.fml.client.FMLClientHandler
 import net.minecraftforge.fml.client.event.ConfigChangedEvent
-import net.minecraftforge.fml.common.eventhandler.Event
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
+import net.minecraftforge.fml.common.eventhandler.{Event, SubscribeEvent}
 import net.minecraftforge.fml.common.gameevent.InputEvent.KeyInputEvent
-import net.minecraftforge.fml.common.gameevent.PlayerEvent
-import net.minecraftforge.fml.common.gameevent.PlayerEvent.ItemCraftedEvent
-import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent
-import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerRespawnEvent
+import net.minecraftforge.fml.common.gameevent.PlayerEvent.{ItemCraftedEvent, PlayerLoggedInEvent, PlayerRespawnEvent}
 import net.minecraftforge.fml.common.gameevent.TickEvent
-import net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent
-import net.minecraftforge.fml.common.gameevent.TickEvent.Phase
-import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent
-import net.minecraftforge.fml.relauncher.ReflectionHelper
-import net.minecraftforge.fml.relauncher.SideOnly
-import net.minecraftforge.fml.relauncher.Side
-import net.minecraft.util.math.Vec3d
-import net.minecraftforge.event.RegistryEvent
-import net.minecraftforge.fml.common.Mod.EventBusSubscriber
+import net.minecraftforge.fml.common.gameevent.TickEvent.{ClientTickEvent, Phase, PlayerTickEvent}
+import net.minecraftforge.fml.relauncher.{ReflectionHelper, Side, SideOnly}
+
+import scala.collection.JavaConversions._
 
 class EventsS {
   var tickLight: Int = 0
@@ -94,7 +65,9 @@ class EventsS {
   }
   @SubscribeEvent
   def onPlayerDeath(event: PlayerDropsEvent) {
-    InventoryCampinv.dropItems(event.getEntityPlayer)
+    if (!event.getEntity.world.getGameRules.getBoolean("keepInventory")){
+      InventoryCamping.dropItems(event.getEntityPlayer)
+    }
   }
   @SubscribeEvent
   def onEntityDeath(event: LivingDeathEvent) {
@@ -231,36 +204,13 @@ class EventsC {
   }
   @SubscribeEvent
   def guiOpenClient(event: GuiOpenEvent) {
-    if(event.getGui.isInstanceOf[GuiInventory]&&config.prmInv==0){
+    if(event.getGui.isInstanceOf[GuiInventory]&&config.alwaysCampingInv){
       if(Minecraft.getMinecraft.player.capabilities.isCreativeMode) return;
       event.setCanceled(true)
       PacketSender.toServer(new OpenGui(Objs.guiCamping.get.get, 0, 0, 0))
     }
   }
-  @SubscribeEvent
-  def onClientTick(event: ClientTickEvent) {
-    if (event.phase != TickEvent.Phase.END) return
-    if (config.prmInv==1) {
-      val mc = FMLClientHandler.instance().getClient
-      if (mc.currentScreen.isInstanceOf[GuiInventory]) {
-        if(mc.player.capabilities.isCreativeMode)return
-        val list: ArrayList[GuiButton] = ReflectionHelper.getPrivateValue(classOf[GuiScreen], mc.currentScreen, 7)
-        if(!list.asInstanceOf[java.util.List[GuiButton]].exists(_.id==10)){
-          if(config.secInv==2)list.asInstanceOf[java.util.List[GuiButton]].add(new GuiButton(10, mc.currentScreen.width-100-5, 5, 100, 10, "Camping Inventory"))
-          else if(config.secInv==4)list.asInstanceOf[java.util.List[GuiButton]].add(new GuiButton(10, mc.currentScreen.width-100-5, mc.currentScreen.height-10-5, 100, 10, "Camping Inventory"))
-          else if(config.secInv==3)list.asInstanceOf[java.util.List[GuiButton]].add(new GuiButton(10, 5, mc.currentScreen.height-10-5, 100, 10, "Camping Inventory"))
-          else if(config.secInv==1) list.asInstanceOf[java.util.List[GuiButton]].add(new GuiButton(10, 5, 5, 100, 10, "Camping Inventory"))  
-          else {
-            val left:Int = ReflectionHelper.getPrivateValue(classOf[GuiContainer], mc.currentScreen.asInstanceOf[GuiContainer], 4)
-            val top:Int = ReflectionHelper.getPrivateValue(classOf[GuiContainer], mc.currentScreen.asInstanceOf[GuiContainer], 5)
-            val width:Int = ReflectionHelper.getPrivateValue(classOf[GuiContainer], mc.currentScreen.asInstanceOf[GuiContainer], 1)
-            list.asInstanceOf[java.util.List[GuiButton]].add(new ButtonItem(10, left+width-22, top+5, new ItemStack(Objs.backpack)))
-          }
-          ReflectionHelper.setPrivateValue(classOf[GuiScreen], mc.currentScreen, list, 7) 
-        }
-      }
-    }
-  }
+
   @SubscribeEvent
   def onPlayerJoinWorld(event: PlayerLoggedInEvent){
     if(config.welcomeMess){
@@ -279,14 +229,6 @@ class EventsC {
     if (mc.player.hasMap) {
       map.setWorldAndResolution(mc, event.getResolution.getScaledWidth, event.getResolution.getScaledHeight)
       map.drawScreen(0, 0, event.getPartialTicks)
-    }
-  }
-  @SubscribeEvent
-  def buttonPressed(event: ActionPerformedEvent) {
-    if (config.prmInv==1){
-      if (event.getGui.isInstanceOf[GuiInventory]&&event.getButton.id==10){
-          PacketSender.toServer(new OpenGui(Objs.guiCamping.get.get))
-      } 
     }
   }
 }

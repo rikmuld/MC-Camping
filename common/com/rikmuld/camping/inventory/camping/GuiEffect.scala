@@ -1,14 +1,15 @@
-package com.rikmuld.camping.inventory.gui
+package com.rikmuld.camping.inventory.camping
 
-import net.minecraft.client.gui.inventory.GuiContainer
-import org.lwjgl.opengl.GL11
-import scala.collection.JavaConversions._
 import java.util.Collection
-import net.minecraft.potion.PotionEffect
-import net.minecraft.potion.Potion
-import net.minecraft.util.ResourceLocation
-import net.minecraft.client.resources.I18n
+
 import net.minecraft.client.gui.FontRenderer
+import net.minecraft.client.gui.inventory.GuiContainer
+import net.minecraft.client.resources.I18n
+import net.minecraft.potion.PotionEffect
+import net.minecraft.util.ResourceLocation
+import org.lwjgl.opengl.GL11
+
+import scala.collection.JavaConversions._
 
 trait GuiWithEffect extends GuiContainer {
   final val inventoryTexture = new ResourceLocation("textures/gui/container/inventory.png")

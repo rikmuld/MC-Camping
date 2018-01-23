@@ -1,37 +1,25 @@
 package com.rikmuld.camping.inventory.objs
 
-import com.rikmuld.camping.objs.tile.TileEntityTent
-import net.minecraft.inventory.IInventory
-import net.minecraft.entity.player.EntityPlayer
-import com.rikmuld.camping.inventory.SlotState
-import com.rikmuld.corerm.inventory.SlotItemsOnly
-import net.minecraft.item.ItemStack
-import net.minecraft.init.Items
-import net.minecraft.inventory.Slot
-import com.rikmuld.camping.objs.tile.TileEntityTent
-import com.rikmuld.corerm.inventory.RMContainerTile
-import com.rikmuld.camping.objs.tile.TileTent
 import com.rikmuld.camping.Lib._
-import com.rikmuld.corerm.CoreUtils._
-import net.minecraft.client.gui.GuiButton
-import com.rikmuld.corerm.network.PacketSender
-import com.rikmuld.camping.objs.tile.TileEntityTent
-import net.minecraft.client.gui.FontRenderer
-import net.minecraft.client.gui.GuiScreen
-import net.minecraft.util.ResourceLocation
-import org.lwjgl.opengl.GL11
-import com.rikmuld.corerm.RMMod
-import net.minecraft.client.gui.inventory.GuiContainer
+import com.rikmuld.camping.inventory.{SlotItem, SlotState}
+import com.rikmuld.camping.objs.{BlockDefinitions, Objs}
 import com.rikmuld.camping.objs.misc.OpenGui
-import org.lwjgl.input.Mouse
-import com.rikmuld.camping.objs.tile.TileEntityTent
-import com.rikmuld.camping.objs.Objs
-import net.minecraft.entity.Entity
+import com.rikmuld.camping.objs.tile.TileTent
+import com.rikmuld.corerm.RMMod
+import com.rikmuld.corerm.inventory.container.ContainerSimple
+import com.rikmuld.corerm.network.PacketSender
+import com.rikmuld.corerm.utils.CoreUtils._
 import net.minecraft.client.Minecraft
-import net.minecraft.init.Blocks
-import com.rikmuld.camping.objs.BlockDefinitions
+import net.minecraft.client.gui.{FontRenderer, GuiButton, GuiScreen}
+import net.minecraft.client.gui.inventory.GuiContainer
+import net.minecraft.entity.player.EntityPlayer
+import net.minecraft.init.{Blocks, Items}
+import net.minecraft.inventory.{Container, IInventory, Slot}
+import net.minecraft.item.ItemStack
+import net.minecraft.util.ResourceLocation
 import net.minecraft.util.text.translation.I18n
-import net.minecraft.inventory.Container
+import org.lwjgl.input.Mouse
+import org.lwjgl.opengl.GL11
 
 class GuiTent(player: EntityPlayer, tile: IInventory) extends GuiScreen {
   var tent = tile.asInstanceOf[TileTent]
@@ -60,6 +48,8 @@ class GuiTent(player: EntityPlayer, tile: IInventory) extends GuiScreen {
   }
   def checkMc = if(Option(mc).isEmpty) mc = Minecraft.getMinecraft
   override def drawScreen(mouseX: Int, mouseY: Int, partitialTicks: Float) {
+    if(Option(tent) == null) return
+
     checkMc
     drawDefaultBackground
     val guiLeft = (width - 255) / 2
@@ -182,35 +172,15 @@ class GuiTentLanterns(player: EntityPlayer, inv: IInventory) extends GuiContaine
   }
 }
 
-class ContainerTentLanterns(player: EntityPlayer, tile: IInventory) extends RMContainerTile(player, tile) {
-  var tent = tile.asInstanceOf[TileTent]
+class ContainerTentLanterns(player: EntityPlayer, tile: IInventory) extends ContainerSimple[TileTent](player) {
+  override def playerInvY: Int =
+    113
 
-  addSlotToContainer(new SlotItemsOnly(tile, 0, 80, 88, Items.GLOWSTONE_DUST))
-  this.addSlots(player.inventory, 0, 1, 9, 8, 171)
-  this.addSlots(player.inventory, 9, 3, 9, 8, 113)
+  def addInventorySlots(): Unit =
+    addSlotToContainer(new SlotItem(tile, 0, 80, 88, Items.GLOWSTONE_DUST))
 
-  override def transferStackInSlot(p: EntityPlayer, i: Int): ItemStack = {
-    var itemstack: ItemStack = ItemStack.EMPTY
-    val slot = inventorySlots.get(i).asInstanceOf[Slot]
-    if ((slot != null) && slot.getHasStack) {
-      val itemstack1 = slot.getStack
-      itemstack = itemstack1.copy()
-      if (i < 1) {
-        if (!mergeItemStack(itemstack1, 1, this.inventorySlots.size, false)) return ItemStack.EMPTY
-      } else {
-        if (!(itemstack1.getItem() == Items.GLOWSTONE_DUST && mergeItemStack(itemstack1, 0, 1, true))) {  
-          if(i < 10){
-            if(!mergeItemStack(itemstack1, 10, this.inventorySlots.size, false)) return ItemStack.EMPTY
-          } else {
-            if(!mergeItemStack(itemstack1, 1, 10, false)) return ItemStack.EMPTY
-          }
-        }
-      }
-      if (itemstack1.getCount == 0) slot.putStack(new ItemStack(Items.AIR, 0))
-      else slot.onSlotChanged()
-    }
-    itemstack
-  }
+  def initIInventory: TileTent =
+    tile.asInstanceOf[TileTent]
 }
 
 class GuiTentChests(player: EntityPlayer, inv: IInventory) extends GuiContainer(new ContainerTentChests(player, inv)) {
@@ -254,45 +224,36 @@ class GuiTentChests(player: EntityPlayer, inv: IInventory) extends GuiContainer(
   }
 }
 
-class ContainerTentChests(player: EntityPlayer, tile: IInventory) extends RMContainerTile(player, tile) {
-  var tent = tile.asInstanceOf[TileTent]
-  var slots: Array[Array[SlotState]] = Array.ofDim[SlotState](25, 6)
+class ContainerTentChests(player: EntityPlayer, tile: IInventory) extends ContainerSimple[TileTent](player) {
+  override def playerInvY: Int =
+    146
 
-  for (collom <- 0 until 25; row <- 0 until 6) {
-    val slot = new SlotState(tile, row + (collom * 6) + 1, 9 + (collom * 18), 34 + (row * 18))
-    addSlotToContainer(slot)
-    slot.disable
-    slots(collom)(row) = slot
-  }
-  this.addSlots(player.inventory, 0, 1, 9, 27, 204)
-  this.addSlots(player.inventory, 9, 3, 9, 27, 146)
-  tent.setSlots(slots)
-  tent.manageSlots()
+  override def playerInvX: Int =
+    27
 
-  override def transferStackInSlot(p: EntityPlayer, i: Int): ItemStack = {
-    var itemstack: ItemStack = ItemStack.EMPTY
-    val slot = inventorySlots.get(i).asInstanceOf[Slot]
-    if ((slot != null) && slot.getHasStack) {
-      val itemstack1 = slot.getStack
-      itemstack = itemstack1.copy()
-      if (i < tent.getSizeInventory - 1) {
-        if (!mergeItemStack(itemstack1, tent.getSizeInventory - 1, inventorySlots.size, false)) return ItemStack.EMPTY
-      } else {
-        if (!mergeItemStack(itemstack1, 0, tent.chests * 5 * 6, false)) {
-          if(i < tent.getSizeInventory - 1 + 9){
-            if(!mergeItemStack(itemstack1, tent.getSizeInventory - 1 + 9, tent.getSizeInventory - 1 + 9 + 27, false)) return ItemStack.EMPTY
-          } else {
-            if(!mergeItemStack(itemstack1, tent.getSizeInventory - 1, tent.getSizeInventory - 1 + 9, false)) return ItemStack.EMPTY
-          } 
-        }
-      }
-      if (itemstack1.getCount == 0) slot.putStack(new ItemStack(Items.AIR, 0))
-      else slot.onSlotChanged()
+  override def addInventorySlots(): Unit = {
+    val slots: Array[Array[SlotState]] = Array.ofDim[SlotState](25, 6)
+
+    for (column <- 0 until 25; row <- 0 until 6) {
+      val slot = new SlotState(tile, row + (column * 6) + 1, 9 + (column * 18), 34 + (row * 18))
+      slot.disable()
+
+      addSlotToContainer(slot)
+      slots(column)(row) = slot.asInstanceOf[SlotState]
     }
-    itemstack
+
+    getIInventory.setSlots(slots)
+    getIInventory.manageSlots()
   }
+
+  def initIInventory: TileTent =
+    tile.asInstanceOf[TileTent]
+
+  override def mergeToInventory(stack: ItemStack, original: ItemStack, index: Int): Boolean =
+    mergeItemStack(stack, 0, getIInventory.chests * 5 * 6, false)
 }
 
-class ContainerEmpty(player: EntityPlayer, tile: IInventory) extends RMContainerTile(player, tile) {
-
+class ContainerEmpty(player: EntityPlayer, tile: IInventory) extends Container() {
+  override def canInteractWith(playerIn: EntityPlayer): Boolean =
+    Option(tile).isDefined && tile.isUsableByPlayer(playerIn) && !player.isDead
 }

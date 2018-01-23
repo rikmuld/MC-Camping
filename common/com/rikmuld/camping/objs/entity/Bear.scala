@@ -1,50 +1,25 @@
 package com.rikmuld.camping.objs.entity
 
-import org.lwjgl.opengl.GL11
-import com.rikmuld.camping.CampingMod._
+import com.rikmuld.camping.CampingMod
 import com.rikmuld.camping.Lib._
-import com.rikmuld.camping.objs.Objs._
 import com.rikmuld.camping.objs.ItemDefinitions._
-import com.rikmuld.corerm.CoreUtils._
-import net.minecraft.client.Minecraft
-import net.minecraft.client.model.ModelBase
+import com.rikmuld.camping.objs.Objs._
+import com.rikmuld.camping.render.models.BearModel
+import com.rikmuld.corerm.utils.CoreUtils._
 import net.minecraft.client.renderer.entity.{RenderLiving, RenderManager}
-import net.minecraft.enchantment.Enchantment
 import net.minecraft.enchantment.EnchantmentHelper
-import net.minecraft.entity.Entity
-import net.minecraft.entity.EntityAgeable
-import net.minecraft.entity.EntityLiving
-import net.minecraft.entity.EntityLivingBase
-import net.minecraft.entity.EnumCreatureAttribute
-import net.minecraft.entity.SharedMonsterAttributes
-import net.minecraft.entity.ai.EntityAIHurtByTarget
-import net.minecraft.entity.ai.EntityAILookIdle
-import net.minecraft.entity.ai.EntityAIMate
-import net.minecraft.entity.ai.EntityAINearestAttackableTarget
-import net.minecraft.entity.ai.EntityAISwimming
-import net.minecraft.entity.ai.EntityAITempt
-import net.minecraft.entity.ai.EntityAIWander
-import net.minecraft.entity.ai.EntityAIWatchClosest
+import net.minecraft.entity._
+import net.minecraft.entity.ai._
 import net.minecraft.entity.monster.EntityZombie
-import net.minecraft.entity.passive.EntityAnimal
-import net.minecraft.entity.passive.EntityVillager
+import net.minecraft.entity.passive.{EntityAnimal, EntityVillager}
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.init.Items
-import net.minecraft.item.Item
-import net.minecraft.item.ItemStack
-import net.minecraft.util.DamageSource
+import net.minecraft.item.{ItemAxe, ItemStack}
+import net.minecraft.util.{DamageSource, ResourceLocation, SoundEvent}
 import net.minecraft.util.math.MathHelper
-import net.minecraft.util.ResourceLocation
 import net.minecraft.world.World
-import net.minecraftforge.fml.relauncher.SideOnly
-import net.minecraftforge.fml.relauncher.Side
-import com.rikmuld.camping.CampingMod
-import com.rikmuld.camping.render.models.BearModel
-import net.minecraft.entity.ai.EntityAIAttackMelee
-import net.minecraft.init.Enchantments
-import net.minecraft.util.SoundEvent
-import net.minecraft.item.ItemAxe
-import net.minecraftforge.fml.client.registry.IRenderFactory
+import net.minecraftforge.fml.relauncher.{Side, SideOnly}
+import org.lwjgl.opengl.GL11
 
 class Bear(worldIn: World) extends EntityAnimal(worldIn) {
   setSize(1F, 1.125F)

@@ -1,17 +1,15 @@
 package com.rikmuld.camping
 
+import java.util.ArrayList
+
+import com.rikmuld.camping.CampingMod._
+import com.rikmuld.camping.Lib.ConfigInfo._
 import net.minecraft.client.Minecraft
 import net.minecraft.client.gui.GuiScreen
-import net.minecraftforge.common.config.ConfigElement
-import net.minecraftforge.common.config.Configuration
-import java.util.ArrayList
+import net.minecraftforge.common.config.{ConfigElement, Configuration}
 import net.minecraftforge.fml.client.IModGuiFactory
-import net.minecraftforge.fml.client.IModGuiFactory.RuntimeOptionGuiHandler
-import net.minecraftforge.fml.client.IModGuiFactory.RuntimeOptionCategoryElement
-import net.minecraftforge.fml.client.config.IConfigElement
-import net.minecraftforge.fml.client.config.GuiConfig
-import com.rikmuld.camping.Lib.ConfigInfo._
-import com.rikmuld.camping.CampingMod._
+import net.minecraftforge.fml.client.IModGuiFactory.{RuntimeOptionCategoryElement, RuntimeOptionGuiHandler}
+import net.minecraftforge.fml.client.config.{GuiConfig, IConfigElement}
 
 class Config(val file: Configuration) {
   var useBears = true
@@ -28,8 +26,7 @@ class Config(val file: Configuration) {
   var trapPlayer = true
   var worldGenCampsite = true
   var campsiteRareness = 5
-  var prmInv = 0
-  var secInv = 0
+  var alwaysCampingInv = true
   var welcomeMess = true
   var maxWoodFuel = 5000
   
@@ -50,8 +47,7 @@ class Config(val file: Configuration) {
     trapPlayer = getVar("Trap players in Bear Trap", "Bear traps can trap players.", CAT_TOOLS, trapPlayer).asInstanceOf[Boolean]
     worldGenHemp = getVar("Enable Campsite generation", "Enable/Disable the world generation for Campsites.", CAT_WORLD, worldGenCampsite).asInstanceOf[Boolean]
     campsiteRareness = getVar("Campsite Rareness", "Rareness of the campsite world generation", CAT_WORLD, campsiteRareness).asInstanceOf[Integer]
-    prmInv = getVar("Primary Inventory Option", "0: Replace MC Inventory; 1: Open by Button; 2: Open by Key (default 'C')", CAT_GENERAL, prmInv, 0, 2).asInstanceOf[Integer]
-    secInv = getVar("Secundairy Inventory Option", "Button location if primary inventory option is set to 1. 0:In inventory, 1:left-top, 2:right-top, 3:left-bottom, 4:right-bottom", CAT_GENERAL, secInv, 0, 4).asInstanceOf[Integer]
+    alwaysCampingInv = getVar("Always use the Camping Inventory", "Set to false to hide the Camping Inventory (can be triggered using the `C' key)", CAT_GENERAL, alwaysCampingInv).asInstanceOf[Boolean]
     welcomeMess = getVar("Welcome Message", "Print the welcome message", CAT_GENERAL, welcomeMess).asInstanceOf[Boolean]
     maxWoodFuel = getVar("Provisional Campfire Burn Time", "The burn time of a provisional campfire", CAT_CAMPFIRE, maxWoodFuel).asInstanceOf[Integer]
 
@@ -69,14 +65,6 @@ class Config(val file: Configuration) {
     else if (curr.isInstanceOf[Float]) return file.getFloat(name, cat, curr.asInstanceOf[Float], min.asInstanceOf[Float], max.asInstanceOf[Float], desc)
     else if (curr.isInstanceOf[Boolean]) return file.getBoolean(name, cat, curr.asInstanceOf[Boolean], desc)
     else if (curr.isInstanceOf[String]) return file.getString(name, cat, curr.asInstanceOf[String], desc)
-  }
-  def setInv(prm:Int, sec:Int){
-    prmInv = prm
-    secInv = sec
-    
-    file.getCategory(CAT_GENERAL).get("Primary Inventory Option").setValue(prm)
-    file.getCategory(CAT_GENERAL).get("Secundairy Inventory Option").setValue(sec)
-    file.save
   }
   def disableMess(){
     file.getCategory(CAT_GENERAL).get("Welcome Message").setValue(false)

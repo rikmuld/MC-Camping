@@ -1,25 +1,11 @@
 package com.rikmuld.camping
 
-import net.minecraft.client.gui.Gui
-import net.minecraftforge.fml.common.network.IGuiHandler
-import net.minecraft.entity.player.EntityPlayer
+import com.rikmuld.camping.render.fx.ColouredFlame
 import net.minecraft.world.World
-import net.minecraftforge.fml.relauncher.SideOnly
-import scala.collection.mutable.HashMap
-import net.minecraft.inventory.Container
-import net.minecraftforge.fml.relauncher.Side
-import net.minecraft.inventory.IInventory
-import net.minecraft.util.math.BlockPos
-import net.minecraft.client.Minecraft
-import com.rikmuld.corerm.objs.PropType
-import com.rikmuld.corerm.objs.Properties._
-import com.rikmuld.corerm.objs.ObjInfo
-import net.minecraft.item.Item
-import net.minecraft.block.Block
+import net.minecraftforge.common.MinecraftForge
 import net.minecraftforge.fml.client.FMLClientHandler
 import net.minecraftforge.fml.common.FMLCommonHandler
-import net.minecraftforge.common.MinecraftForge
-import com.rikmuld.camping.render.fx.ColouredFlame
+import net.minecraftforge.fml.relauncher.{Side, SideOnly}
 
 class ProxyServer {
   var eventsS:EventsS = _

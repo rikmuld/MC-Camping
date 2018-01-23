@@ -1,62 +1,33 @@
 package com.rikmuld.camping.objs.entity
 
-import java.util.ArrayList
-import java.util.Random
+import java.util.{ArrayList, Random}
 
-import scala.collection.mutable.HashMap
-import com.rikmuld.camping.CampingMod._
 import com.rikmuld.camping.Lib._
-import com.rikmuld.camping.objs.Objs._
-import com.rikmuld.camping.objs.Objs
 import com.rikmuld.camping.objs.ItemDefinitions._
-import com.rikmuld.corerm.CoreUtils._
-import net.minecraft.client.model.{ModelBase, ModelBiped}
+import com.rikmuld.camping.objs.Objs
+import com.rikmuld.camping.objs.Objs._
+import com.rikmuld.camping.objs.block.Tent
+import com.rikmuld.corerm.utils.WorldBlock._
+import net.minecraft.client.model.ModelBiped
 import net.minecraft.client.renderer.entity.{RenderLiving, RenderManager}
-import net.minecraft.enchantment.Enchantment
 import net.minecraft.enchantment.EnchantmentHelper
-import net.minecraft.entity.Entity
-import net.minecraft.entity.EntityCreature
-import net.minecraft.entity.EntityLiving
-import net.minecraft.entity.EntityLivingBase
-import net.minecraft.entity.IMerchant
-import net.minecraft.entity.INpc
-import net.minecraft.entity.SharedMonsterAttributes
-import net.minecraft.entity.ai.EntityAINearestAttackableTarget
-import net.minecraft.entity.ai.EntityAISwimming
-import net.minecraft.entity.ai.EntityAIWander
-import net.minecraft.entity.ai.EntityAIWatchClosest2
+import net.minecraft.entity._
+import net.minecraft.entity.ai._
 import net.minecraft.entity.monster.EntityMob
 import net.minecraft.entity.player.EntityPlayer
-import net.minecraft.init.Items
-import net.minecraft.item.Item
-import net.minecraft.item.ItemStack
+import net.minecraft.init.{Items, SoundEvents}
+import net.minecraft.item.{Item, ItemAxe, ItemStack}
 import net.minecraft.nbt.NBTTagCompound
+import net.minecraft.network.datasync.{DataParameter, DataSerializers, EntityDataManager}
 import net.minecraft.pathfinding.PathNavigateGround
+import net.minecraft.util._
+import net.minecraft.util.math.{BlockPos, MathHelper}
 import net.minecraft.util.text.TextComponentString
-import net.minecraft.util.DamageSource
-import net.minecraft.util.math.MathHelper
-import net.minecraft.util.ResourceLocation
-import net.minecraft.util.Tuple
-import net.minecraft.village.MerchantRecipe
-import net.minecraft.village.MerchantRecipeList
+import net.minecraft.village.{MerchantRecipe, MerchantRecipeList}
 import net.minecraft.world.World
-import net.minecraftforge.fml.relauncher.SideOnly
-import net.minecraft.client.Minecraft
-import net.minecraftforge.fml.relauncher.Side
-import net.minecraft.util.math.BlockPos
-import com.rikmuld.corerm.misc.WorldBlock._
-import net.minecraftforge.event.terraingen.BiomeEvent.GetWaterColor
-import com.rikmuld.camping.objs.block.Tent
-import net.minecraft.entity.ai.EntityAIAttackMelee
-import net.minecraft.init.Enchantments
-import net.minecraft.util.SoundEvent
-import net.minecraft.util.EnumHand
-import net.minecraft.item.ItemAxe
-import net.minecraft.network.datasync.DataParameter
-import net.minecraft.entity.passive.EntityVillager
-import net.minecraft.network.datasync.EntityDataManager
-import net.minecraft.network.datasync.DataSerializers
-import net.minecraft.init.SoundEvents
+import net.minecraftforge.fml.relauncher.{Side, SideOnly}
+
+import scala.collection.mutable.HashMap
 
 object Camper {
   final val GENDER:DataParameter[Integer] = EntityDataManager.createKey(classOf[Camper], DataSerializers.VARINT);

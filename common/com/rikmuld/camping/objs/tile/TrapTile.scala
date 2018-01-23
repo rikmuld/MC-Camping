@@ -1,34 +1,26 @@
 package com.rikmuld.camping.objs.tile
 
-import com.rikmuld.corerm.objs.RMTile
-import com.rikmuld.camping.objs.Objs
-import com.rikmuld.corerm.network.PacketSender
-import net.minecraft.entity.EntityLivingBase
-import com.rikmuld.corerm.objs.WithTileInventory
-import java.util.UUID
-import net.minecraft.nbt.NBTTagCompound
-import net.minecraft.util.math.AxisAlignedBB
-import net.minecraft.entity.player.EntityPlayer
-import net.minecraft.potion.PotionEffect
-import net.minecraft.init.Items
-import java.util.Random
-import com.rikmuld.corerm.objs.WithTileInventory
-import net.minecraft.entity.SharedMonsterAttributes
-import net.minecraft.entity.ai.attributes.AttributeModifier
-import com.rikmuld.camping.objs.misc.ItemsData
-import com.rikmuld.corerm.misc.WorldBlock._
+import java.util.{Random, UUID}
+
 import com.rikmuld.camping.CampingMod._
-import net.minecraft.entity.monster.EntityEnderman
-import net.minecraft.entity.monster.EntitySpider
-import net.minecraft.entity.EntityLiving
-import net.minecraft.entity.monster.EntityCreeper
-import net.minecraft.entity.monster.EntitySkeleton
-import net.minecraft.entity.passive.EntityAnimal
-import net.minecraft.entity.monster.EntityZombie
-import scala.collection.JavaConversions._
+import com.rikmuld.camping.objs.Objs
 import com.rikmuld.camping.objs.entity.Bear
-import com.rikmuld.camping.objs.block.Trap
+import com.rikmuld.camping.objs.misc.ItemsData
+import com.rikmuld.corerm.network.PacketSender
+import com.rikmuld.corerm.tileentity.{RMTile, WithTileInventory}
+import com.rikmuld.corerm.utils.WorldBlock._
+import net.minecraft.entity.{EntityLiving, EntityLivingBase, SharedMonsterAttributes}
+import net.minecraft.entity.ai.attributes.AttributeModifier
+import net.minecraft.entity.monster._
+import net.minecraft.entity.passive.EntityAnimal
+import net.minecraft.entity.player.EntityPlayer
+import net.minecraft.init.Items
+import net.minecraft.nbt.NBTTagCompound
+import net.minecraft.potion.PotionEffect
 import net.minecraft.util.ITickable
+import net.minecraft.util.math.AxisAlignedBB
+
+import scala.collection.JavaConversions._
 
 object TileTrap {
   val UUIDSpeedTrap = new UUID(new Random(242346763).nextLong, new Random(476456556).nextLong)

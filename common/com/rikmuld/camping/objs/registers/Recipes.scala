@@ -1,22 +1,15 @@
 package com.rikmuld.camping.objs.registers
 
-import com.rikmuld.corerm.objs.PropType
-import net.minecraftforge.fml.common.registry.GameRegistry
-import net.minecraft.init.Items
-import com.rikmuld.corerm.misc.ModRegister
-import com.rikmuld.camping.objs.Objs._
-import com.rikmuld.camping.CampingMod._
+import com.rikmuld.camping.objs.{BlockDefinitions, ItemDefinitions}
 import com.rikmuld.camping.objs.ItemDefinitions._
-import com.rikmuld.camping.Lib._
-import net.minecraft.init.Items._
+import com.rikmuld.camping.objs.Objs._
+import com.rikmuld.corerm.misc.ModRegister
+import com.rikmuld.corerm.objs.PropType
+import com.rikmuld.corerm.utils.CoreUtils._
 import net.minecraft.init.Blocks._
-import scala.collection.JavaConversions._
-import com.rikmuld.camping.objs.BlockDefinitions._
-import com.rikmuld.camping.objs.BlockDefinitions
-import com.rikmuld.corerm.CoreUtils._
+import net.minecraft.init.Items
 import net.minecraft.init.Items._
-import net.minecraft.init.Blocks._
-import com.rikmuld.camping.objs.ItemDefinitions
+import net.minecraftforge.fml.common.registry.GameRegistry
 
 object ModRecipes extends ModRegister {
   override def register {

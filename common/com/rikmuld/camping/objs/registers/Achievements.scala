@@ -1,12 +1,10 @@
 package com.rikmuld.camping.objs.registers
 
-import com.rikmuld.corerm.objs.RMAchievement
-import com.rikmuld.corerm.misc.ModRegister
 import com.rikmuld.camping.CampingMod._
 import com.rikmuld.camping.objs.Objs._
-import com.rikmuld.corerm.CoreUtils._
+import com.rikmuld.corerm.misc.{ModRegister, RMAchievement}
+import com.rikmuld.corerm.utils.CoreUtils._
 import net.minecraft.init.Items._
-import net.minecraft.init.Blocks._
 
 object ModAchievements extends ModRegister {
   import com.rikmuld.camping.Lib.AchievementInfo._
