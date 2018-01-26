@@ -7,6 +7,7 @@ import com.rikmuld.camping.objs.misc.OpenGui
 import com.rikmuld.camping.objs.tile.TileTent
 import com.rikmuld.corerm.RMMod
 import com.rikmuld.corerm.inventory.container.ContainerSimple
+import com.rikmuld.corerm.inventory.gui.GuiContainerSimple
 import com.rikmuld.corerm.network.PacketSender
 import com.rikmuld.corerm.utils.CoreUtils._
 import net.minecraft.client.Minecraft
@@ -20,6 +21,10 @@ import net.minecraft.util.ResourceLocation
 import net.minecraft.util.text.translation.I18n
 import org.lwjgl.input.Mouse
 import org.lwjgl.opengl.GL11
+
+// make a tabbed GUI :)
+// sleeping tab, lantern tab, chests tab, content tab (just an inventory)
+// this also fixes the tent background lighting issue
 
 class GuiTent(player: EntityPlayer, tile: IInventory) extends GuiScreen {
   var tent = tile.asInstanceOf[TileTent]
@@ -183,32 +188,52 @@ class ContainerTentLanterns(player: EntityPlayer, tile: IInventory) extends Cont
     tile.asInstanceOf[TileTent]
 }
 
-class GuiTentChests(player: EntityPlayer, inv: IInventory) extends GuiContainer(new ContainerTentChests(player, inv)) {
-  var tent = inv.asInstanceOf[TileTent]
+class GuiTentChests(player: EntityPlayer, inv: IInventory) extends GuiContainerSimple(new ContainerTentChests(player, inv)) {
+  ySize =
+    228
+
+  xSize =
+    214
+
+  val tent:TileTent =
+    inv.asInstanceOf[TileTent]
+
   var slideState: Int = tent.slide
   var oldSLideState: Int = _
   var xBegin: Int = -1
   private var slideBegin: Int = _
   var mouseMouse: Boolean = _
-  var canClick: Array[Boolean] = Array(false, false)
 
-  ySize = 228
-  xSize = 214
+  var canClick: Boolean =
+    false
 
-  protected override def drawGuiContainerBackgroundLayer(partTicks: Float, mouseX: Int, mouseY: Int) {
+  val getTexture: ResourceLocation =
+    new ResourceLocation(TextureInfo.GUI_TENT_CONTENDS_2)
+
+  override def drawGUI(mouseX: Int, mouseY: Int): Unit = {
+    super.drawGUI(mouseX, mouseY)
+    drawTexturedModalRect(guiLeft + 39 + slideState, guiTop + 12, 234, if (tent.chests > 2) 12 else 0, 15, 12)
+
     oldSLideState = slideState
-    GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F)
-    mc.renderEngine.bindTexture(new ResourceLocation(TextureInfo.GUI_TENT_CONTENDS_2))
-    drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize)
+
+    //add this one as a button
     if (isPointInRegion(15, 8, 20, 20, mouseX, mouseY)) {
       drawTexturedModalRect(guiLeft + 15, guiTop + 8, 214, 0, 20, 20)
-      if (Mouse.isButtonDown(0) && canClick(0)) mc.player.openGui(RMMod, Objs.guiTent.get.get, tent.getWorld, tent.getPos.getX, tent.getPos.getY, tent.getPos.getZ)
-      if (!Mouse.isButtonDown(0)) canClick(0) = true
-    } else canClick(0) = false
+      if (Mouse.isButtonDown(0) && canClick) mc.player.openGui(RMMod, Objs.guiTent.get.get, tent.getWorld, tent.getPos.getX, tent.getPos.getY, tent.getPos.getZ)
+    } else canClick = false
+
+    //do with mouse drag click function
     if (isPointInRegion(39 + slideState, 12, 15, 12, mouseX, mouseY)) {
-      if (Mouse.isButtonDown(0) && canClick(1)) mouseMouse = true
-      if (!Mouse.isButtonDown(0)) canClick(1) = true
-    } else canClick(1) = false
+      if (Mouse.isButtonDown(0) && canClick) mouseMouse = true
+    } else canClick = false
+
+    //no longer needed then
+    if (!Mouse.isButtonDown(0)) {
+      canClick = true
+      mouseMouse = false
+    }
+
+    //do with mouse drag click function
     if (mouseMouse && (tent.chests > 2)) {
       if (xBegin == -1) {
         xBegin = mouseX
@@ -218,8 +243,8 @@ class GuiTentChests(player: EntityPlayer, inv: IInventory) extends GuiContainer(
       if (slideState < 0) slideState = 0
       if (slideState > 144) slideState = 144
     } else xBegin = -1
-    if (!Mouse.isButtonDown(0)) mouseMouse = false
-    drawTexturedModalRect(guiLeft + 39 + slideState, guiTop + 12, 234, if (tent.chests > 2) 12 else 0, 15, 12)
+
+    //do with mouse drag click function
     if (slideState != oldSLideState) tent.setSlideState(slideState)
   }
 }

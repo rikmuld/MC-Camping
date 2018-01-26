@@ -5,12 +5,11 @@ import java.util.{ArrayList, Random, UUID}
 import com.rikmuld.camping.CampingMod._
 import com.rikmuld.camping.Lib._
 import com.rikmuld.camping.Utils._
-import com.rikmuld.camping.inventory.camping.{ButtonItem, GuiMapHUD, InventoryCamping}
+import com.rikmuld.camping.inventory.camping.{GuiMapHUD, InventoryCamping}
 import com.rikmuld.camping.objs.BlockDefinitions._
 import com.rikmuld.camping.objs.ItemDefinitions._
 import com.rikmuld.camping.objs.Objs
 import com.rikmuld.camping.objs.block.{Hemp, Tent}
-import com.rikmuld.camping.objs.entity.Mountable
 import com.rikmuld.camping.objs.misc.{KeyData, MapData, NBTPlayer, OpenGui}
 import com.rikmuld.camping.objs.tile.{Roaster, TileTrap}
 import com.rikmuld.corerm.RMMod
@@ -28,7 +27,6 @@ import net.minecraft.item.{Item, ItemArmor, ItemStack}
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.math.{BlockPos, Vec3d}
 import net.minecraft.util.text.TextComponentString
-import net.minecraftforge.client.event.GuiScreenEvent.ActionPerformedEvent
 import net.minecraftforge.client.event.{GuiOpenEvent, RenderGameOverlayEvent}
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType
 import net.minecraftforge.event.entity.living.LivingDeathEvent
@@ -38,9 +36,8 @@ import net.minecraftforge.fml.client.event.ConfigChangedEvent
 import net.minecraftforge.fml.common.eventhandler.{Event, SubscribeEvent}
 import net.minecraftforge.fml.common.gameevent.InputEvent.KeyInputEvent
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.{ItemCraftedEvent, PlayerLoggedInEvent, PlayerRespawnEvent}
-import net.minecraftforge.fml.common.gameevent.TickEvent
-import net.minecraftforge.fml.common.gameevent.TickEvent.{ClientTickEvent, Phase, PlayerTickEvent}
-import net.minecraftforge.fml.relauncher.{ReflectionHelper, Side, SideOnly}
+import net.minecraftforge.fml.common.gameevent.TickEvent.{Phase, PlayerTickEvent}
+import net.minecraftforge.fml.relauncher.{Side, SideOnly}
 
 import scala.collection.JavaConversions._
 

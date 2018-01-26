@@ -11,7 +11,7 @@ import net.minecraft.util.ResourceLocation
 class GuiTrap(player: EntityPlayer, inv: IInventory) extends GuiContainerSimple(new ContainerTrap(player, inv)) {
   ySize = 120
 
-  def getTexture: ResourceLocation =
+  val getTexture: ResourceLocation =
     new ResourceLocation(TextureInfo.GUI_TRAP)
 }
 

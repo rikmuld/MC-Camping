@@ -12,7 +12,7 @@ import net.minecraft.inventory.Container
 import net.minecraft.item.ItemStack
 import net.minecraft.util.ResourceLocation
 
-abstract class BagContainer(player: EntityPlayer) extends ContainerItem(player) {
+abstract class BagContainer(player: EntityPlayer, activeSlots: Seq[Int]) extends ContainerItem(player) {
   override def initIInventory =
     new InventoryItem(player.inventory.getCurrentItem, 27, 64)
 
@@ -25,11 +25,12 @@ abstract class BagContainer(player: EntityPlayer) extends ContainerItem(player) 
       )
     }
 
-  def activeSlots: Seq[Int]
+  override def mergeToInventory(stack: ItemStack, original: ItemStack, index: Int): Boolean =
+    activeSlots.exists(i => mergeItemStack(stack, i, i + 1, false))
 }
 
-abstract class BagGui(container: Container, metaData: Int) extends GuiContainerSimple(container) {
-  override def getTexture: ResourceLocation =
+abstract class BagGui(container: Container, metaData: Int, x: Int, y: Int, width: Int, height: Int) extends GuiContainerSimple(container) {
+  val getTexture: ResourceLocation =
     new ResourceLocation(TextureInfo.GUI_BAG)
 
   override def getName: String =
@@ -40,46 +41,18 @@ abstract class BagGui(container: Container, metaData: Int) extends GuiContainerS
 
   override def drawGUI(mouseX: Int, mouseY: Int) {
     super.drawGUI(mouseX, mouseY)
-    drawSlots()
+    drawTexturedModalRect(guiLeft + x, guiTop + y, 0, 166, width, height)
   }
-
-  def drawSlots(): Unit
 }
 
-class BackpackContainer(player: EntityPlayer) extends BagContainer(player) {
-  def activeSlots =
-    (3 until 6) ++ (12 until 15) ++ (21 until 24)
+class BackpackContainer(player: EntityPlayer) extends BagContainer(player, (3 until 6) ++ (12 until 15) ++ (21 until 24))
 
-  override def mergeToInventory(stack: ItemStack, original: ItemStack, index: Int): Boolean =
-    mergeItemStack(stack, 3, 6, false) ||
-      mergeItemStack(stack, 12, 15, false) ||
-      mergeItemStack(stack, 21, 24, false)
-}
+class PouchContainer(player: EntityPlayer) extends BagContainer(player, 12 until 15)
 
-class PouchContainer(player: EntityPlayer) extends BagContainer(player) {
-  def activeSlots =
-    12 until 15
+class RucksackContainer(player: EntityPlayer) extends BagContainer(player, 0 until 27)
 
-  override def mergeToInventory(stack: ItemStack, original: ItemStack, index: Int): Boolean =
-    mergeItemStack(stack, 12, 15, false)
-}
+class PouchGui(player: EntityPlayer) extends BagGui(new PouchContainer(player), POUCH, 61, 43, 54, 18)
 
-class RucksackContainer(player: EntityPlayer) extends BagContainer(player) {
-  def activeSlots =
-    0 until 27
-}
+class BackpackGui(player: EntityPlayer) extends BagGui(new BackpackContainer(player), BACKPACK, 61, 25, 54, 54)
 
-class PouchGui(player: EntityPlayer) extends BagGui(new PouchContainer(player), POUCH) {
-  def drawSlots() =
-    drawTexturedModalRect(guiLeft + 61, guiTop + 43, 0, 166, 54, 18)
-}
-
-class BackpackGui(player: EntityPlayer) extends BagGui(new BackpackContainer(player), BACKPACK) {
-  def drawSlots() =
-    drawTexturedModalRect(guiLeft + 61, guiTop + 25, 0, 166, 54, 54)
-}
-
-class RucksackGui(player: EntityPlayer) extends BagGui(new RucksackContainer(player), RUCKSACK) {
-  def drawSlots() =
-    drawTexturedModalRect(guiLeft + 7, guiTop + 25, 0, 166, 162, 54)
-}
+class RucksackGui(player: EntityPlayer) extends BagGui(new RucksackContainer(player), RUCKSACK, 7, 25, 162, 54)

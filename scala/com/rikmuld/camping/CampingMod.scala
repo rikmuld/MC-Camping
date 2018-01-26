@@ -205,12 +205,17 @@ object Lib {
 }
 
 /*
+plan: add advancements, test server and release, then cleanup gui client stuff (first all from tabbed, then camping inv and tent
+      [improve tent gui to a tabbed one]) then release, then make recipes visible with advancements and add own recipes
+      as json and put recipe book in camping inventory then release, finally add spawner object thingies for campfires and release last before bugfix update
+
   TODO for port to 1.12
   - add advancement json files
   - remove achievement localization
   - add custom advancement triggers
 
   TODO after for next update
+  - make tent tabbed gui
   - add own recipes as json recipes
   - unlock all recipes before crafting using advancements
   - add recipe book to camping inventory

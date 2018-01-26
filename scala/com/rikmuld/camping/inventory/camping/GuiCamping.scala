@@ -85,7 +85,7 @@ class GuiCamping(var player: EntityPlayer) extends GuiTabbed(player, new Contain
     getCleanGL
     if(id==0){ 
       this.mc.getTextureManager().bindTexture(inventoryTexture)
-      this.drawTexturedModalRect(guiLeft + 29, guiTop+7, 7, 7, 164, 72);
+      this.drawTexturedModalRect(guiLeft + 29, guiTop+7, 7, 7, 164, 72)
       GuiInventory.drawEntityOnScreen(guiLeft + 51 + 22, guiTop + 75, 30, (guiLeft + 51 + 22 - lastMouseX).asInstanceOf[Float], (guiTop + 75 - 50 - lastMouseY).asInstanceOf[Float], this.mc.player)
     } else if(id==1){
       if(hasBackpack){

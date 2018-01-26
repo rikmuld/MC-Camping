@@ -7,20 +7,33 @@ import net.minecraft.block.material.MapColor
 import net.minecraft.client.gui.GuiScreen
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.util.ResourceLocation
+import net.minecraft.world.World
 import org.lwjgl.BufferUtils
 import org.lwjgl.opengl.{GL11, GL12}
 
 import scala.collection.mutable.HashMap
 
 class GuiMapHUD extends GuiScreen {
-  final val TEX_UTILS = new ResourceLocation(TextureInfo.GUI_UTILS)
-  final val TEX_RED_DOT = new ResourceLocation(TextureInfo.RED_DOT)
-  final val TEX_BLUE_DOT = new ResourceLocation(TextureInfo.BLUE_DOT)
+  final val TEX_UTILS =
+    new ResourceLocation(TextureInfo.GUI_UTILS)
 
-  var colorData: HashMap[EntityPlayer, Array[Byte]] = new HashMap[EntityPlayer, Array[Byte]]()
-  var posData: HashMap[EntityPlayer, Array[Int]] = new HashMap[EntityPlayer, Array[Int]]()
-  private var rgbColors: Array[Int] = new Array[Int](16384)
-  val textureID = GL11.glGenTextures()
+  final val TEX_RED_DOT =
+    new ResourceLocation(TextureInfo.RED_DOT)
+
+  final val TEX_BLUE_DOT =
+    new ResourceLocation(TextureInfo.BLUE_DOT)
+
+  val textureID: Int =
+    GL11.glGenTextures()
+
+  var colorData: HashMap[EntityPlayer, Array[Byte]] =
+    new HashMap[EntityPlayer, Array[Byte]]()
+
+  var posData: HashMap[EntityPlayer, Array[Int]] =
+    new HashMap[EntityPlayer, Array[Int]]()
+
+  private var rgbColors: Array[Int] =
+    new Array[Int](16384)
 
   override def drawScreen(mouseX: Int, mouseY: Int, partTicks: Float) {
     GL11.glPushMatrix()
@@ -73,31 +86,34 @@ class GuiMapHUD extends GuiScreen {
       GL11.glTexCoord2f(1f, 0f)
       GL11.glVertex2f(width - (12f / 2), 12f / 2)
       GL11.glEnd()
-      for (i <- 0 until mc.world.playerEntities.size) {
-        val player = mc.world.playerEntities.get(i).asInstanceOf[EntityPlayer]
-        val scale = (57F / (64F * (Math.pow(2, posData(mc.player)(0))))).toFloat
-        var xDivision = (scale * (player.posX - posData(mc.player)(1))).toInt
-        var zDivision = (scale * (player.posZ - posData(mc.player)(2))).toInt
-        if (xDivision > 57) xDivision = 57
-        else if (xDivision < -57) xDivision = -57
-        if (zDivision > 57) zDivision = 57
-        else if (zDivision < -57) zDivision = -57
-        if (mc.player == player) mc.renderEngine.bindTexture(TEX_RED_DOT)
-        else mc.renderEngine.bindTexture(TEX_BLUE_DOT)
 
-        GL11.glBegin(GL11.GL_QUADS)
-        GL11.glTexCoord2f(0f, 0f)
-        GL11.glVertex2f(((width - (69 / 2)) + (xDivision / 2)) - 3, ((69 / 2) + (zDivision / 2)) - 3)
-        GL11.glTexCoord2f(0f, 1f)
-        GL11.glVertex2f(((width - (69 / 2)) + (xDivision / 2)) - 3, (69 / 2) + (zDivision / 2) + 3)
-        GL11.glTexCoord2f(1f, 1f)
-        GL11.glVertex2f((width - (69 / 2)) + (xDivision / 2) + 3, (69 / 2) + (zDivision / 2) + 3)
-        GL11.glTexCoord2f(1f, 0f)
-        GL11.glVertex2f((width - (69 / 2)) + (xDivision / 2) + 3, ((69 / 2) + (zDivision / 2)) - 3)
-        GL11.glEnd()
-      }
+      for (i <- 0 until mc.world.playerEntities.size)
+        drawPlayer(mc.world.playerEntities.get(i))
     }
     GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f)
     GL11.glPopMatrix()
+  }
+
+  def drawPlayer(player: EntityPlayer): Unit = {
+    val scale = (57F / (64F * Math.pow(2, posData(mc.player)(0)))).toFloat
+    var xDivision = (scale * (player.posX - posData(mc.player)(1))).toInt
+    var zDivision = (scale * (player.posZ - posData(mc.player)(2))).toInt
+    if (xDivision > 57) xDivision = 57
+    else if (xDivision < -57) xDivision = -57
+    if (zDivision > 57) zDivision = 57
+    else if (zDivision < -57) zDivision = -57
+    if (mc.player == player) mc.renderEngine.bindTexture(TEX_RED_DOT)
+    else mc.renderEngine.bindTexture(TEX_BLUE_DOT)
+
+    GL11.glBegin(GL11.GL_QUADS)
+    GL11.glTexCoord2f(0f, 0f)
+    GL11.glVertex2f(((width - (69 / 2)) + (xDivision / 2)) - 3, ((69 / 2) + (zDivision / 2)) - 3)
+    GL11.glTexCoord2f(0f, 1f)
+    GL11.glVertex2f(((width - (69 / 2)) + (xDivision / 2)) - 3, (69 / 2) + (zDivision / 2) + 3)
+    GL11.glTexCoord2f(1f, 1f)
+    GL11.glVertex2f((width - (69 / 2)) + (xDivision / 2) + 3, (69 / 2) + (zDivision / 2) + 3)
+    GL11.glTexCoord2f(1f, 0f)
+    GL11.glVertex2f((width - (69 / 2)) + (xDivision / 2) + 3, ((69 / 2) + (zDivision / 2)) - 3)
+    GL11.glEnd()
   }
 }

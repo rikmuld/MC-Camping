@@ -15,7 +15,7 @@ import net.minecraft.util.ResourceLocation
 class KitGui(player: EntityPlayer) extends GuiContainerSimple(new KitContainer(player)) {
   ySize = 181
 
-  override def getTexture: ResourceLocation =
+  val getTexture: ResourceLocation =
     new ResourceLocation(TextureInfo.GUI_KIT)
 }
 

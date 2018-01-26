@@ -1,7 +1,5 @@
 package com.rikmuld.camping.inventory.camping
 
-import java.util.Random
-
 import com.rikmuld.camping.Lib.{NBTInfo, TextureInfo}
 import com.rikmuld.camping.inventory._
 import com.rikmuld.camping.inventory.camping.InventoryCamping._
@@ -9,16 +7,12 @@ import com.rikmuld.camping.objs.Objs
 import com.rikmuld.corerm.features.tabbed.ContainerTabbed
 import com.rikmuld.corerm.inventory.container.ContainerSimple
 import com.rikmuld.corerm.inventory.inventory.{InventoryItem, InventoryPlayer}
-import com.rikmuld.corerm.utils.CoreUtils._
+import com.rikmuld.corerm.utils.NBTUtil
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.init.Items
 import net.minecraft.inventory._
-import net.minecraft.item.crafting.CraftingManager
 import net.minecraft.item.{Item, ItemArmor, ItemStack}
-import net.minecraftforge.common.util.Constants
 import net.minecraftforge.fml.relauncher.{Side, SideOnly}
-
-// fix client does not detect what is in inventory, e.g. lantern and map do nothing
 
 class ContainerCamping(player:EntityPlayer) extends ContainerSimple[InventoryCamping](player) with ContainerTabbed {
   var backpackSlots: Seq[SlotTabbedBackpack] =
@@ -159,17 +153,11 @@ object InventoryCamping {
     else if(stack.getItemDamage == 1) BACKPACK
     else RUCKSACK
 
-  //basically same as readItems, so generalize that one
-  def dropItems(player: EntityPlayer) {
-    if (!player.getEntityData.hasKey(NBTInfo.INV_CAMPING)) return
-    val tag = player.getEntityData.getCompoundTag(NBTInfo.INV_CAMPING)
-    val inventory = tag.getTagList("items", Constants.NBT.TAG_COMPOUND)
-    for (i <- 0 until inventory.tagCount()) {
-      val Slots = inventory.getCompoundTagAt(i)
-      Slots.getByte("slotIndex")
-      player.world.dropItemsInWorld(Array(new ItemStack(Slots)), player.posX.toInt, player.posY.toInt, player.posZ.toInt, new Random())
-    }
-  }
+  def dropItems(player: EntityPlayer): Unit =
+    if(player.getEntityData.hasKey(NBTInfo.INV_CAMPING))
+      NBTUtil.readInventory(player.getEntityData.getCompoundTag(NBTInfo.INV_CAMPING)).values foreach {
+        item => player.dropItem(item, true, false)
+      }
 }
 
 class InventoryCamping(player: EntityPlayer, container: ContainerCamping) extends InventoryPlayer(player, 4, 1, NBTInfo.INV_CAMPING) {

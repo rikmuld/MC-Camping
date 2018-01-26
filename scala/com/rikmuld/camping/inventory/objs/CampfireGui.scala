@@ -22,7 +22,7 @@ class GuiCampfireCook(player: EntityPlayer, tile: IInventory) extends GuiContain
   val fire =
     tile.asInstanceOf[TileCampfireCook]
 
-  override def getTexture: ResourceLocation =
+  val getTexture: ResourceLocation =
     new ResourceLocation(TextureInfo.GUI_CAMPFIRE_COOK)
 
   override def drawGUI(mouseX: Int, mouseY: Int) {
