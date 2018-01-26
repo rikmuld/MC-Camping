@@ -10,7 +10,7 @@ import com.rikmuld.camping.objs.{ItemDefinitions, Objs}
 import com.rikmuld.camping.objs.block.{CampfireCook, CampfireWood}
 import com.rikmuld.camping.objs.misc.ItemsData
 import com.rikmuld.corerm.network.PacketSender
-import com.rikmuld.corerm.tileentity.{RMTile, WithTileInventory}
+import com.rikmuld.corerm.tileentity.{TileEntityInventory, TileEntitySimple}
 import com.rikmuld.corerm.utils.CoreUtils._
 import com.rikmuld.corerm.utils.WorldBlock._
 import net.minecraft.block.state.IBlockState
@@ -26,7 +26,7 @@ import net.minecraftforge.fml.relauncher.{Side, SideOnly}
 
 import scala.collection.JavaConversions._
 
-class TileCampfire extends RMTile with ITickable {
+class TileCampfire extends TileEntitySimple with ITickable {
   var color: Int = 16
   var oldTime: Int = _
   var time: Int = _
@@ -196,7 +196,7 @@ abstract trait Roaster {
   def roastResult(item:ItemStack):ItemStack
 }
 
-class TileCampfireCook extends RMTile with WithTileInventory with ITickable with Roaster {
+class TileCampfireCook extends TileEntitySimple with TileEntityInventory with ITickable with Roaster {
   var maxFeul: Int = config.campfireMaxFuel
   var fuelForCoal: Int = config.campfireCoalFuel
   var fuel: Int = _
@@ -294,8 +294,8 @@ class TileCampfireCook extends RMTile with WithTileInventory with ITickable with
     }
   }
   override def readFromNBT(tag: NBTTagCompound) {    
-    super[RMTile].readFromNBT(tag)
-    super[WithTileInventory].readFromNBT(tag)
+    super[TileEntitySimple].readFromNBT(tag)
+    super[TileEntityInventory].readFromNBT(tag)
         
     fuel = tag.getInteger("fuel")
     cookProgress = tag.getIntArray("cookProgress")
@@ -339,7 +339,7 @@ class TileCampfireCook extends RMTile with WithTileInventory with ITickable with
     tag.setInteger("fuel", fuel)
     tag.setIntArray("cookProgress", cookProgress)
     for (i <- 0 until coals.length; j <- 0 until coals(i).length) tag.setFloat("coals" + i + j, coals(i)(j))
-    super[WithTileInventory].writeToNBT(tag)
-    super[RMTile].writeToNBT(tag)    
+    super[TileEntityInventory].writeToNBT(tag)
+    super[TileEntitySimple].writeToNBT(tag)
   }
 }

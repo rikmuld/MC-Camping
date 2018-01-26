@@ -8,7 +8,7 @@ import com.rikmuld.camping.objs.tile._
 import com.rikmuld.camping.render.objs.{CampfireCookRender, CampfireRender, TentRender, TrapRender}
 import com.rikmuld.corerm.RMMod
 import com.rikmuld.corerm.objs.blocks.{RMBlockContainer, WithModel}
-import com.rikmuld.corerm.tileentity.RMTile
+import com.rikmuld.corerm.tileentity.TileEntitySimple
 import net.minecraft.block.Block
 import net.minecraft.block.state.IBlockState
 import net.minecraft.init.SoundEvents
@@ -51,7 +51,7 @@ object ModBlocks {
     hemp = new Hemp(MOD_ID, HEMP)
     light = new RMBlockContainer(MOD_ID, LIGHT) with WithModel {
       override def getBoundingBox(state:IBlockState, source:IBlockAccess, pos:BlockPos): AxisAlignedBB = null
-      override def createNewTileEntity(world: World, meta: Int): RMTile = new TileLight()
+      override def createNewTileEntity(world: World, meta: Int): TileEntitySimple = new TileLight()
       override def getCollisionBoundingBox(state:IBlockState, world: IBlockAccess, pos:BlockPos): AxisAlignedBB = null
       override def getRenderType(state:IBlockState) = EnumBlockRenderType.INVISIBLE
       override def isReplaceable(world: IBlockAccess, pos:BlockPos) = true

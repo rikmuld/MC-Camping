@@ -3,7 +3,7 @@ package com.rikmuld.camping.objs.tile
 import java.util.ArrayList
 
 import com.rikmuld.camping.Utils._
-import com.rikmuld.corerm.tileentity.RMTile
+import com.rikmuld.corerm.tileentity.TileEntitySimple
 import com.rikmuld.corerm.utils.WorldBlock._
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.util.ITickable
@@ -11,7 +11,7 @@ import net.minecraft.util.math.AxisAlignedBB
 
 import scala.collection.JavaConversions._
 
-class TileLight extends RMTile with ITickable {
+class TileLight extends TileEntitySimple with ITickable {
   var tick: Int = _
 
   override def update {

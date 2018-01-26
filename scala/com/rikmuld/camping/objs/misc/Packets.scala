@@ -7,7 +7,7 @@ import com.rikmuld.camping.objs.entity.Mountable
 import com.rikmuld.camping.objs.tile.TileTent
 import com.rikmuld.corerm.RMMod
 import com.rikmuld.corerm.network.BasicPacketData
-import com.rikmuld.corerm.tileentity.WithTileInventory
+import com.rikmuld.corerm.tileentity.TileEntityInventory
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
@@ -90,7 +90,7 @@ class ItemsData(var slot: Int, var x: Int, var y: Int, var z: Int, var stack: It
   }
   override def handlePacket(player: EntityPlayer, ctx: MessageContext) {
     if (player.world.getTileEntity(new BlockPos(x, y, z)) != null) {
-      player.world.getTileEntity(new BlockPos(x, y, z)).asInstanceOf[WithTileInventory].setInventorySlotContents(slot, stack)
+      player.world.getTileEntity(new BlockPos(x, y, z)).asInstanceOf[TileEntityInventory].setInventorySlotContents(slot, stack)
     }
   }
 }

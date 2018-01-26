@@ -4,7 +4,7 @@ import com.rikmuld.camping.objs.block.Logseat._
 import com.rikmuld.camping.objs.tile.TileLogseat
 import com.rikmuld.corerm.objs.ObjInfo
 import com.rikmuld.corerm.objs.blocks._
-import com.rikmuld.corerm.tileentity.RMTile
+import com.rikmuld.corerm.tileentity.TileEntitySimple
 import com.rikmuld.corerm.utils.CoreUtils.{IntegerUtils, LivingUtils}
 import com.rikmuld.corerm.utils.Rotation
 import com.rikmuld.corerm.utils.WorldBlock.{BlockData, IMBlockData}
@@ -29,7 +29,7 @@ class Logseat(modId:String, info:ObjInfo) extends RMBlockContainer(modId, info) 
   
   override def getRenderType(state:IBlockState) = EnumBlockRenderType.MODEL
   override def getProps = Array(new RMBoolProp(IS_TURNED, 0), new RMIntProp(LONG, 2, 1))
-  override def createNewTileEntity(world:World, meta:Int):RMTile = new TileLogseat
+  override def createNewTileEntity(world:World, meta:Int):TileEntitySimple = new TileLogseat
   override def isWood(world: IBlockAccess, pos:BlockPos): Boolean = true
   override def onBlockPlacedBy(world:World, pos:BlockPos, state:IBlockState, entity:EntityLivingBase, stack:ItemStack) = updateState((world, pos), (entity.facing.getHorizontalIndex & 1) == 0)
   override def neighborChanged(state:IBlockState, world:World, pos:BlockPos, block:Block, fromPos: BlockPos) = updateState((world, pos), getTurn((world, pos).state))

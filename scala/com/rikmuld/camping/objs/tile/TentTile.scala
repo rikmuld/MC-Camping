@@ -9,7 +9,7 @@ import com.rikmuld.camping.objs.misc.PlayerSleepInTent
 import com.rikmuld.camping.objs.tile.TileEntityTent._
 import com.rikmuld.corerm.features.bounds.{Bounds, BoundsStructure, BoundsTracker}
 import com.rikmuld.corerm.network.PacketSender
-import com.rikmuld.corerm.tileentity.{RMTile, WithTileInventory}
+import com.rikmuld.corerm.tileentity.{TileEntityInventory, TileEntitySimple}
 import com.rikmuld.corerm.utils.CoreUtils._
 import com.rikmuld.corerm.utils.WorldBlock._
 import net.minecraft.block.Block
@@ -31,7 +31,7 @@ object TileEntityTent {
   var BEDS: Int = 2
 }
 
-class TileTent extends RMTile with WithTileInventory with ITickable {
+class TileTent extends TileEntitySimple with TileEntityInventory with ITickable {
   final val COST_CHEST = 2
   final val COST_BED = 5
   final val COST_LANTERN = 1
@@ -166,7 +166,7 @@ class TileTent extends RMTile with WithTileInventory with ITickable {
   }
   override def readFromNBT(tag: NBTTagCompound) {
     super.readFromNBT(tag)
-    super[WithTileInventory].readFromNBT(tag)
+    super[TileEntityInventory].readFromNBT(tag)
     contends = tag.getInteger("contends")
     beds = tag.getInteger("beds")
     lanterns = tag.getInteger("lanterns")
@@ -318,7 +318,7 @@ class TileTent extends RMTile with WithTileInventory with ITickable {
     tag.setInteger("lanternDamage", lanternDamage)
     tag.setInteger("time", time)
     tag.setInteger("color", color)
-    super[WithTileInventory].writeToNBT(tag)
+    super[TileEntityInventory].writeToNBT(tag)
     super.writeToNBT(tag)   
   }
 }

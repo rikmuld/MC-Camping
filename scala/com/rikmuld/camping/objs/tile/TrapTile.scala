@@ -7,7 +7,7 @@ import com.rikmuld.camping.objs.Objs
 import com.rikmuld.camping.objs.entity.Bear
 import com.rikmuld.camping.objs.misc.ItemsData
 import com.rikmuld.corerm.network.PacketSender
-import com.rikmuld.corerm.tileentity.{RMTile, WithTileInventory}
+import com.rikmuld.corerm.tileentity.{TileEntityInventory, TileEntitySimple}
 import com.rikmuld.corerm.utils.WorldBlock._
 import net.minecraft.entity.{EntityLiving, EntityLivingBase, SharedMonsterAttributes}
 import net.minecraft.entity.ai.attributes.AttributeModifier
@@ -26,7 +26,7 @@ object TileTrap {
   val UUIDSpeedTrap = new UUID(new Random(242346763).nextLong, new Random(476456556).nextLong)
 }
 
-class TileTrap extends RMTile with WithTileInventory with ITickable {
+class TileTrap extends TileEntitySimple with TileEntityInventory with ITickable {
   var trappedEntity: EntityLivingBase = _
   var random: Random = new Random()
   var cooldown: Int = _
@@ -36,23 +36,23 @@ class TileTrap extends RMTile with WithTileInventory with ITickable {
   var lastPlayer:Option[EntityPlayer] = None 
   
   override def getSizeInventory(): Int = 1
-  override def onInventoryChanged(slot: Int) {
-    super[WithTileInventory].onInventoryChanged(slot)
+  override def onChange(slot: Int) {
+    super[TileEntityInventory].onChange(slot)
     if (!world.isRemote) PacketSender.toClient(new ItemsData(0, bd.x, bd.y, bd.z, getStackInSlot(0)))
   }
   override def readFromNBT(tag: NBTTagCompound) {
     cooldown = tag.getInteger("cooldown")
     captureFlag = tag.getBoolean("captureFlag")
     open = tag.getBoolean("open")
-    super[WithTileInventory].readFromNBT(tag)
-    super[RMTile].readFromNBT(tag)
+    super[TileEntityInventory].readFromNBT(tag)
+    super[TileEntitySimple].readFromNBT(tag)
   }
   override def writeToNBT(tag: NBTTagCompound):NBTTagCompound = {
     tag.setInteger("cooldown", cooldown)
     tag.setBoolean("captureFlag", trappedEntity != null)
     tag.setBoolean("open", open)
-    super[WithTileInventory].writeToNBT(tag)
-    super[RMTile].writeToNBT(tag)
+    super[TileEntityInventory].writeToNBT(tag)
+    super[TileEntitySimple].writeToNBT(tag)
   }
   def forceOpen {
     setOpen(true)

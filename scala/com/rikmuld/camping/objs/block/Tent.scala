@@ -11,7 +11,7 @@ import com.rikmuld.corerm.features.bounds.BoundsTracker
 import com.rikmuld.corerm.objs.ObjInfo
 import com.rikmuld.corerm.objs.blocks.{RMBoolProp, _}
 import com.rikmuld.corerm.objs.items.RMItemBlock
-import com.rikmuld.corerm.tileentity.RMTile
+import com.rikmuld.corerm.tileentity.TileEntitySimple
 import com.rikmuld.corerm.utils.CoreUtils._
 import com.rikmuld.corerm.utils.WorldBlock._
 import net.minecraft.block.Block
@@ -71,7 +71,7 @@ class Tent(modId:String, info:ObjInfo) extends RMBlockContainer(modId, info) wit
     val bd = (world, pos)
     ((bd.block == null) || bd.isReplaceable) && Objs.tentStructure(facingFlag).canBePlaced(world, new BoundsTracker(bd.x, bd.y, bd.z, TileEntityTent.bounds(facingFlag)))
   }
-  override def createNewTileEntity(world: World, meta: Int): RMTile = new TileTent
+  override def createNewTileEntity(world: World, meta: Int): TileEntitySimple = new TileTent
   override def onBlockPlacedBy(world: World, pos:BlockPos, state:IBlockState, entityLiving: EntityLivingBase, itemStack: ItemStack) {
     (world, pos).tile.asInstanceOf[TileTent].setColor(if (itemStack.hasTagCompound()) itemStack.getTagCompound.getInteger("color") else 15)
     (world, pos).setState(state.withProperty(Tent.FACING, entityLiving.facing).withProperty(Tent.ON, false.asInstanceOf[java.lang.Boolean]))

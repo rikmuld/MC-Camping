@@ -7,7 +7,7 @@ import com.rikmuld.camping.objs.{BlockDefinitions, Objs}
 import com.rikmuld.corerm.objs.ObjInfo
 import com.rikmuld.corerm.objs.blocks._
 import com.rikmuld.corerm.objs.items.RMItemBlock
-import com.rikmuld.corerm.tileentity.RMTile
+import com.rikmuld.corerm.tileentity.TileEntitySimple
 import com.rikmuld.corerm.utils.CoreUtils._
 import com.rikmuld.corerm.utils.WorldBlock._
 import net.minecraft.block.Block
@@ -46,7 +46,7 @@ class Lantern(modId:String, info:ObjInfo) extends RMBlockContainer(modId, info) 
     super.breakBlock(world, pos, state)
   }
   override def canPlaceBlockAt(world: World, pos:BlockPos): Boolean = ((world, pos).block == null || (world, pos).isReplaceable) && canStay((world, pos))
-  override def createNewTileEntity(world: World, meta: Int): RMTile = new TileLantern()
+  override def createNewTileEntity(world: World, meta: Int): TileEntitySimple = new TileLantern()
   override def getDrops(world:IBlockAccess, pos:BlockPos, state:IBlockState, forture:Int):java.util.List[ItemStack] = {
     val stack = new ItemStack(this, 1, BlockDefinitions.Lantern.OFF)
     burnTime.map { time => 

@@ -3,7 +3,7 @@ package com.rikmuld.camping.objs.block
 import com.rikmuld.camping.objs.tile.TileTrap
 import com.rikmuld.corerm.objs.ObjInfo
 import com.rikmuld.corerm.objs.blocks.{RMBlockContainer, WithInstable, WithModel}
-import com.rikmuld.corerm.tileentity.RMTile
+import com.rikmuld.corerm.tileentity.TileEntitySimple
 import com.rikmuld.corerm.utils.WorldBlock._
 import net.minecraft.block.state.IBlockState
 import net.minecraft.entity.player.EntityPlayer
@@ -21,7 +21,7 @@ class Trap(modId:String, info:ObjInfo) extends RMBlockContainer(modId, info) wit
       else new AxisAlignedBB(0.21875f, 0, 0.34375f, 0.78125f, 0.25f, 0.65f)
     }.getOrElse(new AxisAlignedBB(0, 0, 0, 0, 0, 0))
   }
-  override def createNewTileEntity(world: World, meta: Int): RMTile = new TileTrap
+  override def createNewTileEntity(world: World, meta: Int): TileEntitySimple = new TileTrap
   override def onBlockActivated(world: World, pos:BlockPos, state:IBlockState, player: EntityPlayer, hand:EnumHand, side: EnumFacing, xHit: Float, yHit: Float, zHit: Float): Boolean = {
     val tile = (world, pos).tile.asInstanceOf[TileTrap]
     tile.lastPlayer = Some(player)

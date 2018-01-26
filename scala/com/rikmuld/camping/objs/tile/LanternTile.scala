@@ -2,12 +2,12 @@ package com.rikmuld.camping.objs.tile
 
 import com.rikmuld.camping.objs.BlockDefinitions
 import com.rikmuld.camping.objs.block.Lantern
-import com.rikmuld.corerm.tileentity.RMTile
+import com.rikmuld.corerm.tileentity.{TileEntitySimple}
 import com.rikmuld.corerm.utils.WorldBlock._
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.ITickable
 
-class TileLantern extends RMTile with ITickable {
+class TileLantern extends TileEntitySimple with ITickable {
   var burnTime: Int = _
   var ticker: Int = _
 

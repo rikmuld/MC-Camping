@@ -8,7 +8,7 @@ import com.rikmuld.camping.objs.Objs
 import com.rikmuld.camping.objs.tile.{TileCampfire, TileCampfireCook, TileCampfireWood}
 import com.rikmuld.corerm.objs.ObjInfo
 import com.rikmuld.corerm.objs.blocks._
-import com.rikmuld.corerm.tileentity.RMTile
+import com.rikmuld.corerm.tileentity.TileEntitySimple
 import com.rikmuld.corerm.utils.WorldBlock.{BlockData, IMBlockData}
 import net.minecraft.block.properties.{PropertyBool, PropertyInteger}
 import net.minecraft.block.state.IBlockState
@@ -38,7 +38,7 @@ object Campfire {
 class Campfire(modId:String, info: ObjInfo) extends RMBlockContainer(modId, info) with WithModel with WithInstable {
   override def getRenderType(state:IBlockState) = EnumBlockRenderType.MODEL
   override def getBoundingBox(state:IBlockState, source:IBlockAccess, pos:BlockPos): AxisAlignedBB = new AxisAlignedBB(0.125F, 0.0F, 0.125F, 0.875F, 0.125F, 0.875F)
-  override def createNewTileEntity(world: World, meta: Int): RMTile = new TileCampfire()
+  override def createNewTileEntity(world: World, meta: Int): TileEntitySimple = new TileCampfire()
   override def onBlockActivated(world: World, pos:BlockPos, state:IBlockState, player: EntityPlayer, hand:EnumHand, side: EnumFacing, xHit: Float, yHit: Float, zHit: Float): Boolean = {
     val bd = (world, pos)
     val stack = player.getHeldItem(hand)
@@ -74,7 +74,7 @@ class CampfireCook(modId:String, info:ObjInfo) extends RMBlockContainer(modId, i
     bd.tile.asInstanceOf[TileCampfireCook].lastPlayer = player
     super.onBlockActivated(world, pos, state, player, hand, side, xHit, yHit, zHit)
   }
-  override def createNewTileEntity(world: World, meta: Int): RMTile = new TileCampfireCook()
+  override def createNewTileEntity(world: World, meta: Int): TileEntitySimple = new TileCampfireCook()
   override def getLightValue(state:IBlockState, world: IBlockAccess, pos:BlockPos): Int = if(isOn(world, pos)) 15 else 0
   @SideOnly(Side.CLIENT)
   override def randomDisplayTick(state:IBlockState, world: World, pos:BlockPos, random: Random) {
@@ -130,5 +130,5 @@ class CampfireWood(modId:String, info:ObjInfo) extends Campfire(modId, info) wit
     if(!world.isRemote && (world, pos).tile.asInstanceOf[TileCampfireWood].isOn())super.onBlockActivated(world, pos, state, player, hand, side, xHit, yHit, zHit)
     else true
   }
-  override def createNewTileEntity(world: World, meta: Int): RMTile = new TileCampfireWood()
+  override def createNewTileEntity(world: World, meta: Int): TileEntitySimple = new TileCampfireWood()
 }
