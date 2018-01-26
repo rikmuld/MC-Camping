@@ -207,9 +207,36 @@ object Lib {
 /*
   TODO for port to 1.12
   - add recipe book to camping inventory
-  - test all recipes
-  - bag items lost when crafting
   - add advancement json files
   - remove achievement localization
   - add custom advancement triggers
+  - can be make mod recipes unlockable as normal items do when having collected the items?
+
+  TODO after for next update
+  - add own recipes as json recipes
+  - update website, all recipes including spit stuff in cookbook
+  - 'spawner' blocks for special cooking fires, spit, grill, pan in creative tab
+
+  TODO after for next update (Camping Mod 2.2, the bugfix update :P)
+  - continue rewrite: tiles, utils, block and items, network, corerm features, registry system, others
+  - fix github bugs that remain after rewrite + extensive bugtest
+
+  TODO after for next update (Camping Mod 3?, but release slowly as 3α_buildnr)
+  - more food to roast (some ideas: sausage, bacon, egg on a stick, any meat/vegtable is stickable together for a nice ... what is it called again...)
+  - stickable food on either wood or iron (wood burns iron stays after eating)
+  - add pressure plate to bear trap
+  - re-balance recipes, and while:
+    - simple tent from wheat or leaves, just for sleeping
+    - simple sleeping bag for just one night (breaks afterwards)
+    - simple tool version with less durability
+    - change kit system (no GUI, build the campfire types on a normal campfire (also make them a blockstate being in creative tab))
+      then everything build can be put into a kit to quickly switch it arround
+    - stickable food can be put inside campfire as the simpelest cooking fire (iron stays, wood burns (after eating))
+  - improve world gen, use much more block, more variation
+  - entities: smarter, fox: not only arctic, make polar bear drop fur as well
+  - item ideas:
+    - first aid kit (to heal and cure bleeding), also add bleeding effects when attaked by a bear, or arrows
+    - ropes (for climbing on mountains)
+  - improve tent system, but ugly now, also perhaps tens build a bit more interestingly in the world directly (scalable :P)
+  - stuff arround items, blocks: advnacements make exciting journy like goals; specific tracks
  */

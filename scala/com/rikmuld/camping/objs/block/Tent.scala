@@ -114,7 +114,7 @@ class TentItem(block:Block) extends RMItemBlock(CampingMod.MOD_ID, BlockDefiniti
 
   override def getSubItems(tab:CreativeTabs, subItems:NonNullList[ItemStack]) {
     if(!isInCreativeTab(tab)) return
-    subItems.asInstanceOf[java.util.List[ItemStack]].add(new ItemStack(this, 1, 15))
+    for(i <- 0 until 16)subItems.asInstanceOf[java.util.List[ItemStack]].add(new ItemStack(this, 1, i))
   }
   override def placeBlockAt(stack: ItemStack, player: EntityPlayer, world: World, pos: BlockPos, side: EnumFacing, hitX: Float, hitY: Float, hitZ: Float, newState: IBlockState): Boolean = {
     if(super.placeBlockAt(stack, player, world, pos, side, hitX, hitY, hitZ, newState)){
