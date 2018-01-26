@@ -48,8 +48,6 @@ class Campfire(modId:String, info: ObjInfo) extends RMBlockContainer(modId, info
       if(!data.hasKey(NBTInfo.ACHIEVEMENTS))data.setTag(NBTInfo.ACHIEVEMENTS, new NBTTagCompound())
       data = data.getTag(NBTInfo.ACHIEVEMENTS).asInstanceOf[NBTTagCompound]
       var dye = if(data.hasKey("dye_burn"))data.getInteger("dye_burn") else 0
-      if(dye == 4)player.addStat(Objs.achMadCamper)
-      else data.setInteger("dye_burn", dye + 1)
     }
     true
   }

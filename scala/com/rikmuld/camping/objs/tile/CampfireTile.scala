@@ -333,7 +333,6 @@ class TileCampfireCook extends RMTile with WithTileInventory with ITickable with
     if(equipment == Objs.spit)campfires(0) = 1
     else if(equipment == Objs.grill)campfires(1) = 1
     else if(equipment == Objs.pan)campfires(2) = 1
-    if(campfires(0) == 1 && campfires(1) == 1 && campfires(2) == 1) player.addStat(Objs.achCampfire)
     data.setIntArray("camp_make", campfires)
   }
   override def writeToNBT(tag: NBTTagCompound):NBTTagCompound = {

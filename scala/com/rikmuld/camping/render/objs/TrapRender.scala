@@ -1,7 +1,7 @@
 package com.rikmuld.camping.render.objs
 
 import com.rikmuld.camping.Lib._
-import com.rikmuld.camping.objs.tile.TileTrap
+import com.rikmuld.camping.objs.tile.{TileTent, TileTrap}
 import com.rikmuld.camping.render.models.{ModelTrapClosed, ModelTrapOpen}
 import net.minecraft.client.Minecraft
 import net.minecraft.client.renderer.ItemRenderer
@@ -18,8 +18,7 @@ object TrapRender {
 
 class TrapRender extends TileEntitySpecialRenderer[TileTrap] {
   var renderer: ItemRenderer = new ItemRenderer(Minecraft.getMinecraft)
-  override def renderTileEntityAt(tileentity: TileTrap, x: Double, y: Double, z: Double, f: Float, i:Int) {
-    val tile = tileentity.asInstanceOf[TileTrap]
+  override def render(tile: TileTrap, x: Double, y: Double, z: Double, partialTicks: Float, destroyStage: Int, alpha: Float): Unit = {
     GL11.glPushMatrix()
     GL11.glEnable(GL12.GL_RESCALE_NORMAL)
     GL11.glTranslatef(x.toFloat + 0.5f, y.toFloat + 1.5f, z.toFloat + 0.5f)
@@ -36,7 +35,7 @@ class TrapRender extends TileEntitySpecialRenderer[TileTrap] {
       GL11.glRotatef(90, 0, 0, 1)
       GL11.glRotatef(180, 1, 0, 0)
       GL11.glScalef(0.2F, -0.2F, -0.2F)
-      renderer.renderItem(tileentity.getWorld.getClosestPlayer(x, y, z, -1, false), tile.getStackInSlot(0), TransformType.FIRST_PERSON_LEFT_HAND)
+      renderer.renderItem(tile.getWorld.getClosestPlayer(x, y, z, -1, false), tile.getStackInSlot(0), TransformType.FIRST_PERSON_LEFT_HAND)
       GL11.glPopMatrix()
     }
   }

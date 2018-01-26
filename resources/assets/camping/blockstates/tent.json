@@ -1,8 +1,12 @@
 {
     "variants": {
-        "facing=north": { "model": "camping:tent" },
-        "facing=south": { "model": "camping:tent" },
-        "facing=west": { "model": "camping:tent" },
-        "facing=east": { "model": "camping:tent" }
+        "facing=north,on=true": { "model": "camping:tent" },
+        "facing=south,on=true": { "model": "camping:tent" },
+        "facing=west,on=true": { "model": "camping:tent" },
+        "facing=east,on=true": { "model": "camping:tent" },
+        "facing=north,on=false": { "model": "camping:tent" },
+        "facing=south,on=false": { "model": "camping:tent" },
+        "facing=west,on=false": { "model": "camping:tent" },
+        "facing=east,on=false": { "model": "camping:tent" }
     }
 }

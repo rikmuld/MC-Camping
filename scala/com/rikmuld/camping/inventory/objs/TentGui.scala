@@ -48,7 +48,7 @@ class GuiTent(player: EntityPlayer, tile: IInventory) extends GuiScreen {
   }
   def checkMc = if(Option(mc).isEmpty) mc = Minecraft.getMinecraft
   override def drawScreen(mouseX: Int, mouseY: Int, partitialTicks: Float) {
-    if(Option(tent) == null) return
+    if(Option(tent).isEmpty) return
 
     checkMc
     drawDefaultBackground
@@ -61,14 +61,14 @@ class GuiTent(player: EntityPlayer, tile: IInventory) extends GuiScreen {
     if (tent.chests == 0) drawTexturedModalRect(guiLeft + 102, guiTop + 78, 51, 160, 51, 53)
     if (tent.beds == 0) drawTexturedModalRect(guiLeft + 172, guiTop + 78, 102, 160, 51, 53)
     GL11.glPushMatrix()
-    drawCenteredString(fontRendererObj, space + ": " + tent.contends + "/" + tent.MAX_COST, (width / 2) - 45, guiTop + 10, 0)
-    drawCenteredString(fontRendererObj, bedName + plural + ": " + tent.beds + "/" + tent.MAX_BEDS, (width / 2) - 45, guiTop + 30, 0)
-    drawCenteredString(fontRendererObj, lanternName + plural + ": " + tent.lanterns + "/" + tent.MAX_LANTERNS, (width / 2) - 45, guiTop + 40, 0)
-    drawCenteredString(fontRendererObj, chestName + plural + ": " + tent.chests + "/" + tent.MAX_CHESTS, (width / 2) - 45, guiTop + 50, 0)
+    drawCenteredString(fontRenderer, space + ": " + tent.contends + "/" + tent.MAX_COST, (width / 2) - 45, guiTop + 10, 0)
+    drawCenteredString(fontRenderer, bedName + plural + ": " + tent.beds + "/" + tent.MAX_BEDS, (width / 2) - 45, guiTop + 30, 0)
+    drawCenteredString(fontRenderer, lanternName + plural + ": " + tent.lanterns + "/" + tent.MAX_LANTERNS, (width / 2) - 45, guiTop + 40, 0)
+    drawCenteredString(fontRenderer, chestName + plural + ": " + tent.chests + "/" + tent.MAX_CHESTS, (width / 2) - 45, guiTop + 50, 0)
     GL11.glScalef(0.8F, 0.8F, 0.8F)
-    drawCenteredString(fontRendererObj, manage + " " + inventory, ((width / 2) * 1.25F).toInt, (guiTop * 1.25F).toInt + (142 * 1.25F).toInt, 0)
-    drawCenteredString(fontRendererObj, manage + " " + lanternName, ((width / 2) * 1.25F).toInt - (80 * 1.25F).toInt, (guiTop * 1.25F).toInt + (142 * 1.25F).toInt, 0)
-    drawCenteredString(fontRendererObj, manage + " " + sleeping, ((width / 2) * 1.25F).toInt + (80 * 1.25F).toInt, (guiTop * 1.25F).toInt + (142 * 1.25F).toInt, 0)
+    drawCenteredString(fontRenderer, manage + " " + inventory, ((width / 2) * 1.25F).toInt, (guiTop * 1.25F).toInt + (142 * 1.25F).toInt, 0)
+    drawCenteredString(fontRenderer, manage + " " + lanternName, ((width / 2) * 1.25F).toInt - (80 * 1.25F).toInt, (guiTop * 1.25F).toInt + (142 * 1.25F).toInt, 0)
+    drawCenteredString(fontRenderer, manage + " " + sleeping, ((width / 2) * 1.25F).toInt + (80 * 1.25F).toInt, (guiTop * 1.25F).toInt + (142 * 1.25F).toInt, 0)
     GL11.glPopMatrix()
     if (isPointInRegion(172, 78, 51, 53, mouseX, mouseY, guiLeft, guiTop) && (tent.beds > 0)) {
       if (Mouse.isButtonDown(0) && canClick(0)) mc.player.openGui(RMMod, Objs.guiTentSleep.get.get, tent.getWorld, tent.getPos.getX, tent.getPos.getY, tent.getPos.getZ)

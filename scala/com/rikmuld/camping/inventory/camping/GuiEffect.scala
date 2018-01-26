@@ -16,13 +16,13 @@ trait GuiWithEffect extends GuiContainer {
   var activeEffects = false
   var leftGui:Int = _
   var topGui:Int = _
-  var fontRenderer:FontRenderer = _
-  
+  var myFontRenderer:FontRenderer = _
+
   def init(left:Int, top:Int, fontRender:FontRenderer) {
     if (!this.mc.player.getActivePotionEffects().isEmpty())activeEffects = true
     leftGui = left
     topGui = top
-    fontRenderer = fontRender
+    myFontRenderer = fontRender
   }
   def draw {
     if(activeEffects){
@@ -53,10 +53,10 @@ trait GuiWithEffect extends GuiContainer {
             if (potioneffect.getAmplifier() == 1)s1 = s1 + " " + I18n.format("enchantment.level.2", new Object)
             else if (potioneffect.getAmplifier() == 2)s1 = s1 + " " + I18n.format("enchantment.level.3", new Object)
             else if (potioneffect.getAmplifier() == 3)s1 = s1 + " " + I18n.format("enchantment.level.4", new Object)
-            
-            fontRenderer.drawStringWithShadow(s1, i + 10 + 18, j + 6, 16777215)
+
+            myFontRenderer.drawStringWithShadow(s1, i + 10 + 18, j + 6, 16777215)
             val s = potioneffect.getDuration
-            fontRenderer.drawStringWithShadow(s.toString(), i + 10 + 18, j + 6 + 10, 8355711)
+            myFontRenderer.drawStringWithShadow(s.toString(), i + 10 + 18, j + 6 + 10, 8355711)
           }
           j += k
         }

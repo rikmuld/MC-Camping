@@ -104,7 +104,7 @@ class Bear(worldIn: World) extends EntityAnimal(worldIn) {
   }
         
   override def getAmbientSound:SoundEvent = bearAmb
-  override def getHurtSound:SoundEvent = bearAmb
+  override def getHurtSound(source: DamageSource):SoundEvent = bearAmb
   override def getDeathSound:SoundEvent = bearDeath
 }
 

@@ -79,7 +79,7 @@ class ContainerCampfireCook(player: EntityPlayer, tile: IInventory) extends Cont
   override def addListener(crafting: IContainerListener) {
     super.addListener(crafting)
     for (i <- getIInventory.cookProgress.indices) {
-      crafting.sendProgressBarUpdate(this, i, getIInventory.cookProgress(i))
+      crafting.sendWindowProperty(this, i, getIInventory.cookProgress(i))
     }
   }
 

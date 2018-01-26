@@ -2,7 +2,7 @@ package com.rikmuld.camping.inventory.camping
 
 import java.util.Random
 
-import com.rikmuld.camping.Lib.TextureInfo
+import com.rikmuld.camping.Lib.{NBTInfo, TextureInfo}
 import com.rikmuld.camping.inventory._
 import com.rikmuld.camping.inventory.camping.InventoryCamping._
 import com.rikmuld.camping.objs.Objs
@@ -67,13 +67,8 @@ class ContainerCamping(player:EntityPlayer) extends ContainerSimple[InventoryCam
     new InventoryCamping(player, this)
 
   override def onCraftMatrixChanged(inv: IInventory) {
-    getIInventory.craftResult.setInventorySlotContents(0,
-      CraftingManager.getInstance.findMatchingRecipe(getIInventory.craftMatrix, player.world)
-    )
-
-    getIInventory.craftResultSmall.setInventorySlotContents(0,
-      CraftingManager.getInstance.findMatchingRecipe(getIInventory.craftMatrixSmall, player.world)
-    )
+    slotChangedCraftingGrid(player.world, player, getIInventory.craftMatrix, getIInventory.craftResult)
+    slotChangedCraftingGrid(player.world, player, getIInventory.craftMatrixSmall, getIInventory.craftResultSmall)
   }
 
   override def slotClick(slotId: Int, dragType: Int, clickTypeIn: ClickType, player: EntityPlayer): ItemStack = {
@@ -166,8 +161,8 @@ object InventoryCamping {
 
   //basically same as readItems, so generalize that one
   def dropItems(player: EntityPlayer) {
-    if (!player.getEntityData.hasKey("campInv")) return
-    val tag = player.getEntityData.getCompoundTag("campInv")
+    if (!player.getEntityData.hasKey(NBTInfo.INV_CAMPING)) return
+    val tag = player.getEntityData.getCompoundTag(NBTInfo.INV_CAMPING)
     val inventory = tag.getTagList("items", Constants.NBT.TAG_COMPOUND)
     for (i <- 0 until inventory.tagCount()) {
       val Slots = inventory.getCompoundTagAt(i)
@@ -177,17 +172,17 @@ object InventoryCamping {
   }
 }
 
-class InventoryCamping(player: EntityPlayer, container: ContainerCamping) extends InventoryPlayer(player, 4, 1, "campInv") {
+class InventoryCamping(player: EntityPlayer, container: ContainerCamping) extends InventoryPlayer(player, 4, 1, NBTInfo.INV_CAMPING) {
   val craftMatrix: InventoryCrafting =
     new InventoryCrafting(container, 3, 3)
 
   val craftMatrixSmall: InventoryCrafting =
     new InventoryCrafting(container, 2, 2)
 
-  val craftResult: IInventory =
+  val craftResult: InventoryCraftResult =
     new InventoryCraftResult()
 
-  val craftResultSmall: IInventory =
+  val craftResultSmall: InventoryCraftResult =
     new InventoryCraftResult()
 
   private var backpackInv: Option[InventoryItem] =
@@ -202,9 +197,6 @@ class InventoryCamping(player: EntityPlayer, container: ContainerCamping) extend
   override def onChange(slotNum: Int) {
     if (slotNum == SLOT_BACKPACK)
       backpackChanged()
-
-    if(getContents.size == 4)
-      player.addStat(Objs.achCamperFull)
   }
 
   def backpackChanged(): Unit = {

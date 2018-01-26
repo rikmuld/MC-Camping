@@ -3,7 +3,7 @@ package com.rikmuld.camping.render.fx
 import com.rikmuld.camping.Lib.TextureInfo
 import net.minecraft.client.Minecraft
 import net.minecraft.client.particle.ParticleFlame
-import net.minecraft.client.renderer.{Tessellator, VertexBuffer}
+import net.minecraft.client.renderer.{Tessellator, BufferBuilder}
 import net.minecraft.entity.Entity
 import net.minecraft.util.ResourceLocation
 import net.minecraft.world.World
@@ -19,7 +19,7 @@ object ColouredFlame {
 class ColouredFlame(world: World, x: Double, y: Double, z: Double, mX: Double, mY: Double, mZ: Double, color: Int) extends ParticleFlame(world, x, y, z, mX, mY, mZ) {
   setParticleTextureIndex(color)
 
-  override def renderParticle(render: VertexBuffer, entity:Entity, par2: Float, par3: Float, par4: Float, par5: Float, par6: Float, par7: Float) {
+  override def renderParticle(render: BufferBuilder, entity:Entity, par2: Float, par3: Float, par4: Float, par5: Float, par6: Float, par7: Float) {
     val tessellator1 = Tessellator.getInstance
     
     tessellator1.draw()

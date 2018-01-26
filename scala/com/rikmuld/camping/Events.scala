@@ -73,24 +73,23 @@ class EventsS {
   def onEntityDeath(event: LivingDeathEvent) {
     if (event.getEntity.isInstanceOf[EntityPlayer]) {
       if (event.getEntity.world.getGameRules().getBoolean("keepInventory")) {
-        val tag = event.getEntity.asInstanceOf[EntityPlayer].getEntityData.getCompoundTag("campInv")
+        val tag = event.getEntity.asInstanceOf[EntityPlayer].getEntityData.getCompoundTag(NBTInfo.INV_CAMPING)
         if (!event.getEntity.asInstanceOf[EntityPlayer].getEntityData.hasKey(EntityPlayer.PERSISTED_NBT_TAG)) event.getEntity.asInstanceOf[EntityPlayer].getEntityData.setTag(EntityPlayer.PERSISTED_NBT_TAG, new NBTTagCompound())
-        event.getEntity.asInstanceOf[EntityPlayer].getEntityData.getCompoundTag(EntityPlayer.PERSISTED_NBT_TAG).setTag("campInv", tag)
+        event.getEntity.asInstanceOf[EntityPlayer].getEntityData.getCompoundTag(EntityPlayer.PERSISTED_NBT_TAG).setTag(NBTInfo.INV_CAMPING, tag)
       }
     }
   }
   @SubscribeEvent
   def onPlayerRespawn(event: PlayerRespawnEvent) {
-    if (event.player.getEntityData.getCompoundTag(EntityPlayer.PERSISTED_NBT_TAG).hasKey("campInv")) {
-      event.player.getEntityData.setTag("campInv", event.player.getEntityData.getCompoundTag(EntityPlayer.PERSISTED_NBT_TAG).getCompoundTag("campInv"))
-      event.player.getEntityData.getCompoundTag(EntityPlayer.PERSISTED_NBT_TAG).removeTag("campInv")
+    if (event.player.getEntityData.getCompoundTag(EntityPlayer.PERSISTED_NBT_TAG).hasKey(NBTInfo.INV_CAMPING)) {
+      event.player.getEntityData.setTag(NBTInfo.INV_CAMPING, event.player.getEntityData.getCompoundTag(EntityPlayer.PERSISTED_NBT_TAG).getCompoundTag(NBTInfo.INV_CAMPING))
+      event.player.getEntityData.getCompoundTag(EntityPlayer.PERSISTED_NBT_TAG).removeTag(NBTInfo.INV_CAMPING)
     }
   }
   @SubscribeEvent
   def onPlayerLogin(event: PlayerLoggedInEvent) = Option(event.player.getEntityData.getCompoundTag(NBTInfo.INV_CAMPING)) map (tag => PacketSender.to(new NBTPlayer(tag), event.player.asInstanceOf[EntityPlayerMP]))
   @SubscribeEvent
   def onItemCrafted(event: ItemCraftedEvent) {
-    if(event.crafting.getItem == Objs.knife)event.player.addStat(Objs.achKnife)
     for (slot <- 0 until event.craftMatrix.getSizeInventory if Option(event.craftMatrix.getStackInSlot(slot)).isDefined) {
       val stackInSlot = event.craftMatrix.getStackInSlot(slot)
       val itemInSlot = Option(stackInSlot.getItem)
@@ -164,7 +163,6 @@ class EventsS {
                 val cooked = roaster.roastResult(item)
                 
                 if (!player.inventory.addItemStackToInventory(cooked)) player.dropItem(cooked, false)
-                if(Option(player.getRidingEntity).isDefined && player.getRidingEntity.isInstanceOf[Mountable])player.addStat(Objs.achMarshRoast)
                 marshupdate = 0
               } else marshupdate += roaster.roastSpeed(item)
             } 
@@ -177,7 +175,6 @@ class EventsS {
         
     var campNum = 0.0f
     for (i <- 0 until 4 if (player.inventory.armorInventory(i) != null && player.inventory.armorInventory(i).getItem.isInstanceOf[ItemArmor] && player.inventory.armorInventory(i).getItem.asInstanceOf[ItemArmor].getArmorMaterial.equals(Objs.fur))) campNum += 0.25f
-    if(campNum == 1) player.addStat(Objs.achWildMan)
     if (player.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getModifier(UUIDSpeedCamping) != null) player.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).removeModifier(player.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getModifier(UUIDSpeedCamping))
     player.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).applyModifier(new AttributeModifier(UUIDSpeedCamping, "camping.speedBoost", 0.04 * campNum, 0))
   }

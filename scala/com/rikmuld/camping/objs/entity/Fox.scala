@@ -77,7 +77,7 @@ class Fox(worldIn: World) extends EntityAnimal(worldIn) {
   override def createChild(entity: EntityAgeable): EntityAgeable = new Fox(this.world)
   override def isBreedingItem(stack: ItemStack): Boolean = stack.getItem() == Items.CHICKEN
   override def getAmbientSound:SoundEvent = foxAmb
-  override def getHurtSound:SoundEvent = foxDeath
+  override def getHurtSound(source: DamageSource):SoundEvent = foxDeath
   override def getDeathSound:SoundEvent = foxDeath
 }
 

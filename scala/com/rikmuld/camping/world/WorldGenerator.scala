@@ -6,7 +6,8 @@ import com.rikmuld.camping.CampingMod._
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
 import net.minecraft.world.biome.Biome.TempCategory
-import net.minecraft.world.chunk.{IChunkGenerator, IChunkProvider}
+import net.minecraft.world.chunk.IChunkProvider
+import net.minecraft.world.gen.IChunkGenerator
 import net.minecraftforge.common.BiomeDictionary
 import net.minecraftforge.fml.common.IWorldGenerator
 

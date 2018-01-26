@@ -8,7 +8,7 @@ import net.minecraft.client.Minecraft
 import net.minecraft.client.gui.GuiScreen
 import net.minecraftforge.common.config.{ConfigElement, Configuration}
 import net.minecraftforge.fml.client.IModGuiFactory
-import net.minecraftforge.fml.client.IModGuiFactory.{RuntimeOptionCategoryElement, RuntimeOptionGuiHandler}
+import net.minecraftforge.fml.client.IModGuiFactory.RuntimeOptionCategoryElement
 import net.minecraftforge.fml.client.config.{GuiConfig, IConfigElement}
 
 class Config(val file: Configuration) {
@@ -74,9 +74,7 @@ class Config(val file: Configuration) {
 
 class GuiFactory extends IModGuiFactory {
   override def initialize(minecraftInstance: Minecraft) = {}
-  override def mainConfigGuiClass(): Class[GuiScreen] = classOf[ConfigGUI].asInstanceOf[Class[GuiScreen]]
   override def runtimeGuiCategories: java.util.Set[RuntimeOptionCategoryElement] = null
-  override def getHandlerFor(element: RuntimeOptionCategoryElement): RuntimeOptionGuiHandler = null;
   override def createConfigGui(parentScreen: GuiScreen): GuiScreen = new ConfigGUI(parentScreen)
   override def hasConfigGui: Boolean = true
 }

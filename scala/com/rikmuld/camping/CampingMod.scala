@@ -5,6 +5,7 @@ import com.rikmuld.camping.objs.registers._
 import com.rikmuld.corerm.misc.ModRegister
 import net.minecraft.block.Block
 import net.minecraft.item.Item
+import net.minecraft.util.{ResourceLocation, SoundEvent}
 import net.minecraftforge.client.event.ModelRegistryEvent
 import net.minecraftforge.common.config.Configuration
 import net.minecraftforge.event.RegistryEvent
@@ -21,9 +22,9 @@ import scala.collection.mutable.ListBuffer
 object CampingMod {
   final val MOD_ID = "camping"
   final val MOD_NAME = "The Camping Mod 2"
-  final val MOD_VERSION = "2.3e"
+  final val MOD_VERSION = "2.3f"
   final val MOD_LANUAGE = "scala"
-  final val MOD_DEPENDENCIES = "required-after:forge@[v13.20.1.2386,);required-after:corerm@[1.2f,)"
+  final val MOD_DEPENDENCIES = "required-after:forge@[v13.20.1.2386,);required-after:corerm@[1.2g,)"
   final val MOD_SERVER_PROXY = "com.rikmuld."+MOD_ID+".ProxyServer"
   final val MOD_CLIENT_PROXY = "com.rikmuld."+MOD_ID+".ProxyClient"
   final val MOD_GUIFACTORY = "com.rikmuld.camping.GuiFactory"
@@ -52,8 +53,6 @@ object CampingMod {
     register(event.getSide, ModEntities, ModRegister.PERI)
     register(event.getSide, ModTiles, ModRegister.PERI)
     register(event.getSide, ModRecipes, ModRegister.PERI)
-    register(event.getSide, ModAchievements, ModRegister.PERI)
-    register(event.getSide, ModSounds, ModRegister.PERI)
   }
   @EventHandler
   def PosInit(event: FMLPostInitializationEvent) {
@@ -88,6 +87,11 @@ object CampingMod {
   def registerModels(event: ModelRegistryEvent): Unit ={
     ModItems.registerModels(event)
     ModBlocks.registerModels(event)
+  }
+
+  @SubscribeEvent
+  def registerSounds(event: RegistryEvent.Register[SoundEvent]): Unit ={
+    ModSounds.register(event)
   }
 }
 
@@ -126,6 +130,13 @@ object Lib {
     final val INV_CAMPING = "campInv"
     final val ACHIEVEMENTS = "camping_achieve"
   }
+
+  object SoundInfo {
+    final val BEAR_SAY = new ResourceLocation(MOD_ID, "mob.bear.say")
+    final val BEAR_HURT = new ResourceLocation(MOD_ID, "mob.bear.hurt")
+    final val FOX_SAY = new ResourceLocation(MOD_ID, "mob.fox.say")
+    final val FOX_HURT = new ResourceLocation(MOD_ID, "mob.fox.hurt")
+  }
   
   object PotionInfo {
     final val BLEEDING = "Bleeding"
@@ -139,11 +150,9 @@ object Lib {
     final val CATAGORY_MOD = "The Camping Mod"
     final val INVENTORY_KEY = 0
   
-    final val desc: Array[String] = Array(
-      "Camping Inventory Key")
+    final val desc: Array[String] = Array("Camping Inventory Key")
   
-    final val default: Array[Integer] = Array(
-      Keyboard.KEY_C)
+    final val default: Array[Int] = Array(Keyboard.KEY_C)
   }
   
   object TextureInfo {
@@ -193,3 +202,12 @@ object Lib {
     final val ARMOR_FUR_MAIN = MODEL_LOCATION + "armor_fur_main.png"
   }
 }
+
+/*
+  TODO for port to 1.12
+  - add recipe book to camping inventory
+  - add recipe json files
+  - add advancement json files
+  - remove achievement localization
+  - add custom advancement triggers
+ */

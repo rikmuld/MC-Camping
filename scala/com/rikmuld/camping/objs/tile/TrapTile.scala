@@ -82,16 +82,6 @@ class TileTrap extends RMTile with WithTileInventory with ITickable {
             trappedEntity = entities.get(0)
           } else if (!(entities.get(0).isInstanceOf[EntityPlayer])) {
             trappedEntity = entities.get(0)
-            lastPlayer.map {player => 
-              if(!getStackInSlot(0).isEmpty){
-                if (trappedEntity.isInstanceOf[EntityAnimal]) {
-                  if (trappedEntity.asInstanceOf[EntityAnimal].isBreedingItem(getStackInSlot(0)))player.addStat(Objs.achHunter)
-                }
-                if (trappedEntity.isInstanceOf[Bear] || trappedEntity.isInstanceOf[EntityZombie] || trappedEntity.isInstanceOf[EntityCreeper] || trappedEntity.isInstanceOf[EntitySkeleton] || trappedEntity.isInstanceOf[EntityEnderman] || trappedEntity.isInstanceOf[EntitySpider]) {
-                  if (monsterItemAttr.contains(getStackInSlot(0).getItem()))player.addStat(Objs.achProtector)
-                }
-              }
-            }
             if (!getStackInSlot(0).isEmpty) getStackInSlot(0).setCount(getStackInSlot(0).getCount - 1)
           }
         }

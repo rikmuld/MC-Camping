@@ -91,7 +91,7 @@ class Camper(worldIn: World) extends EntityCreature(worldIn) with IMerchant with
     camp.map {campsite => campsite.update }
   }
   protected override def getDeathSound:SoundEvent = SoundEvents.ENTITY_VILLAGER_DEATH
-  protected override def getHurtSound:SoundEvent = SoundEvents.ENTITY_VILLAGER_HURT
+  protected override def getHurtSound(source: DamageSource):SoundEvent = SoundEvents.ENTITY_VILLAGER_HURT
   protected override def getAmbientSound:SoundEvent = SoundEvents.ENTITY_VILLAGER_AMBIENT
   override def attackEntityAsMob(entity: Entity): Boolean = {
     var f = this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue.toFloat
@@ -134,7 +134,6 @@ class Camper(worldIn: World) extends EntityCreature(worldIn) with IMerchant with
     if (!flag && isEntityAlive && !isTrading && !player.isSneaking) {
       if (!world.isRemote) {
         setCustomer(player)
-        player.addStat(Objs.achExplorer)
         player.displayVillagerTradeGui(this)
       }
       true

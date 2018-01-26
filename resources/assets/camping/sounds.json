@@ -3,7 +3,7 @@
   	"category": "hostile", 
   	"sounds": ["camping:bear-1", "camping:bear-2", "camping:bear-3", "camping:bear-4"]
   }, 
-  "mob.bear.dead": {
+  "mob.bear.hurt": {
   	"category": "hostile", 
   	"sounds": ["camping:bear-attack"]
   },
@@ -11,7 +11,7 @@
   	"category": "neutral", 
   	"sounds": ["camping:fox"]
   },
-  "mob.fox.dead": {
+  "mob.fox.hurt": {
   	"category": "neutral", 
   	"sounds": ["camping:fox-attack"]
   }

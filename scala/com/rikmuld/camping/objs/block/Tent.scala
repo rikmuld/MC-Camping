@@ -98,7 +98,6 @@ class Tent(modId:String, info:ObjInfo) extends RMBlockContainer(modId, info) wit
       val tile = bd.tile.asInstanceOf[TileTent]
       if ((stack != null) && tile.addContends(stack)) {
         stack.setCount(stack.getCount - 1)
-        if(tile.lanterns == 1 && tile.chests == 2 && tile.beds == 1) player.addStat(Objs.achLuxury)
         if (stack.getCount < 0) player.setCurrentItem(null)
         return true
       } else if ((stack != null) && (stack.getItem() == Items.DYE) && (bd.tile.asInstanceOf[TileTent].color != stack.getItemDamage)) {
@@ -112,9 +111,10 @@ class Tent(modId:String, info:ObjInfo) extends RMBlockContainer(modId, info) wit
 }
 
 class TentItem(block:Block) extends RMItemBlock(CampingMod.MOD_ID, BlockDefinitions.TENT, block) {  
-  @SideOnly(Side.CLIENT)
-  override def getSubItems(itemIn:Item, tab:CreativeTabs, subItems:NonNullList[ItemStack]) {
-    subItems.asInstanceOf[java.util.List[ItemStack]].add(new ItemStack(itemIn, 1, 15)) 
+
+  override def getSubItems(tab:CreativeTabs, subItems:NonNullList[ItemStack]) {
+    if(!isInCreativeTab(tab)) return
+    subItems.asInstanceOf[java.util.List[ItemStack]].add(new ItemStack(this, 1, 15))
   }
   override def placeBlockAt(stack: ItemStack, player: EntityPlayer, world: World, pos: BlockPos, side: EnumFacing, hitX: Float, hitY: Float, hitZ: Float, newState: IBlockState): Boolean = {
     if(super.placeBlockAt(stack, player, world, pos, side, hitX, hitY, hitZ, newState)){

@@ -13,6 +13,7 @@ import com.rikmuld.corerm.utils.WorldBlock._
 import net.minecraft.block.Block
 import net.minecraft.block.properties.PropertyBool
 import net.minecraft.block.state.IBlockState
+import net.minecraft.client.util.ITooltipFlag
 import net.minecraft.creativetab.CreativeTabs
 import net.minecraft.entity.EntityLivingBase
 import net.minecraft.entity.player.EntityPlayer
@@ -90,16 +91,18 @@ class Lantern(modId:String, info:ObjInfo) extends RMBlockContainer(modId, info) 
 }
 
 class LanternItem(block: Block) extends RMItemBlock(MOD_ID, BlockDefinitions.LANTERN, block) {
-  override def addInformation(stack: ItemStack, player: EntityPlayer, list: java.util.List[String], par4: Boolean) {
+  override def addInformation(stack: ItemStack, player: World, list: java.util.List[String], flag: ITooltipFlag) {
     if (stack.hasTagCompound()) list.asInstanceOf[java.util.List[String]].add("Burning time left: " + (stack.getTagCompound.getInteger("time") / 2) + " seconds")
   }
-  @SideOnly(Side.CLIENT)
-  override def getSubItems(item: Item, creativetabs: CreativeTabs, stackList: NonNullList[ItemStack]) {
-    val lantern = new ItemStack(item, 1, BlockDefinitions.Lantern.ON)
+
+  override def getSubItems(tab: CreativeTabs, stackList: NonNullList[ItemStack]) {
+    if(!isInCreativeTab(tab)) return
+
+    val lantern = new ItemStack(this, 1, BlockDefinitions.Lantern.ON)
     lantern.setTagCompound(new NBTTagCompound())
     lantern.getTagCompound.setInteger("time", 1500)
     stackList.asInstanceOf[java.util.List[ItemStack]].add(lantern)
-    stackList.asInstanceOf[java.util.List[ItemStack]].add(new ItemStack(item, 1, BlockDefinitions.Lantern.OFF))
+    stackList.asInstanceOf[java.util.List[ItemStack]].add(new ItemStack(this, 1, BlockDefinitions.Lantern.OFF))
   }
   override def placeBlockAt(stack: ItemStack, player: EntityPlayer, world: World, pos:BlockPos, side: EnumFacing, hitX: Float, hitY: Float, hitZ: Float, state:IBlockState): Boolean = {
     if (super.placeBlockAt(stack, player, world, pos, side, hitX, hitY, hitZ, state)) {

@@ -9,7 +9,6 @@ import net.minecraft.client.settings.KeyBinding
 import net.minecraft.creativetab.CreativeTabs
 import net.minecraft.item.ItemArmor.ArmorMaterial
 import net.minecraft.potion.Potion
-import net.minecraft.stats.Achievement
 import net.minecraft.util.{DamageSource, SoundEvent}
 
 object Objs {
@@ -71,16 +70,4 @@ object Objs {
       foxDeath,
       bearAmb,
       bearDeath:SoundEvent = _
-  
-  var achKnife, 
-      achCamperFull, 
-      achExplorer, 
-      achWildMan, 
-      achBackBasic, 
-      achLuxury, 
-      achMarshRoast, 
-      achMadCamper, 
-      achCampfire, 
-      achHunter, 
-      achProtector:Achievement = _
 }

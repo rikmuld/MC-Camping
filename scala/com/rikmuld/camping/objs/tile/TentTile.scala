@@ -250,7 +250,6 @@ class TileTent extends RMTile with WithTileInventory with ITickable {
   }
   def sleep(player: EntityPlayer) {
     if(!world.isRemote) {
-      player.addStat(Objs.achBackBasic)
       if (getRotation == 0) bd.south.block.asInstanceOf[TentBounds].sleep(bd.south, player)
       else if (getRotation == 1) bd.west.block.asInstanceOf[TentBounds].sleep(bd.west, player)
       else if (getRotation == 2) bd.north.block.asInstanceOf[TentBounds].sleep(bd.north, player)

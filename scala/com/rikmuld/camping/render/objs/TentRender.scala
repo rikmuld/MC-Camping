@@ -38,7 +38,7 @@ object TentRender {
 class TentRender extends TileEntitySpecialRenderer[TileTent] {
   var renderer = Minecraft.getMinecraft.getItemRenderer
 
-  override def renderTileEntityAt(tile: TileTent, x: Double, y: Double, z: Double, f: Float, i:Int) {
+  override def render(tile: TileTent, x: Double, y: Double, z: Double, partialTicks: Float, destroyStage: Int, alpha: Float): Unit = {
     GL11.glPushMatrix()
     GL11.glTranslatef(x.toFloat + 0.5f, y.toFloat + 1.5f, z.toFloat + 0.5f)
     GL11.glPushMatrix()

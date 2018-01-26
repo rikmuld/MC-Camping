@@ -34,7 +34,7 @@ class GuiCamping(var player: EntityPlayer) extends GuiTabbed(player, new Contain
            
   override def initGui {
     super.initGui 
-    init(guiLeft, guiTop, fontRendererObj)
+    init(guiLeft, guiTop, fontRenderer)
   }
   override def initTabbed {
     addTopTab("Armor", xSize, ySize, guiLeft+24, guiTop, tabsTop.size, new ItemStack(Items.SKULL, 1, 3))
@@ -78,7 +78,7 @@ class GuiCamping(var player: EntityPlayer) extends GuiTabbed(player, new Contain
     super.drawGuiContainerBackgroundLayer(partTick, mouseX, mouseY)
   }
   override def drawGuiContainerForegroundLayer(mouseX:Int, mouseY:Int) {
-    if(active(1)==0)this.fontRendererObj.drawString(I18n.format("container.crafting", new java.lang.Object), 119, 8, 4210752)
+    if(active(1)==0)this.fontRenderer.drawString(I18n.format("container.crafting", new java.lang.Object), 119, 8, 4210752)
   }
   def drawTab(left:Boolean, id:Int){
     if(id==1||id==2)mc.renderEngine.bindTexture(texture)
