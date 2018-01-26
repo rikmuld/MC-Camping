@@ -1,0 +1,22 @@
+{
+  "display": {
+    "icon": {
+      "item": "camping:knife"
+    },
+    "title": "Campers Rebirth",
+    "description": "Craft a Swiss Knife",
+    "background": "camping:textures/blocks/grass.png"
+  },
+  "criteria": {
+    "knife_got": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "camping:knife"
+          }
+        ]
+      }
+    }
+  }
+}

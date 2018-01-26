@@ -27,7 +27,7 @@ class GuiCamping(var player: EntityPlayer) extends GuiTabbed(player, new Contain
   var hasKnife = false
   var lastMouseX = 0
   var lastMouseY = 0
-  
+
   var pack = 0
 
   val container = inventorySlots.asInstanceOf[ContainerCamping]

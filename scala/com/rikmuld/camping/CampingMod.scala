@@ -153,7 +153,7 @@ object Lib {
   
     final val desc: Array[String] = Array("Camping Inventory Key")
   
-    final val default: Array[Int] = Array(Keyboard.KEY_C)
+    final val default: Array[Int] = Array(Keyboard.KEY_G)
   }
   
   object TextureInfo {
@@ -206,19 +206,19 @@ object Lib {
 
 /*
   TODO for port to 1.12
-  - add recipe book to camping inventory
   - add advancement json files
   - remove achievement localization
   - add custom advancement triggers
-  - can be make mod recipes unlockable as normal items do when having collected the items?
 
   TODO after for next update
   - add own recipes as json recipes
+  - unlock all recipes before crafting using advancements
+  - add recipe book to camping inventory
   - update website, all recipes including spit stuff in cookbook
   - 'spawner' blocks for special cooking fires, spit, grill, pan in creative tab
 
   TODO after for next update (Camping Mod 2.2, the bugfix update :P)
-  - continue rewrite: tiles, utils, block and items, network, corerm features, registry system, others
+  - continue rewrite: guis, tiles, utils, block and items, network, corerm features, registry system, others
   - fix github bugs that remain after rewrite + extensive bugtest
 
   TODO after for next update (Camping Mod 3?, but release slowly as 3α_buildnr)
