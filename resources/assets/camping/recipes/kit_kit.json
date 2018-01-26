@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "000",
+    "111",
+    "000"
+  ],
+  "key": {
+    "0": {
+      "item": "minecraft:iron_ingot",
+      "data": 0,
+      "count": 1
+    },
+    "1": {
+      "item": "minecraft:dye",
+      "data": 11,
+      "count": 1
+    }
+  },
+  "result": {
+    "item": "camping:kit",
+    "data": 0,
+    "count": 1
+  }
+}
+     

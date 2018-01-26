@@ -1,0 +1,31 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " 0 ",
+    "121",
+    " 1 "
+  ],
+  "key": {
+    "0": {
+      "item": "minecraft:dye",
+      "data": 1,
+      "count": 1
+    },
+    "1": {
+      "item": "minecraft:iron_ingot",
+      "data": 0,
+      "count": 1
+    },
+    "2": {
+      "item": "minecraft:bowl",
+      "data": 0,
+      "count": 1
+    }
+  },
+  "result": {
+    "item": "camping:parts",
+    "data": 3,
+    "count": 1
+  }
+}
+     

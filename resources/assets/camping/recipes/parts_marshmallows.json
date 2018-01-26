@@ -1,0 +1,36 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "010",
+    "020",
+    "030"
+  ],
+  "key": {
+    "0": {
+      "item": "minecraft:sugar",
+      "data": 0,
+      "count": 1
+    },
+    "1": {
+      "item": "minecraft:potion",
+      "data": 0,
+      "count": 1
+    },
+    "2": {
+      "item": "minecraft:egg",
+      "data": 0,
+      "count": 1
+    },
+    "3": {
+      "item": "minecraft:bowl",
+      "data": 0,
+      "count": 1
+    }
+  },
+  "result": {
+    "item": "camping:parts",
+    "data": 5,
+    "count": 3
+  }
+}
+     

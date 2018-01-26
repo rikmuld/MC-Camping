@@ -52,7 +52,8 @@ object CampingMod {
     register(event.getSide, ModGuis, ModRegister.PERI)
     register(event.getSide, ModEntities, ModRegister.PERI)
     register(event.getSide, ModTiles, ModRegister.PERI)
-    register(event.getSide, ModRecipes, ModRegister.PERI)
+
+    ModRecipes.register()
   }
   @EventHandler
   def PosInit(event: FMLPostInitializationEvent) {
@@ -206,7 +207,8 @@ object Lib {
 /*
   TODO for port to 1.12
   - add recipe book to camping inventory
-  - add recipe json files
+  - test all recipes
+  - bag items lost when crafting
   - add advancement json files
   - remove achievement localization
   - add custom advancement triggers

@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "0",
+    "0"
+  ],
+  "key": {
+    "0": {
+      "item": "minecraft:iron_ingot",
+      "data": 0,
+      "count": 1
+    }
+  },
+  "result": {
+    "item": "camping:parts",
+    "data": 1,
+    "count": 1
+  }
+}
+     

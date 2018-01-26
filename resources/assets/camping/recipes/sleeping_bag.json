@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "1",
+    "000"
+  ],
+  "key": {
+    "0": {
+      "item": "minecraft:wool",
+      "data": 32767,
+      "count": 1
+    },
+    "1": {
+      "item": "camping:knife",
+      "data": 32767,
+      "count": 1
+    }
+  },
+  "result": {
+    "item": "camping:sleeping_bag",
+    "data": 0,
+    "count": 1
+  }
+}
+     

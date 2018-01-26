@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "camping:tent",
+      "data": 32767,
+      "count": 1
+    },
+    {
+      "item": "minecraft:dye",
+      "data": 1,
+      "count": 1
+    }
+  ],
+  "result": {
+    "item": "camping:tent",
+    "data": 1,
+    "count": 1
+  }
+}
+     

@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "minecraft:log",
+      "data": 32767,
+      "count": 1
+    },
+    {
+      "item": "camping:knife",
+      "data": 32767,
+      "count": 1
+    }
+  ],
+  "result": {
+    "item": "camping:logseat",
+    "data": 0,
+    "count": 1
+  }
+}
+     

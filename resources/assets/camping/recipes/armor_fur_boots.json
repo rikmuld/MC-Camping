@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "0 0",
+    "010"
+  ],
+  "key": {
+    "0": {
+      "item": "camping:parts_animal",
+      "data": 1,
+      "count": 1
+    },
+    "1": {
+      "item": "minecraft:leather_boots",
+      "data": 0,
+      "count": 1
+    }
+  },
+  "result": {
+    "item": "camping:armor_fur_boots",
+    "data": 0,
+    "count": 1
+  }
+}
+     

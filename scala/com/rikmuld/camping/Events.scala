@@ -90,6 +90,11 @@ class EventsS {
   def onPlayerLogin(event: PlayerLoggedInEvent) = Option(event.player.getEntityData.getCompoundTag(NBTInfo.INV_CAMPING)) map (tag => PacketSender.to(new NBTPlayer(tag), event.player.asInstanceOf[EntityPlayerMP]))
   @SubscribeEvent
   def onItemCrafted(event: ItemCraftedEvent) {
+    if(event.crafting.getItem == Objs.backpack) {
+      val data = event.craftMatrix.getStackInSlot(4).getTagCompound
+      event.crafting.setTagCompound(data)
+    }
+
     for (slot <- 0 until event.craftMatrix.getSizeInventory if Option(event.craftMatrix.getStackInSlot(slot)).isDefined) {
       val stackInSlot = event.craftMatrix.getStackInSlot(slot)
       val itemInSlot = Option(stackInSlot.getItem)

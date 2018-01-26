@@ -1,0 +1,31 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "000",
+    "010",
+    "222"
+  ],
+  "key": {
+    "1": {
+      "item": "minecraft:glowstone_dust",
+      "data": 0,
+      "count": 1
+    },
+    "0": {
+      "item": "minecraft:glass_pane",
+      "data": 0,
+      "count": 1
+    },
+    "2": {
+      "item": "minecraft:gold_ingot",
+      "data": 0,
+      "count": 1
+    }
+  },
+  "result": {
+    "item": "camping:lantern",
+    "data": 1,
+    "count": 1
+  }
+}
+     

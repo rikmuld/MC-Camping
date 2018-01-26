@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " 0 ",
+    "0 0",
+    " 0 "
+  ],
+  "key": {
+    "0": {
+      "item": "minecraft:cobblestone",
+      "data": 0,
+      "count": 1
+    }
+  },
+  "result": {
+    "item": "camping:campfire_cook",
+    "data": 0,
+    "count": 1
+  }
+}
+     

@@ -1,0 +1,31 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "camping:parts",
+      "data": 5,
+      "count": 1
+    },
+    {
+      "item": "camping:parts",
+      "data": 1,
+      "count": 1
+    },
+    {
+      "item": "camping:parts",
+      "data": 1,
+      "count": 1
+    },
+    {
+      "item": "camping:parts",
+      "data": 1,
+      "count": 1
+    }
+  ],
+  "result": {
+    "item": "camping:parts",
+    "data": 6,
+    "count": 3
+  }
+}
+     
