@@ -1,19 +1,19 @@
 {
   "display": {
     "icon": {
-      "item": "camping:knife"
+      "item": "camping:trap"
     },
-    "title": "Multi-Purpose",
-    "description": "Craft a Swiss Knife"
+    "title": "Safety First",
+    "description": "Craft a Bear Trap"
   },
   "parent": "camping:camping_inv",
   "criteria": {
-    "have_knife": {
+    "trap_got": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "item": "camping:knife"
+            "item": "camping:trap"
           }
         ]
       }

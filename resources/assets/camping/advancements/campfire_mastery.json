@@ -1,0 +1,16 @@
+{
+  "display": {
+    "icon": {
+      "item": "camping:kit"
+    },
+    "title": "Campfire Mastery",
+    "description": "Create all types of Cooking Campfires",
+    "frame": "goal"
+  },
+  "parent": "camping:mad_camper",
+  "criteria": {
+    "tick_test": {
+      "trigger": "minecraft:tick"
+    }
+  }
+}

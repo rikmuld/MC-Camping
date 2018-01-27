@@ -1,19 +1,19 @@
 {
   "display": {
     "icon": {
-      "item": "camping:knife"
+      "item": "camping:campfire_wood"
     },
-    "title": "Multi-Purpose",
-    "description": "Craft a Swiss Knife"
+    "title": "Eating Outdoors",
+    "description": "Create a Wooden Campfire"
   },
   "parent": "camping:camping_inv",
   "criteria": {
-    "have_knife": {
+    "campfire_got": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "item": "camping:knife"
+            "item": "camping:campfire_wood"
           }
         ]
       }

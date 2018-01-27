@@ -1,0 +1,15 @@
+{
+  "display": {
+    "icon": {
+      "item": "minecraft:filled_map"
+    },
+    "title": "Campers Rebirth",
+    "description": "Open up the Camping Inventory",
+    "background": "camping:textures/blocks/grass.png"
+  },
+  "criteria": {
+    "tick_test": {
+      "trigger": "minecraft:tick"
+    }
+  }
+}

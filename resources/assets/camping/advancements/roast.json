@@ -1,0 +1,15 @@
+{
+  "display": {
+    "icon": {
+      "item": "camping:marshmallow_stick_cooked"
+    },
+    "title": "Roast in Style",
+    "description": "Roast a marshmallow while sitting on a Log Seat"
+  },
+  "parent": "camping:campfire_got",
+  "criteria": {
+    "tick_test": {
+      "trigger": "minecraft:tick"
+    }
+  }
+}

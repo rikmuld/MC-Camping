@@ -1,0 +1,16 @@
+{
+  "display": {
+    "icon": {
+      "item": "minecraft:dye",
+      "data": 6
+    },
+    "title": "Mad Camper",
+    "description": "Burn 5 different dyes in Campfires"
+  },
+  "parent": "camping:roast",
+  "criteria": {
+    "tick_test": {
+      "trigger": "minecraft:tick"
+    }
+  }
+}

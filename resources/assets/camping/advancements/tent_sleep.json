@@ -1,0 +1,16 @@
+{
+  "display": {
+    "icon": {
+      "item": "camping:tent",
+      "data": 15
+    },
+    "title": "Back to Basics",
+    "description": "Sleep in a Tent"
+  },
+  "parent": "camping:knife_got",
+  "criteria": {
+    "tick_test": {
+      "trigger": "minecraft:tick"
+    }
+  }
+}

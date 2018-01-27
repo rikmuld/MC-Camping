@@ -1,0 +1,16 @@
+{
+  "display": {
+    "icon": {
+      "item": "minecraft:rotten_flesh"
+    },
+    "title": "Protector",
+    "description": "Trap a mob in a Bear Trap",
+    "frame": "challenge"
+  },
+  "parent": "camping:trap",
+  "criteria": {
+    "tick_test": {
+      "trigger": "minecraft:tick"
+    }
+  }
+}

@@ -210,8 +210,6 @@ plan: add advancements, test server and release, then cleanup gui client stuff (
       as json and put recipe book in camping inventory then release, finally add spawner object thingies for campfires and release last before bugfix update
 
   TODO for port to 1.12
-  - add advancement json files
-  - remove achievement localization
   - add custom advancement triggers
 
   TODO after for next update
@@ -237,6 +235,7 @@ plan: add advancements, test server and release, then cleanup gui client stuff (
     - change kit system (no GUI, build the campfire types on a normal campfire (also make them a blockstate being in creative tab))
       then everything build can be put into a kit to quickly switch it arround
     - stickable food can be put inside campfire as the simpelest cooking fire (iron stays, wood burns (after eating))
+  - advancements should also be easy to get especially the first one, latter once can of course hard
   - improve world gen, use much more block, more variation
   - entities: smarter, fox: not only arctic, make polar bear drop fur as well
   - item ideas:

@@ -1,0 +1,16 @@
+{
+  "display": {
+    "icon": {
+      "item": "camping:lantern"
+    },
+    "title": "Outdoor Luxury",
+    "description": "Fill a tent with all possible items",
+    "frame": "goal"
+  },
+  "parent": "camping:tent_sleep",
+  "criteria": {
+    "tick_test": {
+      "trigger": "minecraft:tick"
+    }
+  }
+}

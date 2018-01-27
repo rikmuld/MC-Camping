@@ -1,0 +1,16 @@
+{
+  "display": {
+    "icon": {
+      "item": "minecraft:emerald"
+    },
+    "title": "Helpful Colleagues",
+    "description": "Fnd and Trade with a 'native' Camper",
+    "frame": "challenge"
+  },
+  "parent": "camping:camping_inv",
+  "criteria": {
+    "tick_test": {
+      "trigger": "minecraft:tick"
+    }
+  }
+}

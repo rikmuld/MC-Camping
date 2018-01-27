@@ -1,0 +1,16 @@
+{
+  "display": {
+    "icon": {
+      "item": "camping:armor_fur_chest"
+    },
+    "title": "Man of the Wild",
+    "description": "Wear a full set of Fur Armor",
+    "frame": "goal"
+  },
+  "parent": "camping:knife_got",
+  "criteria": {
+    "tick_test": {
+      "trigger": "minecraft:tick"
+    }
+  }
+}
