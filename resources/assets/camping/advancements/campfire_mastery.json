@@ -9,8 +9,11 @@
   },
   "parent": "camping:mad_camper",
   "criteria": {
-    "tick_test": {
-      "trigger": "minecraft:tick"
+    "made_all": {
+      "trigger": "camping:campfires_made",
+      "conditions": {
+        "total": 3
+      }
     }
   }
 }

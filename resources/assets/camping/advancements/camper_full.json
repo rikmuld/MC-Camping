@@ -10,8 +10,11 @@
   },
   "parent": "camping:fur_armor",
   "criteria": {
-    "tick_test": {
-      "trigger": "minecraft:tick"
+    "camping_full": {
+      "trigger": "camping:inventory_changed",
+      "conditions": {
+        "full": true
+      }
     }
   }
 }

@@ -9,8 +9,11 @@
   },
   "parent": "camping:trap",
   "criteria": {
-    "tick_test": {
-      "trigger": "minecraft:tick"
+    "mobTrapped": {
+      "trigger": "camping:entity_trapped",
+      "conditions": {
+        "isAnimal": false
+      }
     }
   }
 }

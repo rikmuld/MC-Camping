@@ -9,7 +9,13 @@
   "parent": "camping:campfire_got",
   "criteria": {
     "tick_test": {
-      "trigger": "minecraft:tick"
+      "trigger": "camping:food_roasted",
+      "conditions": {
+        "roasting_item": {
+          "item": "camping:parts",
+          "data": 6
+        }
+      }
     }
   }
 }

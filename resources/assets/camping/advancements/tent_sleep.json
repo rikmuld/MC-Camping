@@ -10,7 +10,10 @@
   "parent": "camping:knife_got",
   "criteria": {
     "tick_test": {
-      "trigger": "minecraft:tick"
+      "trigger": "camping:slept",
+      "conditions": {
+        "block": "tent"
+      }
     }
   }
 }

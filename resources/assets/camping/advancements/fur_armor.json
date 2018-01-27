@@ -9,8 +9,24 @@
   },
   "parent": "camping:knife_got",
   "criteria": {
-    "tick_test": {
-      "trigger": "minecraft:tick"
+    "full_fur_set": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "camping:armor_fur_chest"
+          },
+          {
+            "item": "camping:armor_fur_boots"
+          },
+          {
+            "item": "camping:armor_fur_helm"
+          },
+          {
+            "item": "camping:armor_fur_leg"
+          }
+        ]
+      }
     }
   }
 }

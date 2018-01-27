@@ -10,7 +10,21 @@
   "parent": "camping:tent_sleep",
   "criteria": {
     "tick_test": {
-      "trigger": "minecraft:tick"
+      "trigger": "camping:tent_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "minecraft:chest",
+            "count": 2
+          },
+          {
+            "item": "camping:sleeping_bag"
+          },
+          {
+            "item": "camping:lantern"
+          }
+        ]
+      }
     }
   }
 }

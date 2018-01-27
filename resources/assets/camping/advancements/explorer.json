@@ -10,7 +10,7 @@
   "parent": "camping:camping_inv",
   "criteria": {
     "tick_test": {
-      "trigger": "minecraft:tick"
+      "trigger": "camping:camper_interact"
     }
   }
 }
