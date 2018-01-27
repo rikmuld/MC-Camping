@@ -14,7 +14,7 @@ import net.minecraft.enchantment.EnchantmentHelper
 import net.minecraft.entity._
 import net.minecraft.entity.ai._
 import net.minecraft.entity.monster.EntityMob
-import net.minecraft.entity.player.EntityPlayer
+import net.minecraft.entity.player.{EntityPlayer, EntityPlayerMP}
 import net.minecraft.init.{Items, SoundEvents}
 import net.minecraft.item.{Item, ItemAxe, ItemStack}
 import net.minecraft.nbt.NBTTagCompound
@@ -135,6 +135,7 @@ class Camper(worldIn: World) extends EntityCreature(worldIn) with IMerchant with
       if (!world.isRemote) {
         setCustomer(player)
         player.displayVillagerTradeGui(this)
+        Objs.camperInteract.trigger(player.asInstanceOf[EntityPlayerMP], this)
       }
       true
     } else super.processInteract(player, hand)

@@ -158,6 +158,7 @@ object Lib {
 
   object AdvancementInfo {
     final val SLEPT = new ResourceLocation(MOD_ID, "slept")
+    final val CAMPER_INTERACT = new ResourceLocation(MOD_ID, "camper_interact")
     final val TENT_CHANGED = new ResourceLocation(MOD_ID, "tent_changed")
     final val INVENTORY_CHANGED = new ResourceLocation(MOD_ID, "inventory_changed")
     final val FOOD_ROASTED = new ResourceLocation(MOD_ID, "food_roasted")
@@ -220,11 +221,11 @@ plan: add advancements, test server and release, then cleanup gui client stuff (
       as json and put recipe book in camping inventory then release, finally add spawner object thingies for campfires and release last before bugfix update
 
   TODO for port to 1.12
-  - add custom advancement triggers
-  - make sure achievements require the previous
+  - add criteria to all advancements
 
   TODO after for next update
   - make tent tabbed gui
+  - make sure achievements require the previous
   - add own recipes as json recipes
   - unlock all recipes before crafting using advancements
   - add recipe book to camping inventory

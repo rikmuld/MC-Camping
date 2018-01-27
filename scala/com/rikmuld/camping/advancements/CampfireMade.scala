@@ -14,17 +14,14 @@ object CampfireMade {
 
     override def deserializeInstance(json: JsonObject, context: JsonDeserializationContext): Instance ={
       val campfire = Option(json.get("campfire")) map (_.getAsInt)
-      val total = Option(json.get("total")) map (_.getAsJsonArray) map(array =>
-        for(i <- 0 until array.size)
-          yield array.get(i).getAsInt
-      )
+      val total = Option(json.get("total")) map (_.getAsInt)
 
       new Instance(campfire, total)
     }
   }
 
   protected class Instance(campfire: Option[Int],
-                           total: Option[Seq[Int]]) extends TriggerInstance[Int](CAMPFIRES_MADE) {
+                           total: Option[Int]) extends TriggerInstance[Int](CAMPFIRES_MADE) {
 
     def test(player: EntityPlayerMP, damage: Int): Boolean = {
       val dataTag = player.getEntityData.getCompoundTag(NBTInfo.ACHIEVEMENTS)
@@ -37,7 +34,7 @@ object CampfireMade {
       player.getEntityData.setTag(NBTInfo.ACHIEVEMENTS, dataTag)
 
       campfire.fold(true)(_ == damage) &&
-        total.fold(true)(_.forall(i => madeArray.contains(i)))
+        total.fold(true)(_ == madeArray.length)
     }
   }
 }

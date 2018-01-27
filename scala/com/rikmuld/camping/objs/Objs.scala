@@ -2,6 +2,7 @@ package com.rikmuld.camping.objs
 
 import com.rikmuld.camping.inventory.camping.InventoryCamping
 import com.rikmuld.camping.misc.CookingEquipment
+import com.rikmuld.camping.objs.entity.Camper
 import com.rikmuld.corerm.advancements.AdvancementTrigger
 import com.rikmuld.corerm.features.bounds.BoundsStructure
 import com.rikmuld.corerm.objs.blocks.RMCoreBlock
@@ -79,6 +80,7 @@ object Objs {
   var slept: AdvancementTrigger[BlockPos, _] = _
   var campfireMade: AdvancementTrigger[Int, _] = _
   var dyeBurned: AdvancementTrigger[Int, _] = _
+  var camperInteract: AdvancementTrigger[Camper, _] = _
   var entityTrapped: AdvancementTrigger[EntityLivingBase, _] = _
   var foodRoasted: AdvancementTrigger[(ItemStack, ItemStack), _] = _
   var inventoryChanged: AdvancementTrigger[InventoryCamping, _] = _

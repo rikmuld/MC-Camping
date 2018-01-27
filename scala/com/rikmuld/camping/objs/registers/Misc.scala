@@ -56,6 +56,7 @@ object ModMisc extends ModRegister {
         foodRoasted = AdvancementTriggers.registerAdvancementTrigger(new FoodRoasted.Trigger)
         inventoryChanged = AdvancementTriggers.registerAdvancementTrigger(new InventoryChanged.Trigger)
         tentChanged = AdvancementTriggers.registerAdvancementTrigger(new TentChanged.Trigger)
+        camperInteract = AdvancementTriggers.registerAdvancementTrigger(new CamperInteract.Trigger)
       } else if(phase==ModRegister.POST){
         
         grill = new Grill(nwsk(kit, Kit.GRILL))

@@ -14,7 +14,7 @@ object FoodRoasted {
       FOOD_ROASTED
 
     override def deserializeInstance(json: JsonObject, context: JsonDeserializationContext): Instance = {
-      val in = Option(json.get("roasting")).map(data => ItemPredicate.deserialize(data))
+      val in = Option(json.get("roasting_item")).map(data => ItemPredicate.deserialize(data))
       val out = Option(json.get("result")).map(data => ItemPredicate.deserialize(data))
 
       new Instance(in, out)

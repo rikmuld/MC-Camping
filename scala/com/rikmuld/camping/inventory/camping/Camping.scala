@@ -189,7 +189,8 @@ class InventoryCamping(player: EntityPlayer, container: ContainerCamping) extend
     if (slotNum == SLOT_BACKPACK)
       backpackChanged()
 
-    Objs.inventoryChanged.trigger(player.asInstanceOf[EntityPlayerMP], this)
+    if(!player.world.isRemote)
+      Objs.inventoryChanged.trigger(player.asInstanceOf[EntityPlayerMP], this)
 
   }
 

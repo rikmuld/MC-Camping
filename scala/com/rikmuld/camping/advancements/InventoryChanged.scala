@@ -14,7 +14,7 @@ object InventoryChanged {
       INVENTORY_CHANGED
 
     override def deserializeInstance(json: JsonObject, context: JsonDeserializationContext): Instance = {
-      val items = ItemPredicate.deserializeArray(json.get("items"))
+      val items = Option(json.get("items")) map ItemPredicate.deserializeArray map(_.toSeq)
       val isFull = Option(json.get("full")).map(_.getAsBoolean)
       val isEmpty = Option(json.get("empty")).map(_.getAsBoolean)
 
@@ -22,12 +22,12 @@ object InventoryChanged {
     }
   }
 
-  protected class Instance(items: Seq[ItemPredicate],
+  protected class Instance(items: Option[Seq[ItemPredicate]],
                            full: Option[Boolean],
                            empty: Option[Boolean]) extends TriggerInstance[InventoryCamping](INVENTORY_CHANGED) {
 
     def test(player: EntityPlayerMP, inventory: InventoryCamping): Boolean =
-      items.forall(testItem => inventory.getInventory.exists(item => testItem.test(item))) &&
+      items.fold(true)(_.forall(testItem => inventory.getInventory.exists(item => testItem.test(item)))) &&
         full.fold(true)(_ == inventory.isFull) &&
         empty.fold(true)(_ == inventory.isEmpty)
   }
