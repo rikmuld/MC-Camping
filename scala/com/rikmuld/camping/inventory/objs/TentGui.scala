@@ -181,6 +181,9 @@ class ContainerTentLanterns(player: EntityPlayer, tile: IInventory) extends Cont
   override def playerInvY: Int =
     113
 
+  def getID: String =
+    tile.getName
+
   def addInventorySlots(): Unit =
     addSlotToContainer(new SlotItem(tile, 0, 80, 88, Items.GLOWSTONE_DUST))
 
@@ -255,6 +258,9 @@ class ContainerTentChests(player: EntityPlayer, tile: IInventory) extends Contai
 
   override def playerInvX: Int =
     27
+
+  val getID: String =
+    tile.getName
 
   override def addInventorySlots(): Unit = {
     val slots: Array[Array[SlotState]] = Array.ofDim[SlotState](25, 6)

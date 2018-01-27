@@ -162,7 +162,7 @@ class EventsS {
                 player.inventory.getCurrentItem.setCount(player.inventory.getCurrentItem.getCount - 1)
                 if (player.inventory.getCurrentItem.getCount <= 0) player.setHeldItem(player.getActiveHand, ItemStack.EMPTY)
                 
-                val cooked = roaster.roastResult(item)
+                val cooked = roaster.roast(player, item).get
                 
                 if (!player.inventory.addItemStackToInventory(cooked)) player.dropItem(cooked, false)
                 marshupdate = 0

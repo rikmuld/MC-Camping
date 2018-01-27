@@ -9,9 +9,9 @@ import com.rikmuld.camping.objs.tile.TileCampfireCook
 import com.rikmuld.corerm.inventory.container.ContainerSimple
 import com.rikmuld.corerm.inventory.gui.GuiContainerSimple
 import com.rikmuld.corerm.inventory.slots.{SlotDisable, SlotOnly}
-import net.minecraft.entity.player.EntityPlayer
+import net.minecraft.entity.player.{EntityPlayer, EntityPlayerMP}
 import net.minecraft.init.Items
-import net.minecraft.inventory.{IContainerListener, IInventory, Slot}
+import net.minecraft.inventory.{ClickType, IContainerListener, IInventory, Slot}
 import net.minecraft.item.{Item, ItemStack}
 import net.minecraft.util.ResourceLocation
 
@@ -63,8 +63,12 @@ class ContainerCampfireCook(player: EntityPlayer, tile: IInventory) extends Cont
     106
 
   override def addInventorySlots(): Unit = {
+    val instance = this
+
     addSlotToContainer(new SlotItem(tile, 0, 80, 84, Items.COAL))
-    addSlotToContainer(new SlotItemMeta(tile, 1, 150, 9, Objs.kit, Vector(Kit.SPIT, Kit.GRILL, Kit.PAN)))
+    addSlotToContainer(new SlotItemMeta(tile, 1, 150, 9, Objs.kit, Vector(Kit.SPIT, Kit.GRILL, Kit.PAN)) with SlotEquipment {
+      val container: ContainerCampfireCook = instance
+    })
 
     val slots = for (i <- 0 until 10)
       yield new SlotCooking(tile, i + 2, 0, 0)
@@ -91,4 +95,23 @@ class ContainerCampfireCook(player: EntityPlayer, tile: IInventory) extends Cont
     } else if(getIInventory.getEquipment.fold(false)(_.canCook(stack))) {
       mergeItemStack(stack, 2, 2 + getIInventory.equipment.maxFood, false)
     } else false
+
+  def getID: String =
+    tile.getName
+
+  def equipmentChanged(): Unit = {
+    val stack = getSlot(1).getStack
+
+    if(!stack.isEmpty && !player.world.isRemote)
+      Objs.campfireMade.trigger(player.asInstanceOf[EntityPlayerMP], stack.getItemDamage)
+  }
+}
+
+trait SlotEquipment extends Slot {
+  val container: ContainerCampfireCook
+
+  override def onSlotChanged(): Unit = {
+    super.onSlotChanged()
+    container.equipmentChanged()
+  }
 }

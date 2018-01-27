@@ -24,4 +24,7 @@ class ContainerTrap(player: EntityPlayer, inv: IInventory) extends ContainerSimp
 
   override def initIInventory: IInventory =
     inv
+
+  def getID: String =
+    inv.getName
 }

@@ -8,7 +8,7 @@ import com.rikmuld.corerm.features.tabbed.ContainerTabbed
 import com.rikmuld.corerm.inventory.container.ContainerSimple
 import com.rikmuld.corerm.inventory.inventory.{InventoryItem, InventoryPlayer}
 import com.rikmuld.corerm.utils.NBTUtil
-import net.minecraft.entity.player.EntityPlayer
+import net.minecraft.entity.player.{EntityPlayer, EntityPlayerMP}
 import net.minecraft.init.Items
 import net.minecraft.inventory._
 import net.minecraft.item.{Item, ItemArmor, ItemStack}
@@ -23,6 +23,9 @@ class ContainerCamping(player:EntityPlayer) extends ContainerSimple[InventoryCam
 
   override def playerInvX: Int =
     30
+
+  def getID: String =
+    "camping_inventory"
 
   override def addInventorySlots(): Unit = {
     backpackSlot = new SlotItem(getIInventory, 0, 8, 35, Objs.backpack)
@@ -185,6 +188,9 @@ class InventoryCamping(player: EntityPlayer, container: ContainerCamping) extend
   override def onChange(slotNum: Int) {
     if (slotNum == SLOT_BACKPACK)
       backpackChanged()
+
+    Objs.inventoryChanged.trigger(player.asInstanceOf[EntityPlayerMP], this)
+
   }
 
   def backpackChanged(): Unit = {

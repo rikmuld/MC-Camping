@@ -129,7 +129,7 @@ object Lib {
   
   object NBTInfo {
     final val INV_CAMPING = "campInv"
-    final val ACHIEVEMENTS = "camping_achieve"
+    final val ACHIEVEMENTS = "camping:achievements"
   }
 
   object SoundInfo {
@@ -138,7 +138,7 @@ object Lib {
     final val FOX_SAY = new ResourceLocation(MOD_ID, "mob.fox.say")
     final val FOX_HURT = new ResourceLocation(MOD_ID, "mob.fox.hurt")
   }
-  
+
   object PotionInfo {
     final val BLEEDING = "Bleeding"
   }
@@ -154,6 +154,16 @@ object Lib {
     final val desc: Array[String] = Array("Camping Inventory Key")
   
     final val default: Array[Int] = Array(Keyboard.KEY_G)
+  }
+
+  object AdvancementInfo {
+    final val SLEPT = new ResourceLocation(MOD_ID, "slept")
+    final val TENT_CHANGED = new ResourceLocation(MOD_ID, "tent_changed")
+    final val INVENTORY_CHANGED = new ResourceLocation(MOD_ID, "inventory_changed")
+    final val FOOD_ROASTED = new ResourceLocation(MOD_ID, "food_roasted")
+    final val ENTITY_TRAPPED = new ResourceLocation(MOD_ID, "entity_trapped")
+    final val DYE_BURNED = new ResourceLocation(MOD_ID, "dye_burned")
+    final val CAMPFIRES_MADE = new ResourceLocation(MOD_ID, "campfires_made")
   }
   
   object TextureInfo {
@@ -211,6 +221,7 @@ plan: add advancements, test server and release, then cleanup gui client stuff (
 
   TODO for port to 1.12
   - add custom advancement triggers
+  - make sure achievements require the previous
 
   TODO after for next update
   - make tent tabbed gui

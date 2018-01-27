@@ -13,7 +13,7 @@ import net.minecraft.entity.{EntityLiving, EntityLivingBase, SharedMonsterAttrib
 import net.minecraft.entity.ai.attributes.AttributeModifier
 import net.minecraft.entity.monster._
 import net.minecraft.entity.passive.EntityAnimal
-import net.minecraft.entity.player.EntityPlayer
+import net.minecraft.entity.player.{EntityPlayer, EntityPlayerMP}
 import net.minecraft.init.Items
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.potion.PotionEffect
@@ -33,8 +33,10 @@ class TileTrap extends TileEntitySimple with TileEntityInventory with ITickable 
   var open: Boolean = true
   var captureFlag: Boolean = _
   var monsterItemAttr = Array(Items.ROTTEN_FLESH, Items.CHICKEN, Items.BEEF, Items.PORKCHOP, Objs.venisonRaw, Items.MUTTON, Items.RABBIT)
-  var lastPlayer:Option[EntityPlayer] = None 
-  
+  var lastPlayer:Option[EntityPlayer] = None
+
+  override def getName: String =
+    "trap"
   override def getSizeInventory(): Int = 1
   override def onChange(slot: Int) {
     super[TileEntityInventory].onChange(slot)
@@ -78,11 +80,16 @@ class TileTrap extends TileEntitySimple with TileEntityInventory with ITickable 
         captureFlag = false
         val entities = world.getEntitiesWithinAABB(classOf[EntityLivingBase], captureBounds).asInstanceOf[java.util.List[EntityLivingBase]]
         if (entities.size > 0) {
-          if ((entities.get(0).isInstanceOf[EntityPlayer]) && config.trapPlayer) {
+          if (entities.get(0).isInstanceOf[EntityPlayer] && config.trapPlayer) {
             trappedEntity = entities.get(0)
-          } else if (!(entities.get(0).isInstanceOf[EntityPlayer])) {
+          } else {
             trappedEntity = entities.get(0)
             if (!getStackInSlot(0).isEmpty) getStackInSlot(0).setCount(getStackInSlot(0).getCount - 1)
+
+            lastPlayer.foreach(player =>
+              if(!player.world.isRemote)
+                Objs.entityTrapped.trigger(player.asInstanceOf[EntityPlayerMP], trappedEntity)
+            )
           }
         }
         if (trappedEntity != null) setOpen(false)

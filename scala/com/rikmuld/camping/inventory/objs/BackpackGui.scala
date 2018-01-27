@@ -12,7 +12,7 @@ import net.minecraft.inventory.Container
 import net.minecraft.item.ItemStack
 import net.minecraft.util.ResourceLocation
 
-abstract class BagContainer(player: EntityPlayer, activeSlots: Seq[Int]) extends ContainerItem(player) {
+class BagContainer(player: EntityPlayer, activeSlots: Seq[Int]) extends ContainerItem(player) {
   override def initIInventory =
     new InventoryItem(player.inventory.getCurrentItem, 27, 64)
 

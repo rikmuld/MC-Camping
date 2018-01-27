@@ -8,8 +8,11 @@
     "background": "camping:textures/blocks/grass.png"
   },
   "criteria": {
-    "tick_test": {
-      "trigger": "minecraft:tick"
+    "open_inventory": {
+      "trigger": "corerm:gui_open",
+      "conditions": {
+        "gui": "camping_inventory"
+      }
     }
   }
 }

@@ -12,7 +12,7 @@ import com.rikmuld.corerm.tileentity.TileEntitySimple
 import com.rikmuld.corerm.utils.WorldBlock.{BlockData, IMBlockData}
 import net.minecraft.block.properties.{PropertyBool, PropertyInteger}
 import net.minecraft.block.state.IBlockState
-import net.minecraft.entity.player.EntityPlayer
+import net.minecraft.entity.player.{EntityPlayer, EntityPlayerMP}
 import net.minecraft.init.Items
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
@@ -44,10 +44,7 @@ class Campfire(modId:String, info: ObjInfo) extends RMBlockContainer(modId, info
     val stack = player.getHeldItem(hand)
     if(!world.isRemote && stack != null && stack.getItem == Items.DYE && bd.tile.asInstanceOf[TileCampfire].addDye(stack)) {
       stack.setCount(stack.getCount - 1)
-      var data = player.getEntityData
-      if(!data.hasKey(NBTInfo.ACHIEVEMENTS))data.setTag(NBTInfo.ACHIEVEMENTS, new NBTTagCompound())
-      data = data.getTag(NBTInfo.ACHIEVEMENTS).asInstanceOf[NBTTagCompound]
-      var dye = if(data.hasKey("dye_burn"))data.getInteger("dye_burn") else 0
+      Objs.dyeBurned.trigger(player.asInstanceOf[EntityPlayerMP], stack.getItemDamage)
     }
     true
   }

@@ -77,6 +77,8 @@ class TileTent extends TileEntitySimple with TileEntityInventory with ITickable 
     }
     false
   }
+  override def getName: String =
+    "tent"
   def addContends(stack: ItemStack): Boolean = {
     val id = Block.getBlockFromItem(stack.getItem())
     if (id == ALOWED_ITEMS(0)) return addLentern(stack)

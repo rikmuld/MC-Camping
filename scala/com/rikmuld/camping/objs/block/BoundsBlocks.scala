@@ -1,6 +1,7 @@
 package com.rikmuld.camping.objs.block
 
 import com.google.common.base.Predicate
+import com.rikmuld.camping.objs.Objs
 import com.rikmuld.camping.objs.tile.TileTent
 import com.rikmuld.corerm.features.bounds.{IBoundsBlock, TileBounds}
 import com.rikmuld.corerm.objs.ObjInfo
@@ -9,7 +10,7 @@ import com.rikmuld.corerm.utils.WorldBlock._
 import net.minecraft.block.properties.PropertyDirection
 import net.minecraft.block.state.IBlockState
 import net.minecraft.entity.Entity
-import net.minecraft.entity.player.EntityPlayer
+import net.minecraft.entity.player.{EntityPlayer, EntityPlayerMP}
 import net.minecraft.init.Biomes
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.text.TextComponentTranslation
@@ -43,7 +44,11 @@ class TentBounds(modId:String, info:ObjInfo) extends RMBlockContainer(modId, inf
        getBaseTile(bd).setOccupied(false)
       }
       val sleepState = player.trySleep(bd.pos)
-      if(sleepState == EntityPlayer.SleepResult.OK)getBaseTile(bd).setOccupied(true)
+      if(sleepState == EntityPlayer.SleepResult.OK) {
+        if(!bd.world.isRemote)
+          Objs.slept.trigger(player.asInstanceOf[EntityPlayerMP], getBaseTile(bd.world, bd.pos).getPos)
+        getBaseTile(bd).setOccupied(true)
+      }
       else {
         if(sleepState == EntityPlayer.SleepResult.NOT_POSSIBLE_NOW) player.sendMessage(new TextComponentTranslation("tile.bed.noSleep", new Object))
         else if(sleepState == EntityPlayer.SleepResult.NOT_SAFE) player.sendMessage(new TextComponentTranslation("tile.bed.noSleep", new Object))

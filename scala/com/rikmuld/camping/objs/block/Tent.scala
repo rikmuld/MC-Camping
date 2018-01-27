@@ -19,13 +19,13 @@ import net.minecraft.block.properties.{IProperty, PropertyBool, PropertyDirectio
 import net.minecraft.block.state.IBlockState
 import net.minecraft.creativetab.CreativeTabs
 import net.minecraft.entity.EntityLivingBase
-import net.minecraft.entity.player.EntityPlayer
+import net.minecraft.entity.player.{EntityPlayer, EntityPlayerMP}
 import net.minecraft.init.Items
 import net.minecraft.item.{Item, ItemStack}
 import net.minecraft.util.math.{AxisAlignedBB, BlockPos}
 import net.minecraft.util.{EnumFacing, EnumHand, NonNullList}
 import net.minecraft.world.{IBlockAccess, World}
-import net.minecraftforge.fml.relauncher.{Side, SideOnly}
+import scala.collection.JavaConversions._
 
 object Tent {
   val FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL.asInstanceOf[Predicate[EnumFacing]])
@@ -99,6 +99,7 @@ class Tent(modId:String, info:ObjInfo) extends RMBlockContainer(modId, info) wit
       if ((stack != null) && tile.addContends(stack)) {
         stack.setCount(stack.getCount - 1)
         if (stack.getCount < 0) player.setCurrentItem(null)
+        Objs.tentChanged.trigger(player.asInstanceOf[EntityPlayerMP], tile.getContends().toSeq)
         return true
       } else if ((stack != null) && (stack.getItem() == Items.DYE) && (bd.tile.asInstanceOf[TileTent].color != stack.getItemDamage)) {
         bd.tile.asInstanceOf[TileTent].setColor(stack.getItemDamage)

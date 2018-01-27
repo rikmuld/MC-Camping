@@ -1,11 +1,13 @@
 package com.rikmuld.camping.objs.registers
 
 import com.rikmuld.camping.Lib._
+import com.rikmuld.camping.advancements._
 import com.rikmuld.camping.misc.{CookingEquipment, Grill, Pan, Spit}
 import com.rikmuld.camping.objs.ItemDefinitions._
 import com.rikmuld.camping.objs.Objs._
 import com.rikmuld.camping.objs.misc._
 import com.rikmuld.corerm.RMMod
+import com.rikmuld.corerm.advancements.AdvancementTriggers
 import com.rikmuld.corerm.features.bounds.{BoundsData, BoundsStructure}
 import com.rikmuld.corerm.misc.ModRegister
 import com.rikmuld.corerm.utils.CoreUtils._
@@ -46,6 +48,14 @@ object ModMisc extends ModRegister {
                         
         bleedingSource = new DamageSourceBleeding(DamageInfo.BLEEDING)
         bleeding = new PotionBleeding(PotionInfo.BLEEDING)
+
+        slept = AdvancementTriggers.registerAdvancementTrigger(new Slept.Trigger)
+        campfireMade = AdvancementTriggers.registerAdvancementTrigger(new CampfireMade.Trigger)
+        dyeBurned = AdvancementTriggers.registerAdvancementTrigger(new DyeBurned.Trigger)
+        entityTrapped = AdvancementTriggers.registerAdvancementTrigger(new EntityTrapped.Trigger)
+        foodRoasted = AdvancementTriggers.registerAdvancementTrigger(new FoodRoasted.Trigger)
+        inventoryChanged = AdvancementTriggers.registerAdvancementTrigger(new InventoryChanged.Trigger)
+        tentChanged = AdvancementTriggers.registerAdvancementTrigger(new TentChanged.Trigger)
       } else if(phase==ModRegister.POST){
         
         grill = new Grill(nwsk(kit, Kit.GRILL))
