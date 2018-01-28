@@ -159,11 +159,11 @@ class EventsS {
             val roaster = bd.tile.asInstanceOf[Roaster]
             if(roaster.canRoast(item)){
               if(marshupdate > roaster.roastTime(item)){
-                player.inventory.getCurrentItem.setCount(player.inventory.getCurrentItem.getCount - 1)
-                if (player.inventory.getCurrentItem.getCount <= 0) player.setHeldItem(player.getActiveHand, ItemStack.EMPTY)
-                
                 val cooked = roaster.roast(player, item).get
-                
+
+                player.inventory.getCurrentItem.setCount(player.inventory.getCurrentItem.getCount - 1)
+
+                if (player.inventory.getCurrentItem.getCount <= 0) player.setHeldItem(player.getActiveHand, ItemStack.EMPTY)
                 if (!player.inventory.addItemStackToInventory(cooked)) player.dropItem(cooked, false)
                 marshupdate = 0
               } else marshupdate += roaster.roastSpeed(item)

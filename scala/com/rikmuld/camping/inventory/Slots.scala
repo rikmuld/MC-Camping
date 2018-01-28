@@ -83,7 +83,8 @@ class SlotBackpack(inv: IInventory, index: Int, x:Int, y:Int, active: Boolean) e
 class SlotTabbedBackpack(index: Int, x:Int, y:Int, val tabIdLeft: Int, val tabIdTop: Int) extends
   SlotBackpack(null, index, x, y, false) with SlotWithTabs with SlotChangingInventory {
 
-  private var inv: Option[IInventory] = None
+  private var inv: Option[IInventory] =
+    None
 
   override def getIInventory: Option[IInventory] =
     inv

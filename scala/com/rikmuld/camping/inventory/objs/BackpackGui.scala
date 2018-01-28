@@ -7,6 +7,7 @@ import com.rikmuld.camping.objs.ItemDefinitions.Backpack._
 import com.rikmuld.corerm.inventory.container.ContainerItem
 import com.rikmuld.corerm.inventory.gui.GuiContainerSimple
 import com.rikmuld.corerm.inventory.inventory.InventoryItem
+import net.minecraft.client.gui.inventory.GuiChest
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.inventory.Container
 import net.minecraft.item.ItemStack
@@ -38,6 +39,12 @@ abstract class BagGui(container: Container, metaData: Int, x: Int, y: Int, width
 
   override def hasName: Boolean =
     true
+
+  override def drawScreen(mouseX: Int, mouseY: Int, partialTicks: Float): Unit = {
+    this.drawDefaultBackground()
+    super.drawScreen(mouseX, mouseY, partialTicks)
+    this.renderHoveredToolTip(mouseX, mouseY)
+  }
 
   override def drawGUI(mouseX: Int, mouseY: Int) {
     super.drawGUI(mouseX, mouseY)

@@ -8,6 +8,7 @@ import com.rikmuld.camping.inventory.SlotCooking
 import com.rikmuld.camping.misc.CookingEquipment
 import com.rikmuld.camping.objs.{ItemDefinitions, Objs}
 import com.rikmuld.camping.objs.block.{CampfireCook, CampfireWood}
+import com.rikmuld.camping.objs.entity.Mountable
 import com.rikmuld.camping.objs.misc.ItemsData
 import com.rikmuld.corerm.network.PacketSender
 import com.rikmuld.corerm.tileentity.{TileEntityInventory, TileEntitySimple}
@@ -199,7 +200,8 @@ abstract trait Roaster {
     else {
       val result = roastResult(item)
       if(!player.world.isRemote)
-        Objs.foodRoasted.trigger(player.asInstanceOf[EntityPlayerMP], (item, result))
+        if(Option(player.getRidingEntity).isDefined && player.getRidingEntity.isInstanceOf[Mountable])
+          Objs.foodRoasted.trigger(player.asInstanceOf[EntityPlayerMP], (item, result))
 
       Some(result)
     }

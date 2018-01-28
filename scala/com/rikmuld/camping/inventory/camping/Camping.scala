@@ -64,8 +64,8 @@ class ContainerCamping(player:EntityPlayer) extends ContainerSimple[InventoryCam
     new InventoryCamping(player, this)
 
   override def onCraftMatrixChanged(inv: IInventory) {
-    slotChangedCraftingGrid(player.world, player, getIInventory.craftMatrix, getIInventory.craftResult)
-    slotChangedCraftingGrid(player.world, player, getIInventory.craftMatrixSmall, getIInventory.craftResultSmall)
+    slotChangedCraftingGrid(player.world, player, getIInventory.craftMatrix, getIInventory.craftResult, 31)
+    slotChangedCraftingGrid(player.world, player, getIInventory.craftMatrixSmall, getIInventory.craftResultSmall, 32)
   }
 
   override def slotClick(slotId: Int, dragType: Int, clickTypeIn: ClickType, player: EntityPlayer): ItemStack = {

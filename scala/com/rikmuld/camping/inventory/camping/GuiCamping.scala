@@ -83,7 +83,7 @@ class GuiCamping(var player: EntityPlayer) extends GuiTabbed(player, new Contain
   def drawTab(left:Boolean, id:Int){
     if(id==1||id==2)mc.renderEngine.bindTexture(texture)
     getCleanGL
-    if(id==0){ 
+    if(id==0){
       this.mc.getTextureManager().bindTexture(inventoryTexture)
       this.drawTexturedModalRect(guiLeft + 29, guiTop+7, 7, 7, 164, 72)
       GuiInventory.drawEntityOnScreen(guiLeft + 51 + 22, guiTop + 75, 30, (guiLeft + 51 + 22 - lastMouseX).asInstanceOf[Float], (guiTop + 75 - 50 - lastMouseY).asInstanceOf[Float], this.mc.player)
@@ -91,12 +91,12 @@ class GuiCamping(var player: EntityPlayer) extends GuiTabbed(player, new Contain
       if(hasBackpack){
         if(pack==ItemDefinitions.Backpack.RUCKSACK)drawTexturedModalRect(guiLeft+29, guiTop+16, 29, 83, 162, 54)
         else if(pack==ItemDefinitions.Backpack.BACKPACK)drawTexturedModalRect(guiLeft + 83, guiTop + 16, 29, 83, 54, 54)
-        else if(pack==ItemDefinitions.Backpack.POUCH)drawTexturedModalRect(guiLeft + 83, guiTop + 34, 0, 166, 54, 18)  
+        else if(pack==ItemDefinitions.Backpack.POUCH)drawTexturedModalRect(guiLeft + 83, guiTop + 34, 0, 166, 54, 18)
       }
     }
     else if(id==2)drawTexturedModalRect(guiLeft+52, guiTop+16, 0, 166, 115, 54)
     else {
-      
+
     }
   }
 }
