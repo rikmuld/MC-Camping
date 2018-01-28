@@ -31,7 +31,7 @@ class WorldGenerator extends IWorldGenerator {
     }
 
     if (BiomeDictionary.hasType(world.getBiomeForCoordsBody(new BlockPos(blockX, 0, blockZ)), BiomeDictionary.Type.FOREST) && (world.getBiomeForCoordsBody(new BlockPos(blockX, 0, blockZ)).getTempCategory == TempCategory.MEDIUM)) {
-      if (random.nextInt(config.campsiteRareness) == 0) {
+      if (random.nextInt(Math.max(1, config.campsiteRareness)) == 0) {
         if (config.worldGenCampsite) {
           camp.generate(world, random, new BlockPos(blockX - 4 + random.nextInt(8), 50, blockZ - 4 + random.nextInt(8)))
         }

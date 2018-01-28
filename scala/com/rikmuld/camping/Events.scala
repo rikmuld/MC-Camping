@@ -189,18 +189,15 @@ class EventsC {
   @SubscribeEvent
   def onKeyInput(event: KeyInputEvent) {
     if (!FMLClientHandler.instance.isGUIOpen(classOf[GuiChat])) {
-      for (key <- 0 until KeyInfo.default.length) {
+      for (key <- KeyInfo.default.indices) {
         if (Objs.keyOpenCamping.isPressed) {
-          val id = KeyInfo.default.indexOf(KeyInfo.default.find { default => default == Objs.keyOpenCamping.getKeyCodeDefault }.get)
-          keyPressedClient(id)
-          PacketSender.toServer(new KeyData(id))
+          keyPressedClient(KeyInfo.INVENTORY_KEY)
+          PacketSender.toServer(new KeyData(KeyInfo.INVENTORY_KEY))
         }
       }
     }
   }
-  def keyPressedClient(id: Int) {
-    val player = Minecraft.getMinecraft.player
-  }
+  def keyPressedClient(id: Int): Unit = {}
   @SubscribeEvent
   def guiOpenClient(event: GuiOpenEvent) {
     if(event.getGui.isInstanceOf[GuiInventory]&&config.alwaysCampingInv){
