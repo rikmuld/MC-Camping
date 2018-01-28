@@ -1,9 +1,9 @@
 package com.rikmuld.camping.inventory.objs
 
 import com.rikmuld.camping.Lib.TextureInfo
-import com.rikmuld.corerm.inventory.container.ContainerSimple
-import com.rikmuld.corerm.inventory.gui.GuiContainerSimple
-import com.rikmuld.corerm.inventory.slots.SlotOnlyItems
+import com.rikmuld.corerm.gui.container.ContainerSimple
+import com.rikmuld.corerm.gui.gui.GuiContainerSimple
+import com.rikmuld.corerm.gui.slots.SlotOnlyItems
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.inventory.{IInventory, Slot}
 import net.minecraft.util.ResourceLocation

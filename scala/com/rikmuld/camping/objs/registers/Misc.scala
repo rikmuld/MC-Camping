@@ -8,14 +8,14 @@ import com.rikmuld.camping.objs.Objs._
 import com.rikmuld.camping.objs.misc._
 import com.rikmuld.corerm.RMMod
 import com.rikmuld.corerm.advancements.AdvancementTriggers
-import com.rikmuld.corerm.features.bounds.{BoundsData, BoundsStructure}
-import com.rikmuld.corerm.misc.ModRegister
+import com.rikmuld.corerm.network.BoundsData
 import com.rikmuld.corerm.utils.CoreUtils._
+import com.rikmuld.corerm.utils.{BoundsStructure, ModRegister}
 import net.minecraft.client.settings.KeyBinding
 import net.minecraft.init.Blocks._
 import net.minecraft.init.Items._
-import net.minecraft.item.{ItemFood, ItemStack}
 import net.minecraft.item.crafting.FurnaceRecipes
+import net.minecraft.item.{ItemFood, ItemStack}
 import net.minecraftforge.fml.client.registry.ClientRegistry
 import net.minecraftforge.fml.relauncher.{Side, SideOnly}
 

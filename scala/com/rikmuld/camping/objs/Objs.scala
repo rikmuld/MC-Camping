@@ -4,13 +4,12 @@ import com.rikmuld.camping.inventory.camping.InventoryCamping
 import com.rikmuld.camping.misc.CookingEquipment
 import com.rikmuld.camping.objs.entity.Camper
 import com.rikmuld.corerm.advancements.AdvancementTrigger
-import com.rikmuld.corerm.features.bounds.BoundsStructure
 import com.rikmuld.corerm.objs.blocks.RMCoreBlock
 import com.rikmuld.corerm.objs.items.RMCoreItem
-import com.rikmuld.corerm.utils.DataContainer
+import com.rikmuld.corerm.utils.{BoundsStructure, DataContainer}
 import net.minecraft.client.settings.KeyBinding
 import net.minecraft.creativetab.CreativeTabs
-import net.minecraft.entity.{EntityLiving, EntityLivingBase}
+import net.minecraft.entity.EntityLivingBase
 import net.minecraft.item.ItemArmor.ArmorMaterial
 import net.minecraft.item.ItemStack
 import net.minecraft.potion.Potion

@@ -3,15 +3,15 @@ package com.rikmuld.camping.objs.tile
 import java.util.{ArrayList, Random}
 
 import com.rikmuld.camping.inventory.SlotState
-import com.rikmuld.camping.objs.{BlockDefinitions, Objs}
 import com.rikmuld.camping.objs.block.{Tent, TentBounds}
 import com.rikmuld.camping.objs.misc.PlayerSleepInTent
 import com.rikmuld.camping.objs.tile.TileEntityTent._
-import com.rikmuld.corerm.features.bounds.{Bounds, BoundsStructure, BoundsTracker}
+import com.rikmuld.camping.objs.{BlockDefinitions, Objs}
 import com.rikmuld.corerm.network.PacketSender
 import com.rikmuld.corerm.tileentity.{TileEntityInventory, TileEntitySimple}
 import com.rikmuld.corerm.utils.CoreUtils._
 import com.rikmuld.corerm.utils.WorldBlock._
+import com.rikmuld.corerm.utils.{Bounds, BoundsStructure, BoundsTracker}
 import net.minecraft.block.Block
 import net.minecraft.block.state.IBlockState
 import net.minecraft.entity.player.EntityPlayer
@@ -19,8 +19,8 @@ import net.minecraft.init.Blocks
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.tileentity.TileEntity
-import net.minecraft.util.{EnumFacing, ITickable}
 import net.minecraft.util.math.{AxisAlignedBB, BlockPos}
+import net.minecraft.util.{EnumFacing, ITickable}
 import net.minecraft.world.World
 import net.minecraftforge.fml.relauncher.{Side, SideOnly}
 

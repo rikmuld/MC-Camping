@@ -1,6 +1,6 @@
 package com.rikmuld.camping.render.models
 
-import com.rikmuld.corerm.misc.RMModel
+import com.rikmuld.corerm.client.RMModel
 
 class ModelTrapClosed extends RMModel(32, 16) {
   addBox("sideHigh1", 0, 0, 7, 1, 1, -3.5F, 20F, 1.5F, 0, 0, 0)

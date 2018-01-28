@@ -7,24 +7,25 @@ import com.rikmuld.camping.CampingMod
 import com.rikmuld.camping.objs.block.Tent._
 import com.rikmuld.camping.objs.tile.{TileEntityTent, TileTent}
 import com.rikmuld.camping.objs.{BlockDefinitions, Objs}
-import com.rikmuld.corerm.features.bounds.BoundsTracker
 import com.rikmuld.corerm.objs.ObjInfo
-import com.rikmuld.corerm.objs.blocks.{RMBoolProp, _}
+import com.rikmuld.corerm.objs.blocks._
 import com.rikmuld.corerm.objs.items.RMItemBlock
 import com.rikmuld.corerm.tileentity.TileEntitySimple
+import com.rikmuld.corerm.utils.BoundsTracker
 import com.rikmuld.corerm.utils.CoreUtils._
 import com.rikmuld.corerm.utils.WorldBlock._
 import net.minecraft.block.Block
-import net.minecraft.block.properties.{IProperty, PropertyBool, PropertyDirection}
+import net.minecraft.block.properties.{PropertyBool, PropertyDirection}
 import net.minecraft.block.state.IBlockState
 import net.minecraft.creativetab.CreativeTabs
 import net.minecraft.entity.EntityLivingBase
 import net.minecraft.entity.player.{EntityPlayer, EntityPlayerMP}
 import net.minecraft.init.Items
-import net.minecraft.item.{Item, ItemStack}
+import net.minecraft.item.ItemStack
 import net.minecraft.util.math.{AxisAlignedBB, BlockPos}
 import net.minecraft.util.{EnumFacing, EnumHand, NonNullList}
 import net.minecraft.world.{IBlockAccess, World}
+
 import scala.collection.JavaConversions._
 
 object Tent {

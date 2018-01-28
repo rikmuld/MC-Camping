@@ -3,13 +3,10 @@ package com.rikmuld.camping.inventory.objs
 import com.rikmuld.camping.Lib._
 import com.rikmuld.camping.misc.CookingEquipment._
 import com.rikmuld.camping.objs.ItemDefinitions._
-import com.rikmuld.camping.objs.Objs
-import com.rikmuld.corerm.inventory.container.ContainerItem
-import com.rikmuld.corerm.inventory.gui.GuiContainerSimple
-import com.rikmuld.corerm.inventory.inventory.InventoryItem
-import com.rikmuld.corerm.utils.CoreUtils._
+import com.rikmuld.corerm.gui.container.ContainerItem
+import com.rikmuld.corerm.gui.gui.GuiContainerSimple
+import com.rikmuld.corerm.inventory.InventoryItem
 import net.minecraft.entity.player.EntityPlayer
-import net.minecraft.item.ItemStack
 import net.minecraft.util.ResourceLocation
   
 class KitGui(player: EntityPlayer) extends GuiContainerSimple(new KitContainer(player)) {

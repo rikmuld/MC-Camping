@@ -2,7 +2,7 @@ package com.rikmuld.camping
 
 import com.rikmuld.camping.CampingMod._
 import com.rikmuld.camping.objs.registers._
-import com.rikmuld.corerm.misc.ModRegister
+import com.rikmuld.corerm.utils.ModRegister
 import net.minecraft.block.Block
 import net.minecraft.item.Item
 import net.minecraft.util.{ResourceLocation, SoundEvent}
@@ -10,9 +10,9 @@ import net.minecraftforge.client.event.ModelRegistryEvent
 import net.minecraftforge.common.config.Configuration
 import net.minecraftforge.event.RegistryEvent
 import net.minecraftforge.fml.common.Mod.EventHandler
-import net.minecraftforge.fml.common.{Mod, SidedProxy}
 import net.minecraftforge.fml.common.event.{FMLInitializationEvent, FMLPostInitializationEvent, FMLPreInitializationEvent}
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
+import net.minecraftforge.fml.common.{Mod, SidedProxy}
 import net.minecraftforge.fml.relauncher.Side
 import org.lwjgl.input.Keyboard
 
@@ -22,9 +22,9 @@ import scala.collection.mutable.ListBuffer
 object CampingMod {
   final val MOD_ID = "camping"
   final val MOD_NAME = "The Camping Mod 2"
-  final val MOD_VERSION = "2.3f"
+  final val MOD_VERSION = "2.3g"
   final val MOD_LANUAGE = "scala"
-  final val MOD_DEPENDENCIES = "required-after:forge@[v13.20.1.2386,);required-after:corerm@[1.2g,)"
+  final val MOD_DEPENDENCIES = "required-after:forge@[v13.20.1.2386,);required-after:corerm@[1.2h,)"
   final val MOD_SERVER_PROXY = "com.rikmuld."+MOD_ID+".ProxyServer"
   final val MOD_CLIENT_PROXY = "com.rikmuld."+MOD_ID+".ProxyClient"
   final val MOD_GUIFACTORY = "com.rikmuld.camping.GuiFactory"
@@ -216,17 +216,15 @@ object Lib {
 }
 
 /*
-plan: add advancements, test server and release, then cleanup gui client stuff (first all from tabbed, then camping inv and tent
+plan: cleanup gui client stuff (first all from tabbed, then camping inv and tent
       [improve tent gui to a tabbed one]) then release, then make recipes visible with advancements and add own recipes
       as json and put recipe book in camping inventory then release, finally add spawner object thingies for campfires and release last before bugfix update
 
-  TODO for port to 1.12
-  - add criteria to all advancements
-
   TODO after for next update
   - make tent tabbed gui
+  - fix tent items thinks it can open a gui
   - make sure achievements require the previous
-  - add own recipes as json recipes
+  - add own recipes as json recipes -- looks not easily possible atm
   - unlock all recipes before crafting using advancements
   - add recipe book to camping inventory
   - update website, all recipes including spit stuff in cookbook

@@ -2,20 +2,20 @@ package com.rikmuld.camping.inventory.objs
 
 import com.rikmuld.camping.Lib._
 import com.rikmuld.camping.inventory.{SlotItem, SlotState}
-import com.rikmuld.camping.objs.{BlockDefinitions, Objs}
 import com.rikmuld.camping.objs.misc.OpenGui
 import com.rikmuld.camping.objs.tile.TileTent
+import com.rikmuld.camping.objs.{BlockDefinitions, Objs}
 import com.rikmuld.corerm.RMMod
-import com.rikmuld.corerm.inventory.container.ContainerSimple
-import com.rikmuld.corerm.inventory.gui.GuiContainerSimple
+import com.rikmuld.corerm.gui.container.ContainerSimple
+import com.rikmuld.corerm.gui.gui.GuiContainerSimple
 import com.rikmuld.corerm.network.PacketSender
 import com.rikmuld.corerm.utils.CoreUtils._
 import net.minecraft.client.Minecraft
-import net.minecraft.client.gui.{FontRenderer, GuiButton, GuiScreen}
 import net.minecraft.client.gui.inventory.GuiContainer
+import net.minecraft.client.gui.{FontRenderer, GuiButton, GuiScreen}
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.init.{Blocks, Items}
-import net.minecraft.inventory.{Container, IInventory, Slot}
+import net.minecraft.inventory.{Container, IInventory}
 import net.minecraft.item.ItemStack
 import net.minecraft.util.ResourceLocation
 import net.minecraft.util.text.translation.I18n
@@ -51,9 +51,11 @@ class GuiTent(player: EntityPlayer, tile: IInventory) extends GuiScreen {
   override def drawCenteredString(fontRender: FontRenderer, text: String, x: Int, y: Int, color: Int) {
     fontRender.drawString(text, x - (fontRender.getStringWidth(text) / 2), y, color)
   }
+
   def checkMc = if(Option(mc).isEmpty) mc = Minecraft.getMinecraft
   override def drawScreen(mouseX: Int, mouseY: Int, partitialTicks: Float) {
     if(Option(tent).isEmpty) return
+    this.drawDefaultBackground()
 
     checkMc
     drawDefaultBackground
@@ -162,6 +164,13 @@ class GuiTentLanterns(player: EntityPlayer, inv: IInventory) extends GuiContaine
   override def drawCenteredString(fontRender: FontRenderer, text: String, x: Int, y: Int, color: Int) {
     fontRender.drawString(text, x - (fontRender.getStringWidth(text) / 2), y, color)
   }
+
+  override def drawScreen(mouseX: Int, mouseY: Int, partialTicks: Float): Unit = {
+    this.drawDefaultBackground()
+    super.drawScreen(mouseX, mouseY, partialTicks)
+    this.renderHoveredToolTip(mouseX, mouseY)
+  }
+
   protected override def drawGuiContainerBackgroundLayer(partTicks: Float, mouseX: Int, mouseY: Int) {
     GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F)
     mc.renderEngine.bindTexture(new ResourceLocation(TextureInfo.GUI_TENT_CONTENDS_1))

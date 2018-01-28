@@ -1,11 +1,12 @@
 package com.rikmuld.camping
 
-import java.util.{ArrayList, Random, UUID}
+import java.util.{Random, UUID}
 
 import com.rikmuld.camping.CampingMod._
 import com.rikmuld.camping.Lib._
 import com.rikmuld.camping.Utils._
-import com.rikmuld.camping.inventory.camping.{GuiMapHUD, InventoryCamping}
+import com.rikmuld.camping.inventory.camping.InventoryCamping
+import com.rikmuld.camping.inventory.gui.GuiMapHUD
 import com.rikmuld.camping.objs.BlockDefinitions._
 import com.rikmuld.camping.objs.ItemDefinitions._
 import com.rikmuld.camping.objs.Objs
@@ -17,8 +18,8 @@ import com.rikmuld.corerm.network.PacketSender
 import com.rikmuld.corerm.utils.CoreUtils._
 import com.rikmuld.corerm.utils.WorldBlock._
 import net.minecraft.client.Minecraft
-import net.minecraft.client.gui.{GuiButton, GuiChat, GuiScreen}
-import net.minecraft.client.gui.inventory.{GuiContainer, GuiInventory}
+import net.minecraft.client.gui.GuiChat
+import net.minecraft.client.gui.inventory.GuiInventory
 import net.minecraft.entity.SharedMonsterAttributes
 import net.minecraft.entity.ai.attributes.AttributeModifier
 import net.minecraft.entity.player.{EntityPlayer, EntityPlayerMP}
@@ -27,8 +28,8 @@ import net.minecraft.item.{Item, ItemArmor, ItemStack}
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.math.{BlockPos, Vec3d}
 import net.minecraft.util.text.TextComponentString
-import net.minecraftforge.client.event.{GuiOpenEvent, RenderGameOverlayEvent}
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType
+import net.minecraftforge.client.event.{GuiOpenEvent, RenderGameOverlayEvent}
 import net.minecraftforge.event.entity.living.LivingDeathEvent
 import net.minecraftforge.event.entity.player.{BonemealEvent, PlayerDropsEvent}
 import net.minecraftforge.fml.client.FMLClientHandler

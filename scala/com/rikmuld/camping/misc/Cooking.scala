@@ -7,10 +7,10 @@ import com.rikmuld.camping.Lib._
 import com.rikmuld.camping.inventory.objs.GuiCampfireCook
 import com.rikmuld.camping.objs.ItemDefinitions._
 import com.rikmuld.camping.objs.Objs
-import com.rikmuld.corerm.misc.AbstractBox
+import com.rikmuld.corerm.client.AbstractBox
 import net.minecraft.client.Minecraft
-import net.minecraft.client.renderer.{ItemRenderer, Tessellator}
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType
+import net.minecraft.client.renderer.{ItemRenderer, Tessellator}
 import net.minecraft.entity.EntityLivingBase
 import net.minecraft.item.ItemStack
 import net.minecraft.util.ResourceLocation

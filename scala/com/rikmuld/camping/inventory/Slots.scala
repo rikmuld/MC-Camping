@@ -3,8 +3,8 @@ package com.rikmuld.camping.inventory
 import com.rikmuld.camping.misc.CookingEquipment
 import com.rikmuld.camping.objs.Objs
 import com.rikmuld.camping.objs.tile.TileCampfireCook
-import com.rikmuld.corerm.features.tabbed.SlotWithTabs
-import com.rikmuld.corerm.inventory.slots.{SlotChangingInventory, SlotDisable, SlotNot, SlotOnly}
+import com.rikmuld.corerm.gui._
+import com.rikmuld.corerm.gui.slots.{SlotChangingInventory, SlotDisable, SlotNot, SlotOnly}
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.inventory.EntityEquipmentSlot._
 import net.minecraft.inventory.{IInventory, InventoryCrafting, Slot, SlotCrafting}
@@ -80,8 +80,8 @@ class SlotBackpack(inv: IInventory, index: Int, x:Int, y:Int, active: Boolean) e
     Vector(Objs.backpack)
 }
 
-class SlotTabbedBackpack(index: Int, x:Int, y:Int, val tabIdLeft: Int, val tabIdTop: Int) extends
-  SlotBackpack(null, index, x, y, false) with SlotWithTabs with SlotChangingInventory {
+class SlotTabbedBackpack(index: Int, x:Int, y:Int, val tab: Int) extends
+  SlotBackpack(null, index, x, y, false) with slots.SlotTabbed with SlotChangingInventory {
 
   private var inv: Option[IInventory] =
     None
@@ -93,19 +93,19 @@ class SlotTabbedBackpack(index: Int, x:Int, y:Int, val tabIdLeft: Int, val tabId
     inv = inventory
 }
 
-class SlotTabbed(inv: IInventory, index: Int, x:Int, y:Int, val tabIdLeft: Int, val tabIdTop: Int) extends
-  Slot(inv, index, x, y) with SlotWithTabs
+class SlotTabbed(inv: IInventory, index: Int, x:Int, y:Int, val tab: Int) extends
+  Slot(inv, index, x, y) with slots.SlotTabbed
 
-class SlotTabbedCrafting(player: EntityPlayer, craftInv: InventoryCrafting, inv: IInventory, index: Int, x:Int, y:Int, val tabIdLeft: Int, val tabIdTop: Int) extends
-  SlotCrafting(player, craftInv, inv, index, x, y) with SlotWithTabs {
+class SlotTabbedCrafting(player: EntityPlayer, craftInv: InventoryCrafting, inv: IInventory, index: Int, x:Int, y:Int, val tab: Int) extends
+  SlotCrafting(player, craftInv, inv, index, x, y) with slots.SlotTabbed {
 }
 
 object SlotArmor {
   val armorSlots = List(HEAD, CHEST, LEGS, FEET)
 }
 
-class SlotTabbedArmor(inv: IInventory, player: EntityPlayer, index: Int, x:Int, y:Int, tabLeft: Int, tabTop: Int, armorIndex: Int)
-  extends SlotTabbed(inv, index, x, y, tabLeft, tabTop) {
+class SlotTabbedArmor(inv: IInventory, player: EntityPlayer, index: Int, x:Int, y:Int, tab: Int, armorIndex: Int)
+  extends SlotTabbed(inv, index, x, y, tab) {
 
   override def getSlotStackLimit =
     1

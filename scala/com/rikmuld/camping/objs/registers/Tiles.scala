@@ -2,7 +2,7 @@ package com.rikmuld.camping.objs.registers
 
 import com.rikmuld.camping.CampingMod._
 import com.rikmuld.camping.objs.tile._
-import com.rikmuld.corerm.misc.ModRegister
+import com.rikmuld.corerm.utils.ModRegister
 import net.minecraftforge.fml.common.registry.GameRegistry
 
 object ModTiles extends ModRegister {

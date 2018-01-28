@@ -5,7 +5,7 @@ import com.rikmuld.camping.inventory.camping.{ContainerCamping, GuiCamping}
 import com.rikmuld.camping.inventory.objs._
 import com.rikmuld.camping.objs.Objs._
 import com.rikmuld.corerm.RMMod
-import com.rikmuld.corerm.misc.ModRegister
+import com.rikmuld.corerm.utils.ModRegister
 import net.minecraftforge.fml.relauncher.{Side, SideOnly}
 
 object ModGuis extends ModRegister{

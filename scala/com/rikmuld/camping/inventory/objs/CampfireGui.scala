@@ -6,13 +6,12 @@ import com.rikmuld.camping.misc.CookingEquipment
 import com.rikmuld.camping.objs.ItemDefinitions.Kit
 import com.rikmuld.camping.objs.Objs
 import com.rikmuld.camping.objs.tile.TileCampfireCook
-import com.rikmuld.corerm.inventory.container.ContainerSimple
-import com.rikmuld.corerm.inventory.gui.GuiContainerSimple
-import com.rikmuld.corerm.inventory.slots.{SlotDisable, SlotOnly}
+import com.rikmuld.corerm.gui.container.ContainerSimple
+import com.rikmuld.corerm.gui.gui.GuiContainerSimple
 import net.minecraft.entity.player.{EntityPlayer, EntityPlayerMP}
 import net.minecraft.init.Items
-import net.minecraft.inventory.{ClickType, IContainerListener, IInventory, Slot}
-import net.minecraft.item.{Item, ItemStack}
+import net.minecraft.inventory.{IContainerListener, IInventory, Slot}
+import net.minecraft.item.ItemStack
 import net.minecraft.util.ResourceLocation
 
 class GuiCampfireCook(player: EntityPlayer, tile: IInventory) extends GuiContainerSimple(new ContainerCampfireCook(player, tile)) {

@@ -3,9 +3,9 @@ package com.rikmuld.camping.objs.block
 import com.google.common.base.Predicate
 import com.rikmuld.camping.objs.Objs
 import com.rikmuld.camping.objs.tile.TileTent
-import com.rikmuld.corerm.features.bounds.{IBoundsBlock, TileBounds}
 import com.rikmuld.corerm.objs.ObjInfo
-import com.rikmuld.corerm.objs.blocks.{RMBlockContainer, RMFacingHorizontalProp, WithModel, WithProperties}
+import com.rikmuld.corerm.objs.blocks._
+import com.rikmuld.corerm.tileentity.TileEntityBounds
 import com.rikmuld.corerm.utils.WorldBlock._
 import net.minecraft.block.properties.PropertyDirection
 import net.minecraft.block.state.IBlockState
@@ -28,11 +28,11 @@ class TentBounds(modId:String, info:ObjInfo) extends RMBlockContainer(modId, inf
   override def getProps = Array(new RMFacingHorizontalProp(TentBounds.FACING, 0))
   override def isBed(state:IBlockState, world:IBlockAccess, pos:BlockPos, player:Entity) = true    
   override def setBedOccupied(world:IBlockAccess, pos:BlockPos, player:EntityPlayer, occupied:Boolean) = getBaseTile(world, pos).setOccupied(occupied)
-  override def getBedDirection(state:IBlockState, world:IBlockAccess, pos:BlockPos) = world.getBlockState(world.getTileEntity(pos).asInstanceOf[TileBounds].basePos).getValue(Tent.FACING).asInstanceOf[EnumFacing]
+  override def getBedDirection(state:IBlockState, world:IBlockAccess, pos:BlockPos) = world.getBlockState(world.getTileEntity(pos).asInstanceOf[TileEntityBounds].basePos).getValue(Tent.FACING).asInstanceOf[EnumFacing]
   override def isBedFoot(world:IBlockAccess, pos:BlockPos) = false
   def isOccupied(bd:BlockData) = getBaseTile(bd).isOccupied
-  def getBaseTile(world:IBlockAccess, pos:BlockPos) = world.getTileEntity(world.getTileEntity(pos).asInstanceOf[TileBounds].basePos).asInstanceOf[TileTent]
-  def getBaseTile(bd:BlockData) = (bd.world, bd.tile.asInstanceOf[TileBounds].basePos).tile.asInstanceOf[TileTent]
+  def getBaseTile(world:IBlockAccess, pos:BlockPos) = world.getTileEntity(world.getTileEntity(pos).asInstanceOf[TileEntityBounds].basePos).asInstanceOf[TileTent]
+  def getBaseTile(bd:BlockData) = (bd.world, bd.tile.asInstanceOf[TileEntityBounds].basePos).tile.asInstanceOf[TileTent]
   def sleep(bd:BlockData, player:EntityPlayer){
     if(bd.world.provider.canRespawnHere && bd.world.getBiomeForCoordsBody(bd.pos) != Biomes.HELL){
       if(isOccupied(bd)){
