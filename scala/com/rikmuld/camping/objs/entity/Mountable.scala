@@ -31,7 +31,7 @@ class Mountable(worldIn: World) extends Entity(worldIn) {
       if (this.getPassengers.size() > 0 && 
           world.isRemote && Minecraft.getMinecraft.gameSettings.keyBindSneak.isPressed &&
           Minecraft.getMinecraft.inGameHasFocus) {
-          PacketSender.toServer(new PlayerExitLog(pos.getX, pos.getY, pos.getZ))
+          PacketSender.sendToServer(new PlayerExitLog(pos.getX, pos.getY, pos.getZ))
           this.getPassengers.get(0).dismountRidingEntity()
       }
     }

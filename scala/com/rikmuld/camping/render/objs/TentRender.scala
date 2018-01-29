@@ -12,7 +12,7 @@ import net.minecraft.util.ResourceLocation
 import org.lwjgl.opengl.{GL11, GL12}
 
 object TentRender {
-  final val MODEL = new TentModel
+  final val MODEL = TentModel.TENT_MODEL
   final val TEX = new ResourceLocation(TextureInfo.MODEL_TENT_WHITE)
   
   def setTentColor(color: Int) {
@@ -48,10 +48,10 @@ class TentRender extends TileEntitySpecialRenderer[TileTent] {
     GL11.glRotatef(if ((tile.getRotation + 1) > 3) 90 * 0 else 90 * (tile.getRotation + 1), 0, 1, 0)
     bindTexture(new ResourceLocation(TextureInfo.MODEL_TENT_WHITE))
     TentRender.setTentColor(tile.color)
-    TentRender.MODEL.renderOnly(TentModel.CANVAS:_*)
+    TentRender.MODEL.renderOnly(1, TentModel.CANVAS:_*)
     GL11.glColor3f(1, 1, 1)
-    TentRender.MODEL.renderOnly(TentModel.PEGS:_*)
-    TentRender.MODEL.renderOnly(TentModel.getPartsFor(tile.chests, tile.beds > 0):_*)
+    TentRender.MODEL.renderOnly(1, TentModel.PEGS:_*)
+    TentRender.MODEL.renderOnly(1, TentModel.getPartsFor(tile.chests, tile.beds > 0):_*)
     GL11.glPopMatrix()
     
     if (tile.lanterns > 0) {

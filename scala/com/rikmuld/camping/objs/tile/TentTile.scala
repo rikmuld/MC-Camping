@@ -235,7 +235,7 @@ class TileTent extends TileEntitySimple with TileEntityInventory with ITickable 
     sendTileData(4, false, slideState)
   }
   def setSlots(slots: Array[Array[SlotState]]) = this.slots = slots
-  override def setTileData(id: Int, data: Array[Int]) {
+  override def setTileData(id: Int, data: Seq[Int]) {
     super.setTileData(id, data)
     if (id == 1) setContends(data(0), data(1), false, data(2))
     else if (id == 2) {
@@ -257,7 +257,7 @@ class TileTent extends TileEntitySimple with TileEntityInventory with ITickable 
       else if (getRotation == 2) bd.north.block.asInstanceOf[TentBounds].sleep(bd.north, player)
       else if (getRotation == 3) bd.east.block.asInstanceOf[TentBounds].sleep(bd.east, player)
     } else {
-      PacketSender.toServer(new PlayerSleepInTent(bd.x, bd.y, bd.z))
+      PacketSender.sendToServer(new PlayerSleepInTent(bd.x, bd.y, bd.z))
     }
   }
   def createStructure {

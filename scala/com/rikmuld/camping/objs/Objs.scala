@@ -3,10 +3,10 @@ package com.rikmuld.camping.objs
 import com.rikmuld.camping.inventory.camping.InventoryCamping
 import com.rikmuld.camping.misc.CookingEquipment
 import com.rikmuld.camping.objs.entity.Camper
-import com.rikmuld.corerm.advancements.AdvancementTrigger
+import com.rikmuld.corerm.advancements.triggers.TriggerSimple
 import com.rikmuld.corerm.objs.blocks.RMCoreBlock
 import com.rikmuld.corerm.objs.items.RMCoreItem
-import com.rikmuld.corerm.utils.{BoundsStructure, DataContainer}
+import com.rikmuld.corerm.utils.BoundsStructure
 import net.minecraft.client.settings.KeyBinding
 import net.minecraft.creativetab.CreativeTabs
 import net.minecraft.entity.EntityLivingBase
@@ -46,19 +46,6 @@ object Objs {
       campfireCook, 
       tentBounds:RMCoreBlock = _
       
-  val guiPouch,
-      guiBackpack,
-      guiRucksack, 
-      guiConfig, 
-      guiKit, 
-      guiCamping, 
-      guiTrap, 
-      guiCampfireCook, 
-      guiTentSleep, 
-      guiTentChests, 
-      guiTentLantern, 
-      guiTent: DataContainer[Int] = new DataContainer[Int]()
-      
   var spit, 
       grill, 
       pan:CookingEquipment = _
@@ -76,12 +63,12 @@ object Objs {
       bearAmb,
       bearDeath:SoundEvent = _
 
-  var slept: AdvancementTrigger[BlockPos, _] = _
-  var campfireMade: AdvancementTrigger[Int, _] = _
-  var dyeBurned: AdvancementTrigger[Int, _] = _
-  var camperInteract: AdvancementTrigger[Camper, _] = _
-  var entityTrapped: AdvancementTrigger[EntityLivingBase, _] = _
-  var foodRoasted: AdvancementTrigger[(ItemStack, ItemStack), _] = _
-  var inventoryChanged: AdvancementTrigger[InventoryCamping, _] = _
-  var tentChanged: AdvancementTrigger[Seq[ItemStack], _] = _
+  var slept: TriggerSimple.Trigger[BlockPos, _] = _
+  var campfireMade: TriggerSimple.Trigger[Int, _] = _
+  var dyeBurned: TriggerSimple.Trigger[Int, _] = _
+  var camperInteract: TriggerSimple.Trigger[Camper, _] = _
+  var entityTrapped: TriggerSimple.Trigger[EntityLivingBase, _] = _
+  var foodRoasted: TriggerSimple.Trigger[(ItemStack, ItemStack), _] = _
+  var inventoryChanged: TriggerSimple.Trigger[InventoryCamping, _] = _
+  var tentChanged: TriggerSimple.Trigger[Seq[ItemStack], _] = _
 }

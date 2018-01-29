@@ -3,12 +3,12 @@ package com.rikmuld.camping.advancements
 import com.google.gson.{JsonDeserializationContext, JsonObject}
 import com.rikmuld.camping.Lib.AdvancementInfo.CAMPFIRES_MADE
 import com.rikmuld.camping.Lib.NBTInfo
-import com.rikmuld.corerm.advancements.{AdvancementTrigger, TriggerInstance}
+import com.rikmuld.corerm.advancements.triggers.TriggerSimple
 import net.minecraft.entity.player.EntityPlayerMP
 import net.minecraft.util.ResourceLocation
 
 object CampfireMade {
-  class Trigger extends AdvancementTrigger[Int, Instance] {
+  class Trigger extends TriggerSimple.Trigger[Int, Instance] {
     protected val id: ResourceLocation =
       CAMPFIRES_MADE
 
@@ -21,7 +21,7 @@ object CampfireMade {
   }
 
   protected class Instance(campfire: Option[Int],
-                           total: Option[Int]) extends TriggerInstance[Int](CAMPFIRES_MADE) {
+                           total: Option[Int]) extends TriggerSimple.Instance[Int](CAMPFIRES_MADE) {
 
     def test(player: EntityPlayerMP, damage: Int): Boolean = {
       val dataTag = player.getEntityData.getCompoundTag(NBTInfo.ACHIEVEMENTS)

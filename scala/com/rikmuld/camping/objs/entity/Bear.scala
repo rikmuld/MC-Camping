@@ -15,8 +15,8 @@ import net.minecraft.entity.passive.{EntityAnimal, EntityVillager}
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.init.Items
 import net.minecraft.item.{ItemAxe, ItemStack}
-import net.minecraft.util.{DamageSource, ResourceLocation, SoundEvent}
 import net.minecraft.util.math.MathHelper
+import net.minecraft.util.{DamageSource, ResourceLocation, SoundEvent}
 import net.minecraft.world.World
 import net.minecraftforge.fml.relauncher.{Side, SideOnly}
 import org.lwjgl.opengl.GL11

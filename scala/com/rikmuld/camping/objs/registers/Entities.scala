@@ -3,9 +3,9 @@ package com.rikmuld.camping.objs.registers
 import com.rikmuld.camping.CampingMod
 import com.rikmuld.camping.CampingMod._
 import com.rikmuld.camping.Lib._
+import com.rikmuld.camping.misc.ModRegister
 import com.rikmuld.camping.objs.entity._
 import com.rikmuld.camping.world.WorldGenerator
-import com.rikmuld.corerm.utils.ModRegister
 import net.minecraft.client.renderer.entity.{Render, RenderManager}
 import net.minecraft.entity.{Entity, EnumCreatureType}
 import net.minecraft.util.ResourceLocation

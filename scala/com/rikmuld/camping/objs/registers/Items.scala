@@ -4,19 +4,28 @@ import com.rikmuld.camping.CampingMod._
 import com.rikmuld.camping.objs.ItemDefinitions._
 import com.rikmuld.camping.objs.Objs._
 import com.rikmuld.camping.objs.item.Kit
-import com.rikmuld.corerm.RMMod
-import com.rikmuld.corerm.objs.items.{RMItem, RMItemArmor, RMItemFood}
+import com.rikmuld.corerm.objs.items.{RMItem, RMItemArmor, RMItemBlock, RMItemFood}
 import com.rikmuld.corerm.utils.CoreUtils._
 import com.rikmuld.corerm.utils.Rotation
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.{Item, ItemStack}
-import net.minecraft.util.{EnumActionResult, EnumFacing, EnumHand}
 import net.minecraft.util.math.BlockPos
+import net.minecraft.util.{EnumActionResult, EnumFacing, EnumHand}
 import net.minecraft.world.World
 import net.minecraftforge.client.event.ModelRegistryEvent
 import net.minecraftforge.event.RegistryEvent
 
 object ModItems {
+  var
+    campfireCookItem,
+    campfireWoodItem,
+    sleepingBagItem,
+    tentItem,
+    logSeatItem,
+    lanternItem,
+    trapItem,
+    hempItem: RMItemBlock = _
+
   def createItems() {
     knife = new RMItem(MOD_ID, KNIFE){
       override def onItemUse(player: EntityPlayer, world: World, pos:BlockPos, hand:EnumHand, sideHit: EnumFacing, xHit: Float, yHit: Float, zHit: Float): EnumActionResult = {
@@ -42,35 +51,62 @@ object ModItems {
     furLeg = new RMItemArmor(MOD_ID, FUR_LEG)
     furChest = new RMItemArmor(MOD_ID, FUR_CHEST)
     furHead = new RMItemArmor(MOD_ID, FUR_HEAD)
+
+    campfireCookItem = campfireCook.generateItem()
+    campfireWoodItem = campfireWood.generateItem()
+    lanternItem = lantern.generateItem()
+    logSeatItem = logseat.generateItem()
+    tentItem = tent.generateItem()
+    trapItem = trap.generateItem()
+    sleepingBagItem = sleepingBag.generateItem()
+    hempItem = hemp.generateItem()
+
   }
 
-  def registerItems(event: RegistryEvent.Register[Item]): Unit ={
-    knife.getItemInfo.register(event, knife, MOD_ID)
-    parts.getItemInfo.register(event, parts, MOD_ID)
-    marshmallow.getItemInfo.register(event, marshmallow, MOD_ID)
-    backpack.getItemInfo.register(event, backpack, MOD_ID)
-    kit.getItemInfo.register(event, kit, MOD_ID)
-    animalParts.getItemInfo.register(event, animalParts, MOD_ID)
-    venisonRaw.getItemInfo.register(event, venisonRaw, MOD_ID)
-    venisonCooked.getItemInfo.register(event, venisonCooked, MOD_ID)
-    furBoot.getItemInfo.register(event, furBoot, MOD_ID)
-    furChest.getItemInfo.register(event, furChest, MOD_ID)
-    furHead.getItemInfo.register(event, furHead, MOD_ID)
-    furLeg.getItemInfo.register(event, furLeg, MOD_ID)
-  }
+  def registerItems(event: RegistryEvent.Register[Item]): Unit =
+    event.getRegistry.registerAll(
+      knife,
+      parts,
+      marshmallow,
+      backpack,
+      kit,
+      animalParts,
+      venisonRaw,
+      venisonCooked,
+      furBoot,
+      furChest,
+      furHead,
+      furLeg,
+      campfireWoodItem,
+      campfireCookItem,
+      lanternItem,
+      logSeatItem,
+      trapItem,
+      tentItem,
+      sleepingBagItem,
+      hempItem
+    )
 
   def registerModels(event: ModelRegistryEvent): Unit = {
-    RMMod.proxy.registerRendersFor(event, knife, knife.getItemInfo, MOD_ID)
-    RMMod.proxy.registerRendersFor(event, parts, parts.getItemInfo, MOD_ID)
-    RMMod.proxy.registerRendersFor(event, marshmallow, marshmallow.getItemInfo, MOD_ID)
-    RMMod.proxy.registerRendersFor(event, backpack, backpack.getItemInfo, MOD_ID)
-    RMMod.proxy.registerRendersFor(event, kit, kit.getItemInfo, MOD_ID)
-    RMMod.proxy.registerRendersFor(event, animalParts, animalParts.getItemInfo, MOD_ID)
-    RMMod.proxy.registerRendersFor(event, venisonCooked, venisonCooked.getItemInfo, MOD_ID)
-    RMMod.proxy.registerRendersFor(event, venisonRaw, venisonRaw.getItemInfo, MOD_ID)
-    RMMod.proxy.registerRendersFor(event, furLeg, furLeg.getItemInfo, MOD_ID)
-    RMMod.proxy.registerRendersFor(event, furHead, furHead.getItemInfo, MOD_ID)
-    RMMod.proxy.registerRendersFor(event, furChest, furChest.getItemInfo, MOD_ID)
-    RMMod.proxy.registerRendersFor(event, furBoot, furBoot.getItemInfo, MOD_ID)
+    knife.registerRenders()
+    parts.registerRenders()
+    marshmallow.registerRenders()
+    backpack.registerRenders()
+    kit.registerRenders()
+    animalParts.registerRenders()
+    venisonRaw.registerRenders()
+    venisonCooked.registerRenders()
+    furBoot.registerRenders()
+    furChest.registerRenders()
+    furHead.registerRenders()
+    furLeg.registerRenders()
+    campfireWoodItem.registerRenders()
+    campfireCookItem.registerRenders()
+    lanternItem.registerRenders()
+    logSeatItem.registerRenders()
+    trapItem.registerRenders()
+    tentItem.registerRenders()
+    sleepingBagItem.registerRenders()
+    hempItem.registerRenders()
   }
 }

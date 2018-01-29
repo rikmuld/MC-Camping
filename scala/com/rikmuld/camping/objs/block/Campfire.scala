@@ -3,7 +3,6 @@ package com.rikmuld.camping.objs.block
 import java.util.{ArrayList, Random}
 
 import com.rikmuld.camping.CampingMod.proxy
-import com.rikmuld.camping.Lib.NBTInfo
 import com.rikmuld.camping.objs.Objs
 import com.rikmuld.camping.objs.tile.{TileCampfire, TileCampfireCook, TileCampfireWood}
 import com.rikmuld.corerm.objs.ObjInfo
@@ -15,7 +14,6 @@ import net.minecraft.block.state.IBlockState
 import net.minecraft.entity.player.{EntityPlayer, EntityPlayerMP}
 import net.minecraft.init.Items
 import net.minecraft.item.ItemStack
-import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.math.{AxisAlignedBB, BlockPos}
 import net.minecraft.util.{EnumBlockRenderType, EnumFacing, EnumHand, EnumParticleTypes}
 import net.minecraft.world.{IBlockAccess, World}

@@ -9,11 +9,11 @@ import com.rikmuld.camping.objs.misc.ItemsData
 import com.rikmuld.corerm.network.PacketSender
 import com.rikmuld.corerm.tileentity.{TileEntityInventory, TileEntitySimple}
 import com.rikmuld.corerm.utils.WorldBlock._
-import net.minecraft.entity.{EntityLiving, EntityLivingBase, SharedMonsterAttributes}
 import net.minecraft.entity.ai.attributes.AttributeModifier
 import net.minecraft.entity.monster._
 import net.minecraft.entity.passive.EntityAnimal
 import net.minecraft.entity.player.{EntityPlayer, EntityPlayerMP}
+import net.minecraft.entity.{EntityLiving, EntityLivingBase, SharedMonsterAttributes}
 import net.minecraft.init.Items
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.potion.PotionEffect
@@ -40,7 +40,7 @@ class TileTrap extends TileEntitySimple with TileEntityInventory with ITickable 
   override def getSizeInventory(): Int = 1
   override def onChange(slot: Int) {
     super[TileEntityInventory].onChange(slot)
-    if (!world.isRemote) PacketSender.toClient(new ItemsData(0, bd.x, bd.y, bd.z, getStackInSlot(0)))
+    if (!world.isRemote) PacketSender.sendToClient(new ItemsData(0, bd.x, bd.y, bd.z, getStackInSlot(0)))
   }
   override def readFromNBT(tag: NBTTagCompound) {
     cooldown = tag.getInteger("cooldown")
@@ -62,7 +62,7 @@ class TileTrap extends TileEntitySimple with TileEntityInventory with ITickable 
     trappedEntity = null
   }
   
-  override def setTileData(id: Int, data: Array[Int]) = if (id == 0) open = data(0) == 1
+  override def setTileData(id: Int, data: Seq[Int]) = if (id == 0) open = data(0) == 1
   def captureBounds = new AxisAlignedBB(bd.x + 0.21875, bd.y, bd.z + 0.21875, bd.x + 0.78125, bd.y + 0.1875, bd.z + 0.78125)
   def setOpen(open:Boolean) = {
     this.open = open

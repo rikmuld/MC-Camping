@@ -1,8 +1,8 @@
 package com.rikmuld.camping
 
 import com.rikmuld.camping.CampingMod._
+import com.rikmuld.camping.misc.ModRegister
 import com.rikmuld.camping.objs.registers._
-import com.rikmuld.corerm.utils.ModRegister
 import net.minecraft.block.Block
 import net.minecraft.item.Item
 import net.minecraft.util.{ResourceLocation, SoundEvent}
@@ -49,9 +49,10 @@ object CampingMod {
     if(event.getSide == Side.CLIENT) ModBlocks.registerClient()
 
     register(event.getSide, ModMisc, ModRegister.PERI)
-    register(event.getSide, ModGuis, ModRegister.PERI)
     register(event.getSide, ModEntities, ModRegister.PERI)
     register(event.getSide, ModTiles, ModRegister.PERI)
+
+    ModGuis.register(event.getSide)
 
     ModRecipes.register()
   }
@@ -80,14 +81,11 @@ object CampingMod {
   def registerItem(event: RegistryEvent.Register[Item]): Unit ={
     ModItems.createItems()
     ModItems.registerItems(event)
-
-    ModBlocks.registerItemBlocks(event)
   }
 
   @SubscribeEvent
   def registerModels(event: ModelRegistryEvent): Unit ={
     ModItems.registerModels(event)
-    ModBlocks.registerModels(event)
   }
 
   @SubscribeEvent
@@ -166,6 +164,21 @@ object Lib {
     final val DYE_BURNED = new ResourceLocation(MOD_ID, "dye_burned")
     final val CAMPFIRES_MADE = new ResourceLocation(MOD_ID, "campfires_made")
   }
+
+  object Guis {
+    final val POUCH = new ResourceLocation(MOD_ID, "pouch")
+    final val BACKPACK = new ResourceLocation(MOD_ID, "backpack")
+    final val RUCKSACK = new ResourceLocation(MOD_ID, "rucksack")
+    final val KIT = new ResourceLocation(MOD_ID, "kit")
+    final val CAMPING = new ResourceLocation(MOD_ID, "camping")
+    final val TRAP = new ResourceLocation(MOD_ID, "trap")
+    final val CAMPFIRE_COOK = new ResourceLocation(MOD_ID, "campfire_cook")
+    final val TENT = new ResourceLocation(MOD_ID, "tent")
+    final val TENT_SLEEP = new ResourceLocation(MOD_ID, "tent_sleep")
+    final val TENT_CHESTS = new ResourceLocation(MOD_ID, "tent_chests")
+    final val TENT_LANTERNS = new ResourceLocation(MOD_ID, "tent_lanterns")
+    final val CONFIG = new ResourceLocation(MOD_ID, "config")
+  }
   
   object TextureInfo {
     final val GUI_LOCATION = MOD_ID + ":textures/gui/"
@@ -216,19 +229,26 @@ object Lib {
 }
 
 /*
-plan: cleanup gui client stuff (first all from tabbed, then camping inv and tent
-      [improve tent gui to a tabbed one]) then release, then make recipes visible with advancements and add own recipes
-      as json and put recipe book in camping inventory then release, finally add spawner object thingies for campfires and release last before bugfix update
+plan: improve camping inv tab look (as creative inv) then ten gui cleanup (make tabbed) then release... continue with todo
+
+tomorrow:
+  - cleanup arstract box -> jutable model in sepperate file (for the cooking equipment models)
+  - mutable model redo
+  - registery system
+  - objs redo
+  - utils
+  - bounds structure way improve
 
   TODO after for next update
   - make tent tabbed gui
+  - bear model uses polar bear model
   - fix tent items thinks it can open a gui
   - make sure achievements require the previous
-  - add own recipes as json recipes -- looks not easily possible atm
   - unlock all recipes before crafting using advancements
   - add recipe book to camping inventory
   - update website, all recipes including spit stuff in cookbook
   - 'spawner' blocks for special cooking fires, spit, grill, pan in creative tab
+  - camping inv tab align to side
 
   TODO after for next update (Camping Mod 2.2, the bugfix update :P)
   - continue rewrite: guis, tiles, utils, block and items, network, corerm features, registry system, others

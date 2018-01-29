@@ -6,10 +6,10 @@ import com.rikmuld.camping.CampingMod._
 import com.rikmuld.camping.Lib.NBTInfo
 import com.rikmuld.camping.inventory.SlotCooking
 import com.rikmuld.camping.misc.CookingEquipment
-import com.rikmuld.camping.objs.{ItemDefinitions, Objs}
 import com.rikmuld.camping.objs.block.{CampfireCook, CampfireWood}
 import com.rikmuld.camping.objs.entity.Mountable
 import com.rikmuld.camping.objs.misc.ItemsData
+import com.rikmuld.camping.objs.{ItemDefinitions, Objs}
 import com.rikmuld.corerm.network.PacketSender
 import com.rikmuld.corerm.tileentity.{TileEntityInventory, TileEntitySimple}
 import com.rikmuld.corerm.utils.CoreUtils._
@@ -77,7 +77,7 @@ class TileCampfire extends TileEntitySimple with ITickable {
       coals(i)(j) = tag.getFloat("coals" + i + j)
     }
   }
-  override def setTileData(id: Int, data: Array[Int]) {
+  override def setTileData(id: Int, data: Seq[Int]) {
     if (id == 0) colorFlame(data(0))
   }
   def addDye(stack:ItemStack):Boolean = {
@@ -178,7 +178,7 @@ class TileCampfireWood extends TileCampfire with Roaster {
     fuel = tag.getInteger("fuel")
     on = tag.getBoolean("on")
   }
-  override def setTileData(id: Int, data: Array[Int]) {
+  override def setTileData(id: Int, data: Seq[Int]) {
     if (id == 1) fuel = data(0)
     else if(id == 2)lid = data(0)
     else if (id == 4) {
@@ -250,7 +250,7 @@ class TileCampfireCook extends TileEntitySimple with TileEntityInventory with IT
             if (equipment.getCookedFood(getStackInSlot(i + 2)) != null) setInventorySlotContents(i + 2, equipment.getCookedFood(getStackInSlot(i + 2)).copy())
             else setInventorySlotContents(i + 2, new ItemStack(Objs.parts, 1, ItemDefinitions.Parts.ASH))
           } else setInventorySlotContents(i + 2, new ItemStack(Objs.parts, 1, ItemDefinitions.Parts.ASH))
-          PacketSender.toClient(new ItemsData(i + 2, bd.x, bd.y, bd.z, getStackInSlot(i + 2)))
+          PacketSender.sendToClient(new ItemsData(i + 2, bd.x, bd.y, bd.z, getStackInSlot(i + 2)))
         }
         if (fuel > 0) {
           if (!getStackInSlot(i + 2).isEmpty &&
@@ -321,7 +321,7 @@ class TileCampfireCook extends TileEntitySimple with TileEntityInventory with IT
   def setSlots(newSlots: Seq[SlotCooking]) =
     slots = newSlots
 
-  override def setTileData(id: Int, data: Array[Int]) {
+  override def setTileData(id: Int, data: Seq[Int]) {
     if (id == 0) fuel = data(0)
     if (id == 1) cookProgress(data(1)) = data(0)
   }

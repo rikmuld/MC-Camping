@@ -26,8 +26,7 @@ object BlockDefinitions {
   
   final val HEMP           = new ObjInfo(Tab(tab), 
                                          Name("hemp"), 
-                                         Materia(Material.PLANTS), 
-                                         Metadata("plant_hemp_0", "plant_hemp_1", "plant_hemp_2", "plant_hemp_3", "plant_hemp_4", "plant_hemp_5"))
+                                         Materia(Material.PLANTS))
   
   object Hemp {
     final val INFANT_1         = 0
@@ -60,7 +59,7 @@ object BlockDefinitions {
                                          Name("trap"), 
                                          Materia(Material.IRON), 
                                          Hardness(1f), 
-                                         GuiTrigger(guiTrap))
+                                         GuiTrigger(Guis.TRAP))
   
   final val CAMPFIRE       = new ObjInfo(Tab(tab), 
                                          Name("campfire"), 
@@ -84,13 +83,13 @@ object BlockDefinitions {
                                          StepSound(SoundEvents.BLOCK_STONE_STEP), 
                                          LightLevel(1.0f), 
                                          HarvestLevel("pickaxe", 0),
-                                         GuiTrigger(guiCampfireCook))
+                                         GuiTrigger(Guis.CAMPFIRE_COOK))
   
   final val TENT           = new ObjInfo(Tab(tab), 
                                          Name("tent"),
                                          Materia(Material.CLOTH), 
                                          Hardness(0.2f), 
-                                         GuiTrigger(guiTent), 
+                                         GuiTrigger(Guis.TENT),
                                          Metadata("black", "red", "green", "brown", "blue", "purple", "cyan", "gray_light", "gray_dark", "pink", "lime", "yellow", "blue_light", "magenta", "orange", "white"),
                                          ItemBl(classOf[TentItem]))
   object Tent {
@@ -140,7 +139,7 @@ object ItemDefinitions {
                                          MaxStacksize(1), 
                                          Name("bag"), 
                                          ForceSubtype(true), 
-                                         GuiTriggerMeta((0, guiPouch), (1, guiBackpack), (2, guiRucksack)),
+                                         GuiTriggerMeta((0, Guis.POUCH), (1, Guis.BACKPACK), (2, Guis.RUCKSACK)),
                                          Metadata("pouch", "backpack", "rucksack"))
   
   object Backpack {
@@ -153,7 +152,7 @@ object ItemDefinitions {
                                          MaxStacksize(1), 
                                          Name("kit"), 
                                          ForceSubtype(true), 
-                                         GuiTrigger(guiKit), 
+                                         GuiTrigger(Guis.KIT),
                                          Metadata("kit", "spit", "grill", "pan", "useless"))
   object Kit {
     final val EMPTY   = 0

@@ -2,19 +2,17 @@ package com.rikmuld.camping.objs.item
 
 import com.rikmuld.camping.objs.ItemDefinitions._
 import com.rikmuld.camping.objs.Objs
-import com.rikmuld.corerm.Lib._
+import com.rikmuld.corerm.Library.TextInfo
 import com.rikmuld.corerm.objs.PropType._
 import com.rikmuld.corerm.objs.items.RMItem
 import com.rikmuld.corerm.objs.{ObjInfo, Properties}
 import net.minecraft.client.util.ITooltipFlag
 import net.minecraft.creativetab.CreativeTabs
-import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.init.{Blocks, Items}
-import net.minecraft.item.{Item, ItemStack}
+import net.minecraft.item.ItemStack
 import net.minecraft.nbt.{NBTTagCompound, NBTTagList}
 import net.minecraft.util.NonNullList
 import net.minecraft.world.World
-import net.minecraftforge.fml.relauncher.{Side, SideOnly}
 import org.lwjgl.input.Keyboard
 
 import scala.collection.mutable.HashMap

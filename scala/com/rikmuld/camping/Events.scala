@@ -13,7 +13,7 @@ import com.rikmuld.camping.objs.Objs
 import com.rikmuld.camping.objs.block.{Hemp, Tent}
 import com.rikmuld.camping.objs.misc.{KeyData, MapData, NBTPlayer, OpenGui}
 import com.rikmuld.camping.objs.tile.{Roaster, TileTrap}
-import com.rikmuld.corerm.RMMod
+import com.rikmuld.corerm.gui.GuiSender
 import com.rikmuld.corerm.network.PacketSender
 import com.rikmuld.corerm.utils.CoreUtils._
 import com.rikmuld.corerm.utils.WorldBlock._
@@ -85,7 +85,7 @@ class EventsS {
     }
   }
   @SubscribeEvent
-  def onPlayerLogin(event: PlayerLoggedInEvent) = Option(event.player.getEntityData.getCompoundTag(NBTInfo.INV_CAMPING)) map (tag => PacketSender.to(new NBTPlayer(tag), event.player.asInstanceOf[EntityPlayerMP]))
+  def onPlayerLogin(event: PlayerLoggedInEvent) = Option(event.player.getEntityData.getCompoundTag(NBTInfo.INV_CAMPING)) map (tag => PacketSender.sendToPlayer(new NBTPlayer(tag), event.player.asInstanceOf[EntityPlayerMP]))
   @SubscribeEvent
   def onItemCrafted(event: ItemCraftedEvent) {
     if(event.crafting.getItem == Objs.backpack) {
@@ -114,7 +114,8 @@ class EventsS {
     }
   }
   def keyPressedServer(player: EntityPlayer, id: Int) {
-    if(id==KeyInfo.INVENTORY_KEY)player.openGui(RMMod, Objs.guiCamping.get.get, player.world, 0, 0, 0)
+    if(id==KeyInfo.INVENTORY_KEY)
+      GuiSender.openGui(Guis.CAMPING, player)
   }
   @SubscribeEvent
   def onPlayerTick(event: PlayerTickEvent) {
@@ -141,7 +142,7 @@ class EventsS {
     }
     if (!world.isRemote && player.hasMap()) {
       val data = player.getCurrentMapData()
-      PacketSender.to(new MapData(data.scale, data.xCenter, data.zCenter, data.colors), player.asInstanceOf[EntityPlayerMP])
+      PacketSender.sendToPlayer(new MapData(data.scale, data.xCenter, data.zCenter, data.colors), player.asInstanceOf[EntityPlayerMP])
     }
 
     if (!world.isRemote) {
@@ -193,7 +194,7 @@ class EventsC {
       for (key <- KeyInfo.default.indices) {
         if (Objs.keyOpenCamping.isPressed) {
           keyPressedClient(KeyInfo.INVENTORY_KEY)
-          PacketSender.toServer(new KeyData(KeyInfo.INVENTORY_KEY))
+          PacketSender.sendToServer(new KeyData(KeyInfo.INVENTORY_KEY))
         }
       }
     }
@@ -204,7 +205,7 @@ class EventsC {
     if(event.getGui.isInstanceOf[GuiInventory]&&config.alwaysCampingInv){
       if(Minecraft.getMinecraft.player.capabilities.isCreativeMode) return;
       event.setCanceled(true)
-      PacketSender.toServer(new OpenGui(Objs.guiCamping.get.get, 0, 0, 0))
+      PacketSender.sendToServer(new OpenGui(Guis.CAMPING))
     }
   }
 

@@ -2,14 +2,14 @@ package com.rikmuld.camping.advancements
 
 import com.google.gson.{JsonDeserializationContext, JsonObject}
 import com.rikmuld.camping.Lib.AdvancementInfo._
-import com.rikmuld.corerm.advancements.{AdvancementTrigger, TriggerInstance}
+import com.rikmuld.corerm.advancements.triggers.TriggerSimple
 import net.minecraft.advancements.critereon.ItemPredicate
 import net.minecraft.entity.player.EntityPlayerMP
 import net.minecraft.item.ItemStack
 import net.minecraft.util.ResourceLocation
 
 object TentChanged {
-  class Trigger extends AdvancementTrigger[Seq[ItemStack], Instance] {
+  class Trigger extends TriggerSimple.Trigger[Seq[ItemStack], Instance] {
     protected val id: ResourceLocation =
       TENT_CHANGED
 
@@ -17,7 +17,7 @@ object TentChanged {
       new Instance(ItemPredicate.deserializeArray(json.get("items")))
   }
 
-  protected class Instance(items: Seq[ItemPredicate]) extends TriggerInstance[Seq[ItemStack]](TENT_CHANGED) {
+  protected class Instance(items: Seq[ItemPredicate]) extends TriggerSimple.Instance[Seq[ItemStack]](TENT_CHANGED) {
     def test(player: EntityPlayerMP, currentItems: Seq[ItemStack]): Boolean =
       items.forall(testItem => currentItems.exists(item => testItem.test(item)))
   }

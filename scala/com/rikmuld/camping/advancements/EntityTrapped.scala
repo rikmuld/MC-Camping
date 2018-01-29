@@ -3,7 +3,7 @@ package com.rikmuld.camping.advancements
 import com.google.gson.{JsonDeserializationContext, JsonObject}
 import com.rikmuld.camping.Lib.AdvancementInfo.ENTITY_TRAPPED
 import com.rikmuld.camping.objs.entity.Bear
-import com.rikmuld.corerm.advancements.{AdvancementTrigger, TriggerInstance}
+import com.rikmuld.corerm.advancements.triggers.TriggerSimple
 import net.minecraft.advancements.critereon.EntityPredicate
 import net.minecraft.entity.EntityLivingBase
 import net.minecraft.entity.monster.EntityMob
@@ -12,7 +12,7 @@ import net.minecraft.entity.player.EntityPlayerMP
 import net.minecraft.util.ResourceLocation
 
 object EntityTrapped {
-  class Trigger extends AdvancementTrigger[EntityLivingBase, Instance] {
+  class Trigger extends TriggerSimple.Trigger[EntityLivingBase, Instance] {
     protected val id: ResourceLocation =
       ENTITY_TRAPPED
 
@@ -24,7 +24,7 @@ object EntityTrapped {
     }
   }
 
-  protected class Instance(entity: Option[EntityPredicate], isAnimal:Option[Boolean]) extends TriggerInstance[EntityLivingBase](ENTITY_TRAPPED) {
+  protected class Instance(entity: Option[EntityPredicate], isAnimal:Option[Boolean]) extends TriggerSimple.Instance[EntityLivingBase](ENTITY_TRAPPED) {
     def test(player: EntityPlayerMP, entityTrapped: EntityLivingBase): Boolean =
       entity.fold(true)(_.test(player, entityTrapped)) && isAnimal.fold(true)(isAnimal =>
         if(isAnimal) entityTrapped.isInstanceOf[EntityAnimal] && !entityTrapped.isInstanceOf[Bear]

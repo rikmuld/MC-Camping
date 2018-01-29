@@ -3,13 +3,13 @@ package com.rikmuld.camping.advancements
 import com.google.gson.{JsonDeserializationContext, JsonObject}
 import com.rikmuld.camping.Lib.AdvancementInfo._
 import com.rikmuld.camping.objs.entity.Camper
-import com.rikmuld.corerm.advancements.{AdvancementTrigger, TriggerInstance}
+import com.rikmuld.corerm.advancements.triggers.TriggerSimple
 import net.minecraft.advancements.critereon.EntityPredicate
 import net.minecraft.entity.player.EntityPlayerMP
 import net.minecraft.util.ResourceLocation
 
 object CamperInteract {
-  class Trigger extends AdvancementTrigger[Camper, Instance] {
+  class Trigger extends TriggerSimple.Trigger[Camper, Instance] {
     protected val id: ResourceLocation =
       CAMPER_INTERACT
 
@@ -17,7 +17,7 @@ object CamperInteract {
       new Instance(Option(json.get("camper")) map EntityPredicate.deserialize)
   }
 
-  protected class Instance(item: Option[EntityPredicate]) extends TriggerInstance[Camper](CAMPER_INTERACT) {
+  protected class Instance(item: Option[EntityPredicate]) extends TriggerSimple.Instance[Camper](CAMPER_INTERACT) {
     def test(player: EntityPlayerMP, camper: Camper): Boolean =
       item.fold(true)(_.test(player, camper))
   }

@@ -3,7 +3,7 @@ package com.rikmuld.camping.render.fx
 import com.rikmuld.camping.Lib.TextureInfo
 import net.minecraft.client.Minecraft
 import net.minecraft.client.particle.ParticleFlame
-import net.minecraft.client.renderer.{Tessellator, BufferBuilder}
+import net.minecraft.client.renderer.{BufferBuilder, Tessellator}
 import net.minecraft.entity.Entity
 import net.minecraft.util.ResourceLocation
 import net.minecraft.world.World

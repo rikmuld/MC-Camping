@@ -60,7 +60,6 @@ class InventoryCamping(player: EntityPlayer, container: ContainerCamping) extend
 
     if(!player.world.isRemote)
       Objs.inventoryChanged.trigger(player.asInstanceOf[EntityPlayerMP], this)
-
   }
 
   def backpackChanged(): Unit = {

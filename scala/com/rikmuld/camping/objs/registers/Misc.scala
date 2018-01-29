@@ -2,15 +2,14 @@ package com.rikmuld.camping.objs.registers
 
 import com.rikmuld.camping.Lib._
 import com.rikmuld.camping.advancements._
-import com.rikmuld.camping.misc.{CookingEquipment, Grill, Pan, Spit}
+import com.rikmuld.camping.misc._
 import com.rikmuld.camping.objs.ItemDefinitions._
 import com.rikmuld.camping.objs.Objs._
 import com.rikmuld.camping.objs.misc._
-import com.rikmuld.corerm.RMMod
-import com.rikmuld.corerm.advancements.AdvancementTriggers
-import com.rikmuld.corerm.network.BoundsData
+import com.rikmuld.corerm.Registry
+import com.rikmuld.corerm.network.PacketWrapper
+import com.rikmuld.corerm.utils.BoundsStructure
 import com.rikmuld.corerm.utils.CoreUtils._
-import com.rikmuld.corerm.utils.{BoundsStructure, ModRegister}
 import net.minecraft.client.settings.KeyBinding
 import net.minecraft.init.Blocks._
 import net.minecraft.init.Items._
@@ -37,26 +36,27 @@ object ModMisc extends ModRegister {
         val zLine = Array(0, 0, 1, 1, 1, 2, 2, 2, 0, 0, 0, 1, 1, 1, 2, 2, 2)
         tentStructure = BoundsStructure.regsisterStructure(xLine, yLine, zLine, true)
 
-        RMMod.registerPacket(classOf[OpenGui])
-        RMMod.registerPacket(classOf[NBTPlayer])
-        RMMod.registerPacket(classOf[KeyData])
-        RMMod.registerPacket(classOf[ItemsData])
-        RMMod.registerPacket(classOf[PlayerExitLog])  
-        RMMod.registerPacket(classOf[BoundsData])
-        RMMod.registerPacket(classOf[PlayerSleepInTent])
-        RMMod.registerPacket(classOf[MapData])
+        Registry.packetRegistry.registerAll(
+          PacketWrapper.create(classOf[OpenGui], "op"),
+          PacketWrapper.create(classOf[NBTPlayer], "nb"),
+          PacketWrapper.create(classOf[KeyData], "kd"),
+          PacketWrapper.create(classOf[ItemsData], "id"),
+          PacketWrapper.create(classOf[PlayerExitLog], "pe"),
+          PacketWrapper.create(classOf[PlayerSleepInTent], "ps"),
+          PacketWrapper.create(classOf[MapData], "md")
+        )
                         
         bleedingSource = new DamageSourceBleeding(DamageInfo.BLEEDING)
         bleeding = new PotionBleeding(PotionInfo.BLEEDING)
 
-        slept = AdvancementTriggers.registerAdvancementTrigger(new Slept.Trigger)
-        campfireMade = AdvancementTriggers.registerAdvancementTrigger(new CampfireMade.Trigger)
-        dyeBurned = AdvancementTriggers.registerAdvancementTrigger(new DyeBurned.Trigger)
-        entityTrapped = AdvancementTriggers.registerAdvancementTrigger(new EntityTrapped.Trigger)
-        foodRoasted = AdvancementTriggers.registerAdvancementTrigger(new FoodRoasted.Trigger)
-        inventoryChanged = AdvancementTriggers.registerAdvancementTrigger(new InventoryChanged.Trigger)
-        tentChanged = AdvancementTriggers.registerAdvancementTrigger(new TentChanged.Trigger)
-        camperInteract = AdvancementTriggers.registerAdvancementTrigger(new CamperInteract.Trigger)
+        slept = Registry.advancementRegistry.register(new Slept.Trigger)
+        campfireMade = Registry.advancementRegistry.register(new CampfireMade.Trigger)
+        dyeBurned = Registry.advancementRegistry.register(new DyeBurned.Trigger)
+        entityTrapped = Registry.advancementRegistry.register(new EntityTrapped.Trigger)
+        foodRoasted = Registry.advancementRegistry.register(new FoodRoasted.Trigger)
+        inventoryChanged = Registry.advancementRegistry.register(new InventoryChanged.Trigger)
+        tentChanged = Registry.advancementRegistry.register(new TentChanged.Trigger)
+        camperInteract = Registry.advancementRegistry.register(new CamperInteract.Trigger)
       } else if(phase==ModRegister.POST){
         
         grill = new Grill(nwsk(kit, Kit.GRILL))

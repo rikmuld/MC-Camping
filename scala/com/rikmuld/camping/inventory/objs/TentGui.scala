@@ -5,7 +5,7 @@ import com.rikmuld.camping.inventory.{SlotItem, SlotState}
 import com.rikmuld.camping.objs.misc.OpenGui
 import com.rikmuld.camping.objs.tile.TileTent
 import com.rikmuld.camping.objs.{BlockDefinitions, Objs}
-import com.rikmuld.corerm.RMMod
+import com.rikmuld.corerm.gui.GuiSender
 import com.rikmuld.corerm.gui.container.ContainerSimple
 import com.rikmuld.corerm.gui.gui.GuiContainerSimple
 import com.rikmuld.corerm.network.PacketSender
@@ -78,15 +78,16 @@ class GuiTent(player: EntityPlayer, tile: IInventory) extends GuiScreen {
     drawCenteredString(fontRenderer, manage + " " + sleeping, ((width / 2) * 1.25F).toInt + (80 * 1.25F).toInt, (guiTop * 1.25F).toInt + (142 * 1.25F).toInt, 0)
     GL11.glPopMatrix()
     if (isPointInRegion(172, 78, 51, 53, mouseX, mouseY, guiLeft, guiTop) && (tent.beds > 0)) {
-      if (Mouse.isButtonDown(0) && canClick(0)) mc.player.openGui(RMMod, Objs.guiTentSleep.get.get, tent.getWorld, tent.getPos.getX, tent.getPos.getY, tent.getPos.getZ)
+      if (Mouse.isButtonDown(0) && canClick(0))
+        GuiSender.openGui(Guis.TENT_SLEEP, mc.player, tent.getPos)
       if (!Mouse.isButtonDown(0)) canClick(0) = true
     } else canClick(0) = false
     if (isPointInRegion(102, 78, 51, 53, mouseX, mouseY, guiLeft, guiTop) && (tent.chests > 0)) {
-      if (Mouse.isButtonDown(0) && canClick(1)) PacketSender.toServer(new OpenGui(Objs.guiTentChests.get.get, tent.getPos.getX, tent.getPos.getY, tent.getPos.getZ))
+      if (Mouse.isButtonDown(0) && canClick(1)) PacketSender.sendToServer(new OpenGui(Guis.TENT_CHESTS, tent.getPos.getX, tent.getPos.getY, tent.getPos.getZ))
       if (!Mouse.isButtonDown(0)) canClick(1) = true
     } else canClick(1) = false
     if (isPointInRegion(32, 78, 51, 53, mouseX, mouseY, guiLeft, guiTop) && (tent.lanterns > 0)) {
-      if (Mouse.isButtonDown(0) && canClick(2)) PacketSender.toServer(new OpenGui(Objs.guiTentLantern.get.get, tent.getPos.getX, tent.getPos.getY, tent.getPos.getZ))
+      if (Mouse.isButtonDown(0) && canClick(2)) PacketSender.sendToServer(new OpenGui(Guis.TENT_LANTERNS, tent.getPos.getX, tent.getPos.getY, tent.getPos.getZ))
       if (!Mouse.isButtonDown(0)) canClick(2) = true
     } else canClick(2) = false
     super.drawScreen(mouseX, mouseY, partitialTicks)
@@ -94,10 +95,10 @@ class GuiTent(player: EntityPlayer, tile: IInventory) extends GuiScreen {
   override def initGui() {
     super.initGui()
     val guiTop = (height - 160) / 2
-    buttonList.asInstanceOf[java.util.List[GuiButton]].add(new GuiButton(0, (width / 2) + 4, (guiTop + 10) - 2, 85, 10, clear))
-    buttonList.asInstanceOf[java.util.List[GuiButton]].add(new GuiButton(1, (width / 2) + 4, (guiTop + 30) - 2, 85, 10, remove + " " + bedName))
-    buttonList.asInstanceOf[java.util.List[GuiButton]].add(new GuiButton(2, (width / 2) + 4, (guiTop + 40) - 2, 85, 10, remove + " " + lanternName))
-    buttonList.asInstanceOf[java.util.List[GuiButton]].add(new GuiButton(3, (width / 2) + 4, (guiTop + 50) - 2, 85, 10, remove + " " + chestName))
+    buttonList.add(new GuiButton(0, (width / 2) + 4, (guiTop + 10) - 2, 85, 10, clear))
+    buttonList.add(new GuiButton(1, (width / 2) + 4, (guiTop + 30) - 2, 85, 10, remove + " " + bedName))
+    buttonList.add(new GuiButton(2, (width / 2) + 4, (guiTop + 40) - 2, 85, 10, remove + " " + lanternName))
+    buttonList.add(new GuiButton(3, (width / 2) + 4, (guiTop + 50) - 2, 85, 10, remove + " " + chestName))
   }
   private def isPointInRegion(x: Int, y: Int, width: Int, height: Int, pointX: Int, pointY: Int, guiLeft: Int, guiTop: Int): Boolean = {
     val pointXX = pointX - guiLeft
@@ -133,7 +134,8 @@ class GuiTentSleeping(player: EntityPlayer, tile: IInventory) extends GuiScreen 
     drawTexturedModalRect(guiLeft, guiTop, 0, 116, 97, 30)
     if (isPointInRegion(5, 5, 20, 20, mouseX, mouseY, guiLeft, guiTop)) {
       drawTexturedModalRect(guiLeft + 5, guiTop + 5, 75, 0, 20, 20)
-      if (Mouse.isButtonDown(0) && canClick) mc.player.openGui(RMMod, Objs.guiTent.get.get, tent.getWorld, tent.getPos.getX, tent.getPos.getY, tent.getPos.getZ)
+      if (Mouse.isButtonDown(0) && canClick)
+        GuiSender.openGui(Guis.TENT, mc.player, tent.getPos)
       if (!Mouse.isButtonDown(0)) canClick = true
     } else canClick = false
     super.drawScreen(mouseX, mouseY, partitialTicks)
@@ -178,7 +180,8 @@ class GuiTentLanterns(player: EntityPlayer, inv: IInventory) extends GuiContaine
     drawTexturedModalRect(guiLeft, guiTop + 104, 80, 165, xSize, 91)
     if (isPointInRegion(63 + 15, 8, 20, 20, mouseX, mouseY)) {
       drawTexturedModalRect(guiLeft + 63 + 15, guiTop + 8, 75, 0, 20, 20)
-      if (Mouse.isButtonDown(0) && canClick) mc.player.openGui(RMMod, Objs.guiTent.get.get, tent.getWorld, tent.getPos.getX, tent.getPos.getY, tent.getPos.getZ)
+      if (Mouse.isButtonDown(0) && canClick)
+        GuiSender.openGui(Guis.TENT, mc.player, tent.getPos)
       if (!Mouse.isButtonDown(0)) canClick = true
     } else canClick = false
     val scale = tent.time.getScaledNumber(1500, 22).toInt
@@ -231,7 +234,8 @@ class GuiTentChests(player: EntityPlayer, inv: IInventory) extends GuiContainerS
     //add this one as a button
     if (isPointInRegion(15, 8, 20, 20, mouseX, mouseY)) {
       drawTexturedModalRect(guiLeft + 15, guiTop + 8, 214, 0, 20, 20)
-      if (Mouse.isButtonDown(0) && canClick) mc.player.openGui(RMMod, Objs.guiTent.get.get, tent.getWorld, tent.getPos.getX, tent.getPos.getY, tent.getPos.getZ)
+      if (Mouse.isButtonDown(0) && canClick)
+        GuiSender.openGui(Guis.TENT, mc.player, tent.getPos)
     } else canClick = false
 
     //do with mouse drag click function

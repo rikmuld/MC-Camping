@@ -3,10 +3,10 @@ package com.rikmuld.camping.world
 import java.util.Random
 
 import com.rikmuld.camping.CampingMod
-import com.rikmuld.camping.objs.{BlockDefinitions, Objs}
 import com.rikmuld.camping.objs.block.Hemp
 import com.rikmuld.camping.objs.entity.{Camper, Campsite}
 import com.rikmuld.camping.objs.tile.{TileEntityTent, TileTent}
+import com.rikmuld.camping.objs.{BlockDefinitions, Objs}
 import com.rikmuld.corerm.objs.blocks.WithInstable
 import com.rikmuld.corerm.utils.WorldBlock.{BlockData, IMBlockData}
 import net.minecraft.block.material.Material

@@ -1,8 +1,8 @@
 package com.rikmuld.camping.render.objs
 
 import com.rikmuld.camping.Lib._
-import com.rikmuld.camping.objs.tile.{TileTent, TileTrap}
-import com.rikmuld.camping.render.models.{ModelTrapClosed, ModelTrapOpen}
+import com.rikmuld.camping.objs.tile.TileTrap
+import com.rikmuld.camping.render.models.TrapModel
 import net.minecraft.client.Minecraft
 import net.minecraft.client.renderer.ItemRenderer
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType
@@ -11,8 +11,9 @@ import net.minecraft.util.ResourceLocation
 import org.lwjgl.opengl.{GL11, GL12}
 
 object TrapRender {
-  final val OPEN = new ModelTrapOpen
-  final val CLOSED = new ModelTrapClosed
+  final val OPEN = TrapModel.MODEL_TRAP_OPEN
+  final val CLOSED = TrapModel.MODEL_TRAP_CLOSED
+
   final val TEX_ALL = new ResourceLocation(TextureInfo.MODEL_TRAP)
 }
 
@@ -25,8 +26,8 @@ class TrapRender extends TileEntitySpecialRenderer[TileTrap] {
     GL11.glScalef(1.0F, -1F, -1F)
     GL11.glScalef(0.0625F, 0.0625F, 0.0625F)
     bindTexture(TrapRender.TEX_ALL)
-    if (tile.open) TrapRender.OPEN.renderAll
-    else TrapRender.CLOSED.renderAll
+    if (tile.open) TrapRender.OPEN.renderAll(1)
+    else TrapRender.CLOSED.renderAll(1)
     GL11.glPopMatrix()
     if (Option(tile.getStackInSlot(0)).isDefined) {
       GL11.glPushMatrix()

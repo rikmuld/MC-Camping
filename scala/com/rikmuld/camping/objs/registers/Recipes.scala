@@ -5,6 +5,7 @@ import com.rikmuld.corerm.utils.CoreUtils._
 import net.minecraftforge.fml.common.registry.GameRegistry
 
 object ModRecipes {
-  def register():Unit =
+  def register(): Unit = {
     GameRegistry.addSmelting(nwsk(venisonRaw), nwsk(venisonCooked), 3)
+  }
 }

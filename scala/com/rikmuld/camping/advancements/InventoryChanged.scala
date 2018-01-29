@@ -3,13 +3,13 @@ package com.rikmuld.camping.advancements
 import com.google.gson.{JsonDeserializationContext, JsonObject}
 import com.rikmuld.camping.Lib.AdvancementInfo._
 import com.rikmuld.camping.inventory.camping.InventoryCamping
-import com.rikmuld.corerm.advancements.{AdvancementTrigger, TriggerInstance}
+import com.rikmuld.corerm.advancements.triggers.TriggerSimple
 import net.minecraft.advancements.critereon.ItemPredicate
 import net.minecraft.entity.player.EntityPlayerMP
 import net.minecraft.util.ResourceLocation
 
 object InventoryChanged {
-  class Trigger extends AdvancementTrigger[InventoryCamping, Instance] {
+  class Trigger extends TriggerSimple.Trigger[InventoryCamping, Instance] {
     protected val id: ResourceLocation =
       INVENTORY_CHANGED
 
@@ -24,7 +24,7 @@ object InventoryChanged {
 
   protected class Instance(items: Option[Seq[ItemPredicate]],
                            full: Option[Boolean],
-                           empty: Option[Boolean]) extends TriggerInstance[InventoryCamping](INVENTORY_CHANGED) {
+                           empty: Option[Boolean]) extends TriggerSimple.Instance[InventoryCamping](INVENTORY_CHANGED) {
 
     def test(player: EntityPlayerMP, inventory: InventoryCamping): Boolean =
       items.fold(true)(_.forall(testItem => inventory.getInventory.exists(item => testItem.test(item)))) &&

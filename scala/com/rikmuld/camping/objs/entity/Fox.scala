@@ -8,10 +8,10 @@ import com.rikmuld.camping.objs.Objs._
 import com.rikmuld.camping.render.models.FoxModel
 import com.rikmuld.corerm.utils.CoreUtils._
 import net.minecraft.client.renderer.entity.{RenderLiving, RenderManager}
-import net.minecraft.entity.{Entity, EntityAgeable, EntityLivingBase, SharedMonsterAttributes}
 import net.minecraft.entity.ai._
 import net.minecraft.entity.passive.{EntityAnimal, EntityChicken}
 import net.minecraft.entity.player.EntityPlayer
+import net.minecraft.entity.{Entity, EntityAgeable, EntityLivingBase, SharedMonsterAttributes}
 import net.minecraft.init.Items
 import net.minecraft.item.ItemStack
 import net.minecraft.pathfinding.PathNavigateGround

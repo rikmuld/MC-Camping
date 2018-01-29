@@ -1,42 +1,45 @@
 package com.rikmuld.camping.objs.registers
 
 import com.rikmuld.camping.ConfigGUI
+import com.rikmuld.camping.Lib.Guis._
 import com.rikmuld.camping.inventory.camping.{ContainerCamping, GuiCamping}
 import com.rikmuld.camping.inventory.objs._
-import com.rikmuld.camping.objs.Objs._
-import com.rikmuld.corerm.RMMod
-import com.rikmuld.corerm.utils.ModRegister
-import net.minecraftforge.fml.relauncher.{Side, SideOnly}
+import com.rikmuld.corerm.Registry
+import com.rikmuld.corerm.gui.{ContainerWrapper, ScreenWrapper}
+import net.minecraftforge.fml.relauncher.Side
 
-object ModGuis extends ModRegister{
-  override def registerServer {
-    guiPouch.fill(RMMod.proxy.registerGui(classOf[PouchContainer], null))
-    guiBackpack.fill(RMMod.proxy.registerGui(classOf[BackpackContainer], null))
-    guiRucksack.fill(RMMod.proxy.registerGui(classOf[RucksackContainer], null))
-    guiKit.fill(RMMod.proxy.registerGui(classOf[KitContainer], null))
-    guiCamping.fill(RMMod.proxy.registerGui(classOf[ContainerCamping], null))
-    guiTrap.fill(RMMod.proxy.registerGui(classOf[ContainerTrap], null))
-    guiCampfireCook.fill(RMMod.proxy.registerGui(classOf[ContainerCampfireCook], null))
-    guiTent.fill(RMMod.proxy.registerGui(classOf[ContainerEmpty], null))
-    guiTentSleep.fill(RMMod.proxy.registerGui(null, null))
-    guiTentChests.fill(RMMod.proxy.registerGui(classOf[ContainerTentChests], null))
-    guiTentLantern.fill(RMMod.proxy.registerGui(classOf[ContainerTentLanterns], null))
-    guiConfig.fill(RMMod.proxy.registerGui(null, null))
+object ModGuis {
+  def register(side: Side): Unit = {
+    registerScreens(side)
+    registerContainers()
   }
-  
-  @SideOnly(Side.CLIENT)
-  override def registerClient {
-    guiPouch.fill(RMMod.proxy.registerGui(classOf[PouchContainer], classOf[PouchGui]))
-    guiBackpack.fill(RMMod.proxy.registerGui(classOf[BackpackContainer], classOf[BackpackGui]))
-    guiRucksack.fill(RMMod.proxy.registerGui(classOf[RucksackContainer], classOf[RucksackGui]))
-    guiKit.fill(RMMod.proxy.registerGui(classOf[KitContainer], classOf[KitGui]))
-    guiCamping.fill(RMMod.proxy.registerGui(classOf[ContainerCamping], classOf[GuiCamping]))
-    guiTrap.fill(RMMod.proxy.registerGui(classOf[ContainerTrap], classOf[GuiTrap]))
-    guiCampfireCook.fill(RMMod.proxy.registerGui(classOf[ContainerCampfireCook], classOf[GuiCampfireCook]))
-    guiTent.fill(RMMod.proxy.registerGui(classOf[ContainerEmpty], classOf[GuiTent]))
-    guiTentSleep.fill(RMMod.proxy.registerGui(null, classOf[GuiTentSleeping]))
-    guiTentChests.fill(RMMod.proxy.registerGui(classOf[ContainerTentChests], classOf[GuiTentChests]))
-    guiTentLantern.fill(RMMod.proxy.registerGui(classOf[ContainerTentLanterns], classOf[GuiTentLanterns]))
-    guiConfig.fill(RMMod.proxy.registerGui(null, classOf[ConfigGUI]))
-  }
+
+  def registerScreens(side: Side): Unit =
+    Registry.screenRegistry.registerAll(
+      ScreenWrapper.create(side, classOf[PouchGui], POUCH),
+      ScreenWrapper.create(side, classOf[BackpackGui], BACKPACK),
+      ScreenWrapper.create(side, classOf[RucksackGui], RUCKSACK),
+      ScreenWrapper.create(side, classOf[GuiCampfireCook], CAMPFIRE_COOK),
+      ScreenWrapper.create(side, classOf[GuiTent], TENT),
+      ScreenWrapper.create(side, classOf[GuiTentChests], TENT_CHESTS),
+      ScreenWrapper.create(side, classOf[GuiTentLanterns], TENT_LANTERNS),
+      ScreenWrapper.create(side, classOf[GuiTentSleeping], TENT_SLEEP),
+      ScreenWrapper.create(side, classOf[GuiCamping], CAMPING),
+      ScreenWrapper.create(side, classOf[KitGui], KIT),
+      ScreenWrapper.create(side, classOf[GuiTrap], TRAP),
+      ScreenWrapper.create(side, classOf[ConfigGUI], CONFIG)
+    )
+
+  def registerContainers(): Unit =
+    Registry.containerRegistry.registerAll(
+      ContainerWrapper.create(classOf[PouchContainer], POUCH),
+      ContainerWrapper.create(classOf[BackpackContainer], BACKPACK),
+      ContainerWrapper.create(classOf[RucksackContainer], RUCKSACK),
+      ContainerWrapper.create(classOf[ContainerCampfireCook], CAMPFIRE_COOK),
+      ContainerWrapper.create(classOf[ContainerTentChests], TENT_CHESTS),
+      ContainerWrapper.create(classOf[ContainerTentLanterns], TENT_LANTERNS),
+      ContainerWrapper.create(classOf[ContainerCamping], CAMPING),
+      ContainerWrapper.create(classOf[KitContainer], KIT),
+      ContainerWrapper.create(classOf[ContainerTrap], TRAP)
+    )
 }

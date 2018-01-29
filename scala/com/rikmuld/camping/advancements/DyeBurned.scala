@@ -3,12 +3,12 @@ package com.rikmuld.camping.advancements
 import com.google.gson.{JsonDeserializationContext, JsonObject}
 import com.rikmuld.camping.Lib.AdvancementInfo.DYE_BURNED
 import com.rikmuld.camping.Lib.NBTInfo
-import com.rikmuld.corerm.advancements.{AdvancementTrigger, TriggerInstance}
+import com.rikmuld.corerm.advancements.triggers.TriggerSimple
 import net.minecraft.entity.player.EntityPlayerMP
 import net.minecraft.util.ResourceLocation
 
 object DyeBurned {
-  class Trigger extends AdvancementTrigger[Int, Instance] {
+  class Trigger extends TriggerSimple.Trigger[Int, Instance] {
     protected val id: ResourceLocation =
       DYE_BURNED
 
@@ -20,7 +20,7 @@ object DyeBurned {
     }
   }
 
-  protected class Instance(damage: Option[Int], total: Option[Int]) extends TriggerInstance[Int](DYE_BURNED) {
+  protected class Instance(damage: Option[Int], total: Option[Int]) extends TriggerSimple.Instance[Int](DYE_BURNED) {
     def test(player: EntityPlayerMP, burnedDamage: Int): Boolean = {
       val dataTag = player.getEntityData.getCompoundTag(NBTInfo.ACHIEVEMENTS)
       var burnedArray = dataTag.getIntArray("dye")
