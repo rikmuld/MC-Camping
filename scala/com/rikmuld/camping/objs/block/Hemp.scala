@@ -3,11 +3,9 @@ package com.rikmuld.camping.objs.block
 import java.util.Random
 
 import com.rikmuld.camping.CampingMod._
+import com.rikmuld.camping.misc.WorldBlock.{BlockData, _}
 import com.rikmuld.camping.objs.BlockDefinitions
 import com.rikmuld.camping.objs.block.Hemp._
-import com.rikmuld.corerm.objs.ObjInfo
-import com.rikmuld.corerm.objs.blocks._
-import com.rikmuld.corerm.utils.WorldBlock._
 import net.minecraft.block.material.Material
 import net.minecraft.block.properties.PropertyInteger
 import net.minecraft.block.state.IBlockState
@@ -31,8 +29,11 @@ class Hemp(modId:String, info:ObjInfo) extends RMBlock(modId, info) with IPlanta
 
   override def getRenderType(state:IBlockState) = EnumBlockRenderType.MODEL
   override def getProps = Array(new RMIntProp(AGE, 3, 0))
-  override def canPlaceBlockAt(world: World, pos:BlockPos): Boolean = canStay((world, pos))
-  override def canStay(bd:BlockData): Boolean = ((bd.world, bd.pos.down).block==this && bd.down.state.getValue(AGE) == BlockDefinitions.Hemp.GROWN_BIG_BOTTOM)||bd.down.block.canSustainPlant(bd.state, bd.world, bd.pos.down, EnumFacing.UP, this)
+  override def canPlaceBlockAt(world: World, pos:BlockPos): Boolean = canStay(world, pos)
+  override def canStay(world: World, pos: BlockPos): Boolean = {
+    val bd = (world, pos)
+    ((bd.world, bd.pos.down).block == this && bd.down.state.getValue(AGE) == BlockDefinitions.Hemp.GROWN_BIG_BOTTOM) || bd.down.block.canSustainPlant(bd.state, bd.world, bd.pos.down, EnumFacing.UP, this)
+  }
   override def getCollisionBoundingBox(state:IBlockState, world: IBlockAccess, pos:BlockPos): AxisAlignedBB = new AxisAlignedBB(0, 0, 0, 0, 0, 0)
   override def getItemDropped(state: IBlockState, random: Random, pInt: Int): Item = Item.getItemFromBlock(this)
   @SideOnly(Side.CLIENT)
@@ -71,13 +72,12 @@ class Hemp(modId:String, info:ObjInfo) extends RMBlock(modId, info) with IPlanta
     super.breakBlock(world, pos, state)
   }
   def getGrowthRate(bd:BlockData): Float = {
-    var water = if (bd.world.getBlockState(bd.relPos(1, -1, 0)).getBlock.getMaterial(bd.state) == Material.WATER) 1 else 0
-    water += (if (bd.world.getBlockState(bd.relPos(-1, -1, 0)).getBlock.getMaterial(bd.state) == Material.WATER) 1 else 0)
-    water += (if (bd.world.getBlockState(bd.relPos(0, -1, 1)).getBlock.getMaterial(bd.state) == Material.WATER) 1 else 0)
-    water += (if (bd.world.getBlockState(bd.relPos(0, -1, -1)).getBlock.getMaterial(bd.state) == Material.WATER) 1 else 0)
-    var light = Math.max(1, ((bd.world.getLightBrightness(bd.pos.up) * 15) - 9) / 3f)    
-    var ground = if (bd.world.getBlockState(bd.pos.down).getBlock == Blocks.GRASS || 
-        bd.world.getBlockState(bd.pos.down).getBlock == Blocks.DIRT) 2 else 1
+    var water = if (bd.rel(1, -1, 0).material == Material.WATER) 1 else 0
+    water += (if (bd.rel(-1, -1, 0).material == Material.WATER) 1 else 0)
+    water += (if (bd.rel(0, -1, 1).material == Material.WATER) 1 else 0)
+    water += (if (bd.rel(0, -1, -1).material == Material.WATER) 1 else 0)
+    var light = Math.max(1, ((bd.world.getLightBrightness(bd.up.pos) * 15) - 9) / 3f)
+    var ground = if (bd.down.block == Blocks.GRASS || bd.down.block == Blocks.DIRT) 2 else 1
     ground * water * light * config.hempSpeed
   }
   override def getDrops(world: IBlockAccess, pos:BlockPos, state:IBlockState, fortune: Int): java.util.List[ItemStack] = if (getMetaFromState(state) >= BlockDefinitions.Hemp.GROWN_SMALL) super.getDrops(world, pos, state, fortune) else List()
