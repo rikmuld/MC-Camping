@@ -7,16 +7,15 @@ import com.rikmuld.camping.Lib._
 import com.rikmuld.camping.Utils._
 import com.rikmuld.camping.inventory.camping.InventoryCamping
 import com.rikmuld.camping.inventory.gui.GuiMapHUD
+import com.rikmuld.camping.misc.{KeyData, MapData, NBTPlayer}
 import com.rikmuld.camping.objs.BlockDefinitions._
 import com.rikmuld.camping.objs.ItemDefinitions._
-import com.rikmuld.camping.objs.Objs
-import com.rikmuld.camping.objs.block.{Hemp, Tent}
-import com.rikmuld.camping.objs.misc.{KeyData, MapData, NBTPlayer, OpenGui}
-import com.rikmuld.camping.objs.tile.{Roaster, TileTrap}
-import com.rikmuld.corerm.gui.GuiSender
+//import com.rikmuld.camping.objs.blocks.{Hemp, Tent}
+//import com.rikmuld.camping.objs.misc.{MapData, NBTPlayer}
+//import com.rikmuld.camping.tileentity.{Roaster, TileTrap}
+import com.rikmuld.corerm.gui.GuiHelper
 import com.rikmuld.corerm.network.PacketSender
-import com.rikmuld.corerm.utils.CoreUtils._
-import com.rikmuld.corerm.utils.WorldBlock._
+import com.rikmuld.corerm.utils.PlayerUtils
 import net.minecraft.client.Minecraft
 import net.minecraft.client.gui.GuiChat
 import net.minecraft.client.gui.inventory.GuiInventory
@@ -39,6 +38,8 @@ import net.minecraftforge.fml.common.gameevent.InputEvent.KeyInputEvent
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.{ItemCraftedEvent, PlayerLoggedInEvent, PlayerRespawnEvent}
 import net.minecraftforge.fml.common.gameevent.TickEvent.{Phase, PlayerTickEvent}
 import net.minecraftforge.fml.relauncher.{Side, SideOnly}
+import com.rikmuld.camping.misc.WorldBlock._
+import com.rikmuld.camping.registers.Objs
 
 import scala.collection.JavaConversions._
 
@@ -49,13 +50,13 @@ class EventsS {
 
   @SubscribeEvent
   def onBoneMealUsed(event: BonemealEvent) {
-    if (event.getBlock.getBlock == Objs.hemp) {
-      event.setResult(
-          if (event.getBlock.getBlock.asInstanceOf[Hemp].grow((event.getWorld, event.getPos))) 
-            Event.Result.ALLOW 
-          else Event.Result.DENY
-          )
-    }
+//    if (event.getBlock.getBlock == Objs.hemp) {
+//      event.setResult(
+//          if (event.getBlock.getBlock.asInstanceOf[Hemp].grow((event.getWorld, event.getPos)))
+//            Event.Result.ALLOW
+//          else Event.Result.DENY
+//          )
+//    }
   }
   @SubscribeEvent
   def onConfigChanged(eventArgs: ConfigChangedEvent.OnConfigChangedEvent) {
@@ -93,42 +94,44 @@ class EventsS {
       event.crafting.setTagCompound(data)
     }
 
-    for (slot <- 0 until event.craftMatrix.getSizeInventory if Option(event.craftMatrix.getStackInSlot(slot)).isDefined) {
-      val stackInSlot = event.craftMatrix.getStackInSlot(slot)
-      val itemInSlot = Option(stackInSlot.getItem)
-      if (itemInSlot.isDefined && itemInSlot.get.eq(Objs.knife)) {
-        val returnStack = Option(stackInSlot.addDamage(1))
-        returnStack map (stack => stack.setCount(stack.getCount + 1))
-        event.craftMatrix.setInventorySlotContents(slot, returnStack.getOrElse(ItemStack.EMPTY))
-      } else if (itemInSlot.isDefined && itemInSlot.get == Items.BOWL && (event.crafting.getItem() == Objs.parts) && (event.crafting.getItemDamage == Parts.MARSHMALLOW)) {
-        val returnStack = new ItemStack(Items.BOWL, stackInSlot.getCount + 1, 0)
-        event.craftMatrix.setInventorySlotContents(slot, returnStack)
-      } else if (itemInSlot.isDefined && itemInSlot.get == Items.POTIONITEM && (event.crafting.getItem() == Objs.parts) && (event.crafting.getItemDamage == Parts.MARSHMALLOW)) {
-        if (!event.player.inventory.addItemStackToInventory(new ItemStack(Items.GLASS_BOTTLE))) 
-          event.player.dropItem(new ItemStack(Items.GLASS_BOTTLE), false)
-      }
-      if ((event.crafting.getItem() == Item.getItemFromBlock(Objs.lantern)) && (event.crafting.getItemDamage == Lantern.ON)) {
-        event.crafting.setTagCompound(new NBTTagCompound())
-        event.crafting.getTagCompound.setInteger("time", 1500)
-      }
-    }
+//    for (slot <- 0 until event.craftMatrix.getSizeInventory if Option(event.craftMatrix.getStackInSlot(slot)).isDefined) {
+//      val stackInSlot = event.craftMatrix.getStackInSlot(slot)
+//      val itemInSlot = Option(stackInSlot.getItem)
+//      if (itemInSlot.isDefined && itemInSlot.get.eq(Objs.knife)) {
+//        stackInSlot.damageItem(1, event.player)
+//        println(stackInSlot.isItemEnchantable)
+//        val returnStack = Option(stackInSlot)
+//        returnStack map (stack => stack.setCount(stack.getCount + 1))
+//        event.craftMatrix.setInventorySlotContents(slot, returnStack.getOrElse(ItemStack.EMPTY))
+//      } else if (itemInSlot.isDefined && itemInSlot.get == Items.BOWL && (event.crafting.getItem() == Objs.parts) && (event.crafting.getItemDamage == Parts.MARSHMALLOW)) {
+//        val returnStack = new ItemStack(Items.BOWL, stackInSlot.getCount + 1, 0)
+//        event.craftMatrix.setInventorySlotContents(slot, returnStack)
+//      } else if (itemInSlot.isDefined && itemInSlot.get == Items.POTIONITEM && (event.crafting.getItem() == Objs.parts) && (event.crafting.getItemDamage == Parts.MARSHMALLOW)) {
+//        if (!event.player.inventory.addItemStackToInventory(new ItemStack(Items.GLASS_BOTTLE)))
+//          event.player.dropItem(new ItemStack(Items.GLASS_BOTTLE), false)
+//      }
+//      if ((event.crafting.getItem() == Item.getItemFromBlock(Objs.lantern)) && (event.crafting.getItemDamage == Lantern.ON)) {
+//        event.crafting.setTagCompound(new NBTTagCompound())
+//        event.crafting.getTagCompound.setInteger("time", 1500)
+//      }
+//    }
   }
   def keyPressedServer(player: EntityPlayer, id: Int) {
     if(id==KeyInfo.INVENTORY_KEY)
-      GuiSender.openGui(Guis.CAMPING, player)
+      GuiHelper.openGui(Guis.CAMPING, player)
   }
   @SubscribeEvent
   def onPlayerTick(event: PlayerTickEvent) {
     val player = event.player
     val world = player.world
-    Objs.tent.asInstanceOf[Tent].facingFlag = player.facing.getHorizontalIndex
+    //Objs.tent.asInstanceOf[Tent].facingFlag = player.getHorizontalFacing.getHorizontalIndex
     
-    if (event.phase.equals(Phase.START)) {
-      if (player.getEntityData().getInteger("isInTrap") <= 0) {
-        player.getEntityData().setInteger("isInTrap", player.getEntityData().getInteger("isInTrap") - 1)
-      } else if (Option(player.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getModifier(TileTrap.UUIDSpeedTrap)).isDefined)
-        player.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).removeModifier(player.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getModifier(TileTrap.UUIDSpeedTrap))
-    }
+//    if (event.phase.equals(Phase.START)) {
+//      if (player.getEntityData().getInteger("isInTrap") <= 0) {
+//        player.getEntityData().setInteger("isInTrap", player.getEntityData().getInteger("isInTrap") - 1)
+//      } else if (Option(player.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getModifier(TileTrap.UUIDSpeedTrap)).isDefined)
+//        player.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).removeModifier(player.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getModifier(TileTrap.UUIDSpeedTrap))
+//    }
     if (!world.isRemote && player.hasLantarn()) {
       tickLight += 1
       if (tickLight >= 20) {
@@ -145,37 +148,37 @@ class EventsS {
       PacketSender.sendToPlayer(new MapData(data.scale, data.xCenter, data.zCenter, data.colors), player.asInstanceOf[EntityPlayerMP])
     }
 
-    if (!world.isRemote) {
-      val oldMarsh = marshupdate
-      
-      if(Option(player.inventory.getCurrentItem).isDefined){
-        val mob = Option(player.getMOP)
-        if (mob.isDefined) {
-          val x = mob.get.getBlockPos.getX
-          val y = mob.get.getBlockPos.getY
-          val z = mob.get.getBlockPos.getZ
-          val bd = (player.world, mob.get.getBlockPos)
-          val item = player.inventory.getCurrentItem
-          
-          if(bd.tile.isInstanceOf[Roaster] && (new Vec3d(x + 0.5F, y + 0.5F, z + 0.5F).distanceTo(new Vec3d(player.posX, player.posY, player.posZ)) <= 2.5F)){
-            val roaster = bd.tile.asInstanceOf[Roaster]
-            if(roaster.canRoast(item)){
-              if(marshupdate > roaster.roastTime(item)){
-                val cooked = roaster.roast(player, item).get
-
-                player.inventory.getCurrentItem.setCount(player.inventory.getCurrentItem.getCount - 1)
-
-                if (player.inventory.getCurrentItem.getCount <= 0) player.setHeldItem(player.getActiveHand, ItemStack.EMPTY)
-                if (!player.inventory.addItemStackToInventory(cooked)) player.dropItem(cooked, false)
-                marshupdate = 0
-              } else marshupdate += roaster.roastSpeed(item)
-            } 
-          } 
-        } 
-      }
-      
-      if(marshupdate == oldMarsh)marshupdate = 0
-    }
+//    if (!world.isRemote) {
+//      val oldMarsh = marshupdate
+//
+//      if(Option(player.inventory.getCurrentItem).isDefined){
+//        val mob = Option(PlayerUtils.getMOP(player))
+//        if (mob.isDefined) {
+//          val x = mob.get.getBlockPos.getX
+//          val y = mob.get.getBlockPos.getY
+//          val z = mob.get.getBlockPos.getZ
+//          val bd = (player.world, mob.get.getBlockPos)
+//          val item = player.inventory.getCurrentItem
+//
+//          if(bd.tile.isInstanceOf[Roaster] && (new Vec3d(x + 0.5F, y + 0.5F, z + 0.5F).distanceTo(new Vec3d(player.posX, player.posY, player.posZ)) <= 2.5F)){
+//            val roaster = bd.tile.asInstanceOf[Roaster]
+//            if(roaster.canRoast(item)){
+//              if(marshupdate > roaster.roastTime(item)){
+//                val cooked = roaster.roast(player, item).get
+//
+//                player.inventory.getCurrentItem.setCount(player.inventory.getCurrentItem.getCount - 1)
+//
+//                if (player.inventory.getCurrentItem.getCount <= 0) player.setHeldItem(player.getActiveHand, ItemStack.EMPTY)
+//                if (!player.inventory.addItemStackToInventory(cooked)) player.dropItem(cooked, false)
+//                marshupdate = 0
+//              } else marshupdate += roaster.roastSpeed(item)
+//            }
+//          }
+//        }
+//      }
+//
+//      if(marshupdate == oldMarsh)marshupdate = 0
+//    }
         
     var campNum = 0.0f
     for (i <- 0 until 4 if (player.inventory.armorInventory(i) != null && player.inventory.armorInventory(i).getItem.isInstanceOf[ItemArmor] && player.inventory.armorInventory(i).getItem.asInstanceOf[ItemArmor].getArmorMaterial.equals(Objs.fur))) campNum += 0.25f
@@ -205,7 +208,7 @@ class EventsC {
     if(event.getGui.isInstanceOf[GuiInventory]&&config.alwaysCampingInv){
       if(Minecraft.getMinecraft.player.capabilities.isCreativeMode) return;
       event.setCanceled(true)
-      PacketSender.sendToServer(new OpenGui(Guis.CAMPING))
+      GuiHelper.forceOpenGui(Guis.CAMPING, Minecraft.getMinecraft.player)
     }
   }
 

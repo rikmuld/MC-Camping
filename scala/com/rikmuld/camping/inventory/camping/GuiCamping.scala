@@ -5,7 +5,8 @@ import com.rikmuld.camping.Lib._
 import com.rikmuld.camping.inventory.camping.GuiCamping._
 import com.rikmuld.camping.inventory.camping.InventoryCamping._
 import com.rikmuld.camping.inventory.gui.GuiEffect
-import com.rikmuld.camping.objs.{ItemDefinitions, Objs}
+import com.rikmuld.camping.objs.ItemDefinitions
+import com.rikmuld.camping.registers.Objs
 import com.rikmuld.corerm.gui.gui.{GuiTabbed, Tab}
 import net.minecraft.client.gui.inventory.GuiInventory
 import net.minecraft.client.resources.I18n
@@ -85,19 +86,19 @@ class GuiCamping(var player: EntityPlayer) extends GuiTabbed(player, new Contain
       this.fontRenderer.drawString(I18n.format("container.crafting", new java.lang.Object), 119, 8, 4210752)
 
   def drawPage(tab: Int, mouseX: Int, mouseY: Int): Unit = tab match{
-    case TAB_BACKPACK if hasBackpack =>
-      if(backpackType == ItemDefinitions.Backpack.RUCKSACK)
-        drawTexturedModalRect(guiLeft+29, guiTop+16, 29, 83, 162, 54)
-      else if(backpackType == ItemDefinitions.Backpack.BACKPACK)
-        drawTexturedModalRect(guiLeft + 83, guiTop + 16, 29, 83, 54, 54)
-      else if(backpackType == ItemDefinitions.Backpack.POUCH)
-        drawTexturedModalRect(guiLeft + 83, guiTop + 34, 0, 166, 54, 18)
-    case TAB_CRAFTING =>
-      drawTexturedModalRect(guiLeft+52, guiTop+16, 0, 166, 115, 54)
-    case TAB_ARMOR =>
-      this.mc.getTextureManager.bindTexture(GuiEffect.inventoryTexture)
-      this.drawTexturedModalRect(guiLeft + 29, guiTop+7, 7, 7, 164, 72)
-      GuiInventory.drawEntityOnScreen(guiLeft + 51 + 22, guiTop + 75, 30, guiLeft + 51 + 22 - mouseX, guiTop + 75 - 50 - mouseY, this.mc.player)
+//    case TAB_BACKPACK if hasBackpack =>
+//      if(backpackType == ItemDefinitions.Backpack.RUCKSACK)
+//        drawTexturedModalRect(guiLeft+29, guiTop+16, 29, 83, 162, 54)
+//      else if(backpackType == ItemDefinitions.Backpack.BACKPACK)
+//        drawTexturedModalRect(guiLeft + 83, guiTop + 16, 29, 83, 54, 54)
+//      else if(backpackType == ItemDefinitions.Backpack.POUCH)
+//        drawTexturedModalRect(guiLeft + 83, guiTop + 34, 0, 166, 54, 18)
+//    case TAB_CRAFTING =>
+//      drawTexturedModalRect(guiLeft+52, guiTop+16, 0, 166, 115, 54)
+//    case TAB_ARMOR =>
+//      this.mc.getTextureManager.bindTexture(GuiEffect.inventoryTexture)
+//      this.drawTexturedModalRect(guiLeft + 29, guiTop+7, 7, 7, 164, 72)
+//      GuiInventory.drawEntityOnScreen(guiLeft + 51 + 22, guiTop + 75, 30, guiLeft + 51 + 22 - mouseX, guiTop + 75 - 50 - mouseY, this.mc.player)
     case _ =>
   }
 }

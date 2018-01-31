@@ -3,7 +3,7 @@ package com.rikmuld.camping.inventory.camping
 import com.rikmuld.camping.Lib.TextureInfo
 import com.rikmuld.camping.inventory._
 import com.rikmuld.camping.inventory.camping.InventoryCamping._
-import com.rikmuld.camping.objs.Objs
+import com.rikmuld.camping.registers.Objs
 import com.rikmuld.corerm.gui.container.{ContainerSimple, ContainerTabbed}
 import com.rikmuld.corerm.inventory.InventoryItem
 import net.minecraft.entity.player.EntityPlayer

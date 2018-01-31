@@ -1,8 +1,7 @@
 package com.rikmuld.camping
 
 import com.rikmuld.camping.CampingMod._
-import com.rikmuld.camping.misc.ModRegister
-import com.rikmuld.camping.objs.registers._
+import registers._
 import net.minecraft.block.Block
 import net.minecraft.item.Item
 import net.minecraft.util.{ResourceLocation, SoundEvent}
@@ -16,8 +15,6 @@ import net.minecraftforge.fml.common.{Mod, SidedProxy}
 import net.minecraftforge.fml.relauncher.Side
 import org.lwjgl.input.Keyboard
 
-import scala.collection.mutable.ListBuffer
-
 @Mod.EventBusSubscriber@Mod(modid = MOD_ID, name = MOD_NAME, version = MOD_VERSION, dependencies = MOD_DEPENDENCIES, modLanguage = MOD_LANUAGE, guiFactory = MOD_GUIFACTORY)
 object CampingMod {
   final val MOD_ID = "camping"
@@ -29,8 +26,6 @@ object CampingMod {
   final val MOD_CLIENT_PROXY = "com.rikmuld."+MOD_ID+".ProxyClient"
   final val MOD_GUIFACTORY = "com.rikmuld.camping.GuiFactory"
   final val PACKET_CHANEL = MOD_ID
-  
-  val registers = new ListBuffer[ModRegister]
 
   @SidedProxy(clientSide = MOD_CLIENT_PROXY, serverSide = MOD_SERVER_PROXY)
   var proxy: ProxyServer = _
@@ -42,50 +37,26 @@ object CampingMod {
     config.sync
     proxy.registerEvents
 
-    register(event.getSide, ModEntities, ModRegister.PRE)
+    ModMisc.preRegister()
+
+    if(event.getSide == Side.CLIENT) {
+      ModEntities.registerClient
+      ModMisc.preRegisterClient()
+    }
   }
   @EventHandler
   def Init(event: FMLInitializationEvent) {
-    if(event.getSide == Side.CLIENT) ModBlocks.registerClient()
+    if(event.getSide == Side.CLIENT) {
+      ModMisc.registerClient
+    }
 
-    register(event.getSide, ModMisc, ModRegister.PERI)
-    register(event.getSide, ModEntities, ModRegister.PERI)
-    register(event.getSide, ModTiles, ModRegister.PERI)
-
-    ModGuis.register(event.getSide)
-
-    ModRecipes.register()
+    ModMisc.register
+    ModTiles.register
+    ModEntities.register
   }
   @EventHandler
   def PosInit(event: FMLPostInitializationEvent) {
-    register(event.getSide, ModEntities, ModRegister.POST)
-    register(event.getSide, ModMisc, ModRegister.POST)
-  }
-
-  def register(side:Side, register:ModRegister, phase:Int) {    
-    register.phase=phase
-
-    register.register
-    if(side == Side.CLIENT)register.registerClient
-    if(side == Side.SERVER)register.registerServer    
-  }
-
-  @SubscribeEvent
-  def registerBlock(event: RegistryEvent.Register[Block]): Unit = {
-    ModBlocks.preInit()
-    ModBlocks.createBlocks()
-    ModBlocks.registerBlocks(event)
-  }
-
-  @SubscribeEvent
-  def registerItem(event: RegistryEvent.Register[Item]): Unit ={
-    ModItems.createItems()
-    ModItems.registerItems(event)
-  }
-
-  @SubscribeEvent
-  def registerModels(event: ModelRegistryEvent): Unit ={
-    ModItems.registerModels(event)
+    ModEntities.registerSpawn
   }
 
   @SubscribeEvent

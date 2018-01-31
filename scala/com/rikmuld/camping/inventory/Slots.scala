@@ -1,8 +1,6 @@
 package com.rikmuld.camping.inventory
 
-import com.rikmuld.camping.misc.CookingEquipment
-import com.rikmuld.camping.objs.Objs
-import com.rikmuld.camping.objs.tile.TileCampfireCook
+import com.rikmuld.camping.registers.Objs
 import com.rikmuld.corerm.gui._
 import com.rikmuld.corerm.gui.slots.{SlotChangingInventory, SlotDisable, SlotNot, SlotOnly}
 import net.minecraft.entity.player.EntityPlayer
@@ -27,41 +25,41 @@ class SlotState(inv: IInventory, id: Int, x: Int, y: Int) extends Slot(inv, id, 
     stateY = yFlag - (18 * state)
 }
 
-class SlotCooking(inv: IInventory, id: Int, x: Int, y: Int) extends Slot(inv, id, x, y) {
-  var active: Boolean =
-    false
-
-  var equipment: CookingEquipment =
-    _
-
-  var fire: TileCampfireCook =
-    _
-
-  deActivate()
-
-  def activate(x: Int, y: Int, equipment: CookingEquipment, fire: TileCampfireCook) {
-    active = true
-    this.equipment = equipment
-    this.fire = fire
-    xPos = x
-    yPos = y
-  }
-
-  def deActivate() {
-    active = false
-    equipment = null
-    fire = null
-    xPos = -1000
-    yPos = -1000
-  }
-
-  override def getSlotStackLimit: Int =
-    1
-
-  override def isItemValid(stack: ItemStack): Boolean =
-    if ((equipment != null) && (fire != null)) equipment.canCook(stack)
-    else false
-}
+//class SlotCooking(inv: IInventory, id: Int, x: Int, y: Int) extends Slot(inv, id, x, y) {
+//  var active: Boolean =
+//    false
+//
+//  var equipment: CookingEquipment =
+//    _
+//
+//  var fire: TileCampfireCook =
+//    _
+//
+//  deActivate()
+//
+//  def activate(x: Int, y: Int, equipment: CookingEquipment, fire: TileCampfireCook) {
+//    active = true
+//    this.equipment = equipment
+//    this.fire = fire
+//    xPos = x
+//    yPos = y
+//  }
+//
+//  def deActivate() {
+//    active = false
+//    equipment = null
+//    fire = null
+//    xPos = -1000
+//    yPos = -1000
+//  }
+//
+//  override def getSlotStackLimit: Int =
+//    1
+//
+//  override def isItemValid(stack: ItemStack): Boolean =
+//    if ((equipment != null) && (fire != null)) equipment.canCook(stack)
+//    else false
+//}
 
 class SlotItem(inv: IInventory, index: Int, x: Int, y: Int, item: Item) extends Slot(inv, index, x, y) with SlotOnly {
   override def getAllowedItems: Vector[Item] =

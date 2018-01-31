@@ -1,0 +1,129 @@
+//package com.rikmuld.camping.objs.block
+//
+//import java.util.{ArrayList, Random}
+//
+//import com.rikmuld.camping.CampingMod.proxy
+//import com.rikmuld.camping.objs.Objs
+//import com.rikmuld.camping.tile.{TileCampfire, TileCampfireCook, TileCampfireWood}
+//import com.rikmuld.corerm.objs.{ObjDefinition}
+//import com.rikmuld.corerm.objs.blocks._
+//import com.rikmuld.corerm.tileentity.TileEntitySimple
+//import net.minecraft.block.properties.{PropertyBool, PropertyInteger}
+//import net.minecraft.block.state.IBlockState
+//import net.minecraft.entity.player.{EntityPlayer, EntityPlayerMP}
+//import net.minecraft.init.Items
+//import net.minecraft.item.ItemStack
+//import net.minecraft.util.math.{AxisAlignedBB, BlockPos}
+//import net.minecraft.util.{EnumBlockRenderType, EnumFacing, EnumHand, EnumParticleTypes}
+//import net.minecraft.world.{IBlockAccess, World}
+//import net.minecraftforge.fml.relauncher.{Side, SideOnly}
+//import com.rikmuld.camping.misc.WorldBlock._
+//
+//object Campfire {
+//  val ON = PropertyBool.create("on")
+//  val LIGHT = PropertyInteger.create("light", 0, 15)
+//
+//  def particleAnimation(bd:BlockData, color:Int, random:Random, flame:Boolean){
+//    val motionY = (random.nextFloat() / 40F) + 0.025F
+//    val particleX = ((bd.x + 0.5F) - 0.15F) + (random.nextInt(30) / 100F)
+//    val particleY = bd.y + 0.1F + (random.nextInt(15) / 100F)
+//    val particleZ = ((bd.z + 0.5F) - 0.15F) + (random.nextInt(30) / 100F)
+//    if(flame)proxy.spawnFlame(bd.world, particleX, particleY, particleZ, 0.0F, motionY, 0.0F, color)
+//    bd.world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, particleX, particleY, particleZ, 0.0D, 0.05D, 0.0D)
+//  }
+//}
+//
+//class Campfire(modId:String, info: ObjDefinition) extends RMBlockContainer(modId, info) with WithModel with WithInstable {
+//  override def getRenderType(state:IBlockState) = EnumBlockRenderType.MODEL
+//  override def getBoundingBox(state:IBlockState, source:IBlockAccess, pos:BlockPos): AxisAlignedBB = new AxisAlignedBB(0.125F, 0.0F, 0.125F, 0.875F, 0.125F, 0.875F)
+//  override def createNewTileEntity(world: World, meta: Int): TileEntitySimple = new TileCampfire()
+//  override def onBlockActivated(world: World, pos:BlockPos, state:IBlockState, player: EntityPlayer, hand:EnumHand, side: EnumFacing, xHit: Float, yHit: Float, zHit: Float): Boolean = {
+//    val bd = (world, pos)
+//    val stack = player.getHeldItem(hand)
+//    if(!world.isRemote && stack != null && stack.getItem == Items.DYE && bd.tile.asInstanceOf[TileCampfire].addDye(stack)) {
+//      stack.setCount(stack.getCount - 1)
+//      Objs.dyeBurned.trigger(player.asInstanceOf[EntityPlayerMP], stack.getItemDamage)
+//    }
+//    true
+//  }
+//  @SideOnly(Side.CLIENT)
+//  override def randomDisplayTick(state:IBlockState, world: World, pos:BlockPos, random: Random) {
+//    for (i <- 0 until 3) Campfire.particleAnimation((world, pos), (world, pos).tile.asInstanceOf[TileCampfire].color, random, true)
+//  }
+//}
+//
+//class CampfireCook(modId:String, info:ObjDefinition) extends RMBlockContainer(modId, info) with WithModel with WithInstable with WithProperties {
+//  setDefaultState(getStateFromMeta(0))
+//
+//  override def getRenderType(state:IBlockState) = EnumBlockRenderType.MODEL
+//  override def getBoundingBox(state:IBlockState, source:IBlockAccess, pos:BlockPos): AxisAlignedBB = new AxisAlignedBB(0.125F, 0.0F, 0.125F, 0.875F, 0.125F, 0.875F)
+//  def isOn(world:IBlockAccess, pos:BlockPos):Boolean = {
+//    val state = world.getBlockState(pos)
+//    if(state.getBlock == this) state.getValue(Campfire.ON).asInstanceOf[Boolean]
+//    else false
+//  }
+//  def setOn(world:World, pos:BlockPos, on:Boolean) = (world, pos).setState((world, pos).state.withProperty(Campfire.ON, on.asInstanceOf[java.lang.Boolean]))
+//  override def getProps = Array(new RMBoolProp(Campfire.ON, 0))
+//  override def onBlockActivated(world: World, pos:BlockPos, state:IBlockState, player: EntityPlayer, hand:EnumHand, side: EnumFacing, xHit: Float, yHit: Float, zHit: Float): Boolean = {
+//    val bd = (world, pos)
+//    bd.tile.asInstanceOf[TileCampfireCook].lastPlayer = player
+//    super.onBlockActivated(world, pos, state, player, hand, side, xHit, yHit, zHit)
+//  }
+//  override def createNewTileEntity(world: World, meta: Int): TileEntitySimple = new TileCampfireCook()
+//  override def getLightValue(state:IBlockState, world: IBlockAccess, pos:BlockPos): Int = if(isOn(world, pos)) 15 else 0
+//  @SideOnly(Side.CLIENT)
+//  override def randomDisplayTick(state:IBlockState, world: World, pos:BlockPos, random: Random) {
+//    if ((world, pos).tile.asInstanceOf[TileCampfireCook].fuel > 0) {
+//      for (i <- 0 until 3) Campfire.particleAnimation((world, pos), 16, random, true)
+//    }
+//  }
+//}
+//
+//class CampfireWood(modId:String, info:ObjDefinition) extends Campfire(modId, info) with WithProperties {
+//  setDefaultState(this.getStateFromMeta(0).withProperty(Campfire.LIGHT, 0.asInstanceOf[java.lang.Integer]))
+//
+//  override def getRenderType(state:IBlockState) = EnumBlockRenderType.MODEL
+//  override def getBoundingBox(state:IBlockState, source:IBlockAccess, pos:BlockPos): AxisAlignedBB = new AxisAlignedBB(0.125F, 0.0F, 0.125F, 0.875F, 0.125F, 0.875F)
+//  def getLight(world:IBlockAccess, pos:BlockPos):Int = {
+//    val state = world.getBlockState(pos)
+//    if(state.getBlock == this){
+//      world.getBlockState(pos).getValue(Campfire.LIGHT).asInstanceOf[Integer]
+//    } else 0
+//  }
+//  def setLight(world:World, pos:BlockPos, light:Integer) = (world, pos).setState((world, pos).state.withProperty(Campfire.LIGHT, light))
+//  override def getProps = Array(new RMIntProp(Campfire.LIGHT, 4, 0))
+//  override def getDrops(world: IBlockAccess, pos:BlockPos, state:IBlockState, fortune: Int): ArrayList[ItemStack] = {
+//    val rand = new Random
+//    val stacks = new ArrayList[ItemStack]()
+//
+//    stacks.add(new ItemStack(Items.STICK, rand.nextInt(3)+1))
+//    stacks
+//  }
+//
+//  @SideOnly(Side.CLIENT)
+//  override def randomDisplayTick(state:IBlockState, world: World, pos:BlockPos, random: Random) {
+//    val tile = world.getTileEntity(pos).asInstanceOf[TileCampfireWood]
+//    if(tile.isOn())super.randomDisplayTick(state, world, pos, random)
+//    else {
+//      val lid = tile.getLid
+//      if(lid > 0)for (i <- 0 until (lid/5).toInt + 1) Campfire.particleAnimation((world, pos), (world, pos).tile.asInstanceOf[TileCampfire].color, random, false)
+//    }
+//  }
+//
+//  override def getLightValue(state:IBlockState, world: IBlockAccess, pos:BlockPos): Int = getLight(world, pos)
+//  override def onBlockActivated(world: World, pos:BlockPos, state:IBlockState, player: EntityPlayer, hand:EnumHand, side: EnumFacing, xHit: Float, yHit: Float, zHit: Float): Boolean = {
+//    if(!world.isRemote){
+//      val bd = (world, pos)
+//      val stack = player.getHeldItem(hand)
+//
+//      if(Option(stack).isDefined && stack.getItem == Items.STICK){
+//        val tile = bd.tile.asInstanceOf[TileCampfireWood]
+//        tile.tryLid()
+//      }
+//    }
+//
+//    if(!world.isRemote && (world, pos).tile.asInstanceOf[TileCampfireWood].isOn())super.onBlockActivated(world, pos, state, player, hand, side, xHit, yHit, zHit)
+//    else true
+//  }
+//  override def createNewTileEntity(world: World, meta: Int): TileEntitySimple = new TileCampfireWood()
+//}

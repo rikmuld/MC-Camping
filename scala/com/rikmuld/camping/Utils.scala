@@ -3,9 +3,11 @@ package com.rikmuld.camping
 import java.util.ArrayList
 
 import com.rikmuld.camping.Lib._
+import com.rikmuld.camping.inventory.camping.InventoryCamping
 import com.rikmuld.camping.objs.BlockDefinitions._
-import com.rikmuld.camping.objs.{BlockDefinitions, Objs}
-import com.rikmuld.corerm.utils.CoreUtils._
+import com.rikmuld.camping.objs.BlockDefinitions
+import com.rikmuld.camping.registers.Objs
+import com.rikmuld.corerm.utils.NBTUtils
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.init.Items
 import net.minecraft.item.{Item, ItemStack}
@@ -17,7 +19,7 @@ import scala.collection.JavaConversions._
 
 object Utils {
   implicit class CampingUtils(player: EntityPlayer) {
-    //same as the readitems in inventorytag, generalize
+    //use nbt utils
     def loadCampInvItemsFromNBT(): ArrayList[ItemStack] = {
       val tag = player.getEntityData.getCompoundTag(NBTInfo.INV_CAMPING)
       if (tag == null) return null
@@ -30,6 +32,7 @@ object Utils {
       }
       stacks
     }
+    //use nbt utils
     def loadCampInvSlotNumFromNBT(): ArrayList[Byte] = {
       val tag = player.getEntityData.getCompoundTag(NBTInfo.INV_CAMPING)
       if (tag == null) return null
@@ -43,13 +46,13 @@ object Utils {
     }
     def getLanternDamage(): Int = {
       val stacks = loadCampInvItemsFromNBT()
-      for (stack <- stacks if stack.getItem == Item.getItemFromBlock(Objs.lantern) if stack.getItemDamage == Lantern.ON) {
-        if (!stack.hasTagCompound()) {
-          stack.setTagCompound(new NBTTagCompound())
-          stack.getTagCompound.setInteger("time", 1500)
-        }
-        return stack.getTagCompound.getInteger("time")
-      }
+//      for (stack <- stacks if stack.getItem == Item.getItemFromBlock(Objs.lantern) if stack.getItemDamage == Lantern.ON) {
+//        if (!stack.hasTagCompound()) {
+//          stack.setTagCompound(new NBTTagCompound())
+//          stack.getTagCompound.setInteger("time", 1500)
+//        }
+//        return stack.getTagCompound.getInteger("time")
+//      }
       -1
     }
     def getCurrentMapData(): MapData = {
@@ -59,29 +62,31 @@ object Utils {
       }
       null
     }
-    def hasLantarn(): Boolean = loadCampInvItemsFromNBT().containsStack(new ItemStack(Item.getItemFromBlock(Objs.lantern), 1, BlockDefinitions.Lantern.ON))
-    def hasMap(): Boolean = loadCampInvItemsFromNBT().containsItem(Items.FILLED_MAP)
+    def hasLantarn(): Boolean = loadCampInvItemsFromNBT().exists(stack =>
+      false//stack.isItemEqual(new ItemStack(Item.getItemFromBlock(Objs.lantern), 1, BlockDefinitions.Lantern.ON))
+    )
+    def hasMap(): Boolean = loadCampInvItemsFromNBT().exists(stack => stack.getItem == Items.FILLED_MAP)
     def lanternTick() {
-      val stacks = player.loadCampInvItemsFromNBT();
-      val slots = player.loadCampInvSlotNumFromNBT();
-      val stacks2 = new ArrayList[ItemStack];
+      val data = player.getEntityData.getCompoundTag(NBTInfo.INV_CAMPING)
+      val inv = NBTUtils.readInventory(data)
 
-      for (i <- 0 until 4) {
-        if (slots.contains(i.toByte)) {
-          var stack = stacks.get(slots.indexOf(i.toByte))
-          if ((stack.getItem().equals(Item.getItemFromBlock(Objs.lantern))) && (stack.getItemDamage() == Lantern.ON)) {
-            if (!stack.hasTagCompound()) {
-              stack.setTagCompound(new NBTTagCompound())
-              stack.getTagCompound().setInteger("time", 1500)
-            }
-            if ((stack.getTagCompound().getInteger("time") - 1) > 0) stack.getTagCompound().setInteger("time", stack.getTagCompound().getInteger("time") - 1);
-            else stack = new ItemStack(Objs.lantern, 1, Lantern.OFF)
-          }
-          stacks2.add(stack)
-        } else stacks2.add(null)
-      }
-
-      player.getEntityData().getCompoundTag(NBTInfo.INV_CAMPING).setTag("Items", stacks2.getNBT())
+//      inv.get(InventoryCamping.SLOT_LANTERN.toByte).foreach { lantern =>
+//        if (lantern.getItemDamage == Lantern.ON) {
+//          val time =
+//            if (lantern.hasTagCompound) lantern.getTagCompound.getInteger("time")
+//            else 1500
+//
+//          NBTUtils.writeInventory(data, inv.updated(InventoryCamping.SLOT_LANTERN.toByte,
+//            if (time - 1 <= 0) new ItemStack(Objs.lantern, 1, Lantern.OFF)
+//            else {
+//              lantern.getTagCompound.setInteger("time", time - 1)
+//              lantern
+//            }
+//          ))
+//
+//          player.getEntityData.setTag(NBTInfo.INV_CAMPING, data)
+//        }
+//      }
     }
   }
 }

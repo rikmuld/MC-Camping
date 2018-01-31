@@ -2,9 +2,9 @@ package com.rikmuld.camping.inventory.camping
 
 import com.rikmuld.camping.Lib.NBTInfo
 import com.rikmuld.camping.inventory.camping.InventoryCamping._
-import com.rikmuld.camping.objs.Objs
+import com.rikmuld.camping.registers.Objs
 import com.rikmuld.corerm.inventory.{InventoryItem, InventoryPlayer}
-import com.rikmuld.corerm.utils.NBTUtil
+import com.rikmuld.corerm.utils.NBTUtils
 import net.minecraft.entity.player.{EntityPlayer, EntityPlayerMP}
 import net.minecraft.inventory.{InventoryCraftResult, InventoryCrafting}
 import net.minecraft.item.ItemStack
@@ -27,7 +27,7 @@ object InventoryCamping {
 
   def dropItems(player: EntityPlayer): Unit =
     if(player.getEntityData.hasKey(NBTInfo.INV_CAMPING))
-      NBTUtil.readInventory(player.getEntityData.getCompoundTag(NBTInfo.INV_CAMPING)).values foreach {
+      NBTUtils.readInventory(player.getEntityData.getCompoundTag(NBTInfo.INV_CAMPING)).values foreach {
         item => player.dropItem(item, true, false)
       }
 }

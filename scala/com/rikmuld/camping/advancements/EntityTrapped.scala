@@ -2,7 +2,7 @@ package com.rikmuld.camping.advancements
 
 import com.google.gson.{JsonDeserializationContext, JsonObject}
 import com.rikmuld.camping.Lib.AdvancementInfo.ENTITY_TRAPPED
-import com.rikmuld.camping.objs.entity.Bear
+import com.rikmuld.camping.entity.Bear
 import com.rikmuld.corerm.advancements.triggers.TriggerSimple
 import net.minecraft.advancements.critereon.EntityPredicate
 import net.minecraft.entity.EntityLivingBase

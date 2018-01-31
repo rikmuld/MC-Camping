@@ -2,7 +2,7 @@ package com.rikmuld.camping.advancements
 
 import com.google.gson.{JsonDeserializationContext, JsonObject}
 import com.rikmuld.camping.Lib.AdvancementInfo._
-import com.rikmuld.camping.objs.entity.Camper
+import com.rikmuld.camping.entity.Camper
 import com.rikmuld.corerm.advancements.triggers.TriggerSimple
 import net.minecraft.advancements.critereon.EntityPredicate
 import net.minecraft.entity.player.EntityPlayerMP
