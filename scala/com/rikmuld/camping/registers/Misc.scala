@@ -1,30 +1,26 @@
 package com.rikmuld.camping.registers
 
-import com.rikmuld.camping.Lib._
-import com.rikmuld.camping.advancements._
-import com.rikmuld.camping.misc._
-import com.rikmuld.camping.objs.ItemDefinitions._
-import Objs._
-import com.rikmuld.camping.objs
-import com.rikmuld.corerm.network.PacketWrapper
-import com.rikmuld.corerm.old.BoundsStructure
 import com.rikmuld.camping.CampingMod._
+import com.rikmuld.camping.Lib._
+import com.rikmuld.camping.misc._
+import com.rikmuld.camping.objs.Definitions._
+import com.rikmuld.camping.objs.Registry
+import com.rikmuld.camping.objs.Registry._
+import com.rikmuld.camping.registers.Objs._
+import com.rikmuld.corerm.old.BoundsStructure
 import net.minecraft.client.settings.KeyBinding
 import net.minecraft.init.Blocks._
 import net.minecraft.init.Items._
 import net.minecraft.init.SoundEvents
-import net.minecraft.item.crafting.FurnaceRecipes
-import net.minecraft.item.{ItemFood, ItemStack}
+import net.minecraft.item.ItemStack
 import net.minecraftforge.common.util.EnumHelper
 import net.minecraftforge.fml.client.registry.ClientRegistry
 import net.minecraftforge.fml.common.registry.GameRegistry
 import net.minecraftforge.fml.relauncher.{Side, SideOnly}
 
-import scala.collection.JavaConversions._
-
 object ModMisc {
     def preRegister(): Unit = {
-      tab = new com.rikmuld.camping.misc.Tab(MOD_ID)
+      tab = new TabCamping(MOD_ID)
       fur = EnumHelper.addArmorMaterial("FUR", "", 20, Array(2, 5, 4, 2), 20, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 0)
     }
 
@@ -33,6 +29,30 @@ object ModMisc {
 //      ClientRegistry.bindTileEntitySpecialRenderer(classOf[TileCampfire], new CampfireRender)
 //      ClientRegistry.bindTileEntitySpecialRenderer(classOf[TileCampfireCook], new CampfireCookRender)
 //      ClientRegistry.bindTileEntitySpecialRenderer(classOf[TileTent], new TentRender)
+    }
+
+    //TODO move this somewhere else
+    def registerCookingEquipment(): Unit = {
+      grill = new Grill()
+      spit = new Spit()
+      pan = new Pan()
+
+      CookingEquipment.registerKitRecipe(spit,
+        new ItemStack(STICK, 2),
+        new ItemStack(Registry.parts, 1, Parts.STICK_IRON)
+      )
+
+      CookingEquipment.registerKitRecipe(grill,
+        new ItemStack(STICK, 4),
+        new ItemStack(Registry.parts, 2, Parts.STICK_IRON),
+        new ItemStack(IRON_BARS)
+      )
+
+      CookingEquipment.registerKitRecipe(pan,
+        new ItemStack(STICK, 3),
+        new ItemStack(Registry.parts, 1, Parts.STICK_IRON),
+        new ItemStack(Registry.parts, 1, Parts.PAN)
+      )
     }
 
     @SideOnly(Side.CLIENT)
@@ -52,10 +72,6 @@ object ModMisc {
       bleedingSource = new DamageSourceBleeding(DamageInfo.BLEEDING)
       bleeding = new PotionBleeding(PotionInfo.BLEEDING)
 
-//      grill = new Grill(new ItemStack(kit, 1, Kit.GRILL))
-//      spit = new Spit(new ItemStack(kit, 1, Kit.SPIT))
-//      pan = new Pan(new ItemStack(kit, 1, Kit.PAN))
-//
 //      val stick = new ItemStack(STICK)
 //      val ironStick = new ItemStack(parts, 1, Parts.STICK_IRON)
 //

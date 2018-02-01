@@ -4,10 +4,11 @@ import com.rikmuld.camping.CampingMod
 import com.rikmuld.camping.CampingMod._
 import com.rikmuld.camping.Lib._
 import com.rikmuld.camping.entity._
-import com.rikmuld.camping.misc.TabData
 import com.rikmuld.camping.world.WorldGenerator
 import net.minecraft.client.renderer.entity.{Render, RenderManager}
 import net.minecraft.entity.{Entity, EnumCreatureType}
+import net.minecraft.init.Items
+import net.minecraft.item.{ItemMonsterPlacer, ItemStack}
 import net.minecraft.util.ResourceLocation
 import net.minecraftforge.common.BiomeDictionary
 import net.minecraftforge.common.BiomeDictionary.Type
@@ -56,7 +57,10 @@ object ModEntities {
       val loc = new ResourceLocation(MOD_ID, name)
 
       EntityRegistry.registerModEntity(loc, entity, name, id, CampingMod, 80, 3, false, colour1, colour2)
-      TabData.eggIds.append(loc)
+
+      val stack = new ItemStack(Items.SPAWN_EGG, 1)
+      ItemMonsterPlacer.applyEntityIdToItemStack(stack, loc)
+      Objs.tab.addToTab(stack)
     } else {
       EntityRegistry.registerModEntity(new ResourceLocation(MOD_ID, name), entity, name, id, CampingMod, 80, 3, false)
     }

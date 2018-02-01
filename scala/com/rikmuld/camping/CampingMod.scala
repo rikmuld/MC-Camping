@@ -1,11 +1,8 @@
 package com.rikmuld.camping
 
 import com.rikmuld.camping.CampingMod._
-import registers._
-import net.minecraft.block.Block
-import net.minecraft.item.Item
+import com.rikmuld.camping.registers._
 import net.minecraft.util.{ResourceLocation, SoundEvent}
-import net.minecraftforge.client.event.ModelRegistryEvent
 import net.minecraftforge.common.config.Configuration
 import net.minecraftforge.event.RegistryEvent
 import net.minecraftforge.fml.common.Mod.EventHandler
@@ -19,9 +16,9 @@ import org.lwjgl.input.Keyboard
 object CampingMod {
   final val MOD_ID = "camping"
   final val MOD_NAME = "The Camping Mod 2"
-  final val MOD_VERSION = "2.3g"
+  final val MOD_VERSION = "2.4.0"
   final val MOD_LANUAGE = "scala"
-  final val MOD_DEPENDENCIES = "required-after:forge@[v13.20.1.2386,);required-after:corerm@[1.2h,)"
+  final val MOD_DEPENDENCIES = "required-after:forge@[v13.20.1.2386,);required-after:corerm@[1.3.0,)"
   final val MOD_SERVER_PROXY = "com.rikmuld."+MOD_ID+".ProxyServer"
   final val MOD_CLIENT_PROXY = "com.rikmuld."+MOD_ID+".ProxyClient"
   final val MOD_GUIFACTORY = "com.rikmuld.camping.GuiFactory"
@@ -136,21 +133,6 @@ object Lib {
     final val CAMPFIRES_MADE = new ResourceLocation(MOD_ID, "campfires_made")
   }
 
-  object Guis {
-    final val POUCH = new ResourceLocation(MOD_ID, "pouch")
-    final val BACKPACK = new ResourceLocation(MOD_ID, "backpack")
-    final val RUCKSACK = new ResourceLocation(MOD_ID, "rucksack")
-    final val KIT = new ResourceLocation(MOD_ID, "kit")
-    final val CAMPING = new ResourceLocation(MOD_ID, "camping")
-    final val TRAP = new ResourceLocation(MOD_ID, "trap")
-    final val CAMPFIRE_COOK = new ResourceLocation(MOD_ID, "campfire_cook")
-    final val TENT = new ResourceLocation(MOD_ID, "tent")
-    final val TENT_SLEEP = new ResourceLocation(MOD_ID, "tent_sleep")
-    final val TENT_CHESTS = new ResourceLocation(MOD_ID, "tent_chests")
-    final val TENT_LANTERNS = new ResourceLocation(MOD_ID, "tent_lanterns")
-    final val CONFIG = new ResourceLocation(MOD_ID, "config")
-  }
-  
   object TextureInfo {
     final val GUI_LOCATION = MOD_ID + ":textures/gui/"
     final val MODEL_LOCATION = MOD_ID + ":textures/models/"
@@ -196,6 +178,21 @@ object Lib {
     final val MODEL_CAMPER_MALE = MODEL_LOCATION + "camper_male.png"
     final val ARMOR_FUR_LEG = MODEL_LOCATION + "armor_fur_legs.png"
     final val ARMOR_FUR_MAIN = MODEL_LOCATION + "armor_fur_main.png"
+  }
+
+  object GuiInfo {
+    final val POUCH = new ResourceLocation(MOD_ID, "pouch")
+    final val BACKPACK = new ResourceLocation(MOD_ID, "backpack")
+    final val RUCKSACK = new ResourceLocation(MOD_ID, "rucksack")
+    final val KIT = new ResourceLocation(MOD_ID, "kit")
+    final val CAMPING = new ResourceLocation(MOD_ID, "camping")
+    final val TRAP = new ResourceLocation(MOD_ID, "trap")
+    final val CAMPFIRE_COOK = new ResourceLocation(MOD_ID, "campfire_cook")
+    final val TENT = new ResourceLocation(MOD_ID, "tent")
+    final val TENT_SLEEP = new ResourceLocation(MOD_ID, "tent_sleep")
+    final val TENT_CHESTS = new ResourceLocation(MOD_ID, "tent_chests")
+    final val TENT_LANTERNS = new ResourceLocation(MOD_ID, "tent_lanterns")
+    final val CONFIG = new ResourceLocation(MOD_ID, "config")
   }
 }
 

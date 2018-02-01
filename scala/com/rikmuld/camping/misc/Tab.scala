@@ -1,29 +1,27 @@
 package com.rikmuld.camping.misc
 
-import com.rikmuld.camping.registers.Objs.knife
+import com.rikmuld.camping.objs.Registry
 import net.minecraft.creativetab.CreativeTabs
-import net.minecraft.init.Items
-import net.minecraft.item.{ItemMonsterPlacer, ItemStack}
-import net.minecraft.util.{NonNullList, ResourceLocation}
+import net.minecraft.item.ItemStack
+import net.minecraft.util.NonNullList
 import net.minecraftforge.fml.relauncher.{Side, SideOnly}
 
-import scala.collection.mutable.ListBuffer
+import scala.collection.mutable
 
-object TabData {
-  val eggIds = new ListBuffer[ResourceLocation]
-}
+class TabCamping(name: String) extends CreativeTabs(name) {
+  private val additionalItems: mutable.ListBuffer[ItemStack] =
+    mutable.ListBuffer()
 
-class Tab(name: String) extends CreativeTabs(name) {
-  override def getIconItemStack: ItemStack = new ItemStack(knife)
-  override def getTabIconItem = getIconItemStack
+  override def getTabIconItem =
+    new ItemStack(Registry.knife)
+
+  def addToTab(stack: ItemStack): Unit =
+    additionalItems.append(stack)
 
   @SideOnly(Side.CLIENT)
   override def displayAllRelevantItems(list: NonNullList[ItemStack]) {
     super.displayAllRelevantItems(list)
-    TabData.eggIds.foreach { id =>
-      val stack = new ItemStack(Items.SPAWN_EGG, 1)
-      ItemMonsterPlacer.applyEntityIdToItemStack(stack, id)
-      list.asInstanceOf[java.util.List[ItemStack]].add(stack)
-    }
+
+    additionalItems foreach list.add
   }
 }

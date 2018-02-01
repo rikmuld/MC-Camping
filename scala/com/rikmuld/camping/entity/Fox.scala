@@ -3,7 +3,6 @@ package com.rikmuld.camping.entity
 import com.google.common.base.Predicate
 import com.rikmuld.camping.CampingMod
 import com.rikmuld.camping.Lib._
-import com.rikmuld.camping.objs.ItemDefinitions._
 import com.rikmuld.camping.registers.Objs._
 import com.rikmuld.camping.render.models.FoxModel
 import net.minecraft.client.renderer.entity.{RenderLiving, RenderManager}
@@ -67,11 +66,11 @@ class Fox(worldIn: World) extends EntityAnimal(worldIn) {
     }
     dropChance = rand.nextInt(3) + rand.nextInt(1 + loot)
     drops = 0
-    while (drops < dropChance) {
-      if (isBurning) entityDropItem(new ItemStack(venisonCooked), 0)
-      else entityDropItem(new ItemStack(venisonRaw), 0)
-      drops += 1
-    }
+//    while (drops < dropChance) {
+//      if (isBurning) entityDropItem(new ItemStack(venisonCooked), 0)
+//      else entityDropItem(new ItemStack(venisonRaw), 0)
+//      drops += 1
+//    }
   }
   override def createChild(entity: EntityAgeable): EntityAgeable = new Fox(this.world)
   override def isBreedingItem(stack: ItemStack): Boolean = stack.getItem() == Items.CHICKEN

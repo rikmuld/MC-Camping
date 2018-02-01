@@ -3,14 +3,10 @@ package com.rikmuld.camping
 import java.util.ArrayList
 
 import com.rikmuld.camping.Lib._
-import com.rikmuld.camping.inventory.camping.InventoryCamping
-import com.rikmuld.camping.objs.BlockDefinitions._
-import com.rikmuld.camping.objs.BlockDefinitions
-import com.rikmuld.camping.registers.Objs
 import com.rikmuld.corerm.utils.NBTUtils
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.init.Items
-import net.minecraft.item.{Item, ItemStack}
+import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.world.storage.MapData
 import net.minecraftforge.common.util.Constants

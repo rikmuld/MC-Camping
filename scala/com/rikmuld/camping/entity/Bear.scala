@@ -2,7 +2,6 @@ package com.rikmuld.camping.entity
 
 import com.rikmuld.camping.CampingMod
 import com.rikmuld.camping.Lib._
-import com.rikmuld.camping.objs.ItemDefinitions._
 import com.rikmuld.camping.registers.Objs._
 import com.rikmuld.camping.render.models.BearModel
 import net.minecraft.client.renderer.entity.{RenderLiving, RenderManager}
@@ -52,11 +51,11 @@ class Bear(worldIn: World) extends EntityAnimal(worldIn) {
     }
     dropChance = rand.nextInt(5) + 1 + rand.nextInt(1 + par2)
     drops = 0
-    while (drops < dropChance) {
-      if (isBurning) entityDropItem(new ItemStack(venisonCooked), 0)
-      else entityDropItem(new ItemStack(venisonRaw), 0)
-      drops += 1
-    }
+//    while (drops < dropChance) {
+//      if (isBurning) entityDropItem(new ItemStack(venisonCooked), 0)
+//      else entityDropItem(new ItemStack(venisonRaw), 0)
+//      drops += 1
+//    }
   }
   override def getCanSpawnHere(): Boolean = (world.getWorldInfo.getDifficulty.getDifficultyId > 0) && super.getCanSpawnHere
   override def getCreatureAttribute(): EnumCreatureAttribute = EnumCreatureAttribute.UNDEFINED

@@ -1,4 +1,10 @@
-//package com.rikmuld.camping.misc
+package com.rikmuld.camping.misc
+
+import com.rikmuld.camping.objs.Definitions
+import com.rikmuld.corerm.utils.StackUtils
+import net.minecraft.item.ItemStack
+
+import scala.collection.mutable
 //
 //import java.util.{ArrayList, HashMap}
 //
@@ -51,6 +57,45 @@
 //
 //  def setSlots()
 //}
+
+abstract class CookingEquipment(kitDamage: Int) {
+  def getKitDamage: Int =
+    kitDamage
+}
+
+object CookingEquipment {
+  val kitRecipes: mutable.Map[Seq[ItemStack], CookingEquipment] =
+    mutable.Map()
+
+  def registerKitRecipe(cooking: CookingEquipment, contents: ItemStack*): Unit =
+    kitRecipes.put(contents, cooking)
+
+  def getFirstKitRecipe(equipment: CookingEquipment): Seq[ItemStack] =
+    kitRecipes.find(_._2 == equipment).get._1
+
+  def getEquipment(items: Seq[ItemStack]): Option[CookingEquipment] =
+    _getEquipment(StackUtils.flatten(items))
+
+  private def _getEquipment(items: Seq[ItemStack]): Option[CookingEquipment] = kitRecipes.find {
+    case(contents, _) =>
+      contents.lengthCompare(items.length) == 0 && items.forall(item =>
+        contents.exists(other => other.isItemEqual(item) && other.getCount == item.getCount )
+      )
+  }.map(_._2)
+}
+
+class Spit extends CookingEquipment(Definitions.Kit.SPIT) {
+
+}
+
+class Grill extends CookingEquipment(Definitions.Kit.GRILL) {
+
+}
+
+class Pan extends CookingEquipment(Definitions.Kit.PAN) {
+
+}
+
 //
 //object CookingEquipment {
 //  var equipment = new HashMap[ItemStack, CookingEquipment]

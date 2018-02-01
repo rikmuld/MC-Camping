@@ -1,15 +1,13 @@
 package com.rikmuld.camping.objs
 
 import com.rikmuld.camping.Lib._
+import com.rikmuld.camping.objs.items.Marshmallow
 import com.rikmuld.camping.registers.Objs._
-import com.rikmuld.corerm.objs.{ObjDefinition, States}
+import com.rikmuld.corerm.objs.ObjDefinition
 import com.rikmuld.corerm.objs.Properties._
-import com.rikmuld.corerm.objs.StateProperty.PropBool
-import net.minecraft.block.SoundType
-import net.minecraft.block.material.Material
 import net.minecraft.inventory.EntityEquipmentSlot
 
-object BlockDefinitions {
+object Definitions {
 //  final val LANTERN_STATES = new States(
 //    PropBool(Lantern.STATE_LIT),
 //    PropBool(Lantern.STATE_HANGING)
@@ -131,125 +129,125 @@ object BlockDefinitions {
   //    PropMaterial(Material.CLOTH)
   //  )
 
-}
-object ItemDefinitions {
   final val KNIFE = new ObjDefinition(
     Tab(tab),
     MaxDamage(200),
     MaxStackSize(1),
     Name("knife")
   )
-//
-//  final val PARTS = new ObjDefinition(
-//    Tab(tab),
-//    Name("parts"),
-//    ItemMetaData("canvas", "stick_iron", "peg", "pan", "ash", "marshmallows", "marshmallow_stick_raw")
-//  )
-//
-//  object Parts {
-//    final val CANVAS = 0
-//    final val STICK_IRON = 1
-//    final val TENT_PEG = 2
-//    final val PAN = 3
-//    final val ASH = 4
-//    final val MARSHMALLOW = 5
-//    final val MARSHMALLOW_STICK = 6
-//  }
-//
-//  final val BACKPACK = new ObjDefinition(
-//    Tab(tab),
-//    MaxStackSize(1),
-//    Name("bag"),
-//    GuiTriggerMeta((0, Guis.POUCH), (1, Guis.BACKPACK), (2, Guis.RUCKSACK)),
-//    ItemMetaData("pouch", "backpack", "rucksack")
-//  )
-//
-//  object Backpack {
-//    final val POUCH = 0
-//    final val BACKPACK = 1
-//    final val RUCKSACK = 2
-//  }
-//
-//  final val KIT = new ObjDefinition(
-//    Tab(tab),
-//    MaxStackSize(1),
-//    Name("kit"),
-//    GuiTrigger(Guis.KIT),
-//    ItemMetaData("kit", "spit", "grill", "pan", "useless")
-//  )
-//
-//  object Kit {
-//    final val EMPTY = 0
-//    final val SPIT = 1
-//    final val GRILL = 2
-//    final val PAN = 3
-//    final val USELESS = 4
-//  }
-//
-//  final val MARSHMALLOW = new ObjDefinition(
-//    Tab(tab),
-//    Name("marshmallow_stick_cooked"),
-//    LikedByWolfs(false),
-//    FoodPoints(3),
-//    Saturation(Saturation.Poor)
-//  )
-//
-//  final val PARTS_ANIMAL = new ObjDefinition(
-//    Tab(tab),
-//    Name("parts_animal"),
-//    ItemMetaData("fur_white", "fur_brown")
-//  )
-//
-//  object PartsAnimal {
-//    final val FUR_WHITE = 0
-//    final val FUR_BROWN = 1
-//  }
-//
-//  final val FUR_BOOT = new ObjDefinition(
-//    Tab(tab),
-//    Name("armor_fur_boots"),
-//    ArmorType(EntityEquipmentSlot.FEET),
-//    PropArmorMaterial(fur),
-//    ArmorTexture(TextureInfo.ARMOR_FUR_MAIN)
-//  )
-//
-//  final val FUR_LEG = new ObjDefinition(
-//    Tab(tab),
-//    Name("armor_fur_leg"),
-//    ArmorType(EntityEquipmentSlot.LEGS),
-//    PropArmorMaterial(fur),
-//    ArmorTexture(TextureInfo.ARMOR_FUR_LEG)
-//  )
-//
-//  final val FUR_CHEST = new ObjDefinition(
-//    Tab(tab),
-//    Name("armor_fur_chest"),
-//    ArmorType(EntityEquipmentSlot.CHEST),
-//    PropArmorMaterial(fur),
-//    ArmorTexture(TextureInfo.ARMOR_FUR_MAIN)
-//  )
-//
-//  final val FUR_HEAD = new ObjDefinition(
-//    Tab(tab),
-//    Name("armor_fur_helm"),
-//    ArmorType(EntityEquipmentSlot.HEAD),
-//    PropArmorMaterial(fur),
-//    ArmorTexture(TextureInfo.ARMOR_FUR_MAIN)
-//  )
-//
-//  final val VENISON_RAW = new ObjDefinition(
-//    Tab(tab),
-//    Name("venison_raw"),
-//    LikedByWolfs(true),
-//    FoodPoints(4),
-//    Saturation(Saturation.Low)
-//  )
-//
-//  final val VENISON_COOKED = new ObjDefinition(
-//    Tab(tab),
-//    Name("venison_cooked"),
-//    LikedByWolfs(true),
-//    FoodPoints(10),
-//    Saturation(Saturation.Good)
-//  )
+
+  final val PARTS = new ObjDefinition(
+    Tab(tab),
+    Name("parts"),
+    ItemMetaData("canvas", "stick_iron", "peg", "pan", "ash", "marshmallows", "marshmallow_stick_raw")
+  )
+
+  object Parts {
+    final val CANVAS = 0
+    final val STICK_IRON = 1
+    final val TENT_PEG = 2
+    final val PAN = 3
+    final val ASH = 4
+    final val MARSHMALLOW = 5
+    final val MARSHMALLOW_STICK = 6
+  }
+
+  final val BACKPACK = new ObjDefinition(
+    Tab(tab),
+    MaxStackSize(1),
+    Name("bag"),
+    GuiTriggerMeta((0, GuiInfo.POUCH), (1, GuiInfo.BACKPACK), (2, GuiInfo.RUCKSACK)),
+    ItemMetaData("pouch", "backpack", "rucksack")
+  )
+
+  object Backpack {
+    final val POUCH = 0
+    final val BACKPACK = 1
+    final val RUCKSACK = 2
+  }
+
+  final val KIT = new ObjDefinition(
+    Tab(tab),
+    MaxStackSize(1),
+    Name("kit"),
+    GuiTrigger(GuiInfo.KIT),
+    ItemMetaData("kit", "spit", "grill", "pan", "useless"),
+    ItemClass(classOf[Kit])
+  )
+
+  object Kit {
+    final val EMPTY = 0
+    final val SPIT = 1
+    final val GRILL = 2
+    final val PAN = 3
+    final val USELESS = 4
+  }
+
+  final val MARSHMALLOW = new ObjDefinition(
+    Tab(tab),
+    Name("marshmallow_stick_cooked"),
+    LikedByWolfs(false),
+    FoodPoints(3),
+    Saturation(Saturation.Poor),
+    ItemClass(classOf[Marshmallow])
+  )
+
+  final val PARTS_ANIMAL = new ObjDefinition(
+    Tab(tab),
+    Name("parts_animal"),
+    ItemMetaData("fur_white", "fur_brown")
+  )
+
+  object PartsAnimal {
+    final val FUR_WHITE = 0
+    final val FUR_BROWN = 1
+  }
+
+  final val FUR_BOOT = new ObjDefinition(
+    Tab(tab),
+    Name("armor_fur_boots"),
+    ArmorType(EntityEquipmentSlot.FEET),
+    PropArmorMaterial(fur),
+    ArmorTexture(TextureInfo.ARMOR_FUR_MAIN)
+  )
+
+  final val FUR_LEG = new ObjDefinition(
+    Tab(tab),
+    Name("armor_fur_leg"),
+    ArmorType(EntityEquipmentSlot.LEGS),
+    PropArmorMaterial(fur),
+    ArmorTexture(TextureInfo.ARMOR_FUR_LEG)
+  )
+
+  final val FUR_CHEST = new ObjDefinition(
+    Tab(tab),
+    Name("armor_fur_chest"),
+    ArmorType(EntityEquipmentSlot.CHEST),
+    PropArmorMaterial(fur),
+    ArmorTexture(TextureInfo.ARMOR_FUR_MAIN)
+  )
+
+  final val FUR_HEAD = new ObjDefinition(
+    Tab(tab),
+    Name("armor_fur_helm"),
+    ArmorType(EntityEquipmentSlot.HEAD),
+    PropArmorMaterial(fur),
+    ArmorTexture(TextureInfo.ARMOR_FUR_MAIN)
+  )
+
+  final val VENISON_RAW = new ObjDefinition(
+    Tab(tab),
+    Name("venison_raw"),
+    LikedByWolfs(true),
+    FoodPoints(4),
+    Saturation(Saturation.Low)
+  )
+
+  final val VENISON_COOKED = new ObjDefinition(
+    Tab(tab),
+    Name("venison_cooked"),
+    LikedByWolfs(true),
+    FoodPoints(10),
+    Saturation(Saturation.Good)
+  )
 }

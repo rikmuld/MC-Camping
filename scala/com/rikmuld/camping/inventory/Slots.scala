@@ -1,6 +1,5 @@
 package com.rikmuld.camping.inventory
 
-import com.rikmuld.camping.registers.Objs
 import com.rikmuld.corerm.gui._
 import com.rikmuld.corerm.gui.slots.{SlotChangingInventory, SlotDisable, SlotNot, SlotOnly}
 import net.minecraft.entity.player.EntityPlayer
@@ -75,7 +74,7 @@ class SlotBackpack(inv: IInventory, index: Int, x:Int, y:Int, active: Boolean) e
   if(!active) disable()
 
   override def getBanItems: Vector[Item] =
-    Vector(Objs.backpack)
+    Vector()//Vector(Objs.backpack)
 }
 
 class SlotTabbedBackpack(index: Int, x:Int, y:Int, val tab: Int) extends
