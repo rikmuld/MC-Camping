@@ -61,10 +61,10 @@ object CoreRegistry {
       new Slept.Trigger,
       new CampfireMade.Trigger,
       new DyeBurned.Trigger,
-      new EntityTrapped.Trigger,
+//      new EntityTrapped.Trigger,
       new FoodRoasted.Trigger,
 //      new InventoryChanged.Trigger,
-      new TentChanged.Trigger,
-      new CamperInteract.Trigger
+      new TentChanged.Trigger
+//      new CamperInteract.Trigger
     )
 }

@@ -12,6 +12,8 @@ import net.minecraftforge.event.RegistryEvent
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 
+//call post item and pre block registry
+
 @EventBusSubscriber
 object Registry {
   var knife,
@@ -52,7 +54,9 @@ object Registry {
 //    (hemp, hempItem) = HEMP.create(MOD_ID)
 //    (campfireWood, campfireWoodItem) = CAMPFIRE_WOOD.create(MOD_ID)
 //    (campfireCook, campfireCookItem) = CAMPFIRE_COOK.create(MOD_ID)
-//    (lantern, lanternItem) = LANTERN.create(MOD_ID)
+    val objLantern = LANTERN.create(MOD_ID)
+    lantern = objLantern._1
+    lanternItem = objLantern._2
 //    (tent, tentItem) = TENT.create(MOD_ID)
 //    (logSeat, logSeatItem) = LOGSEAT.create(MOD_ID)
 //    light = LIGHT.createBlock(MOD_ID)
@@ -64,7 +68,7 @@ object Registry {
 //      hemp,
 //      campfireWood,
 //      campfireCook,
-//      lantern,
+      lantern
 //      tent,
 //      logSeat,
 //      light,
@@ -102,10 +106,10 @@ object Registry {
       furBoot,
       furChest,
       furHead,
-      furLeg
+      furLeg,
 //      campfireWoodItem,
 //      campfireCookItem,
-//      lanternItem,
+      lanternItem
 //      logSeatItem,
 //      trapItem,
 //      tentItem,
@@ -130,7 +134,7 @@ object Registry {
     furLeg.registerRenders()
 //    campfireWoodItem.registerRenders()
 //    campfireCookItem.registerRenders()
-//    lanternItem.registerRenders()
+    lanternItem.registerRenders()
 //    logSeatItem.registerRenders()
 //    trapItem.registerRenders()
 //    tentItem.registerRenders()

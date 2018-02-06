@@ -1,40 +1,46 @@
 package com.rikmuld.camping.objs
 
 import com.rikmuld.camping.Lib._
-import com.rikmuld.camping.objs.items.Marshmallow
+import com.rikmuld.camping.objs.blocks.{Lantern, LanternItem}
+import com.rikmuld.camping.objs.items.{Kit, Marshmallow}
 import com.rikmuld.camping.registers.Objs._
-import com.rikmuld.corerm.objs.ObjDefinition
+import com.rikmuld.camping.tileentity.TileLantern
 import com.rikmuld.corerm.objs.Properties._
+import com.rikmuld.corerm.objs.StateProperty.PropBool
+import com.rikmuld.corerm.objs.{ObjDefinition, States}
+import net.minecraft.block.material.Material
 import net.minecraft.inventory.EntityEquipmentSlot
+import net.minecraft.util.BlockRenderLayer
 
 object Definitions {
-//  final val LANTERN_STATES = new States(
-//    PropBool(Lantern.STATE_LIT),
-//    PropBool(Lantern.STATE_HANGING)
-//  )
-//
-//  final val LANTERN = new ObjDefinition(
-//    Tab(tab),
-//    Name("lantern"),
-//    PropMaterial(Material.GLASS),
-//    ItemMetaData("off", "on"), //when updating to 1.13, replace with ItemMetaFromState
-//    MaxStackSize(1),
-//    Hardness(Hardness.DIRT),
-//    BlockStates(LANTERN_STATES),
-//    Unstable,
-//    NonCube,
-//    ItemClass(classOf[LanternItem]),
-//    BlockClass(classOf[Lantern]),
-//    TileEntityClass(classOf[TileLantern])
-//  )
-//
-//  object Lantern {
-//    final val OFF = 0
-//    final val ON = 1
-//
-//    final val STATE_LIT = "lit"
-//    final val STATE_HANGING = "hanging"
-//  }
+  final val LANTERN_STATES = new States(
+    PropBool(Lantern.STATE_LIT),
+    PropBool(Lantern.STATE_HANGING)
+  )
+
+  final val LANTERN = new ObjDefinition(
+    Tab(tab),
+    Name("lantern"),
+    PropMaterial(Material.GLASS),
+    ItemMetaData("off", "on"),
+    MaxStackSize(1),
+    Hardness(Hardness.DIRT),
+    BlockStates(LANTERN_STATES),
+    Unstable,
+    NonCube,
+    RenderType(BlockRenderLayer.CUTOUT),
+    ItemClass(classOf[LanternItem]),
+    BlockClass(classOf[Lantern]),
+    TileEntityClass(classOf[TileLantern])
+  )
+
+  object Lantern {
+    final val OFF = 0
+    final val ON = 1
+
+    final val STATE_LIT = "lit"
+    final val STATE_HANGING = "hanging"
+  }
 
   //
   //  final val HEMP = new ObjDefinition(
@@ -67,14 +73,28 @@ object Definitions {
   //    ItemBlockClass(classOf[SleepingBagItem])
   //  )
   //
-  //  final val TRAP = new ObjDefinition(
-  //    Tab(tab),
-  //    Name("trap"),
-  //    PropMaterial(Material.IRON),
-  //    Hardness(Hardness.STONE),
-  //    HarvestLevel(0, "pickaxe"),
-  //    GuiTrigger(Guis.TRAP)
-  //  )
+
+  final val TRAP_STATES = new States(
+    PropBool(Trap.STATE_OPEN)
+  )
+
+  final val TRAP = new ObjDefinition(
+    Tab(tab),
+    Name("trap"),
+    PropMaterial(Material.IRON),
+    Hardness(Hardness.STONE),
+    HarvestLevel(0, "pickaxe"),
+    GuiTrigger(GuiInfo.TRAP),
+    Unstable,
+    NonCube,
+    BlockStates(TRAP_STATES)
+  //TileEntityClass(classOf[TileTrap])
+  )
+
+  object Trap {
+    final val STATE_OPEN = "open"
+  }
+
   //
   //  final val CAMPFIRE_WOOD = new ObjDefinition(
   //    Tab(tab),

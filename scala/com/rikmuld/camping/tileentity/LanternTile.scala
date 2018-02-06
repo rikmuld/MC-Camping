@@ -1,39 +1,56 @@
-//package com.rikmuld.camping.tileentity
-//
-//import com.rikmuld.camping.objs.BlockDefinitions
-//import com.rikmuld.camping.objs.blocks.Lantern
-//import com.rikmuld.corerm.tileentity.TileEntitySimple
-//import net.minecraft.nbt.NBTTagCompound
-//import net.minecraft.util.ITickable
-//import com.rikmuld.camping.misc.WorldBlock._
-//
-//class TileLantern extends TileEntitySimple with ITickable {
-//  var burnTime: Int = _
-//  var ticker: Int = _
-//
-//  def bd: BlockData =
-//    (world, pos)
-//  override def readFromNBT(tag: NBTTagCompound) {
-//    burnTime = tag.getInteger("burnTime")
-//    super.readFromNBT(tag)
-//  }
-//  override def update {
-//    if (!world.isRemote) {
-//      ticker += 1
-//      if (ticker >= 10) {
-//        ticker = 0
-//        if (burnTime > 0) burnTime -= 1
-//      }
-//      if (burnTime <= 0 && bd.meta == BlockDefinitions.Lantern.ON) {
-//        bd.setMeta(BlockDefinitions.Lantern.OFF)
-//        bd.update
-//      }
-//    }
-//  }
-//  override def writeToNBT(tag: NBTTagCompound):NBTTagCompound =  {
-//    tag.setInteger("burnTime", burnTime)
-//    super.writeToNBT(tag)
-//  }
-//  def isLit = bd.state.getValue(Lantern.LIT).asInstanceOf[Boolean]
-//  def isTop = bd.state.getValue(Lantern.TOP).asInstanceOf[Boolean]
-//}
+package com.rikmuld.camping.tileentity
+
+import com.rikmuld.camping.objs.Definitions.Lantern
+import com.rikmuld.camping.objs.Definitions.Lantern._
+import com.rikmuld.camping.objs.blocks.Lantern
+import com.rikmuld.corerm.tileentity.TileEntitySimple
+import net.minecraft.entity.player.EntityPlayer
+import net.minecraft.item.ItemStack
+import net.minecraft.nbt.NBTTagCompound
+import net.minecraft.util.ITickable
+import net.minecraft.util.math.BlockPos
+import net.minecraft.world.World
+
+class TileLantern extends TileEntitySimple with ITickable {
+  private var burnTime: Int =
+    _
+
+  private var tick: Boolean =
+    false
+
+  override def readFromNBT(tag: NBTTagCompound): Unit = {
+    burnTime = tag.getInteger("burnTime")
+    super.readFromNBT(tag)
+  }
+
+  override def writeToNBT(tag: NBTTagCompound):NBTTagCompound =  {
+    tag.setInteger("burnTime", burnTime)
+    super.writeToNBT(tag)
+  }
+
+  def setBurnTime(time: Int): Unit = {
+    burnTime = time * 20
+    tick = true
+  }
+
+  def getBurnTime: Int =
+    burnTime
+
+  def getLantern: Lantern =
+    world.getBlockState(pos).getBlock.asInstanceOf[Lantern]
+
+  override def update(): Unit =
+    if (tick && !world.isRemote)
+      if (burnTime > 0)
+        burnTime -= 1
+      else {
+        getLantern.setState(world, pos, STATE_LIT, false)
+        tick = false
+      }
+
+  override def init(stack: ItemStack, player: EntityPlayer, world: World, pos: BlockPos): Unit =
+    setBurnTime(Option(stack.getTagCompound).fold(
+      if (stack.getItemDamage == Lantern.ON) 750
+      else 0
+    )(_.getInteger("time")))
+}
