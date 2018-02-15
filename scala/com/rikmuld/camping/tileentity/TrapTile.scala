@@ -1,131 +1,193 @@
-//package com.rikmuld.camping.tileentity
-//
-//import java.util.{Random, UUID}
-//
-//import com.rikmuld.camping.CampingMod._
-//import com.rikmuld.camping.entity.Bear
-//import com.rikmuld.camping.misc.ItemsData
-//import com.rikmuld.corerm.network.PacketSender
-//import com.rikmuld.corerm.tileentity.{TileEntityInventory, TileEntitySimple}
-//import net.minecraft.entity.ai.attributes.AttributeModifier
-//import net.minecraft.entity.monster._
-//import net.minecraft.entity.passive.EntityAnimal
-//import net.minecraft.entity.player.{EntityPlayer, EntityPlayerMP}
-//import net.minecraft.entity.{EntityLiving, EntityLivingBase, SharedMonsterAttributes}
-//import net.minecraft.init.Items
-//import net.minecraft.nbt.NBTTagCompound
-//import net.minecraft.potion.PotionEffect
-//import net.minecraft.util.ITickable
-//import net.minecraft.util.math.AxisAlignedBB
-//import com.rikmuld.camping.misc.WorldBlock._
-//import com.rikmuld.camping.registers.Objs
-//
-//import scala.collection.JavaConversions._
-//
-//object TileTrap {
-//  val UUIDSpeedTrap = new UUID(new Random(242346763).nextLong, new Random(476456556).nextLong)
-//}
-//
-//class TileTrap extends TileEntitySimple with TileEntityInventory with ITickable {
-//  var trappedEntity: EntityLivingBase = _
-//  var random: Random = new Random()
-//  var cooldown: Int = _
-//  var open: Boolean = true
-//  var captureFlag: Boolean = _
-//  var monsterItemAttr = Array(Items.ROTTEN_FLESH, Items.CHICKEN, Items.BEEF, Items.PORKCHOP, Objs.venisonRaw, Items.MUTTON, Items.RABBIT)
-//  var lastPlayer:Option[EntityPlayer] = None
-//
-//  override def getName: String =
-//    "trap"
-//  override def getSizeInventory(): Int = 1
-//  override def onChange(slot: Int) {
-//    super[TileEntityInventory].onChange(slot)
-//    if (!world.isRemote) PacketSender.sendToClient(new ItemsData(0, bd.x, bd.y, bd.z, getStackInSlot(0)))
-//  }
-//  def bd: BlockData =
-//    (world, pos)
-//  override def readFromNBT(tag: NBTTagCompound) {
-//    cooldown = tag.getInteger("cooldown")
-//    captureFlag = tag.getBoolean("captureFlag")
-//    open = tag.getBoolean("open")
-//    super[TileEntityInventory].readFromNBT(tag)
-//    super[TileEntitySimple].readFromNBT(tag)
-//  }
-//  override def writeToNBT(tag: NBTTagCompound):NBTTagCompound = {
-//    tag.setInteger("cooldown", cooldown)
-//    tag.setBoolean("captureFlag", trappedEntity != null)
-//    tag.setBoolean("open", open)
-//    super[TileEntityInventory].writeToNBT(tag)
-//    super[TileEntitySimple].writeToNBT(tag)
-//  }
-//  def forceOpen {
-//    setOpen(true)
-//    cooldown = 5
-//    trappedEntity = null
-//  }
-//
-//  override def setTileData(id: Int, data: Seq[Int]) = if (id == 0) open = data(0) == 1
-//  def captureBounds = new AxisAlignedBB(bd.x + 0.21875, bd.y, bd.z + 0.21875, bd.x + 0.78125, bd.y + 0.1875, bd.z + 0.78125)
-//  def setOpen(open:Boolean) = {
-//    this.open = open
-//    sendTileData(0, true, if (this.open) 1 else 0)
-//  }
-//  override def update() {
-//    if (!world.isRemote) {
-//      if (world != null) {
-//        val entities = world.getEntitiesWithinAABB(classOf[EntityLivingBase], captureBounds).asInstanceOf[java.util.List[EntityLivingBase]]
-//        if (!entities.contains(trappedEntity)) trappedEntity = null
-//      }
-//      if (cooldown > 0) cooldown -= 1
-//      if ((trappedEntity != null) && open) setOpen(false)
-//      if ((open || captureFlag) && (cooldown <= 0)) {
-//        captureFlag = false
-//        val entities = world.getEntitiesWithinAABB(classOf[EntityLivingBase], captureBounds).asInstanceOf[java.util.List[EntityLivingBase]]
-//        if (entities.size > 0) {
-//          if (entities.get(0).isInstanceOf[EntityPlayer] && config.trapPlayer) {
-//            trappedEntity = entities.get(0)
-//          } else {
-//            trappedEntity = entities.get(0)
-//            if (!getStackInSlot(0).isEmpty) getStackInSlot(0).setCount(getStackInSlot(0).getCount - 1)
-//
-//            lastPlayer.foreach(player =>
-//              if(!player.world.isRemote)
-//                Objs.entityTrapped.trigger(player.asInstanceOf[EntityPlayerMP], trappedEntity)
-//            )
-//          }
-//        }
-//        if (trappedEntity != null) setOpen(false)
-//      }
-//      if (trappedEntity != null) {
-//        if (!(trappedEntity.isInstanceOf[EntityPlayer])) trappedEntity.setPositionAndUpdate(bd.x + 0.5F, bd.y, bd.z + 0.5F)
-//        trappedEntity.setInWeb()
-//        if (trappedEntity.isInstanceOf[EntityPlayer]) {
-//          trappedEntity.getEntityData().setInteger("isInTrap", 20)
-//          if (trappedEntity.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getModifier(TileTrap.UUIDSpeedTrap) != null) trappedEntity.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).removeModifier(trappedEntity.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getModifier(TileTrap.UUIDSpeedTrap))
-//          trappedEntity.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).applyModifier(new AttributeModifier(TileTrap.UUIDSpeedTrap, "trap.speedNeg", -0.95f, 2))
-//        }
-//        if (random.nextInt(50) == 0) {
-//          if (!(trappedEntity.isInstanceOf[EntityPlayer]) ||
-//            !trappedEntity.asInstanceOf[EntityPlayer].capabilities.isCreativeMode) {
-//            trappedEntity.attackEntityFrom(Objs.bleedingSource, trappedEntity.getMaxHealth / 20F)
-//          }
-//          val effect = new PotionEffect(Objs.bleeding, 200, 1)
-//          effect.getCurativeItems.clear()
-//          trappedEntity.addPotionEffect(effect)
-//        }
-//        if (trappedEntity.isDead) trappedEntity = null
-//      }
-//      if (!getStackInSlot(0).isEmpty && (trappedEntity == null) && open) {
-//        val entities = world.getEntitiesWithinAABB(classOf[EntityLivingBase], new AxisAlignedBB(bd.x - 20, bd.y - 10, bd.z - 20, bd.x + 20, bd.y + 10, bd.z + 20)).asInstanceOf[java.util.List[EntityLivingBase]]
-//        for (entity <- entities) {
-//          if (entity.isInstanceOf[EntityAnimal]) {
-//            if (entity.asInstanceOf[EntityAnimal].isBreedingItem(getStackInSlot(0))) entity.asInstanceOf[EntityAnimal].getMoveHelper.setMoveTo(bd.x + 0.5F, bd.y, bd.z + 0.5F, 1)
-//          }
-//          if (entity.isInstanceOf[Bear] || entity.isInstanceOf[EntityZombie] || entity.isInstanceOf[EntityCreeper] || entity.isInstanceOf[EntitySkeleton] || entity.isInstanceOf[EntityEnderman] || entity.isInstanceOf[EntitySpider]) {
-//            if (monsterItemAttr.contains(getStackInSlot(0).getItem())) entity.asInstanceOf[EntityLiving].getMoveHelper.setMoveTo(bd.x + 0.5F, bd.y, bd.z + 0.5F, 1)
-//          }
-//        }
-//      }
-//    }
-//  }
-//}
+package com.rikmuld.camping.tileentity
+
+import java.util.{Random, UUID}
+
+import com.rikmuld.camping.CampingMod._
+import com.rikmuld.camping.Lib.AdvancementInfo._
+import com.rikmuld.camping.misc.ItemsData
+import com.rikmuld.camping.objs.Definitions.Trap._
+import com.rikmuld.camping.objs.Registry
+import com.rikmuld.camping.objs.blocks.Trap
+import com.rikmuld.camping.registers.Objs
+import com.rikmuld.corerm.advancements.TriggerHelper
+import com.rikmuld.corerm.network.PacketSender
+import com.rikmuld.corerm.tileentity.TileEntityInventory
+import net.minecraft.block.state.IBlockState
+import net.minecraft.entity.SharedMonsterAttributes.MOVEMENT_SPEED
+import net.minecraft.entity.ai.attributes.AttributeModifier
+import net.minecraft.entity.monster._
+import net.minecraft.entity.passive.EntityAnimal
+import net.minecraft.entity.player.EntityPlayer
+import net.minecraft.entity.{EntityLiving, EntityLivingBase}
+import net.minecraft.init.Items
+import net.minecraft.item.ItemStack
+import net.minecraft.potion.PotionEffect
+import net.minecraft.util.ITickable
+import net.minecraft.util.math.{AxisAlignedBB, BlockPos}
+import net.minecraft.world.World
+
+import scala.collection.JavaConversions._
+
+object TileTrap {
+  final val UUIDSpeedTrap =
+    new UUID(new Random(242346763).nextLong, new Random(476456556).nextLong)
+
+  final val random =
+    new Random()
+
+  final val monsterLures = Array(
+    Items.CHICKEN,
+    Items.BEEF,
+    Items.PORKCHOP,
+    Registry.venisonRaw,
+    Items.MUTTON,
+    Items.RABBIT,
+    Items.FISH
+  )
+}
+
+class TileTrap extends TileEntityInventory with ITickable {
+  var trappedEntity: Option[EntityLivingBase] =
+    None
+
+  var closeCooldown: Int =
+    0
+
+  var lastPlayer: Option[EntityPlayer] =
+    None
+
+  override def openInventory(player: EntityPlayer): Unit =
+    lastPlayer = Some(player)
+
+  override def getSizeInventory: Int =
+    1
+
+  override def shouldRefresh(world: World, pos: BlockPos, oldState: IBlockState, newSate: IBlockState): Boolean =
+    oldState.getBlock != newSate.getBlock
+
+  override def onChange(slot: Int): Unit =
+    if (!world.isRemote)
+      PacketSender.sendToClient(
+        new ItemsData(0, pos.getX, pos.getY, pos.getZ, getStackInSlot(0))
+      )
+
+  override def getName: String =
+    "camping:trap"
+
+  def setTrapped(entity: Option[EntityLivingBase]): Unit = {
+    trappedEntity =
+      if (entity.exists(!_.isInstanceOf[EntityPlayer] || config.trapPlayer))
+        entity
+      else
+        None
+
+    entity.foreach(trapped => {
+      lastPlayer.foreach(player => TriggerHelper.trigger(ENTITY_TRAPPED, player, trapped))
+      removeLureFor(trapped)
+    })
+  }
+
+  def removeLureFor(entity: EntityLivingBase): Unit = entity match {
+    case animal: EntityAnimal =>
+      if(animal.isBreedingItem(getStackInSlot(0)))
+        decrStackSize(0, 1)
+    case mob: EntityMob =>
+      if(TileTrap.monsterLures.contains(getStackInSlot(0).getItem))
+        decrStackSize(0, 1)
+    case _ =>
+  }
+
+  def setOpen(op: Boolean): Unit = {
+    closeCooldown = 5
+
+    getBlock.setState(world, pos, STATE_OPEN, op)
+
+    if(op)
+      setTrapped(None)
+  }
+
+  def isOpen: Boolean =
+    getBlock.getBool(world, pos, STATE_OPEN)
+
+  def getBlock: Trap =
+    world.getBlockState(pos).getBlock.asInstanceOf[Trap]
+
+  def getCaptureBounds: AxisAlignedBB =
+    world.getBlockState(pos).getBoundingBox(world, pos).offset(pos)
+
+  def getLureBounds: AxisAlignedBB =
+    getCaptureBounds.grow(20, 10, 20)
+
+  def getCaptureEntities: Seq[EntityLivingBase] =
+    world.getEntitiesWithinAABB(classOf[EntityLivingBase], getCaptureBounds)
+
+  def getLureEntities: Seq[EntityLiving] =
+    world.getEntitiesWithinAABB(classOf[EntityLiving], getLureBounds)
+
+  override def update():Unit =
+    if(!world.isRemote) {
+      if (closeCooldown > 0) closeCooldown -= 1
+
+      val entities = getCaptureEntities
+
+      if (isOpen)
+        tryCatch(entities)
+      else
+        trappedEntity.foreach(entity => updateTrappedEntity(entity, entities))
+    }
+
+  private def tryCatch(entities: Seq[EntityLivingBase]): Unit = //do from hitten bounds in block, not checking every tick
+    if (entities.nonEmpty && closeCooldown == 0) {
+      setTrapped(Some(entities.head))
+      setOpen(false)
+    } else
+      lure(getLureEntities)
+
+  private def updateTrappedEntity(entity: EntityLivingBase, entities: Seq[EntityLivingBase]): Unit =
+    if (entity.isDead || !entities.contains(entity))
+      setTrapped(None)
+    else
+      applyEffects(entity)
+
+  private def applyEffects(entity: EntityLivingBase): Unit = {
+    if(TileTrap.random.nextInt(50) == 0) {
+      val effect = new PotionEffect(Objs.bleeding, 200, 1)
+
+      effect.getCurativeItems.clear()
+      entity.addPotionEffect(effect)
+    }
+
+    entity match {
+      case player: EntityPlayer =>
+        player.getEntityData.setInteger("isInTrap", 2)
+
+        val speed = player.getEntityAttribute(MOVEMENT_SPEED)
+
+        if (Option(speed.getModifier(TileTrap.UUIDSpeedTrap)).isEmpty)
+          speed.applyModifier(
+            new AttributeModifier(TileTrap.UUIDSpeedTrap, "trap.speedNeg", -0.95f, 2)
+          )
+      case other =>
+        other.setPositionAndUpdate(pos.getX + 0.5F, pos.getY, pos.getZ + 0.5F)
+    }
+
+    entity.setInWeb()//TODO make sure cannot jump
+  }
+
+  private def lure(entities: Seq[EntityLiving]): Unit =
+    for(entity <- entities)
+      lure(entity, getStackInSlot(0))
+
+  private def lure(entity: EntityLiving, item: ItemStack): Unit = entity match {
+    case monster: EntityMob =>
+      if(TileTrap.monsterLures.contains(item.getItem))
+        doLure(monster)
+    case animal: EntityAnimal =>
+      if(animal.isBreedingItem(item))
+        doLure(animal)
+    case _ =>
+  }
+
+  private def doLure(entity: EntityLiving): Unit =
+    entity.getMoveHelper.setMoveTo(pos.getX + 0.5, pos.getY + 0.5, pos.getZ + 0.5, 1)
+}

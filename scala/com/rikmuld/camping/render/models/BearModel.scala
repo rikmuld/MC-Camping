@@ -12,6 +12,7 @@ object BearModel {
   final val LEG_4 = "leg4"
 }
 
+//TODO just make it the polar bear model so this is not needed
 class BearModel extends ModularModal {
   setTextureSize(128, 64)
 

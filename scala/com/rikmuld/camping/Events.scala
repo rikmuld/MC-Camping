@@ -8,13 +8,15 @@ import com.rikmuld.camping.inventory.gui.GuiMapHUD
 import com.rikmuld.camping.misc.NBTPlayer
 import com.rikmuld.camping.objs.Definitions._
 import com.rikmuld.camping.objs.Registry
+import com.rikmuld.camping.tileentity.TileTrap
+import net.minecraftforge.fml.common.gameevent.TickEvent.Phase
 //import com.rikmuld.camping.objs.blocks.{Hemp, Tent}
 //import com.rikmuld.camping.objs.misc.{MapData, NBTPlayer}
 //import com.rikmuld.camping.tileentity.{Roaster, TileTrap}
 import com.rikmuld.camping.registers.Objs
 import com.rikmuld.corerm.network.PacketSender
 import net.minecraft.client.gui.inventory.GuiInventory
-import net.minecraft.entity.SharedMonsterAttributes
+import net.minecraft.entity.SharedMonsterAttributes._
 import net.minecraft.entity.ai.attributes.AttributeModifier
 import net.minecraft.entity.player.{EntityPlayer, EntityPlayerMP}
 import net.minecraft.init.Items
@@ -112,16 +114,26 @@ class EventsS {
   }
   @SubscribeEvent
   def onPlayerTick(event: PlayerTickEvent) {
-//    val player = event.player
+    val player = event.player
 //    val world = player.world
     //Objs.tent.asInstanceOf[Tent].facingFlag = player.getHorizontalFacing.getHorizontalIndex
     
-//    if (event.phase.equals(Phase.START)) {
-//      if (player.getEntityData().getInteger("isInTrap") <= 0) {
-//        player.getEntityData().setInteger("isInTrap", player.getEntityData().getInteger("isInTrap") - 1)
-//      } else if (Option(player.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getModifier(TileTrap.UUIDSpeedTrap)).isDefined)
-//        player.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).removeModifier(player.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getModifier(TileTrap.UUIDSpeedTrap))
-//    }
+    if (event.phase.equals(Phase.START)) {
+      val trapTime = player.getEntityData.getInteger("isInTrap")
+
+      if (trapTime > 0) {
+        player.setInWeb()
+        player.getEntityData.setInteger("isInTrap", trapTime - 1)
+      } else if(trapTime == 0) {
+        player.getEntityData.setInteger("isInTrap", -1)
+
+        val speed = player.getEntityAttribute(MOVEMENT_SPEED)
+
+        Option(speed.getModifier(TileTrap.UUIDSpeedTrap)).foreach(modifier =>
+          speed.removeModifier(modifier)
+        )
+      }
+    }
 //    if (!world.isRemote && player.hasLantarn()) {
 //      tickLight += 1
 //      if (tickLight >= 20) {
@@ -179,7 +191,7 @@ class EventsS {
         false
     })
 
-    val speed = event.player.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED)
+    val speed = event.player.getEntityAttribute(MOVEMENT_SPEED)
     val modifier = Option(speed.getModifier(UUIDSpeedCamping))
 
     if(!modifier.exists(_.getAmount == 0.01 * increase)){

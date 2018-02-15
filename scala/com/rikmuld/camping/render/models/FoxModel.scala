@@ -5,7 +5,7 @@ import net.minecraft.entity.{Entity, EntityLivingBase}
 import net.minecraft.util.math.MathHelper
 import org.lwjgl.opengl.GL11
 
-//either make modular model or extend wolf and adapt slightly
+//TODO either make modular model or extend wolf and adapt slightly
 class FoxModel extends ModelBase {
   val f = 0.0F
   val f1 = 13.5F

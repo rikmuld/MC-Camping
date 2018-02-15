@@ -199,6 +199,8 @@ object Lib {
 /*
 plan: improve camping inv tab look (as creative inv) then ten gui cleanup (make tabbed) then release... continue with todo
 
+trap model closed, entities, camping inventory, light, advancements, sleeping bag, hemp, check which events can be uncommented
+
 tomorrow:
   - cleanup arstract box -> jutable model in sepperate file (for the cooking equipment models)
   - mutable model redo

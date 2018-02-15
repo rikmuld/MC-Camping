@@ -2,6 +2,7 @@ package com.rikmuld.camping.render.models
 
 import com.rikmuld.corerm.client.ModularModal
 
+//TODO remove and add closed to json
 object TrapModel {
   final val MODEL_TRAP_CLOSED = new ModularModal()
   final val MODEL_TRAP_OPEN = new ModularModal()

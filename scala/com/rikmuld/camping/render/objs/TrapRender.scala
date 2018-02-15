@@ -1,43 +1,29 @@
-//package com.rikmuld.camping.render.objs
-//
-//import com.rikmuld.camping.Lib._
-//import com.rikmuld.camping.tileentity.TileTrap
-//import com.rikmuld.camping.render.models.TrapModel
-//import net.minecraft.client.Minecraft
-//import net.minecraft.client.renderer.ItemRenderer
-//import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType
-//import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer
-//import net.minecraft.util.ResourceLocation
-//import org.lwjgl.opengl.{GL11, GL12}
-//
-//object TrapRender {
-//  final val OPEN = TrapModel.MODEL_TRAP_OPEN
-//  final val CLOSED = TrapModel.MODEL_TRAP_CLOSED
-//
-//  final val TEX_ALL = new ResourceLocation(TextureInfo.MODEL_TRAP)
-//}
-//
-//class TrapRender extends TileEntitySpecialRenderer[TileTrap] {
-//  var renderer: ItemRenderer = new ItemRenderer(Minecraft.getMinecraft)
-//  override def render(tile: TileTrap, x: Double, y: Double, z: Double, partialTicks: Float, destroyStage: Int, alpha: Float): Unit = {
-//    GL11.glPushMatrix()
-//    GL11.glEnable(GL12.GL_RESCALE_NORMAL)
-//    GL11.glTranslatef(x.toFloat + 0.5f, y.toFloat + 1.5f, z.toFloat + 0.5f)
-//    GL11.glScalef(1.0F, -1F, -1F)
-//    GL11.glScalef(0.0625F, 0.0625F, 0.0625F)
-//    bindTexture(TrapRender.TEX_ALL)
-//    if (tile.open) TrapRender.OPEN.renderAll(1)
-//    else TrapRender.CLOSED.renderAll(1)
-//    GL11.glPopMatrix()
-//    if (Option(tile.getStackInSlot(0)).isDefined) {
-//      GL11.glPushMatrix()
-//      GL11.glEnable(GL12.GL_RESCALE_NORMAL)
-//      GL11.glTranslatef((x + 0.5 + 0.03125F).toFloat, y.toFloat + 0.03125F, ((z + 0.51) - 0.0625F/2).toFloat)
-//      GL11.glRotatef(90, 0, 0, 1)
-//      GL11.glRotatef(180, 1, 0, 0)
-//      GL11.glScalef(0.2F, -0.2F, -0.2F)
-//      renderer.renderItem(tile.getWorld.getClosestPlayer(x, y, z, -1, false), tile.getStackInSlot(0), TransformType.FIRST_PERSON_LEFT_HAND)
-//      GL11.glPopMatrix()
-//    }
-//  }
-//}
+package com.rikmuld.camping.render.objs
+
+import com.rikmuld.camping.tileentity.TileTrap
+import net.minecraft.client.Minecraft
+import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType._
+import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer
+import org.lwjgl.opengl.{GL11, GL12}
+
+class TrapRender extends TileEntitySpecialRenderer[TileTrap] {
+  override def render(tile: TileTrap, x: Double, y: Double, z: Double,
+                      partialTicks: Float, destroyStage: Int, alpha: Float): Unit = {
+
+    val stack = tile.getStackInSlot(0)
+
+    if (!stack.isEmpty) {
+      GL11.glPushMatrix()
+
+      GL11.glEnable(GL12.GL_RESCALE_NORMAL)
+      GL11.glTranslatef((x + 0.5 + 0.03125F).toFloat, y.toFloat + 0.03125F, ((z + 0.51) - 0.0625F/2).toFloat)
+      GL11.glRotatef(90, 0, 0, 1)
+      GL11.glRotatef(180, 1, 0, 0)
+      GL11.glScalef(0.2F, -0.2F, -0.2F)
+
+      Minecraft.getMinecraft.getRenderItem.renderItem(stack, FIRST_PERSON_LEFT_HAND)
+
+      GL11.glPopMatrix()
+    }
+  }
+}

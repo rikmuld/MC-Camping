@@ -2,6 +2,7 @@ package com.rikmuld.camping.render.models
 
 import com.rikmuld.corerm.client.ModularModal
 
+//TODO finish
 object CookingEquipmentModels {
   final val SPIT =
     new ModularModal()

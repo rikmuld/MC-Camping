@@ -2,6 +2,7 @@ package com.rikmuld.camping.objs.blocks
 
 import com.rikmuld.camping.objs.Definitions.Trap._
 import com.rikmuld.camping.objs.blocks.Trap._
+import com.rikmuld.camping.tileentity.TileTrap
 import com.rikmuld.corerm.objs.ObjDefinition
 import com.rikmuld.corerm.objs.blocks.BlockRM
 import net.minecraft.block.state.IBlockState
@@ -35,11 +36,16 @@ class Trap(modId:String, info: ObjDefinition) extends BlockRM(modId, info) {
                                 player: EntityPlayer, hand:EnumHand, side: EnumFacing,
                                 xHit: Float, yHit: Float, zHit: Float): Boolean = {
 
-    //set last player
+    val tile = getTile(world, pos)
+
+    tile.lastPlayer = Some(player)
 
     if(!getBool(state, STATE_OPEN)){
-      //open tile
+      tile.setOpen(true)
       true
     } else super.onBlockActivated(world, pos, state, player, hand, side, xHit, yHit, zHit)
   }
+
+  def getTile(world: IBlockAccess, pos: BlockPos): TileTrap =
+    world.getTileEntity(pos).asInstanceOf[TileTrap]
 }

@@ -60,9 +60,9 @@ class ItemsData(var slot: Int, var x: Int, var y: Int, var z: Int, var stack: It
     stack = stream.readItemStack()
   }
   override def handlePacket(player: EntityPlayer, ctx: MessageContext) {
-    if (player.world.getTileEntity(new BlockPos(x, y, z)) != null) {
-      player.world.getTileEntity(new BlockPos(x, y, z)).asInstanceOf[TileEntityInventory].setInventorySlotContents(slot, stack)
-    }
+    Option(player.world.getTileEntity(new BlockPos(x, y, z))).foreach(tile =>
+      tile.asInstanceOf[TileEntityInventory].setInventorySlotContents(slot, stack)
+    )
   }
 }
 

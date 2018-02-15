@@ -1,10 +1,10 @@
 package com.rikmuld.camping.objs
 
 import com.rikmuld.camping.Lib._
-import com.rikmuld.camping.objs.blocks.{Lantern, LanternItem}
+import com.rikmuld.camping.objs.blocks.{Lantern, LanternItem, Trap}
 import com.rikmuld.camping.objs.items.{Kit, Marshmallow}
 import com.rikmuld.camping.registers.Objs._
-import com.rikmuld.camping.tileentity.TileLantern
+import com.rikmuld.camping.tileentity.{TileLantern, TileTrap}
 import com.rikmuld.corerm.objs.Properties._
 import com.rikmuld.corerm.objs.StateProperty.PropBool
 import com.rikmuld.corerm.objs.{ObjDefinition, States}
@@ -75,7 +75,7 @@ object Definitions {
   //
 
   final val TRAP_STATES = new States(
-    PropBool(Trap.STATE_OPEN)
+    PropBool(Trap.STATE_OPEN, true)
   )
 
   final val TRAP = new ObjDefinition(
@@ -87,8 +87,9 @@ object Definitions {
     GuiTrigger(GuiInfo.TRAP),
     Unstable,
     NonCube,
-    BlockStates(TRAP_STATES)
-  //TileEntityClass(classOf[TileTrap])
+    BlockStates(TRAP_STATES),
+    TileEntityClass(classOf[TileTrap]),
+    BlockClass(classOf[Trap])
   )
 
   object Trap {
