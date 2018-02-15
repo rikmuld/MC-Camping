@@ -9,6 +9,7 @@ import com.rikmuld.corerm.utils.NBTUtils
 import net.minecraft.entity.player.{EntityPlayer, EntityPlayerMP}
 import net.minecraft.inventory.{InventoryCraftResult, InventoryCrafting}
 import net.minecraft.item.ItemStack
+import net.minecraft.nbt.NBTTagCompound
 
 object InventoryCamping {
   final val POUCH = 12 until 15
@@ -65,6 +66,10 @@ class InventoryCamping(player: EntityPlayer, container: ContainerCamping) extend
 
   def backpackChanged(): Unit = {
     val pack = getStackInSlot(SLOT_BACKPACK)
+
+    //TODO solves the problems of a bug, but not the root of the problem, fix that and remove this! (probably fix in core?)
+    if(!pack.isEmpty && !pack.hasTagCompound)
+      pack.setTagCompound(new NBTTagCompound())
 
     if (!pack.isEmpty) {
       backpackInv = Some(new InventoryItem(pack, 27, 64))
