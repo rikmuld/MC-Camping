@@ -11,31 +11,7 @@ object Objs {
   var tab: TabCamping = _
   
   var fur: ArmorMaterial = _
-  
-//  var knife,
-//      parts,
-//      backpack,
-//      kit,
-//      marshmallow,
-//      animalParts,
-//      furBoot,
-//      furLeg,
-//      furChest,
-//      furHead,
-//      venisonCooked,
-//      venisonRaw:ItemSimple = _
-//
-//  var hemp,
-//      campfireWood,
-//      lantern,
-//      tent,
-//      logseat,
-//      light,
-//      sleepingBag,
-//      trap,
-//      campfireCook,
-//      tentBounds: BlockSimple = _
-//
+
   var spit,
       grill,
       pan:CookingEquipment = _

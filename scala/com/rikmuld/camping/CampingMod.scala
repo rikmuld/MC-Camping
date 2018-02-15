@@ -199,7 +199,7 @@ object Lib {
 /*
 plan: improve camping inv tab look (as creative inv) then ten gui cleanup (make tabbed) then release... continue with todo
 
-trap model closed, entities, camping inventory, light, advancements, sleeping bag, hemp, check which events can be uncommented
+light, sleeping bag, hemp, check which events can be uncommented, logseat
 
 tomorrow:
   - cleanup arstract box -> jutable model in sepperate file (for the cooking equipment models)
@@ -220,7 +220,7 @@ tomorrow:
   - 'spawner' blocks for special cooking fires, spit, grill, pan in creative tab
   - camping inv tab align to side
 
-  TODO after for next update (Camping Mod 2.2, the bugfix update :P)
+  TODO after for next update (Camping Mod 2.next)
   - continue rewrite: guis, tiles, utils, block and items, network, corerm features, registry system, others
   - fix github bugs that remain after rewrite + extensive bugtest
 

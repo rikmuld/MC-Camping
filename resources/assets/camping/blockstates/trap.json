@@ -1,5 +1,6 @@
 {
     "variants": {
-        "normal": { "model": "camping:trap" }
+        "open=false": { "model": "camping:trap_closed" },
+        "open=true": { "model": "camping:trap_open" }
     }
 }

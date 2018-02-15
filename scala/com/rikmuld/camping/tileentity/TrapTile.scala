@@ -159,7 +159,7 @@ class TileTrap extends TileEntityInventory with ITickable {
 
     entity match {
       case player: EntityPlayer =>
-        player.getEntityData.setInteger("isInTrap", 2)
+        player.getEntityData.setInteger("isInTrap", 2) //TODO make sure that cannot jump using jump event, put event handler here (also put the remove mod in there)
 
         val speed = player.getEntityAttribute(MOVEMENT_SPEED)
 
@@ -171,7 +171,7 @@ class TileTrap extends TileEntityInventory with ITickable {
         other.setPositionAndUpdate(pos.getX + 0.5F, pos.getY, pos.getZ + 0.5F)
     }
 
-    entity.setInWeb()//TODO make sure cannot jump
+    entity.setInWeb()
   }
 
   private def lure(entities: Seq[EntityLiving]): Unit =

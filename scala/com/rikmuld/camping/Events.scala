@@ -4,11 +4,17 @@ import java.util.{Random, UUID}
 
 import com.rikmuld.camping.CampingMod._
 import com.rikmuld.camping.Lib._
+import com.rikmuld.camping.inventory.camping.InventoryCamping
 import com.rikmuld.camping.inventory.gui.GuiMapHUD
-import com.rikmuld.camping.misc.NBTPlayer
+import com.rikmuld.camping.misc.{KeyData, NBTPlayer}
 import com.rikmuld.camping.objs.Definitions._
 import com.rikmuld.camping.objs.Registry
 import com.rikmuld.camping.tileentity.TileTrap
+import com.rikmuld.corerm.gui.GuiHelper
+import net.minecraft.client.Minecraft
+import net.minecraft.client.gui.GuiChat
+import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType
+import net.minecraftforge.fml.client.FMLClientHandler
 import net.minecraftforge.fml.common.gameevent.TickEvent.Phase
 //import com.rikmuld.camping.objs.blocks.{Hemp, Tent}
 //import com.rikmuld.camping.objs.misc.{MapData, NBTPlayer}
@@ -55,15 +61,15 @@ class EventsS {
 
   @SubscribeEvent
   def onPlayerDeath(event: PlayerDropsEvent) {
-//    if (!event.getEntity.world.getGameRules.getBoolean("keepInventory")){
-//      InventoryCamping.dropItems(event.getEntityPlayer)
-//    } else {
-//      val tag = event.getEntity.getEntityData.getCompoundTag(NBTInfo.INV_CAMPING)
-//      val store = event.getEntity.getEntityData.getCompoundTag(EntityPlayer.PERSISTED_NBT_TAG)
-//
-//      store.setTag(NBTInfo.INV_CAMPING, tag)
-//      event.getEntity.getEntityData.setTag(EntityPlayer.PERSISTED_NBT_TAG, store)
-//    }
+    if (!event.getEntity.world.getGameRules.getBoolean("keepInventory")){
+      InventoryCamping.dropItems(event.getEntityPlayer)
+    } else {
+      val tag = event.getEntity.getEntityData.getCompoundTag(NBTInfo.INV_CAMPING)
+      val store = event.getEntity.getEntityData.getCompoundTag(EntityPlayer.PERSISTED_NBT_TAG)
+
+      store.setTag(NBTInfo.INV_CAMPING, tag)
+      event.getEntity.getEntityData.setTag(EntityPlayer.PERSISTED_NBT_TAG, store)
+    }
   }
 
   @SubscribeEvent
@@ -108,10 +114,12 @@ class EventsS {
 //        event.crafting.getTagCompound.setInteger("time", 1500)
 //      }
   }
+
   def keyPressedServer(player: EntityPlayer, id: Int) {
-//    if(id==KeyInfo.INVENTORY_KEY)
-//      GuiHelper.openGui(Guis.CAMPING, player)
+    if(id==KeyInfo.INVENTORY_KEY)
+      GuiHelper.openGui(GuiInfo.CAMPING, player)
   }
+
   @SubscribeEvent
   def onPlayerTick(event: PlayerTickEvent) {
     val player = event.player
@@ -122,7 +130,6 @@ class EventsS {
       val trapTime = player.getEntityData.getInteger("isInTrap")
 
       if (trapTime > 0) {
-        player.setInWeb()
         player.getEntityData.setInteger("isInTrap", trapTime - 1)
       } else if(trapTime == 0) {
         player.getEntityData.setInteger("isInTrap", -1)
@@ -207,22 +214,25 @@ class EventsC {
 
   @SubscribeEvent
   def onKeyInput(event: KeyInputEvent) {
-//    if (!FMLClientHandler.instance.isGUIOpen(classOf[GuiChat])) {
-//      for (key <- KeyInfo.default.indices) {
-//        if (Objs.keyOpenCamping.isPressed) {
-//          keyPressedClient(KeyInfo.INVENTORY_KEY)
-//          PacketSender.sendToServer(new KeyData(KeyInfo.INVENTORY_KEY))
-//        }
-//      }
-//    }
+    if (!FMLClientHandler.instance.isGUIOpen(classOf[GuiChat])) {
+      for (key <- KeyInfo.default.indices) {
+        if (Objs.keyOpenCamping.isPressed) {
+          keyPressedClient(KeyInfo.INVENTORY_KEY)
+          PacketSender.sendToServer(new KeyData(KeyInfo.INVENTORY_KEY))
+        }
+      }
+    }
   }
-  def keyPressedClient(id: Int): Unit = {}
+
+  def keyPressedClient(id: Int): Unit =
+    Unit
+
   @SubscribeEvent
   def guiOpenClient(event: GuiOpenEvent) {
-    if(event.getGui.isInstanceOf[GuiInventory]&&config.alwaysCampingInv){
-//      if(Minecraft.getMinecraft.player.capabilities.isCreativeMode) return;
-//      event.setCanceled(true)
-//      GuiHelper.forceOpenGui(Guis.CAMPING, Minecraft.getMinecraft.player)
+    if(event.getGui.isInstanceOf[GuiInventory] && config.alwaysCampingInv){
+      if(Minecraft.getMinecraft.player.capabilities.isCreativeMode) return;
+      event.setCanceled(true)
+      GuiHelper.forceOpenGui(GuiInfo.CAMPING, Minecraft.getMinecraft.player)
     }
   }
 
@@ -233,17 +243,22 @@ class EventsC {
                                                                  "just press the configuration tab in the Camping Invenory; search for: " +
                                                                  "'primary inventory option'."))
 
-      config.disableMess
+      config.disableMess()
     }
   }
   @SubscribeEvent
-  def onOverlayRender(event: RenderGameOverlayEvent) {
-//    if (event.getType != ElementType.HOTBAR) return
-//    val mc = FMLClientHandler.instance().getClient
-//    if (map == null) map = new GuiMapHUD()
-//    if (mc.player.hasMap) {
-//      map.setWorldAndResolution(mc, event.getResolution.getScaledWidth, event.getResolution.getScaledHeight)
-//      map.drawScreen(0, 0, event.getPartialTicks)
-//    }
-  }
+  def onOverlayRender(event: RenderGameOverlayEvent): Unit =
+    if (event.getType == ElementType.HOTBAR) {
+      val mc = FMLClientHandler.instance().getClient
+
+      if (map == null)
+        map = new GuiMapHUD()
+
+      //TODO Don't set world and resolution every time
+      //TODO uncomment
+      if (false) {//mc.player.hasMap) {
+        map.setWorldAndResolution(mc, event.getResolution.getScaledWidth, event.getResolution.getScaledHeight)
+        map.drawScreen(0, 0, event.getPartialTicks)
+      }
+    }
 }

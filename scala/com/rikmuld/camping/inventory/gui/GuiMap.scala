@@ -12,6 +12,7 @@ import org.lwjgl.opengl.{GL11, GL12}
 
 import scala.collection.mutable.HashMap
 
+//TODO gui screen is not even needed, just a map gui with all data preloaded and create new if new map and just render simple
 class GuiMapHUD extends GuiScreen {
   final val TEX_UTILS =
     new ResourceLocation(TextureInfo.GUI_UTILS)

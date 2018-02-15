@@ -2,6 +2,7 @@ package com.rikmuld.camping
 
 import com.rikmuld.camping.Lib.GuiInfo._
 import com.rikmuld.camping.advancements._
+import com.rikmuld.camping.inventory.camping.{ContainerCamping, GuiCamping}
 import com.rikmuld.camping.inventory.objs._
 import com.rikmuld.camping.misc._
 import com.rikmuld.corerm.gui.{ContainerWrapper, ScreenWrapper}
@@ -25,9 +26,9 @@ object CoreRegistry {
 //      ScreenWrapper.create(event.getSide, classOf[GuiTentChests], TENT_CHESTS),
 //      ScreenWrapper.create(event.getSide, classOf[GuiTentLanterns], TENT_LANTERNS),
 //      ScreenWrapper.create(event.getSide, classOf[GuiTentSleeping], TENT_SLEEP),
-//      ScreenWrapper.create(event.getSide, classOf[GuiCamping], CAMPING),
-      ScreenWrapper.create(event.getSide, classOf[GuiTrap], TRAP)
-//      ScreenWrapper.create(event.getSide, classOf[ConfigGUI], CONFIG)
+      ScreenWrapper.create(event.getSide, classOf[GuiCamping], CAMPING),
+      ScreenWrapper.create(event.getSide, classOf[GuiTrap], TRAP),
+      ScreenWrapper.create(event.getSide, classOf[ConfigGUI], CONFIG)
     )
 
   @SubscribeEvent
@@ -40,7 +41,7 @@ object CoreRegistry {
       //      ContainerWrapper.create(classOf[ContainerCampfireCook], CAMPFIRE_COOK),
 //      ContainerWrapper.create(classOf[ContainerTentChests], TENT_CHESTS),
 //      ContainerWrapper.create(classOf[ContainerTentLanterns], TENT_LANTERNS),
-//      ContainerWrapper.create(classOf[ContainerCamping], CAMPING)
+      ContainerWrapper.create(classOf[ContainerCamping], CAMPING),
       ContainerWrapper.create(classOf[ContainerTrap], TRAP)
     )
 
@@ -63,8 +64,8 @@ object CoreRegistry {
       new DyeBurned.Trigger,
       new EntityTrapped.Trigger,
       new FoodRoasted.Trigger,
-//      new InventoryChanged.Trigger,
-      new TentChanged.Trigger
-//      new CamperInteract.Trigger
+      new InventoryChanged.Trigger,
+      new TentChanged.Trigger,
+      new CamperInteract.Trigger
     )
 }

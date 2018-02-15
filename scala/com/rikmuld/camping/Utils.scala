@@ -13,6 +13,7 @@ import net.minecraftforge.common.util.Constants
 
 import scala.collection.JavaConversions._
 
+//TODO keep one camping inventory instance always active, don't create again and again, and just use that for everything
 object Utils {
   implicit class CampingUtils(player: EntityPlayer) {
     //use nbt utils
