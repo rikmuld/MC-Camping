@@ -20,6 +20,18 @@ class ContainerCamping(player:EntityPlayer) extends ContainerSimple[InventoryCam
   var backpackSlot: SlotItem =
     _
 
+  var craftMatrix: InventoryCrafting =
+    _
+
+  var craftMatrixSmall: InventoryCrafting =
+    _
+
+  var craftResult: InventoryCraftResult =
+    _
+
+  var craftResultSmall: InventoryCraftResult =
+    _
+
   override def playerInvX: Int =
     30
 
@@ -39,14 +51,14 @@ class ContainerCamping(player:EntityPlayer) extends ContainerSimple[InventoryCam
 
     backpackSlots.foreach(slot => addSlotToContainer(slot))
 
-    addSlotToContainer(new SlotTabbedCrafting(player, getIInventory.craftMatrix, getIInventory.craftResult, 0, 147, 35, 2))
-    addSlotToContainer(new SlotTabbedCrafting(player, getIInventory.craftMatrixSmall, getIInventory.craftResultSmall, 0, 176, 28, 0))
+    addSlotToContainer(new SlotTabbedCrafting(player, craftMatrix, craftResult, 0, 147, 35, 2))
+    addSlotToContainer(new SlotTabbedCrafting(player, craftMatrixSmall, craftResultSmall, 0, 176, 28, 0))
 
     for (row <- 0 until 3; collom <- 0 until 3)
-      addSlotToContainer(new SlotTabbed(getIInventory.craftMatrix, collom + (row * 3), 53 + (collom * 18), 17 + (row * 18), 2))
+      addSlotToContainer(new SlotTabbed(craftMatrix, collom + (row * 3), 53 + (collom * 18), 17 + (row * 18), 2))
 
     for (row <- 0 until 2; collom <- 0 until 2)
-      addSlotToContainer(new SlotTabbed(getIInventory.craftMatrixSmall, collom + (row * 2), 120 + (collom * 18), 18 + (row * 18), 0))
+      addSlotToContainer(new SlotTabbed(craftMatrixSmall, collom + (row * 2), 120 + (collom * 18), 18 + (row * 18), 0))
 
     for (i <- 0 until 4)
       this.addSlotToContainer(new SlotTabbedArmor(player.inventory, player, 36 + (3 - i), 30, 8 + i * 18, 0, i))
@@ -59,12 +71,18 @@ class ContainerCamping(player:EntityPlayer) extends ContainerSimple[InventoryCam
     onCraftMatrixChanged(null)
   }
 
-  override def initIInventory: InventoryCamping =
-    new InventoryCamping(player, this)
+  override def initIInventory: InventoryCamping = {
+    craftMatrix = new InventoryCrafting(this, 3, 3)
+    craftMatrixSmall = new InventoryCrafting(this, 2, 2)
+    craftResult = new InventoryCraftResult()
+    craftResultSmall = new InventoryCraftResult()
+
+    new InventoryCamping(player, Some(this))
+  }
 
   override def onCraftMatrixChanged(inv: IInventory) {
-    slotChangedCraftingGrid(player.world, player, getIInventory.craftMatrix, getIInventory.craftResult, 31)
-    slotChangedCraftingGrid(player.world, player, getIInventory.craftMatrixSmall, getIInventory.craftResultSmall, 32)
+    slotChangedCraftingGrid(player.world, player, craftMatrix, craftResult, 31)
+    slotChangedCraftingGrid(player.world, player, craftMatrixSmall, craftResultSmall, 32)
   }
 
   override def slotClick(slotId: Int, dragType: Int, clickTypeIn: ClickType, player: EntityPlayer): ItemStack = {
@@ -134,7 +152,18 @@ class ContainerCamping(player:EntityPlayer) extends ContainerSimple[InventoryCam
   }
 
   override def canMergeSlot(stack: ItemStack, slotIn: Slot): Boolean =
-    (slotIn.inventory != getIInventory.craftResult) &&
-      (slotIn.inventory != getIInventory.craftResultSmall) &&
+    (slotIn.inventory != craftResult) &&
+      (slotIn.inventory != craftResultSmall) &&
       super.canMergeSlot(stack, slotIn)
+
+  override def onContainerClosed(player: EntityPlayer): Unit = {
+    super.onContainerClosed(player)
+
+    for (i <- 0 until 9)
+      player.dropItem(craftMatrix.removeStackFromSlot(i), false)
+
+    for (i <- 0 until 4)
+      player.dropItem(craftMatrixSmall.removeStackFromSlot(i), false)
+
+  }
 }

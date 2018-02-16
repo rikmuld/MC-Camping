@@ -4,6 +4,7 @@ import com.rikmuld.camping.CampingMod._
 import com.rikmuld.camping.EventsC
 import com.rikmuld.camping.Lib._
 import com.rikmuld.camping.entity.Mountable
+import com.rikmuld.camping.inventory.gui.MapData
 import com.rikmuld.corerm.network.packets.PacketBasic
 import com.rikmuld.corerm.tileentity.TileEntityInventory
 import net.minecraft.entity.player.EntityPlayer
@@ -20,26 +21,27 @@ class NBTPlayer(var tag: NBTTagCompound) extends PacketBasic {
   override def handlePacket(player: EntityPlayer, ctx: MessageContext) = if(player!=null)player.getEntityData.setTag(NBTInfo.INV_CAMPING, tag)
 }
 
-class MapData(var scale: Int, var x: Int, var z: Int, var colours: Array[Byte]) extends PacketBasic {
-  def this() = this(0, 0, 0, null)
+class MapData(var scale: Int, var centerX: Int, var centerZ: Int, var colours: Array[Byte]) extends PacketBasic {
+  def this() = this(0, 0, 0, Array())
   override def write(stream: PacketBuffer) {
-    stream.writeInt(x)
-    stream.writeInt(z)
+    stream.writeBoolean(colours.length == 16384)
+    stream.writeInt(centerX)
+    stream.writeInt(centerZ)
     stream.writeInt(scale)
     stream.writeBytes(colours)
   }
-  override def read(stream: PacketBuffer) {
-    x = stream.readInt()
-    z = stream.readInt()
-    scale = stream.readInt()
-    colours = Array.ofDim[Byte](16384)
-    stream.readBytes(colours)
-  }
-  override def handlePacket(player: EntityPlayer, ctx: MessageContext) {
-    if (proxy.getEventClient.asInstanceOf[EventsC].map != null) {
-      proxy.getEventClient.asInstanceOf[EventsC].map.colorData(player) = colours
-      proxy.getEventClient.asInstanceOf[EventsC].map.posData(player) = Array(scale, x, z)
+  override def read(stream: PacketBuffer): Unit =
+    if (stream.readBoolean) {
+      centerX = stream.readInt()
+      centerZ = stream.readInt()
+      scale = stream.readInt()
+      colours = Array.ofDim[Byte](16384)
+      stream.readBytes(colours)
     }
+
+  override def handlePacket(player: EntityPlayer, ctx: MessageContext): Unit = {
+    proxy.getEventClient.asInstanceOf[EventsC].updateMap = true
+    proxy.getEventClient.asInstanceOf[EventsC].mapData = MapData(centerX, centerZ, scale, colours)
   }
 }
 

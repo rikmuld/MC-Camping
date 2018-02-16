@@ -6,7 +6,7 @@ import com.rikmuld.camping.CampingMod._
 import com.rikmuld.camping.Lib._
 import com.rikmuld.camping.inventory.camping.InventoryCamping
 import com.rikmuld.camping.inventory.gui.GuiMapHUD
-import com.rikmuld.camping.misc.{KeyData, NBTPlayer}
+import com.rikmuld.camping.misc.{KeyData, MapData, NBTPlayer}
 import com.rikmuld.camping.objs.Definitions._
 import com.rikmuld.camping.objs.Registry
 import com.rikmuld.camping.tileentity.TileTrap
@@ -81,15 +81,27 @@ class EventsS {
   }
 
   @SubscribeEvent
-  def onPlayerLogin(event: PlayerLoggedInEvent): Unit =
+  def onPlayerLogin(event: PlayerLoggedInEvent): Unit = {
     PacketSender.sendToPlayer(new NBTPlayer(
       event.player.getEntityData.getCompoundTag(NBTInfo.INV_CAMPING)
     ), event.player.asInstanceOf[EntityPlayerMP])
 
+    InventoryCamping.refreshInventory(event.player)
+
+    val map = InventoryCamping.getMap
+    val theMap =
+      if(map.isEmpty) None
+      else Some(map)
+
+    CampingMod.proxy.eventsS.mapChanged(theMap, event.player)
+  }
+
   @SubscribeEvent
   def onItemCrafted(event: ItemCraftedEvent) {
+    val crafting = event.crafting
+
     val marshmallow =
-      event.crafting.isItemEqual(new ItemStack(Registry.parts, 1, Parts.MARSHMALLOW))
+      crafting.isItemEqual(new ItemStack(Registry.parts, 1, Parts.MARSHMALLOW))
 
     for(slot <- 0 until event.craftMatrix.getSizeInventory)
       event.craftMatrix.getStackInSlot(slot) match {
@@ -104,15 +116,10 @@ class EventsS {
           event.craftMatrix.setInventorySlotContents(slot, new ItemStack(Items.GLASS_BOTTLE))
 
         case stack if stack.getItem == Registry.backpack =>
-          event.crafting.setTagCompound(stack.getTagCompound)
+          crafting.setTagCompound(stack.getTagCompound)
 
         case _ =>
       }
-
-//      if ((event.crafting.getItem() == Item.getItemFromBlock(Objs.lantern)) && (event.crafting.getItemDamage == Lantern.ON)) {
-//        event.crafting.setTagCompound(new NBTTagCompound())
-//        event.crafting.getTagCompound.setInteger("time", 1500)
-//      }
   }
 
   def keyPressedServer(player: EntityPlayer, id: Int) {
@@ -120,18 +127,30 @@ class EventsS {
       GuiHelper.openGui(GuiInfo.CAMPING, player)
   }
 
+  def mapChanged(map: Option[ItemStack], player: EntityPlayer): Unit =
+    if(!player.world.isRemote) {
+      val packet =
+        map.fold(
+          new MapData(0, 0, 0, Array())
+        )(map => {
+          val data = InventoryCamping.getMapData(map, player.world)
+          new MapData(data.scale, data.xCenter, data.zCenter, data.colors)
+        })
+
+      PacketSender.sendToPlayer(packet, player.asInstanceOf[EntityPlayerMP])
+    }
+
   @SubscribeEvent
   def onPlayerTick(event: PlayerTickEvent) {
     val player = event.player
-//    val world = player.world
-    //Objs.tent.asInstanceOf[Tent].facingFlag = player.getHorizontalFacing.getHorizontalIndex
-    
+    val world = player.world
+
     if (event.phase.equals(Phase.START)) {
       val trapTime = player.getEntityData.getInteger("isInTrap")
 
       if (trapTime > 0) {
         player.getEntityData.setInteger("isInTrap", trapTime - 1)
-      } else if(trapTime == 0) {
+      } else if (trapTime == 0) {
         player.getEntityData.setInteger("isInTrap", -1)
 
         val speed = player.getEntityAttribute(MOVEMENT_SPEED)
@@ -140,22 +159,28 @@ class EventsS {
           speed.removeModifier(modifier)
         )
       }
+
+      if (!world.isRemote) {
+        InventoryCamping.refreshInventory(player)
+
+        val lantern = InventoryCamping.getLantern
+
+        if(!lantern.isEmpty) {
+          tickLight += 1
+
+          if (tickLight >= 20) {
+            tickLight = 0
+
+            InventoryCamping.lanternTick(player)
+
+//            val bd = (player.world, new BlockPos(player.posX.toInt, player.posY.toInt, player.posZ.toInt))
+//            if (bd.down.block == Blocks.AIR) bd.down.setState(Objs.light.getDefaultState)
+//            else if (bd.block == Blocks.AIR) bd.setState(Objs.light.getDefaultState)
+//            else if (bd.up.block == Blocks.AIR) bd.up.setState(Objs.light.getDefaultState)
+          }
+        }
+      }
     }
-//    if (!world.isRemote && player.hasLantarn()) {
-//      tickLight += 1
-//      if (tickLight >= 20) {
-//        tickLight = 0
-//        player.lanternTick()
-//        val bd = (player.world, new BlockPos(player.posX.toInt, player.posY.toInt, player.posZ.toInt))
-//        if (bd.down.block == Blocks.AIR) bd.down.setState(Objs.light.getDefaultState)
-//        else if (bd.block == Blocks.AIR) bd.setState(Objs.light.getDefaultState)
-//        else if (bd.up.block == Blocks.AIR) bd.up.setState(Objs.light.getDefaultState)
-//      }
-//    }
-//    if (!world.isRemote && player.hasMap()) {
-//      val data = player.getCurrentMapData()
-//      PacketSender.sendToPlayer(new MapData(data.scale, data.xCenter, data.zCenter, data.colors), player.asInstanceOf[EntityPlayerMP])
-//    }
 
 //    if (!world.isRemote) {
 //      val oldMarsh = marshupdate
@@ -190,7 +215,6 @@ class EventsS {
 //    }
 
 
-    //fur armor speed increase below
     val increase = event.player.getArmorInventoryList.count(_.getItem match {
       case item: ItemArmor =>
         item.getArmorMaterial == Objs.fur
@@ -210,7 +234,14 @@ class EventsS {
 
 @SideOnly(Side.CLIENT)
 class EventsC {
-  var map: GuiMapHUD = _
+  var map: Option[GuiMapHUD] =
+    None
+
+  var updateMap: Boolean =
+    false
+
+  var mapData: com.rikmuld.camping.inventory.gui.MapData =
+    _
 
   @SubscribeEvent
   def onKeyInput(event: KeyInputEvent) {
@@ -247,18 +278,24 @@ class EventsC {
     }
   }
   @SubscribeEvent
-  def onOverlayRender(event: RenderGameOverlayEvent): Unit =
-    if (event.getType == ElementType.HOTBAR) {
-      val mc = FMLClientHandler.instance().getClient
+  def onOverlayRender(event: RenderGameOverlayEvent): Unit = {
+    if (updateMap) {
+      map =
+        if (mapData.colors.isEmpty) None
+        else Some(new GuiMapHUD(mapData))
 
-      if (map == null)
-        map = new GuiMapHUD()
-
-      //TODO Don't set world and resolution every time
-      //TODO uncomment
-      if (false) {//mc.player.hasMap) {
-        map.setWorldAndResolution(mc, event.getResolution.getScaledWidth, event.getResolution.getScaledHeight)
-        map.drawScreen(0, 0, event.getPartialTicks)
-      }
+      updateMap = false
     }
+
+    map.foreach(map =>
+      if (event.getType == ElementType.HOTBAR) {
+        val mc = FMLClientHandler.instance().getClient
+
+        InventoryCamping.refreshInventory(mc.player)
+
+        if (!InventoryCamping.getMap.isEmpty)
+          map.drawMap(mc, event.getResolution.getScaledWidth, event.getResolution.getScaledHeight)
+      }
+    )
+  }
 }

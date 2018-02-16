@@ -1,15 +1,19 @@
 package com.rikmuld.camping.inventory.camping
 
+import com.rikmuld.camping.CampingMod
 import com.rikmuld.camping.Lib.{AdvancementInfo, NBTInfo}
 import com.rikmuld.camping.inventory.camping.InventoryCamping._
+import com.rikmuld.camping.objs.Definitions.Lantern
 import com.rikmuld.camping.objs.Registry
 import com.rikmuld.corerm.advancements.TriggerHelper
 import com.rikmuld.corerm.inventory.{InventoryItem, InventoryPlayer}
 import com.rikmuld.corerm.utils.NBTUtils
 import net.minecraft.entity.player.{EntityPlayer, EntityPlayerMP}
-import net.minecraft.inventory.{InventoryCraftResult, InventoryCrafting}
+import net.minecraft.init.Items
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
+import net.minecraft.world.World
+import net.minecraft.world.storage.MapData
 
 object InventoryCamping {
   final val POUCH = 12 until 15
@@ -21,44 +25,84 @@ object InventoryCamping {
   final val SLOT_LANTERN = 2
   final val SLOT_MAP = 3
 
+  var inventory: InventoryCamping =
+    _
+
+  def refreshInventory(player: EntityPlayer): Unit =
+    inventory = getInventory(player)
+
+  def getMap: ItemStack =
+    inventory.getStackInSlot(SLOT_MAP)
+
+  def getLantern: ItemStack =
+    inventory.getStackInSlot(SLOT_LANTERN)
+
+  def getMapData(map: ItemStack, world: World): MapData =
+    Items.FILLED_MAP.getMapData(map, world)
+
+  def lanternTick(player: EntityPlayer): Unit = {
+    val lantern = getLantern
+
+    if (lantern.getItemDamage == Lantern.ON) {
+      val time =
+        if(lantern.hasTagCompound)
+          lantern.getTagCompound.getInteger("time")
+        else {
+          lantern.setTagCompound(new NBTTagCompound)
+          750
+        }
+
+      if(time > 1) {
+        lantern.getTagCompound.setInteger("time", time - 1)
+        inventory.setInventorySlotContents(SLOT_LANTERN, lantern)
+      } else
+        inventory.setInventorySlotContents(SLOT_LANTERN,
+          new ItemStack(Registry.lantern, 1, Lantern.OFF)
+        )
+
+      inventory.saveTag(player)
+    }
+  }
+
   def getSlotsFor(stack: ItemStack): Seq[Int] =
-    if(stack.isEmpty || stack.getItem != Registry.backpack) Vector()
-    else if(stack.getItemDamage == 0) POUCH
-    else if(stack.getItemDamage == 1) BACKPACK
+    if (stack.isEmpty || stack.getItem != Registry.backpack) Vector()
+    else if (stack.getItemDamage == 0) POUCH
+    else if (stack.getItemDamage == 1) BACKPACK
     else RUCKSACK
 
-  def dropItems(player: EntityPlayer): Unit =
-    if(player.getEntityData.hasKey(NBTInfo.INV_CAMPING))
+  def dropItems(player: EntityPlayer): Unit = {
+    if (player.getEntityData.hasKey(NBTInfo.INV_CAMPING))
       NBTUtils.readInventory(player.getEntityData.getCompoundTag(NBTInfo.INV_CAMPING)).values foreach {
         item => player.dropItem(item, true, false)
       }
+
+    CampingMod.proxy.eventsS.mapChanged(None, player)
+  }
+
+  def getInventory(player: EntityPlayer): InventoryCamping = {
+    val inv = new InventoryCamping(player, None)
+    inv.openInventory(player)
+    inv
+  }
 }
 
-class InventoryCamping(player: EntityPlayer, container: ContainerCamping) extends InventoryPlayer(player, 4, 1, NBTInfo.INV_CAMPING) {
-  val craftMatrix: InventoryCrafting =
-    new InventoryCrafting(container, 3, 3)
-
-  val craftMatrixSmall: InventoryCrafting =
-    new InventoryCrafting(container, 2, 2)
-
-  val craftResult: InventoryCraftResult =
-    new InventoryCraftResult()
-
-  val craftResultSmall: InventoryCraftResult =
-    new InventoryCraftResult()
-
+class InventoryCamping(player: EntityPlayer, container: Option[ContainerCamping]) extends InventoryPlayer(player, 4, 1, NBTInfo.INV_CAMPING) {
   private var backpackInv: Option[InventoryItem] =
     None
 
   override def openInventory(player:EntityPlayer) {
     super.openInventory(player)
 
-    onChange(SLOT_BACKPACK)
+    if(container.isDefined)
+      onChange(SLOT_BACKPACK)
   }
 
   override def onChange(slotNum: Int) {
     if (slotNum == SLOT_BACKPACK)
       backpackChanged()
+
+    if (slotNum == SLOT_MAP)
+      CampingMod.proxy.eventsS.mapChanged(Some(getStackInSlot(slotNum)), player)
 
     if(!player.world.isRemote)
       TriggerHelper.trigger(AdvancementInfo.INVENTORY_CHANGED, player.asInstanceOf[EntityPlayerMP], this)
@@ -73,23 +117,17 @@ class InventoryCamping(player: EntityPlayer, container: ContainerCamping) extend
 
     if (!pack.isEmpty) {
       backpackInv = Some(new InventoryItem(pack, 27, 64))
-      container.backpackChanged(pack, backpackInv)
+      container.foreach(_.backpackChanged(pack, backpackInv))
 
       backpackInv.get.openInventory(player)
     } else {
       backpackInv = None
-      container.backpackChanged(pack, backpackInv)
+      container.foreach(_.backpackChanged(pack, backpackInv))
     }
   }
 
   override def closeInventory(player: EntityPlayer): Unit = {
     backpackInv.foreach(_.closeInventory(player))
-
-    for (i <- 0 until 9)
-      player.dropItem(craftMatrix.removeStackFromSlot(i), false)
-
-    for (i <- 0 until 4)
-      player.dropItem(craftMatrixSmall.removeStackFromSlot(i), false)
 
     super.closeInventory(player)
   }
