@@ -23,9 +23,6 @@ object Trap {
 }
 
 class Trap(modId:String, info: ObjDefinition) extends BlockRM(modId, info) {
-  override def getCollisionBoundingBox(state:IBlockState, world: IBlockAccess, pos:BlockPos): AxisAlignedBB =
-    BOUNDS_NONE
-
   override def getBoundingBox(state:IBlockState, source:IBlockAccess, pos:BlockPos):AxisAlignedBB =
     if(getBool(state, STATE_OPEN))
       BOUNDS_OPEN

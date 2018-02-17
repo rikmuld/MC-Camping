@@ -197,10 +197,11 @@ object Lib {
 }
 
 /*
-hemp, sleeping bag, logseat
-tent, wooden campfire
+sleeping bag
+wooden campfire
 cooking equipment
 campfire cook
+tent
 put features in feature package.
 release (and put large amounts of lag as fixed)
 

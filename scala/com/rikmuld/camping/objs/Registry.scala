@@ -54,17 +54,26 @@ object Registry {
     val objHemp = HEMP.create(MOD_ID)
     hemp = objHemp._1
     hempItem = objHemp._2
+
 //    (campfireWood, campfireWoodItem) = CAMPFIRE_WOOD.create(MOD_ID)
 //    (campfireCook, campfireCookItem) = CAMPFIRE_COOK.create(MOD_ID)
+
     val objLantern = LANTERN.create(MOD_ID)
     lantern = objLantern._1
     lanternItem = objLantern._2
-//    (tent, tentItem) = TENT.create(MOD_ID)
+
+    //    (tent, tentItem) = TENT.create(MOD_ID)
+
     val logSeatObj = LOGSEAT.create(MOD_ID)
     logSeat = logSeatObj._1
     logSeatItem = logSeatObj._2
+
     light = LIGHT.createBlock(MOD_ID)
-//    (sleepingBag, sleepingBagItem) = SLEEPING_BAG.create(MOD_ID)
+
+    val sleepingBagObj = SLEEPING_BAG.create(MOD_ID)
+    sleepingBag = sleepingBagObj._1
+    sleepingBagItem = sleepingBagObj._2
+
     val objTrap = TRAP.create(MOD_ID)
     trap = objTrap._1
     trapItem = objTrap._2
@@ -79,7 +88,7 @@ object Registry {
 //      tent,
       logSeat,
       light,
-//      sleepingBag,
+      sleepingBag,
       trap
 //      tentBounds
     )
@@ -120,7 +129,7 @@ object Registry {
       logSeatItem,
       trapItem,
 //      tentItem,
-//      sleepingBagItem,
+      sleepingBagItem,
       hempItem
     )
   }
@@ -145,7 +154,7 @@ object Registry {
     logSeatItem.registerRenders()
     trapItem.registerRenders()
 //    tentItem.registerRenders()
-//    sleepingBagItem.registerRenders()
+    sleepingBagItem.registerRenders()
     hempItem.registerRenders()
   }
 }

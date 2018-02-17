@@ -1,7 +1,7 @@
 package com.rikmuld.camping.objs
 
 import com.rikmuld.camping.Lib._
-import com.rikmuld.camping.objs.blocks._
+import com.rikmuld.camping.objs.blocks.{SleepingBag, _}
 import com.rikmuld.camping.objs.items.{Kit, Marshmallow}
 import com.rikmuld.camping.registers.Objs._
 import com.rikmuld.camping.tileentity.{TileLantern, TileLight, TileLogseat, TileTrap}
@@ -100,16 +100,30 @@ object Definitions {
     TileEntityClass(classOf[TileLight])
   )
 
-  //
-  //  final val SLEEPING_BAG = new ObjDefinition(
-  //    Tab(tab),
-  //    Name("sleeping_bag"),
-  //    PropMaterial(Material.CLOTH),
-  //    Hardness(0.1f),
-  //    MaxStackSize(4),
-  //    ItemBlockClass(classOf[SleepingBagItem])
-  //  )
-  //
+  final val SLEEPING_BAG_STATES = new States(
+    PropBool(SleepingBag.STATE_IS_HEAD),
+    PropBool(SleepingBag.STATE_IS_OCCUPIED),
+    PropDirection(DirectionType.Horizontal)
+  )
+
+  final val SLEEPING_BAG = new ObjDefinition(
+    Tab(tab),
+    Name("sleeping_bag"),
+    PropMaterial(Material.CLOTH),
+    StepType(SoundType.CLOTH),
+    Hardness(0.1f),
+    MaxStackSize(4),
+    BlockStates(SLEEPING_BAG_STATES),
+    BlockClass(classOf[SleepingBag]),
+    NoCollision,
+    Unstable,
+    NonCube
+  )
+
+  object SleepingBag {
+    final val STATE_IS_HEAD = "is_head"
+    final val STATE_IS_OCCUPIED = "is_occupied"
+  }
 
   final val TRAP_STATES = new States(
     PropBool(Trap.STATE_OPEN, true)
@@ -123,6 +137,7 @@ object Definitions {
     HarvestLevel(0, "pickaxe"),
     GuiTrigger(GuiInfo.TRAP),
     Unstable,
+    NoCollision,
     NonCube,
     BlockStates(TRAP_STATES),
     TileEntityClass(classOf[TileTrap]),

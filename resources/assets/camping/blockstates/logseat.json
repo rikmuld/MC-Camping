@@ -1,12 +1,20 @@
 {
-    "variants": {
-        "long=0,turned=false": { "model": "camping:logseat_small" },
-        "long=1,turned=false": { "model": "camping:logseat_left" },
-        "long=2,turned=false": { "model": "camping:logseat_right" },
-        "long=3,turned=false": { "model": "camping:logseat_long" },
-        "long=0,turned=true": { "model": "camping:logseat_small", "y": 90 },
-        "long=1,turned=true": { "model": "camping:logseat_left", "y": 90 },
-        "long=2,turned=true": { "model": "camping:logseat_right", "y": 90 },
-        "long=3,turned=true": { "model": "camping:logseat_long", "y": 90 }
-    }
+  "variants": {
+    "facing=east,left_long=false,right_long=false": { "model": "camping:logseat_small" },
+    "facing=east,left_long=true,right_long=false": { "model": "camping:logseat_left" },
+    "facing=east,left_long=false,right_long=true": { "model": "camping:logseat_right" },
+    "facing=east,left_long=true,right_long=true": { "model": "camping:logseat_long" },
+    "facing=south,left_long=false,right_long=false": { "model": "camping:logseat_small", "y": 90 },
+    "facing=south,left_long=true,right_long=false": { "model": "camping:logseat_left", "y": 90 },
+    "facing=south,left_long=false,right_long=true": { "model": "camping:logseat_right", "y": 90 },
+    "facing=south,left_long=true,right_long=true": { "model": "camping:logseat_long", "y": 90 },
+    "facing=west,left_long=false,right_long=false": { "model": "camping:logseat_small", "y": 180 },
+    "facing=west,left_long=true,right_long=false": { "model": "camping:logseat_left", "y": 180 },
+    "facing=west,left_long=false,right_long=true": { "model": "camping:logseat_right", "y": 180 },
+    "facing=west,left_long=true,right_long=true": { "model": "camping:logseat_long", "y": 180 },
+    "facing=north,left_long=false,right_long=false": { "model": "camping:logseat_small", "y": 270 },
+    "facing=north,left_long=true,right_long=false": { "model": "camping:logseat_left", "y": 270 },
+    "facing=north,left_long=false,right_long=true": { "model": "camping:logseat_right", "y": 270 },
+    "facing=north,left_long=true,right_long=true": { "model": "camping:logseat_long", "y": 270 }
+  }
 }
