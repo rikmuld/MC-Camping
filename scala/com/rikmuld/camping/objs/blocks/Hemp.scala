@@ -93,6 +93,6 @@ class Hemp(modId:String, info: ObjDefinition) extends BlockRM(modId, info) with 
       if(ground == Blocks.GRASS || ground == Blocks.DIRT) 1
       else 2
 
-    (32 - (lightLevel / 2)) * groundMultiplier  * (1 / waterCount)
+    ((32 - (lightLevel / 2)) * groundMultiplier  * (1f / waterCount)).toInt
   }
 }
