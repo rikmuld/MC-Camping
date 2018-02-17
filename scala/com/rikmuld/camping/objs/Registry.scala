@@ -51,7 +51,9 @@ object Registry {
 
   @SubscribeEvent
   def registerBlocks(event: RegistryEvent.Register[Block]): Unit = {
-//    (hemp, hempItem) = HEMP.create(MOD_ID)
+    val objHemp = HEMP.create(MOD_ID)
+    hemp = objHemp._1
+    hempItem = objHemp._2
 //    (campfireWood, campfireWoodItem) = CAMPFIRE_WOOD.create(MOD_ID)
 //    (campfireCook, campfireCookItem) = CAMPFIRE_COOK.create(MOD_ID)
     val objLantern = LANTERN.create(MOD_ID)
@@ -59,7 +61,7 @@ object Registry {
     lanternItem = objLantern._2
 //    (tent, tentItem) = TENT.create(MOD_ID)
 //    (logSeat, logSeatItem) = LOGSEAT.create(MOD_ID)
-//    light = LIGHT.createBlock(MOD_ID)
+    light = LIGHT.createBlock(MOD_ID)
 //    (sleepingBag, sleepingBagItem) = SLEEPING_BAG.create(MOD_ID)
     val objTrap = TRAP.create(MOD_ID)
     trap = objTrap._1
@@ -68,13 +70,13 @@ object Registry {
 //    tentBounds = BOUNDS_TENT.createBlock(MOD_ID)
 
     event.getRegistry.registerAll(
-//      hemp,
+      hemp,
 //      campfireWood,
 //      campfireCook,
       lantern,
 //      tent,
 //      logSeat,
-//      light,
+      light,
 //      sleepingBag,
       trap
 //      tentBounds
@@ -114,10 +116,10 @@ object Registry {
 //      campfireCookItem,
       lanternItem,
 //      logSeatItem,
-      trapItem
+      trapItem,
 //      tentItem,
 //      sleepingBagItem,
-//      hempItem
+      hempItem
     )
   }
 
@@ -142,6 +144,6 @@ object Registry {
     trapItem.registerRenders()
 //    tentItem.registerRenders()
 //    sleepingBagItem.registerRenders()
-//    hempItem.registerRenders()
+    hempItem.registerRenders()
   }
 }

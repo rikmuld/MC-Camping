@@ -1,12 +1,13 @@
 package com.rikmuld.camping.objs
 
 import com.rikmuld.camping.Lib._
+import com.rikmuld.camping.objs.block.Hemp
 import com.rikmuld.camping.objs.blocks.{Lantern, LanternItem, Trap}
 import com.rikmuld.camping.objs.items.{Kit, Marshmallow}
 import com.rikmuld.camping.registers.Objs._
-import com.rikmuld.camping.tileentity.{TileLantern, TileTrap}
+import com.rikmuld.camping.tileentity.{TileLantern, TileLight, TileTrap}
 import com.rikmuld.corerm.objs.Properties._
-import com.rikmuld.corerm.objs.StateProperty.PropBool
+import com.rikmuld.corerm.objs.StateProperty.{PropBool, PropInt}
 import com.rikmuld.corerm.objs.{ObjDefinition, States}
 import net.minecraft.block.material.Material
 import net.minecraft.inventory.EntityEquipmentSlot
@@ -42,13 +43,31 @@ object Definitions {
     final val STATE_HANGING = "hanging"
   }
 
-  //
-  //  final val HEMP = new ObjDefinition(
-  //    Tab(tab),
-  //    Name("hemp"),
-  //    PropMaterial(Material.PLANTS)
-  //  )
-  //
+  final val HEMP_STATES = new States(
+    PropInt(Hemp.STATE_AGE, 0, 6)
+  )
+
+  final val HEMP = new ObjDefinition(
+    Tab(tab),
+    Name("hemp"),
+    PropMaterial(Material.PLANTS),
+    BlockStates(HEMP_STATES),
+    Unstable,
+    NonCube,
+    NoCollision,
+    Ticker,
+    RenderType(BlockRenderLayer.CUTOUT),
+    BlockClass(classOf[Hemp])
+  )
+
+  object Hemp {
+    final val STATE_AGE = "age"
+
+    final val STATE_AGE_GROWN_BOTTOM = 4
+    final val STATE_AGE_GROWN_TOP = 5
+    final val STATE_AGE_READY = 3
+  }
+
   //  final val LOGSEAT = new ObjDefinition(
   //    Tab(tab),
   //    Name("logseat"),
@@ -58,11 +77,15 @@ object Definitions {
   //    HarvestLevel(0, "axe")
   //  )
   //
-  //  final val LIGHT = new ObjDefinition(
-  //    Name("light"),
-  //    PropMaterial(Material.AIR),
-  //    LightLevel(1.0f)
-  //  )
+
+  final val LIGHT = new ObjDefinition(
+    Name("light"),
+    PropMaterial(Material.AIR),
+    LightLevel(1.0f),
+    Air,
+    TileEntityClass(classOf[TileLight])
+  )
+
   //
   //  final val SLEEPING_BAG = new ObjDefinition(
   //    Tab(tab),

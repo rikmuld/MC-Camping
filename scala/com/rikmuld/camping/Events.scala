@@ -9,12 +9,14 @@ import com.rikmuld.camping.inventory.gui.GuiMapHUD
 import com.rikmuld.camping.misc.{KeyData, MapData, NBTPlayer}
 import com.rikmuld.camping.objs.Definitions._
 import com.rikmuld.camping.objs.Registry
+import com.rikmuld.camping.objs.block.Hemp
 import com.rikmuld.camping.tileentity.TileTrap
 import com.rikmuld.corerm.gui.GuiHelper
 import net.minecraft.client.Minecraft
 import net.minecraft.client.gui.GuiChat
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType
 import net.minecraftforge.fml.client.FMLClientHandler
+import net.minecraftforge.fml.common.eventhandler.Event
 import net.minecraftforge.fml.common.gameevent.TickEvent.Phase
 //import com.rikmuld.camping.objs.blocks.{Hemp, Tent}
 //import com.rikmuld.camping.objs.misc.{MapData, NBTPlayer}
@@ -45,15 +47,21 @@ class EventsS {
   val UUIDSpeedCamping = new UUID(new Random(83746763).nextLong, new Random(28647556).nextLong)
 
   @SubscribeEvent
-  def onBoneMealUsed(event: BonemealEvent) {
-//    if (event.getBlock.getBlock == Objs.hemp) {
-//      event.setResult(
-//          if (event.getBlock.getBlock.asInstanceOf[Hemp].grow((event.getWorld, event.getPos)))
-//            Event.Result.ALLOW
-//          else Event.Result.DENY
-//          )
-//    }
-  }
+  def onBoneMealUsed(event: BonemealEvent): Unit =
+    if (event.getBlock.getBlock == Registry.hemp) {
+      val world = event.getWorld
+      val pos = event.getPos
+      val hemp = Registry.hemp.asInstanceOf[Hemp]
+      val result =
+        if (hemp.getInt(world, pos, Hemp.STATE_AGE) <= Hemp.STATE_AGE_READY) {
+          hemp.asInstanceOf[Hemp].grow(world, pos)
+          Event.Result.ALLOW
+        } else
+          Event.Result.DENY
+
+      event.setResult(result)
+    }
+
   @SubscribeEvent
   def onConfigChanged(eventArgs: ConfigChangedEvent.OnConfigChangedEvent):Unit =
     if (eventArgs.getModID.equals(MOD_ID))
@@ -168,15 +176,21 @@ class EventsS {
         if(!lantern.isEmpty) {
           tickLight += 1
 
+          val pos = player.getPosition
+
+          Vector(pos, pos.down, pos.up, pos.north, pos.south, pos.west, pos.east).find(pos => {
+            if(world.getBlockState(pos).getBlock == Registry.light)
+              true
+            else if(world.isAirBlock(pos))
+              world.setBlockState(pos, Registry.light.getDefaultState)
+            else
+              false
+          })
+
           if (tickLight >= 20) {
             tickLight = 0
 
             InventoryCamping.lanternTick(player)
-
-//            val bd = (player.world, new BlockPos(player.posX.toInt, player.posY.toInt, player.posZ.toInt))
-//            if (bd.down.block == Blocks.AIR) bd.down.setState(Objs.light.getDefaultState)
-//            else if (bd.block == Blocks.AIR) bd.setState(Objs.light.getDefaultState)
-//            else if (bd.up.block == Blocks.AIR) bd.up.setState(Objs.light.getDefaultState)
           }
         }
       }

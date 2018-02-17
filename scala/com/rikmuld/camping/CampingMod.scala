@@ -197,22 +197,14 @@ object Lib {
 }
 
 /*
-camping mod utils/events and map gui/data stuff, light, sleeping bag, hemp, logseat
-other blocks not campfire cook
+hemp, sleeping bag, logseat
+tent, wooden campfire
 cooking equipment
 campfire cook
 put features in feature package.
 release (and put large amounts of lag as fixed)
 
 plan: improve camping inv tab look (as creative inv) then ten gui cleanup (make tabbed) then release... continue with todo
-
-tomorrow:
-  - cleanup arstract box -> jutable model in sepperate file (for the cooking equipment models)
-  - mutable model redo
-  - registery system
-  - objs redo
-  - utils
-  - bounds structure way improve
 
   TODO after for next update
   - make tent tabbed gui

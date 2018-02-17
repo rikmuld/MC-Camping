@@ -11,7 +11,7 @@ import com.rikmuld.camping.objs.blocks.Trap
 import com.rikmuld.camping.registers.Objs
 import com.rikmuld.corerm.advancements.TriggerHelper
 import com.rikmuld.corerm.network.PacketSender
-import com.rikmuld.corerm.tileentity.TileEntityInventory
+import com.rikmuld.corerm.tileentity.{TileEntityInventory, TileEntityTicker}
 import net.minecraft.block.state.IBlockState
 import net.minecraft.entity.SharedMonsterAttributes.MOVEMENT_SPEED
 import net.minecraft.entity.ai.attributes.AttributeModifier
@@ -22,7 +22,6 @@ import net.minecraft.entity.{EntityLiving, EntityLivingBase}
 import net.minecraft.init.Items
 import net.minecraft.item.ItemStack
 import net.minecraft.potion.PotionEffect
-import net.minecraft.util.ITickable
 import net.minecraft.util.math.{AxisAlignedBB, BlockPos}
 import net.minecraft.world.World
 
@@ -46,7 +45,9 @@ object TileTrap {
   )
 }
 
-class TileTrap extends TileEntityInventory with ITickable {
+class TileTrap extends TileEntityInventory with TileEntityTicker {
+  registerTicker(updateLureEntities, 50)
+
   var trappedEntity: Option[EntityLivingBase] =
     None
 
@@ -55,6 +56,9 @@ class TileTrap extends TileEntityInventory with ITickable {
 
   var lastPlayer: Option[EntityPlayer] =
     None
+
+  var lureEntities: Seq[EntityLiving] =
+    Seq()
 
   override def openInventory(player: EntityPlayer): Unit =
     lastPlayer = Some(player)
@@ -106,9 +110,6 @@ class TileTrap extends TileEntityInventory with ITickable {
       setTrapped(None)
   }
 
-  def isOpen: Boolean =
-    getBlock.getBool(world, pos, STATE_OPEN)
-
   def getBlock: Trap =
     world.getBlockState(pos).getBlock.asInstanceOf[Trap]
 
@@ -124,24 +125,32 @@ class TileTrap extends TileEntityInventory with ITickable {
   def getLureEntities: Seq[EntityLiving] =
     world.getEntitiesWithinAABB(classOf[EntityLiving], getLureBounds)
 
-  override def update():Unit =
-    if(!world.isRemote) {
+  override def update():Unit = {
+    super.update()
+
+    if (!world.isRemote) {
       if (closeCooldown > 0) closeCooldown -= 1
 
       val entities = getCaptureEntities
 
-      if (isOpen)
+      if (getBlock.getBool(world, pos, STATE_OPEN))
         tryCatch(entities)
       else
         trappedEntity.foreach(entity => updateTrappedEntity(entity, entities))
     }
+  }
 
-  private def tryCatch(entities: Seq[EntityLivingBase]): Unit = //do from hitten bounds in block, not checking every tick
+  def updateLureEntities(): Unit = {
+    println("hallo!")
+    lureEntities = getLureEntities
+  }
+
+  private def tryCatch(entities: Seq[EntityLivingBase]): Unit =
     if (entities.nonEmpty && closeCooldown == 0) {
       setTrapped(Some(entities.head))
       setOpen(false)
     } else
-      lure(getLureEntities)
+      lure(lureEntities)
 
   private def updateTrappedEntity(entity: EntityLivingBase, entities: Seq[EntityLivingBase]): Unit =
     if (entity.isDead || !entities.contains(entity))
@@ -159,7 +168,7 @@ class TileTrap extends TileEntityInventory with ITickable {
 
     entity match {
       case player: EntityPlayer =>
-        player.getEntityData.setInteger("isInTrap", 2) //TODO make sure that cannot jump using jump event, put event handler here (also put the remove mod in there)
+        player.getEntityData.setInteger("isInTrap", 2) //TODO make sure that cannot jump, put event handler here (also put the remove mod in there)
 
         val speed = player.getEntityAttribute(MOVEMENT_SPEED)
 

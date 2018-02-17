@@ -19,7 +19,7 @@ object Trap {
     new AxisAlignedBB(0.21875f, 0, 0.34375f, 0.78125f, 0.25f, 0.65f)
 
   final val BOUNDS_NONE =
-    new AxisAlignedBB(0, 0, 0, 0, 0, 0)
+    new AxisAlignedBB(0.5, 0, 0.5, 0.5, 0, 0.5)
 }
 
 class Trap(modId:String, info: ObjDefinition) extends BlockRM(modId, info) {
