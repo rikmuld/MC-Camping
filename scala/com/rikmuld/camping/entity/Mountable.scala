@@ -1,5 +1,10 @@
 package com.rikmuld.camping.entity
 
+import com.rikmuld.camping.misc.PlayerExitLog
+import com.rikmuld.camping.objs.Registry
+import com.rikmuld.camping.tileentity.TileLogseat
+import com.rikmuld.corerm.network.PacketSender
+import net.minecraft.client.Minecraft
 import net.minecraft.entity.Entity
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.nbt.NBTTagCompound
@@ -22,14 +27,18 @@ class Mountable(worldIn: World) extends Entity(worldIn) {
 
   override def onUpdate() {
     super.onUpdate()
+
     if(pos!=null){
-//      if (world.getBlockState(pos).getBlock != Objs.logseat) setDead()
-//      if (this.getPassengers.size() > 0 &&
-//          world.isRemote && Minecraft.getMinecraft.gameSettings.keyBindSneak.isPressed &&
-//          Minecraft.getMinecraft.inGameHasFocus) {
-//          PacketSender.sendToServer(new PlayerExitLog(pos.getX, pos.getY, pos.getZ))
-//          this.getPassengers.get(0).dismountRidingEntity()
-//      }
+      if (
+        world.getBlockState(pos).getBlock != Registry.logSeat ||
+        world.getTileEntity(pos).asInstanceOf[TileLogseat].mountable != this
+      ) setDead()//TODO put better in logseat code
+      if (this.getPassengers.size() > 0 &&
+          world.isRemote && Minecraft.getMinecraft.gameSettings.keyBindSneak.isPressed &&
+          Minecraft.getMinecraft.inGameHasFocus) {
+          PacketSender.sendToServer(new PlayerExitLog(pos.getX, pos.getY, pos.getZ))
+          this.getPassengers.get(0).dismountRidingEntity()
+      }
     }
   }
 

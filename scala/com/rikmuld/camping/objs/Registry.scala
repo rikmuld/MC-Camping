@@ -12,7 +12,7 @@ import net.minecraftforge.event.RegistryEvent
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 
-//call post item and pre block registry
+//TODO call post item and pre block registry, and put stuff in there which is now in other registries (such as tabs, armor material, recipes) [pre, pre, post]
 
 @EventBusSubscriber
 object Registry {
@@ -60,7 +60,9 @@ object Registry {
     lantern = objLantern._1
     lanternItem = objLantern._2
 //    (tent, tentItem) = TENT.create(MOD_ID)
-//    (logSeat, logSeatItem) = LOGSEAT.create(MOD_ID)
+    val logSeatObj = LOGSEAT.create(MOD_ID)
+    logSeat = logSeatObj._1
+    logSeatItem = logSeatObj._2
     light = LIGHT.createBlock(MOD_ID)
 //    (sleepingBag, sleepingBagItem) = SLEEPING_BAG.create(MOD_ID)
     val objTrap = TRAP.create(MOD_ID)
@@ -75,7 +77,7 @@ object Registry {
 //      campfireCook,
       lantern,
 //      tent,
-//      logSeat,
+      logSeat,
       light,
 //      sleepingBag,
       trap
@@ -115,7 +117,7 @@ object Registry {
 //      campfireWoodItem,
 //      campfireCookItem,
       lanternItem,
-//      logSeatItem,
+      logSeatItem,
       trapItem,
 //      tentItem,
 //      sleepingBagItem,
@@ -140,7 +142,7 @@ object Registry {
 //    campfireWoodItem.registerRenders()
 //    campfireCookItem.registerRenders()
     lanternItem.registerRenders()
-//    logSeatItem.registerRenders()
+    logSeatItem.registerRenders()
     trapItem.registerRenders()
 //    tentItem.registerRenders()
 //    sleepingBagItem.registerRenders()

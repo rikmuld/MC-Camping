@@ -21,7 +21,7 @@ class HempGen extends net.minecraft.world.gen.feature.WorldGenerator {
       }
 
       if (bd.isAir && (bd.down.north.material == Material.WATER || bd.down.south.material == Material.WATER || bd.down.west.material == Material.WATER || bd.down.east.material == Material.WATER)) {
-        val age = random.nextInt(random.nextInt(4))
+        val age = random.nextInt(4)
         if (Registry.hemp.canStay(world, bd.pos)) {
           world.setBlockState(bd.pos, Registry.hemp.getDefaultState)
           Registry.hemp.setState(world, bd.pos, Definitions.Hemp.STATE_AGE, age)

@@ -140,10 +140,8 @@ class TileTrap extends TileEntityInventory with TileEntityTicker {
     }
   }
 
-  def updateLureEntities(): Unit = {
-    println("hallo!")
+  def updateLureEntities(): Unit =
     lureEntities = getLureEntities
-  }
 
   private def tryCatch(entities: Seq[EntityLivingBase]): Unit =
     if (entities.nonEmpty && closeCooldown == 0) {

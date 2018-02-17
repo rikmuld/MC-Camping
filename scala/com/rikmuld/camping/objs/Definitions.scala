@@ -1,14 +1,14 @@
 package com.rikmuld.camping.objs
 
 import com.rikmuld.camping.Lib._
-import com.rikmuld.camping.objs.block.Hemp
-import com.rikmuld.camping.objs.blocks.{Lantern, LanternItem, Trap}
+import com.rikmuld.camping.objs.blocks._
 import com.rikmuld.camping.objs.items.{Kit, Marshmallow}
 import com.rikmuld.camping.registers.Objs._
-import com.rikmuld.camping.tileentity.{TileLantern, TileLight, TileTrap}
+import com.rikmuld.camping.tileentity.{TileLantern, TileLight, TileLogseat, TileTrap}
 import com.rikmuld.corerm.objs.Properties._
-import com.rikmuld.corerm.objs.StateProperty.{PropBool, PropInt}
+import com.rikmuld.corerm.objs.StateProperty.{DirectionType, PropBool, PropDirection, PropInt}
 import com.rikmuld.corerm.objs.{ObjDefinition, States}
+import net.minecraft.block.SoundType
 import net.minecraft.block.material.Material
 import net.minecraft.inventory.EntityEquipmentSlot
 import net.minecraft.util.BlockRenderLayer
@@ -68,15 +68,29 @@ object Definitions {
     final val STATE_AGE_READY = 3
   }
 
-  //  final val LOGSEAT = new ObjDefinition(
-  //    Tab(tab),
-  //    Name("logseat"),
-  //    PropMaterial(Material.WOOD),
-  //    StepType(SoundType.WOOD),
-  //    Hardness(Hardness.WOOD),
-  //    HarvestLevel(0, "axe")
-  //  )
-  //
+  final val LOGSEAT_STATES = new States(
+    PropDirection(DirectionType.Horizontal),
+    PropBool(LogSeat.STATE_RIGHT_LONG),
+    PropBool(LogSeat.STATE_LEFT_LONG)
+  )
+
+  final val LOGSEAT = new ObjDefinition(
+    Tab(tab),
+    Name("logseat"),
+    PropMaterial(Material.WOOD),
+    StepType(SoundType.WOOD),
+    Hardness(Hardness.WOOD),
+    HarvestLevel(0, "axe"),
+    NonCube,
+    BlockStates(LOGSEAT_STATES),
+    TileEntityClass(classOf[TileLogseat]),
+    BlockClass(classOf[Logseat])
+  )
+
+  object LogSeat {
+    final val STATE_RIGHT_LONG = "right_long"
+    final val STATE_LEFT_LONG = "left_long"
+  }
 
   final val LIGHT = new ObjDefinition(
     Name("light"),

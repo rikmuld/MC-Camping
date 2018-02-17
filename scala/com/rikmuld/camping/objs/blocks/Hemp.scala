@@ -1,4 +1,4 @@
-package com.rikmuld.camping.objs.block
+package com.rikmuld.camping.objs.blocks
 
 import java.util.Random
 

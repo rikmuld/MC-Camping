@@ -9,7 +9,7 @@ import com.rikmuld.camping.inventory.gui.GuiMapHUD
 import com.rikmuld.camping.misc.{KeyData, MapData, NBTPlayer}
 import com.rikmuld.camping.objs.Definitions._
 import com.rikmuld.camping.objs.Registry
-import com.rikmuld.camping.objs.block.Hemp
+import com.rikmuld.camping.objs.blocks.Hemp
 import com.rikmuld.camping.tileentity.TileTrap
 import com.rikmuld.corerm.gui.GuiHelper
 import net.minecraft.client.Minecraft
