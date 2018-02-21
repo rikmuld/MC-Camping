@@ -1,7 +1,7 @@
 package com.rikmuld.camping.registers
 
 import com.rikmuld.camping.CampingMod._
-import com.rikmuld.camping.tileentity.{TileLantern, TileLight, TileLogseat, TileTrap}
+import com.rikmuld.camping.tileentity._
 import net.minecraftforge.fml.common.registry.GameRegistry
 
 object ModTiles {
@@ -10,9 +10,9 @@ object ModTiles {
       GameRegistry.registerTileEntity(classOf[TileLogseat], MOD_ID + "_tileLogseat")
       GameRegistry.registerTileEntity(classOf[TileLight], MOD_ID + "_tileLight")
       GameRegistry.registerTileEntity(classOf[TileTrap], MOD_ID + "_tileTrap")
-//      GameRegistry.registerTileEntity(classOf[TileCampfire], MOD_ID + "_tileCampfire")
-//      GameRegistry.registerTileEntity(classOf[TileCampfireCook], MOD_ID + "_tileCampfireCook")
-//      GameRegistry.registerTileEntity(classOf[TileCampfireWood], MOD_ID + "_tileCampfireWood")
+      GameRegistry.registerTileEntity(classOf[TileCampfireCook], MOD_ID + "_tileCampfireCook")
+      GameRegistry.registerTileEntity(classOf[TileCampfireWoodOn], MOD_ID + "_tileCampfireWoodOn")
+      GameRegistry.registerTileEntity(classOf[TileCampfireWoodOff], MOD_ID + "_tileCampfireWoodOff")
 //      GameRegistry.registerTileEntity(classOf[TileTent], MOD_ID + "_tileTent")
     }
   }

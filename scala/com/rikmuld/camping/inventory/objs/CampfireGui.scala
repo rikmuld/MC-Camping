@@ -3,7 +3,6 @@
 //import com.rikmuld.camping.Lib.TextureInfo
 //import com.rikmuld.camping.inventory.{SlotCooking, SlotItem, SlotItemMeta}
 //import com.rikmuld.camping.misc.CookingEquipment
-//import com.rikmuld.camping.objs.ItemDefinitions.Kit
 //import com.rikmuld.camping.registers.Objs
 //import com.rikmuld.camping.tileentity.TileCampfireCook
 //import com.rikmuld.corerm.gui.container.ContainerSimple

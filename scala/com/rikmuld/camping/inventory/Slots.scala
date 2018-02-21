@@ -24,7 +24,7 @@ class SlotState(inv: IInventory, id: Int, x: Int, y: Int) extends Slot(inv, id, 
   def setStateY(state: Int) =
     stateY = yFlag - (18 * state)
 }
-
+//
 //class SlotCooking(inv: IInventory, id: Int, x: Int, y: Int) extends Slot(inv, id, x, y) {
 //  var active: Boolean =
 //    false

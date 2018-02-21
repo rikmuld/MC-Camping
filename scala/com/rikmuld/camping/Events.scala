@@ -10,8 +10,9 @@ import com.rikmuld.camping.misc.{KeyData, MapData, NBTPlayer}
 import com.rikmuld.camping.objs.Definitions._
 import com.rikmuld.camping.objs.Registry
 import com.rikmuld.camping.objs.blocks.Hemp
-import com.rikmuld.camping.tileentity.TileTrap
+import com.rikmuld.camping.tileentity.{Roaster, TileTrap}
 import com.rikmuld.corerm.gui.GuiHelper
+import com.rikmuld.corerm.utils.PlayerUtils
 import net.minecraft.client.Minecraft
 import net.minecraft.client.gui.GuiChat
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType
@@ -42,9 +43,14 @@ import net.minecraftforge.fml.relauncher.{Side, SideOnly}
 import scala.collection.JavaConversions._
 
 class EventsS {
-  var tickLight: Int = 0
-  var marshupdate: Float = 0
-  val UUIDSpeedCamping = new UUID(new Random(83746763).nextLong, new Random(28647556).nextLong)
+  var tickLight: Int =
+    0
+
+  var roasterTick: Float =
+    0
+
+  val UUIDSpeedCamping =
+    new UUID(new Random(83746763).nextLong, new Random(28647556).nextLong)
 
   @SubscribeEvent
   def onBoneMealUsed(event: BonemealEvent): Unit =
@@ -152,6 +158,7 @@ class EventsS {
   def onPlayerTick(event: PlayerTickEvent) {
     val player = event.player
     val world = player.world
+    val item = player.inventory.getCurrentItem
 
     if (event.phase.equals(Phase.START)) {
       val trapTime = player.getEntityData.getInteger("isInTrap")
@@ -196,37 +203,34 @@ class EventsS {
       }
     }
 
-//    if (!world.isRemote) {
-//      val oldMarsh = marshupdate
-//
-//      if(Option(player.inventory.getCurrentItem).isDefined){
-//        val mob = Option(PlayerUtils.getMOP(player))
-//        if (mob.isDefined) {
-//          val x = mob.get.getBlockPos.getX
-//          val y = mob.get.getBlockPos.getY
-//          val z = mob.get.getBlockPos.getZ
-//          val bd = (player.world, mob.get.getBlockPos)
-//          val item = player.inventory.getCurrentItem
-//
-//          if(bd.tile.isInstanceOf[Roaster] && (new Vec3d(x + 0.5F, y + 0.5F, z + 0.5F).distanceTo(new Vec3d(player.posX, player.posY, player.posZ)) <= 2.5F)){
-//            val roaster = bd.tile.asInstanceOf[Roaster]
-//            if(roaster.canRoast(item)){
-//              if(marshupdate > roaster.roastTime(item)){
-//                val cooked = roaster.roast(player, item).get
-//
-//                player.inventory.getCurrentItem.setCount(player.inventory.getCurrentItem.getCount - 1)
-//
-//                if (player.inventory.getCurrentItem.getCount <= 0) player.setHeldItem(player.getActiveHand, ItemStack.EMPTY)
-//                if (!player.inventory.addItemStackToInventory(cooked)) player.dropItem(cooked, false)
-//                marshupdate = 0
-//              } else marshupdate += roaster.roastSpeed(item)
-//            }
-//          }
-//        }
-//      }
-//
-//      if(marshupdate == oldMarsh)marshupdate = 0
-//    }
+    if (!world.isRemote) {
+      val roasterTickOld = roasterTick
+
+      if(!item.isEmpty){
+        Option(PlayerUtils.getMOP(player)).foreach(mop =>
+          world.getTileEntity(mop.getBlockPos) match {
+            case roaster: Roaster if mop.getBlockPos.distanceSq(player.posX, player.posY, player.posZ) <= 7 =>
+
+              if(roaster.canRoast(item)){
+                if(roasterTick > roaster.roastTime(item)){
+                  val cooked = roaster.roast(player, item).get
+
+                  player.inventory.getCurrentItem.setCount(player.inventory.getCurrentItem.getCount - 1)
+
+                  if (player.inventory.getCurrentItem.getCount <= 0) player.setHeldItem(player.getActiveHand, ItemStack.EMPTY)
+                  if (!player.inventory.addItemStackToInventory(cooked)) player.dropItem(cooked, false)
+                  roasterTick = 0
+                } else roasterTick += roaster.roastSpeed(item)
+              }
+
+            case _ =>
+          }
+        )
+      }
+
+      if(roasterTick == roasterTickOld)
+        roasterTick = 0
+    }
 
 
     val increase = event.player.getArmorInventoryList.count(_.getItem match {

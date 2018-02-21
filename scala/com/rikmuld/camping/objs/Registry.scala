@@ -40,6 +40,7 @@ object Registry {
 
   var hemp,
       campfireWood,
+      campfireWoodOn,
       campfireCook,
       lantern,
       tent,
@@ -55,8 +56,15 @@ object Registry {
     hemp = objHemp._1
     hempItem = objHemp._2
 
-//    (campfireWood, campfireWoodItem) = CAMPFIRE_WOOD.create(MOD_ID)
-//    (campfireCook, campfireCookItem) = CAMPFIRE_COOK.create(MOD_ID)
+    val objCampfireWood = CAMPFIRE_WOOD_OFF.create(MOD_ID)
+    campfireWood = objCampfireWood._1
+    campfireWoodItem = objCampfireWood._2
+
+    campfireWoodOn = CAMPFIRE_WOOD_ON.createBlock(MOD_ID)
+
+    val objCampfireCook = CAMPFIRE_COOK.create(MOD_ID)
+    campfireCook = objCampfireCook._1
+    campfireCookItem = objCampfireCook._2
 
     val objLantern = LANTERN.create(MOD_ID)
     lantern = objLantern._1
@@ -82,8 +90,9 @@ object Registry {
 
     event.getRegistry.registerAll(
       hemp,
-//      campfireWood,
-//      campfireCook,
+      campfireWood,
+      campfireWoodOn,
+      campfireCook,
       lantern,
 //      tent,
       logSeat,
@@ -123,8 +132,8 @@ object Registry {
       furChest,
       furHead,
       furLeg,
-//      campfireWoodItem,
-//      campfireCookItem,
+      campfireWoodItem,
+      campfireCookItem,
       lanternItem,
       logSeatItem,
       trapItem,
@@ -148,8 +157,8 @@ object Registry {
     furChest.registerRenders()
     furHead.registerRenders()
     furLeg.registerRenders()
-//    campfireWoodItem.registerRenders()
-//    campfireCookItem.registerRenders()
+    campfireWoodItem.registerRenders()
+    campfireCookItem.registerRenders()
     lanternItem.registerRenders()
     logSeatItem.registerRenders()
     trapItem.registerRenders()

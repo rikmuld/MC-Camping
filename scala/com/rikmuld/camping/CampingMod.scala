@@ -197,7 +197,6 @@ object Lib {
 }
 
 /*
-sleeping bag
 wooden campfire
 cooking equipment
 campfire cook

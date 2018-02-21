@@ -1,6 +1,7 @@
 itemGroup.camping=The Camping Mod
 item.camping:campfire_cook.name=Campfire
-item.camping:campfire_wood.name=Wooden Campfire
+item.camping:campfire_wood_off.name=Wooden Campfire
+item.camping:campfire_wood_on.name=Wooden Campfire
 item.camping:knife.name=Swiss Knife
 item.camping:parts_canvas.name=Canvas
 item.camping:parts_stick_iron.name=Iron Stick

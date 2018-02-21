@@ -1,11 +1,12 @@
 package com.rikmuld.camping.objs
 
 import com.rikmuld.camping.Lib._
+import com.rikmuld.camping.objs.block.{CampfireCook, CampfireWoodOff, CampfireWoodOn}
 import com.rikmuld.camping.objs.blocks.{SleepingBag, _}
 import com.rikmuld.camping.objs.items.{Kit, Marshmallow}
 import com.rikmuld.camping.registers.Objs._
-import com.rikmuld.camping.tileentity.{TileLantern, TileLight, TileLogseat, TileTrap}
-import com.rikmuld.corerm.objs.Properties._
+import com.rikmuld.camping.tileentity._
+import com.rikmuld.corerm.objs.Properties.{Ticker, _}
 import com.rikmuld.corerm.objs.StateProperty.{DirectionType, PropBool, PropDirection, PropInt}
 import com.rikmuld.corerm.objs.{ObjDefinition, States}
 import net.minecraft.block.SoundType
@@ -148,25 +149,61 @@ object Definitions {
     final val STATE_OPEN = "open"
   }
 
-  //
-  //  final val CAMPFIRE_WOOD = new ObjDefinition(
-  //    Tab(tab),
-  //    Name("campfire_wood"),
-  //    PropMaterial(Material.FIRE),
-  //    Hardness(1f),
-  //    LightLevel(1.0f),
-  //    HarvestLevel(0, "axe")
-  //  )
-  //
-  //  final val CAMPFIRE_COOK = new ObjDefinition(
-  //    Tab(tab),
-  //    Name("campfire_cook"),
-  //    PropMaterial(Material.FIRE),
-  //    Hardness(Hardness.STONE),
-  //    LightLevel(1.0f),
-  //    HarvestLevel(0, "pickaxe"),
-  //    GuiTrigger(Guis.CAMPFIRE_COOK)
-  //  )
+  final val CAMPFIRE_WOOD_STATES = new States(
+    PropInt(CampfireWood.STATE_LIGHT, 0, 16)
+  )
+
+  final val CAMPFIRE_WOOD = new ObjDefinition(
+    Tab(tab),
+    PropMaterial(Material.WOOD),
+    Hardness(1),
+    Unstable,
+    NonCube,
+    NoCollision,
+    HarvestLevel(0, "axe"),
+    BlockStates(CAMPFIRE_WOOD_STATES)
+  )
+
+  final val CAMPFIRE_WOOD_ON = CAMPFIRE_WOOD.update(
+    LightLevel(LightLevel.TORCH),
+    Name("campfire_wood_on"),
+    Ticker,
+    BlockClass(classOf[CampfireWoodOn]),
+    TileEntityClass(classOf[TileCampfireWoodOn])
+  )
+
+  final val CAMPFIRE_WOOD_OFF = CAMPFIRE_WOOD.update(
+    Name("campfire_wood_off"),
+    BlockClass(classOf[CampfireWoodOff]),
+    TileEntityClass(classOf[TileCampfireWoodOff])
+  )
+
+  object CampfireWood {
+    final val STATE_LIGHT = "light"
+  }
+
+  final val CAMPFIRE_COOK_STATES = new States(
+    PropBool(CampfireCook.STATE_ON)
+  )
+
+  final val CAMPFIRE_COOK = new ObjDefinition(
+    Tab(tab),
+    Name("campfire_cook"),
+    PropMaterial(Material.ROCK),
+    Hardness(Hardness.STONE),
+    HarvestLevel(0, "pickaxe"),
+    Unstable,
+    NonCube,
+    BlockStates(CAMPFIRE_COOK_STATES),
+    BlockClass(classOf[CampfireCook]),
+    TileEntityClass(classOf[TileCampfireCook]),
+    GuiTrigger(GuiInfo.CAMPFIRE_COOK)
+  )
+
+  object CampfireCook {
+    final val STATE_ON = "lit"
+  }
+
   //
   //  final val TENT = new ObjDefinition(
   //    Tab(tab),

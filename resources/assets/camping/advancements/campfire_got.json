@@ -1,7 +1,7 @@
 {
   "display": {
     "icon": {
-      "item": "camping:campfire_wood"
+      "item": "camping:campfire_wood_off"
     },
     "title": "Eating Outdoors",
     "description": "Create a Wooden Campfire"
@@ -13,7 +13,7 @@
       "conditions": {
         "items": [
           {
-            "item": "camping:campfire_wood"
+            "item": "camping:campfire_wood_off"
           }
         ]
       }
