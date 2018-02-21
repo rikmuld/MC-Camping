@@ -1,8 +1,7 @@
 package com.rikmuld.camping.objs
 
 import com.rikmuld.camping.Lib._
-import com.rikmuld.camping.objs.block.{CampfireCook, CampfireWoodOff, CampfireWoodOn}
-import com.rikmuld.camping.objs.blocks.{SleepingBag, _}
+import com.rikmuld.camping.objs.blocks._
 import com.rikmuld.camping.objs.items.{Kit, Marshmallow}
 import com.rikmuld.camping.registers.Objs._
 import com.rikmuld.camping.tileentity._

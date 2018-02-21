@@ -1,4 +1,4 @@
-package com.rikmuld.camping.objs.block
+package com.rikmuld.camping.objs.blocks
 
 import java.util.Random
 
@@ -13,8 +13,8 @@ import com.rikmuld.corerm.objs.blocks._
 import net.minecraft.block.state.IBlockState
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.init.Items
-import net.minecraft.item.Item
-import net.minecraft.util.math.{AxisAlignedBB, BlockPos}
+import net.minecraft.item.{Item, ItemStack}
+import net.minecraft.util.math.{AxisAlignedBB, BlockPos, RayTraceResult}
 import net.minecraft.util.{EnumFacing, EnumHand, EnumParticleTypes}
 import net.minecraft.world.{IBlockAccess, World}
 import net.minecraftforge.fml.relauncher.{Side, SideOnly}
@@ -46,12 +46,6 @@ object Campfire {
 class CampfireCook(modId:String, info:ObjDefinition) extends BlockRM(modId, info) {
   override def getBoundingBox(state:IBlockState, source:IBlockAccess, pos:BlockPos): AxisAlignedBB =
     Campfire.CAMPFIRE_COOK_BOUNDS
-
-  //  override def onBlockActivated(world: World, pos:BlockPos, state:IBlockState, player: EntityPlayer, hand:EnumHand, side: EnumFacing, xHit: Float, yHit: Float, zHit: Float): Boolean = {
-//    val bd = (world, pos)
-//    bd.tile.asInstanceOf[TileCampfireCook].lastPlayer = player
-//    super.onBlockActivated(world, pos, state, player, hand, side, xHit, yHit, zHit)
-//  }
 
   override def getLightValue(state:IBlockState, world: IBlockAccess, pos:BlockPos): Int =
     if(getBool(state, STATE_ON)) 15 else 0
@@ -105,6 +99,11 @@ class CampfireWoodOff(modId:String, info: ObjDefinition) extends CampfireWood(mo
 
 
 class CampfireWoodOn(modId:String, info: ObjDefinition) extends CampfireWood(modId, info) {
+
+  override def getPickBlock(state: IBlockState, target: RayTraceResult,
+                            world: World, pos: BlockPos, player: EntityPlayer): ItemStack =
+
+    new ItemStack(Registry.campfireWood)
 
   @SideOnly(Side.CLIENT)
   override def randomDisplayTick(state: IBlockState, world: World, pos: BlockPos, random: Random): Unit =

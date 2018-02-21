@@ -1,19 +1,24 @@
 package com.rikmuld.camping.tileentity
 
+import com.rikmuld.camping.CampingMod._
 import com.rikmuld.camping.Lib.AdvancementInfo
 import com.rikmuld.camping.entity.Mountable
+import com.rikmuld.camping.inventory.SlotCooking
+import com.rikmuld.camping.misc.CookingEquipment
 import com.rikmuld.camping.objs.Definitions.CampfireWood._
 import com.rikmuld.camping.objs.Registry
 import com.rikmuld.corerm.advancements.TriggerHelper
 import com.rikmuld.corerm.objs.blocks.BlockSimple
-import com.rikmuld.corerm.tileentity.{TileEntitySimple, TileEntityTicker}
+import com.rikmuld.corerm.tileentity.{TileEntityInventory, TileEntitySimple, TileEntityTicker}
 import net.minecraft.block.state.IBlockState
 import net.minecraft.entity.EntityLivingBase
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemStack
+import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.potion.{Potion, PotionEffect}
 import net.minecraft.util.math.{AxisAlignedBB, BlockPos}
 import net.minecraft.world.World
+import net.minecraftforge.fml.relauncher.{Side, SideOnly}
 
 import scala.collection.JavaConversions._
 
@@ -40,16 +45,10 @@ class TileCampfireWoodOn extends TileEntitySimple with TileEntityTicker with Roa
   }
 
   def getBlock: BlockSimple =
-    Registry.campfireWood
+    Registry.campfireWoodOn
 
   override def shouldRefresh(world: World, pos: BlockPos, oldState: IBlockState, newState: IBlockState): Boolean =
     oldState.getBlock != newState.getBlock
-
-  override def canRoast(item: ItemStack): Boolean =
-    true
-
-  override def roastResult(item: ItemStack) =
-    new ItemStack(Registry.marshmallow)
 
   override def roastTime(item: ItemStack): Int =
     350
@@ -76,9 +75,11 @@ class TileCampfireWoodOff extends TileEntitySimple with TileEntityTicker {
 }
 
 trait Roaster {
-  def canRoast(item: ItemStack): Boolean
+  def canRoast(item: ItemStack): Boolean =
+    true
 
-  protected def roastResult(item:ItemStack): ItemStack
+  protected def roastResult(item:ItemStack): ItemStack =
+    new ItemStack(Registry.marshmallow)
 
   def roastTime(item: ItemStack): Int =
     150
@@ -102,145 +103,160 @@ trait Roaster {
     }
 }
 
-class TileCampfireCook extends TileEntitySimple {}//with TileEntityInventory with ITickable with Roaster {
-//  var maxFeul: Int = config.campfireMaxFuel
-//  var fuelForCoal: Int = config.campfireCoalFuel
-//  var fuel: Int = _
-//  var oldFuel: Int = _
-//  var coals: Array[Array[Float]] = Array.ofDim[Float](3, 20)
-//  var rand: Random = new Random()
-//  var cookProgress: Array[Int] = new Array[Int](10)
-//  var oldCookProgress: Array[Int] = new Array[Int](10)
-//  var equipment: CookingEquipment = _
-//  var slots: Seq[SlotCooking] = _
-//  var lastPlayer:EntityPlayer = _
-//
-//  for (i <- 0 until 20) {
-//    coals(0)(i) = rand.nextFloat() / 5F
-//    coals(1)(i) = rand.nextFloat() / 5F
-//    coals(2)(i) = rand.nextFloat() * 360
-//  }
-//
-//  override def getName: String =
-//    "campfire_cooking"
-//
-//  override def canRoast(item:ItemStack):Boolean = {
-//    this.fuel > 0 &&
-//      (item.getItem, item.getItemDamage) == (Objs.parts, ItemDefinitions.Parts.MARSHMALLOW_STICK)
-//  }
-//  override def roastResult(item:ItemStack) = new ItemStack(Objs.marshmallow)
-//  override def roastSpeed(item:ItemStack) = ((Math.log10((100*fuel)/maxFeul + 1) + 0.25)/2).toFloat
-//  override def roastTime(item:ItemStack):Int = 150
-//
-//  def getEquipment: Option[CookingEquipment] =
-//    Option(equipment)
-//
-//  private def cookFood() {
-//    if (equipment != null) {
-//      for (i <- 0 until equipment.maxFood) {
-//        oldCookProgress(i) = cookProgress(i)
-//        if (cookProgress(i) >= equipment.cookTime) {
-//          cookProgress(i) = 0
-//          if (equipment.canCook(getStackInSlot(i + 2))) {
-//            if (equipment.getCookedFood(getStackInSlot(i + 2)) != null) setInventorySlotContents(i + 2, equipment.getCookedFood(getStackInSlot(i + 2)).copy())
-//            else setInventorySlotContents(i + 2, new ItemStack(Objs.parts, 1, ItemDefinitions.Parts.ASH))
-//          } else setInventorySlotContents(i + 2, new ItemStack(Objs.parts, 1, ItemDefinitions.Parts.ASH))
-//          PacketSender.sendToClient(new ItemsData(i + 2, bd.x, bd.y, bd.z, getStackInSlot(i + 2)))
-//        }
-//        if (fuel > 0) {
-//          if (!getStackInSlot(i + 2).isEmpty &&
-//            (!(getStackInSlot(i + 2).getItem == Objs.parts) ||
-//              getStackInSlot(i + 2).getItemDamage != ItemDefinitions.Parts.ASH)) {
-//            cookProgress(i) += 1
-//          }
-//        } else if (cookProgress(i) > 0) cookProgress(i) = 0
-//        if (getStackInSlot(i + 2).isEmpty && (cookProgress(i) > 0)) cookProgress(i) = 0
-//        if (oldCookProgress(i) != cookProgress(i)) sendTileData(1, true, cookProgress(i), i)
-//      }
-//    }
-//  }
-//  def getCoalPieces(): Int = if (fuel > 0) (if (((fuel / fuelForCoal) + 1) <= 20) (fuel / fuelForCoal) + 1 else 20) else 0
-//  @SideOnly(Side.CLIENT)
-//  override def getRenderBoundingBox(): AxisAlignedBB = new AxisAlignedBB(bd.x, bd.y, bd.z, bd.x + 1, bd.y + 1, bd.z + 1)
-//  def getScaledCoal(maxPixels: Int): Float = (fuel.toFloat / maxFeul.toFloat) * maxPixels
-//  def getScaledcookProgress(maxPixels: Int, foodNum: Int): Float = ((cookProgress(foodNum).toFloat + 1) / equipment.cookTime) * maxPixels
-//  override def getSizeInventory(): Int = 12
-//
-//  def manageCookingEquipment() {
-//    var flag = false
-//    if ((equipment == null) && (!getStackInSlot(1).isEmpty)) {
-//      equipment = CookingEquipment.getCooking(getStackInSlot(1))
-//    } else if (equipment != null){
-//      if(getStackInSlot(1).isEmpty){
-//        equipment = null
-//      } else {
-//        val newEquip = CookingEquipment.getCooking(getStackInSlot(1))
-//        if(newEquip != equipment){
-//          flag = true
-//          equipment = newEquip
-//        }
-//      }
-//    }
-//
-//    if (slots != null) {
-//      if (equipment == null || flag) {
-//        for (i <- 0 until 10 if slots.get(i).active) {
-//          slots.get(i).deActivate()
-//          if (!slots.get(i).getStack.isEmpty) WorldUtils.dropItemInWorld(bd.world, slots.get(i).getStack, bd.pos)
-//        }
-//      }
-//      if (equipment != null) {
-//        for (i <- 0 until equipment.maxFood if !slots.get(i).active) slots.get(i).activate(equipment.slots(0)(i), equipment.slots(1)(i), equipment, this)
-//      }
-//    }
-//  }
-//  def bd: BlockData =
-//    (world, pos)
-//  def manageFuel() {
-//    if (fuel > 0) {
-//      fuel -= 1
-//      sendTileData(0, true, fuel)
-//    }
-//    if (((fuel + fuelForCoal) <= maxFeul) && !getStackInSlot(0).isEmpty) {
-//      decrStackSize(0, 1)
-//      fuel += fuelForCoal
-//    }
-//  }
-//  override def readFromNBT(tag: NBTTagCompound) {
-//    super[TileEntitySimple].readFromNBT(tag)
-//    super[TileEntityInventory].readFromNBT(tag)
-//
-//    fuel = tag.getInteger("fuel")
-//    cookProgress = tag.getIntArray("cookProgress")
-//
-//    for (i <- 0 until coals.length; j <- 0 until coals(i).length) coals(i)(j) = tag.getFloat("coals" + i + j)
-//  }
-//  def setSlots(newSlots: Seq[SlotCooking]) =
-//    slots = newSlots
-//
-//  override def setTileData(id: Int, data: Seq[Int]) {
-//    if (id == 0) fuel = data(0)
-//    if (id == 1) cookProgress(data(1)) = data(0)
-//  }
-//  override def shouldRefresh(world:World, pos:BlockPos, oldState:IBlockState, newState:IBlockState) = oldState.getBlock != newState.getBlock
-//  override def update(){
-//    var equipOld = equipment
-//    manageCookingEquipment()
-//    if (!world.isRemote) {
-//      oldFuel = fuel
-//      manageFuel()
-//      cookFood()
-//      if(fuel != oldFuel){
-//        if(fuel == 0)Objs.campfireCook.asInstanceOf[CampfireCook].setOn(getWorld, pos, false)
-//        else if(oldFuel == 0)Objs.campfireCook.asInstanceOf[CampfireCook].setOn(getWorld, pos, true)
-//      }
-//    }
-//  }
-//  override def writeToNBT(tag: NBTTagCompound):NBTTagCompound = {
-//    tag.setInteger("fuel", fuel)
-//    tag.setIntArray("cookProgress", cookProgress)
-//    for (i <- 0 until coals.length; j <- 0 until coals(i).length) tag.setFloat("coals" + i + j, coals(i)(j))
-//    super[TileEntityInventory].writeToNBT(tag)
-//    super[TileEntitySimple].writeToNBT(tag)
-//  }
-//}
+class TileCampfireCook extends TileEntityInventory with Roaster with TileEntityTicker {
+  private var fuel: Int =
+    0
+
+  private var cookProgress: Array[Int] =
+    new Array[Int](10)
+
+  private var equipment: Option[CookingEquipment] =
+    None
+
+  private var slots: Option[Seq[SlotCooking]] =
+    None
+
+  @SideOnly(Side.CLIENT)
+  override def getRenderBoundingBox: AxisAlignedBB =
+    new AxisAlignedBB(pos.getX, pos.getY, pos.getZ, pos.getX + 1, pos.getY + 1, pos.getZ + 1)
+
+  override def shouldRefresh(world:World, pos:BlockPos, old:IBlockState, nw:IBlockState): Boolean =
+    old.getBlock != nw.getBlock
+
+  override def readFromNBT(tag: NBTTagCompound) {
+    super.readFromNBT(tag)
+
+    fuel = tag.getInteger("fuel")
+    cookProgress = tag.getIntArray("cookProgress")
+  }
+
+  override def writeToNBT(tag: NBTTagCompound):NBTTagCompound = {
+    tag.setInteger("fuel", fuel)
+    tag.setIntArray("cookProgress", cookProgress)
+
+    super.writeToNBT(tag)
+  }
+
+  override def canRoast(item:ItemStack): Boolean =
+    fuel > 0
+
+  override def roastSpeed(item:ItemStack): Float =
+    0.75f + (getCoalPieces / 12f)
+
+  override def getSizeInventory: Int =
+    12
+
+  override def getName: String =
+    "campfire_cooking"
+
+  override def closeInventory(player: EntityPlayer): Unit =
+    slots = None
+
+  def getCoalPieces: Int = //TODO test
+    Math.ceil(fuel / config.campfireCoalFuel.toFloat).toInt
+
+  def getEquipment: Option[CookingEquipment] =
+    equipment
+
+  def getScaledFuel(maxPixels: Int): Float =
+    (fuel.toFloat / config.campfireMaxFuel) * maxPixels
+
+  def getScaledCookProgress(maxPixels: Int, slot: Int): Float =
+    equipment.fold(0f)(equip =>
+      (cookProgress(slot).toFloat + 1) / equip.getCookTime
+    ) * maxPixels
+
+  def getCookProcess(slot: Int): Int =
+    cookProgress(slot)
+
+  def setCookProcess(slot: Int, data: Int): Unit =
+    cookProgress(slot) = data
+
+  def setSlots(newSlots: Seq[SlotCooking]): Unit =
+    slots = Some(newSlots)
+
+  override def setTileData(id: Int, data: Seq[Int]): Unit = id match {
+    case 0 =>
+      fuel = data.head
+    case 1 =>
+      cookProgress(data.head) = data(1)//TODO test how efficiency holds up agains send and detect changes progress bar update stuff in container since no tile data has to be send
+      //TODO regardless actually change to that since better way
+  }
+
+  private def cookFood() {
+    if (equipment != null) {
+      for (i <- 0 until equipment.maxFood) {
+        oldCookProgress(i) = cookProgress(i)
+        if (cookProgress(i) >= equipment.cookTime) {
+          cookProgress(i) = 0
+          if (equipment.canCook(getStackInSlot(i + 2))) {
+            if (equipment.getCookedFood(getStackInSlot(i + 2)) != null) setInventorySlotContents(i + 2, equipment.getCookedFood(getStackInSlot(i + 2)).copy())
+            else setInventorySlotContents(i + 2, new ItemStack(Objs.parts, 1, ItemDefinitions.Parts.ASH))
+          } else setInventorySlotContents(i + 2, new ItemStack(Objs.parts, 1, ItemDefinitions.Parts.ASH))
+          PacketSender.sendToClient(new ItemsData(i + 2, bd.x, bd.y, bd.z, getStackInSlot(i + 2)))
+        }
+        if (fuel > 0) {
+          if (!getStackInSlot(i + 2).isEmpty &&
+            (!(getStackInSlot(i + 2).getItem == Objs.parts) ||
+              getStackInSlot(i + 2).getItemDamage != ItemDefinitions.Parts.ASH)) {
+            cookProgress(i) += 1
+          }
+        } else if (cookProgress(i) > 0) cookProgress(i) = 0
+        if (getStackInSlot(i + 2).isEmpty && (cookProgress(i) > 0)) cookProgress(i) = 0
+        if (oldCookProgress(i) != cookProgress(i)) sendTileData(1, true, cookProgress(i), i)
+      }
+    }
+  }
+  def manageCookingEquipment() {
+    var flag = false
+    if ((equipment == null) && (!getStackInSlot(1).isEmpty)) {
+      equipment = CookingEquipment.getCooking(getStackInSlot(1))
+    } else if (equipment != null){
+      if(getStackInSlot(1).isEmpty){
+        equipment = null
+      } else {
+        val newEquip = CookingEquipment.getCooking(getStackInSlot(1))
+        if(newEquip != equipment){
+          flag = true
+          equipment = newEquip
+        }
+      }
+    }
+
+    if (slots != null) {
+      if (equipment == null || flag) {
+        for (i <- 0 until 10 if slots.get(i).active) {
+          slots.get(i).deActivate()
+          if (!slots.get(i).getStack.isEmpty) WorldUtils.dropItemInWorld(bd.world, slots.get(i).getStack, bd.pos)
+        }
+      }
+      if (equipment != null) {
+        for (i <- 0 until equipment.maxFood if !slots.get(i).active) slots.get(i).activate(equipment.slots(0)(i), equipment.slots(1)(i), equipment, this)
+      }
+    }
+  }
+  def manageFuel() {
+    if (fuel > 0) {
+      fuel -= 1
+      sendTileData(0, true, fuel)
+    }
+    if (((fuel + config.campfireCoalFuel) <= maxFeul) && !getStackInSlot(0).isEmpty) {
+      decrStackSize(0, 1)
+      fuel += config.campfireCoalFuel
+    }
+  }
+
+  override def update(){
+    var equipOld = equipment
+    manageCookingEquipment()
+    if (!world.isRemote) {
+      oldFuel = fuel
+      manageFuel()
+      cookFood()
+      if(fuel != oldFuel){
+        if(fuel == 0)Objs.campfireCook.asInstanceOf[CampfireCook].setOn(getWorld, pos, false)
+        else if(oldFuel == 0)Objs.campfireCook.asInstanceOf[CampfireCook].setOn(getWorld, pos, true)
+      }
+    }
+  }
+}
