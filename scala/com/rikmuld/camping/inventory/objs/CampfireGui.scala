@@ -50,7 +50,7 @@ class GuiCampfireCook(player: EntityPlayer, tile: IInventory)
       else 226
 
     val slotOffset =
-      equipment.getSlotPosition(fire, slot)
+      equipment.getSlotPosition(slot)
 
     drawTexturedModalRect(guiLeft + slotOffset._1 + 16, guiTop + slotOffset._2 + 2, 223, 0, 3, 12)
     drawTexturedModalRect(guiLeft + slotOffset._1 + 17, guiTop + slotOffset._2 + 13 - process, barOffset, 11 - process, 1, process)
@@ -62,9 +62,11 @@ class ContainerCampfireCook(player: EntityPlayer, tile: IInventory) extends Cont
     106
 
   override def addInventorySlots(): Unit = {
+    val thisPlayer = player
+
     addSlotToContainer(new SlotItem(tile, 0, 80, 84, Items.COAL))
     addSlotToContainer(new SlotItemMeta(tile, 1, 150, 9, Registry.kit, Vector(Kit.SPIT, Kit.GRILL, Kit.PAN)) with SlotEquipment {
-      val player: EntityPlayer = player
+      val player: EntityPlayer = thisPlayer
     })
 
     val slots = for (i <- 0 until 10)
@@ -98,6 +100,5 @@ trait SlotEquipment extends Slot {
 
     if (!getStack.isEmpty && !player.world.isRemote)
       TriggerHelper.trigger(AdvancementInfo.CAMPFIRES_MADE, player, getStack.getItemDamage)
-
   }
 }

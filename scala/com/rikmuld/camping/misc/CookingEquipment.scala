@@ -15,6 +15,8 @@ import org.lwjgl.opengl.GL11
 import scala.collection.mutable
 
 abstract class CookingEquipment(kit: Int, cookTime: Int, maxSlots: Int, model: ModularModal) {
+  CookingEquipment.registerEquipment(kit, this)
+
   private val recipes: mutable.Map[(Item, Int), ItemStack] =
     mutable.Map()
 
@@ -69,14 +71,29 @@ object CookingEquipment {
   val kitRecipes: mutable.Map[Seq[ItemStack], CookingEquipment] =
     mutable.Map()
 
+  val kits: mutable.Map[Int, CookingEquipment] =
+    mutable.Map()
+
+  def registerEquipment(kit: Int, equipment: CookingEquipment): Unit =
+    kits(kit) = equipment
+
+  def getEquipment(kit: Int): Option[CookingEquipment] =
+    kits.get(kit)
+
+  def getEquipment(kit: ItemStack): Option[CookingEquipment] =
+    if(kit.isEmpty || kit.getItem != Registry.kit)
+      None
+    else
+      getEquipment(kit.getItemDamage)
+
   def registerKitRecipe(cooking: CookingEquipment, contents: ItemStack*): Unit =
     kitRecipes.put(contents, cooking)
 
   def getFirstKitRecipe(equipment: CookingEquipment): Seq[ItemStack] =
     kitRecipes.find(_._2 == equipment).get._1
 
-  def getEquipment(items: Seq[ItemStack]): Option[CookingEquipment] =
-    _getEquipment(StackUtils.flatten(items))
+  def getEquipment(recipe: Seq[ItemStack]): Option[CookingEquipment] =
+    _getEquipment(StackUtils.flatten(recipe))
 
   private def _getEquipment(items: Seq[ItemStack]): Option[CookingEquipment] = kitRecipes.find {
     case(contents, _) =>

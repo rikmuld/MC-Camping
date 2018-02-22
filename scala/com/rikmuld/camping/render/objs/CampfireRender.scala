@@ -16,6 +16,9 @@ object CampfireCookRender {
   val random =
     new Random() //TODO get rid of all random everywhere and just have one for all
 
+  lazy val renderer: RenderItem =
+    Minecraft.getMinecraft.getRenderItem
+
   final val COAL =
     new ItemStack(Items.COAL, 1, 0)
 
@@ -29,8 +32,6 @@ object CampfireCookRender {
 }
 
 class CampfireCookRender extends TileEntitySpecialRenderer[TileCampfireCook] {
-  private val renderer: RenderItem = Minecraft.getMinecraft.getRenderItem
-
   override def render(tile: TileCampfireCook, x: Double, y: Double, z: Double,
                       partialTicks: Float, destroyStage: Int, alpha: Float): Unit = {
 
@@ -64,10 +65,10 @@ class CampfireCookRender extends TileEntitySpecialRenderer[TileCampfireCook] {
 
     GL11.glPushMatrix()
 
-    GL11.glTranslatef(COALS(0)(piece), 0, COALS(1)(piece))
+    GL11.glTranslatef(COALS(piece)._1, 0, COALS(piece)._2)
     GL11.glScalef(0.3F, 0.3F, 0.3F)
 
-    GL11.glRotatef(COALS(2)(piece), 0, 1, 0)
+    GL11.glRotatef(COALS(piece)._3, 0, 1, 0)
     GL11.glRotatef(45, 1F, 1F, 0.4F)
     GL11.glRotatef(10, 0.0F, 1F, 0F)
     GL11.glRotatef(5, 0.0F, 0F, -0.2F)

@@ -7,8 +7,8 @@ import com.rikmuld.camping.objs.Definitions._
 import com.rikmuld.camping.objs.Registry
 import com.rikmuld.camping.objs.Registry._
 import com.rikmuld.camping.registers.Objs._
-import com.rikmuld.camping.render.objs.TrapRender
-import com.rikmuld.camping.tileentity.TileTrap
+import com.rikmuld.camping.render.objs.{CampfireCookRender, TrapRender}
+import com.rikmuld.camping.tileentity.{TileCampfireCook, TileTrap}
 import com.rikmuld.corerm.old.BoundsStructure
 import net.minecraft.client.settings.KeyBinding
 import net.minecraft.init.Blocks._
@@ -28,8 +28,7 @@ object ModMisc {
 
     def preRegisterClient(): Unit = {
       ClientRegistry.bindTileEntitySpecialRenderer(classOf[TileTrap], new TrapRender)
-//      ClientRegistry.bindTileEntitySpecialRenderer(classOf[TileCampfire], new CampfireRender)
-//      ClientRegistry.bindTileEntitySpecialRenderer(classOf[TileCampfireCook], new CampfireCookRender)
+      ClientRegistry.bindTileEntitySpecialRenderer(classOf[TileCampfireCook], new CampfireCookRender)
 //      ClientRegistry.bindTileEntitySpecialRenderer(classOf[TileTent], new TentRender)
     }
 
