@@ -1,16 +1,25 @@
 package com.rikmuld.camping.objs
 
 import com.rikmuld.camping.CampingMod._
+import com.rikmuld.camping.misc._
 import com.rikmuld.camping.objs.Definitions._
-import com.rikmuld.camping.registers.ModMisc
+import com.rikmuld.camping.registers.Objs._
 import com.rikmuld.corerm.objs.blocks.BlockSimple
 import com.rikmuld.corerm.objs.items.ItemSimple
 import net.minecraft.block.Block
-import net.minecraft.item.Item
+import net.minecraft.init.Blocks.IRON_BARS
+import net.minecraft.init.Items._
+import net.minecraft.init.SoundEvents
+import net.minecraft.item.crafting.FurnaceRecipes
+import net.minecraft.item.{Item, ItemFood, ItemStack}
 import net.minecraftforge.client.event.ModelRegistryEvent
+import net.minecraftforge.common.util.EnumHelper
 import net.minecraftforge.event.RegistryEvent
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
+import net.minecraftforge.fml.common.registry.GameRegistry
+
+import scala.collection.JavaConversions._
 
 //TODO call post item and pre block registry, and put stuff in there which is now in other registries (such as tabs, armor material, recipes) [pre, pre, post]
 
@@ -52,6 +61,8 @@ object Registry {
 
   @SubscribeEvent
   def registerBlocks(event: RegistryEvent.Register[Block]): Unit = {
+    preRegistry()
+
     val objHemp = HEMP.create(MOD_ID)
     hemp = objHemp._1
     hempItem = objHemp._2
@@ -118,7 +129,6 @@ object Registry {
     furHead = FUR_HEAD.createItem(MOD_ID)
     furLeg = FUR_LEG.createItem(MOD_ID)
 
-    ModMisc.registerCookingEquipment()
     event.getRegistry.registerAll(
       knife,
       parts,
@@ -141,6 +151,8 @@ object Registry {
       sleepingBagItem,
       hempItem
     )
+
+    postRegistry()
   }
 
   @SubscribeEvent
@@ -165,5 +177,61 @@ object Registry {
 //    tentItem.registerRenders()
     sleepingBagItem.registerRenders()
     hempItem.registerRenders()
+  }
+
+  def preRegistry(): Unit = {
+    tab = new TabCamping(MOD_ID)
+    fur = EnumHelper.addArmorMaterial("FUR", "", 20, Array(2, 5, 4, 2), 20, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 0)
+  }
+
+  def postRegistry(): Unit = {
+    GameRegistry.addSmelting(new ItemStack(venisonRaw), new ItemStack(venisonCooked), 3)
+
+    grill = new Grill()
+    spit = new Spit()
+    pan = new Pan()
+
+    CookingEquipment.registerKitRecipe(spit,
+      new ItemStack(STICK, 2),
+      new ItemStack(Registry.parts, 1, Parts.STICK_IRON)
+    )
+
+    CookingEquipment.registerKitRecipe(grill,
+      new ItemStack(STICK, 4),
+      new ItemStack(Registry.parts, 2, Parts.STICK_IRON),
+      new ItemStack(IRON_BARS)
+    )
+
+    CookingEquipment.registerKitRecipe(pan,
+      new ItemStack(STICK, 3),
+      new ItemStack(Registry.parts, 1, Parts.STICK_IRON),
+      new ItemStack(Registry.parts, 1, Parts.PAN)
+    )
+
+    grill.registerRecipe(FISH, 0, new ItemStack(COOKED_FISH, 1, 0))
+    grill.registerRecipe(FISH, 1, new ItemStack(COOKED_FISH, 1, 1))
+    grill.registerRecipe(BEEF, new ItemStack(COOKED_BEEF))
+    grill.registerRecipe(PORKCHOP, new ItemStack(COOKED_PORKCHOP))
+    grill.registerRecipe(venisonRaw, new ItemStack(venisonCooked))
+    grill.registerRecipe(MUTTON, new ItemStack(COOKED_MUTTON))
+
+    pan.registerRecipe(POTATO, new ItemStack(BAKED_POTATO))
+    pan.registerRecipe(ROTTEN_FLESH, new ItemStack(LEATHER))
+
+    spit.registerRecipe(CHICKEN, new ItemStack(COOKED_CHICKEN))
+    spit.registerRecipe(RABBIT, new ItemStack(COOKED_RABBIT))
+    spit.registerRecipe(FISH, 0, new ItemStack(COOKED_FISH, 1, 0))
+    spit.registerRecipe(FISH, 1, new ItemStack(COOKED_FISH, 1, 1))
+
+    FurnaceRecipes.instance.getSmeltingList.foreach(stack =>
+      stack._1.getItem match {
+        case food: ItemFood =>
+          if(food.isWolfsFavoriteMeat)
+            grill.registerRecipe(food, stack._1.getItemDamage, stack._2)
+          else
+            pan.registerRecipe(food, stack._1.getItemDamage, stack._2)
+        case _ =>
+      }
+    )
   }
 }

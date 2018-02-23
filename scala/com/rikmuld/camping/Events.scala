@@ -203,7 +203,7 @@ class EventsS {
       }
     }
 
-    if (!world.isRemote) {
+    if (!world.isRemote && event.phase.equals(Phase.END)) {
       val roasterTickOld = roasterTick
 
       if(!item.isEmpty){

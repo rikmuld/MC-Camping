@@ -42,7 +42,7 @@ abstract class CookingEquipment(kit: Int, cookTime: Int, maxSlots: Int, model: M
     recipes.contains((food.getItem, food.getItemDamage))
 
   def getResult(food: ItemStack): Option[ItemStack] =
-    recipes.get((food.getItem, food.getItemDamage))
+    recipes.get((food.getItem, food.getItemDamage)).map(_.copy())
 
   def renderFood(render: RenderItem, slot: Int, food: ItemStack): Unit =
     if(slot < maxSlots && !food.isEmpty && !food.isItemEqual(
@@ -53,8 +53,8 @@ abstract class CookingEquipment(kit: Int, cookTime: Int, maxSlots: Int, model: M
   def renderGUIBackground(gui: GuiContainer): Unit =
     for(i <- 0 until maxSlots)
       gui.drawTexturedModalRect(
-        gui.getGuiLeft + getSlotPosition(i)._1,
-        gui.getGuiTop + getSlotPosition(i)._2,
+        gui.getGuiLeft + getSlotPosition(i)._1 - 1,
+        gui.getGuiTop + getSlotPosition(i)._2 - 1,
         7,
         105,
         18,

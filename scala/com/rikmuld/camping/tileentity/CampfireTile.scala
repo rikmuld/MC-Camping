@@ -114,7 +114,6 @@ trait Roaster {
     }
 }
 
-//TODO perhaps give back coal used for fuel to some extend if break
 class TileCampfireCook extends TileEntityInventory with Roaster with ITickable {
 
   final val MAX_FUEL =
@@ -147,6 +146,7 @@ class TileCampfireCook extends TileEntityInventory with Roaster with ITickable {
 
     fuel = tag.getInteger("fuel")
     cookProgress = tag.getIntArray("cookProgress")
+    equipment = CookingEquipment.getEquipment(getStackInSlot(1))
   }
 
   override def writeToNBT(tag: NBTTagCompound): NBTTagCompound = {
@@ -171,7 +171,7 @@ class TileCampfireCook extends TileEntityInventory with Roaster with ITickable {
   override def closeInventory(player: EntityPlayer): Unit =
     slots = None
 
-  def getCoalPieces(fuel: Int): Int = //TODO test
+  def getCoalPieces(fuel: Int): Int =
     Math.ceil(fuel / COAL_FUEL.toFloat).toInt
 
   def getCoalPieces: Int =
@@ -191,6 +191,14 @@ class TileCampfireCook extends TileEntityInventory with Roaster with ITickable {
   def getCookProcess(slot: Int): Int =
     cookProgress(slot)
 
+  def getFuel: Int =
+    fuel
+
+  @SideOnly(Side.CLIENT)
+  def setFuel(fuel: Int): Unit =
+    this.fuel = fuel
+
+  @SideOnly(Side.CLIENT)
   def setCookProcess(slot: Int, data: Int): Unit =
     cookProgress(slot) = data
 
@@ -200,49 +208,58 @@ class TileCampfireCook extends TileEntityInventory with Roaster with ITickable {
   override def setTileData(id: Int, data: Seq[Int]): Unit = id match {
     case 0 =>
       fuel = data.head
+    case 1 =>
+      for(i <- data.indices)
+        cookProgress(i) = data(i)
   }
 
-  private def cookFood(): Unit =
-    equipment.foreach(eq =>
-      for(i <- 0 until eq.getMaxCookingSlot)
-        cookFood(i, getStackInSlot(i), eq)
-    )
+  private def cookFood(): Unit = {
+    equipment.foreach(eq => {
+      for (i <- 0 until eq.getMaxCookingSlot)
+        cookFood(i, getStackInSlot(i + 2), eq)
 
-  private def cookFood(i: Int, food: ItemStack, equipment: CookingEquipment): Unit = {
-    if(fuel == 0 || food.isEmpty) cookProgress(i) = 0
+      if(slots.isDefined)
+        sendTileData(1, true, cookProgress.take(eq.getMaxCookingSlot): _*)
+    })
+  }
+
+  private def cookFood(i: Int, food: ItemStack, equipment: CookingEquipment): Unit =
+    if (fuel == 0 || food.isEmpty || isAsh(food)) cookProgress(i) = 0
     else {
-      if(cookProgress(i) >= equipment.getMaxCookingSlot)
+      if (cookProgress(i) >= equipment.getCookTime)
         doCookFood(i, food, equipment)
-      else if(!isAsh(food))
+      else
         cookProgress(i) += 1
     }
-  }
 
   private def doCookFood(i: Int, food: ItemStack, equipment: CookingEquipment): Unit = {
-    cookProgress(i) = 0
-
     val result = equipment.getResult(food).getOrElse(
       new ItemStack(Registry.parts, 1, Parts.ASH)
     )
 
+    cookProgress(i) = 0
+
     setInventorySlotContents(i + 2, result)
-    PacketSender.sendToClient(new ItemsData(i + 2, pos.getX, pos.getY, pos.getZ, result))
+    PacketSender.sendToClient(new ItemsData(i + 2, pos.getX, pos.getY, pos.getZ, result.copy()))
   }
 
   def initializeSlot(index: Int, slot: SlotCooking): Unit = {
-    if (slot.active && !slot.getStack.isEmpty)
+    if (slot.active && !slot.getStack.isEmpty) {
       WorldUtils.dropItemInWorld(world, slot.getStack, pos)
+      setInventorySlotContents(index + 2, ItemStack.EMPTY)
+    }
 
     if (equipment.isEmpty)
       slot.deActivate()
-    else {
+    else if (index < equipment.get.getMaxCookingSlot) {
       val position = equipment.get.getSlotPosition(index)
-      slot.activate(position._1, position._2, equipment.get, this)//TODO not activating
+      slot.activate(position._1, position._2, equipment.get, this)
     }
   }
 
+  //TODO after cooking once and taking one becomes strange
   override def onChange(slot: Int): Unit =
-    if (slot == 1)
+    if (slot == 1) {
       (equipment, CookingEquipment.getEquipment(getStackInSlot(1))) match {
         case (None, Some(nw)) =>
           equipment = Some(nw)
@@ -255,6 +272,10 @@ class TileCampfireCook extends TileEntityInventory with Roaster with ITickable {
           initializeSlots()
         case _ =>
       }
+    }
+
+  override def openInventory(player: EntityPlayer): Unit =
+    initializeSlots()
 
   def initializeSlots(): Unit =
     slots.foreach(slots =>
@@ -287,12 +308,12 @@ class TileCampfireCook extends TileEntityInventory with Roaster with ITickable {
     if (hasCoal && fuel + COAL_FUEL <= MAX_FUEL)
       addFuel()
 
-    if(fuel != oldFuel)
+    if (fuel != oldFuel)
       fuelChanged(oldFuel, fuel)
   }
 
   def fuelChanged(old: Int, nw: Int): Unit =
-    if(getCoalPieces != getCoalPieces(old))
+    if (getCoalPieces != getCoalPieces(old) || slots.isDefined)
       sendTileData(0, true, fuel)
 
   def hasCoal: Boolean =
@@ -305,7 +326,7 @@ class TileCampfireCook extends TileEntityInventory with Roaster with ITickable {
     Registry.campfireCook
 
   override def update(): Unit =
-    if(!world.isRemote){
+    if (!world.isRemote) {
       fuelTick()
       cookFood()
     }

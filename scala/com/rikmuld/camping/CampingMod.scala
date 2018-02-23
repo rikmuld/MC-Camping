@@ -34,8 +34,6 @@ object CampingMod {
     config.sync
     proxy.registerEvents
 
-    ModMisc.preRegister()
-
     if(event.getSide == Side.CLIENT) {
       ModEntities.registerClient
       ModMisc.preRegisterClient()
@@ -208,6 +206,10 @@ plan: improve camping inv tab look (as creative inv) then ten gui cleanup (make 
 
   TODO after for next update
   - make tent tabbed gui
+  - campfire no gui for food, but put it on direcly, and take it off direcly
+  - cmapfire no gui for coal, just put it in
+  - campfire no gui for kits, just right click with kit to put on campfire, kit becomes empty kit, campfire changes state or if already, then kits switch
+  - kit no gui, just put lure in direcly, just take one max
   - bear model uses polar bear model
   - fix tent items thinks it can open a gui
   - make sure achievements require the previous

@@ -63,7 +63,7 @@ class SlotCooking(inv: IInventory, id: Int, x: Int, y: Int) extends Slot(inv, id
     1
 
   override def isItemValid(stack: ItemStack): Boolean =
-    equipment.map(_.canCook(stack)).getOrElse(false)
+    equipment.exists(_.canCook(stack))
 }
 
 class SlotItem(inv: IInventory, index: Int, x: Int, y: Int, item: Item) extends Slot(inv, index, x, y) with SlotOnly {
