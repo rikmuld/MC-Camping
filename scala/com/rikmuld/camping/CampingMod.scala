@@ -195,35 +195,35 @@ object Lib {
 }
 
 /*
-wooden campfire
-cooking equipment
-campfire cook
-tent
-put features in feature package.
-release (and put large amounts of lag as fixed)
 
-plan: improve camping inv tab look (as creative inv) then ten gui cleanup (make tabbed) then release... continue with todo
+  TODO rewrite
+  campfire models
+  tent
+  release
+  put features in feature package
+  rewrite all other parts
+  continue with stuff below
 
-  TODO after for next update
+  TODO improvements
   - make tent tabbed gui
+  -- release
   - campfire no gui for food, but put it on direcly, and take it off direcly
   - cmapfire no gui for coal, just put it in
   - campfire no gui for kits, just right click with kit to put on campfire, kit becomes empty kit, campfire changes state or if already, then kits switch
-  - kit no gui, just put lure in direcly, just take one max
+  - 'spawner' blocks for special cooking fires, spit, grill, pan in creative tab
+  -- release
+  - trap no gui, just put lure in direcly, just take one max
   - bear model uses polar bear model
-  - fix tent items thinks it can open a gui
   - make sure achievements require the previous
   - unlock all recipes before crafting using advancements
   - add recipe book to camping inventory
   - update website, all recipes including spit stuff in cookbook
-  - 'spawner' blocks for special cooking fires, spit, grill, pan in creative tab
   - camping inv tab align to side
+  -- release
+  - extensive bug test and fix all github bugs left if any
+  -- release
 
-  TODO after for next update (Camping Mod 2.next)
-  - continue rewrite: guis, tiles, utils, block and items, network, corerm features, registry system, others
-  - fix github bugs that remain after rewrite + extensive bugtest
-
-  TODO after for next update (Camping Mod 3?, but release slowly as 3α_buildnr)
+  TODO new features
   - more food to roast (some ideas: sausage, bacon, egg on a stick, any meat/vegtable is stickable together for a nice ... what is it called again...)
   - stickable food on either wood or iron (wood burns iron stays after eating)
   - add pressure plate to bear trap

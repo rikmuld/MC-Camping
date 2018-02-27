@@ -27,6 +27,7 @@ import net.minecraft.world.World
 import net.minecraftforge.fml.relauncher.{Side, SideOnly}
 
 import scala.collection.JavaConversions._
+import scala.collection.mutable.ArrayBuffer
 
 object TileCampfire {
   lazy val effects: Seq[PotionEffect] =
@@ -134,6 +135,9 @@ class TileCampfireCook extends TileEntityInventory with Roaster with ITickable {
   private var slots: Option[Seq[SlotCooking]] =
     None
 
+  private val guiPlayers: ArrayBuffer[EntityPlayer] =
+    new ArrayBuffer()
+
   @SideOnly(Side.CLIENT)
   override def getRenderBoundingBox: AxisAlignedBB =
     new AxisAlignedBB(pos.getX, pos.getY, pos.getZ, pos.getX + 1, pos.getY + 1, pos.getZ + 1)
@@ -168,8 +172,10 @@ class TileCampfireCook extends TileEntityInventory with Roaster with ITickable {
   override def getName: String =
     "campfire_cooking"
 
-  override def closeInventory(player: EntityPlayer): Unit =
+  override def closeInventory(player: EntityPlayer): Unit = {
     slots = None
+    guiPlayers -= player
+  }
 
   def getCoalPieces(fuel: Int): Int =
     Math.ceil(fuel / COAL_FUEL.toFloat).toInt
@@ -218,8 +224,9 @@ class TileCampfireCook extends TileEntityInventory with Roaster with ITickable {
       for (i <- 0 until eq.getMaxCookingSlot)
         cookFood(i, getStackInSlot(i + 2), eq)
 
-      if(slots.isDefined)
-        sendTileData(1, true, cookProgress.take(eq.getMaxCookingSlot): _*)
+      guiPlayers.foreach(player =>
+        sendTileDataTo(1, player, cookProgress.take(eq.getMaxCookingSlot): _*)
+      )
     })
   }
 
@@ -274,8 +281,10 @@ class TileCampfireCook extends TileEntityInventory with Roaster with ITickable {
       }
     }
 
-  override def openInventory(player: EntityPlayer): Unit =
+  override def openInventory(player: EntityPlayer): Unit = {
     initializeSlots()
+    guiPlayers.add(player)
+  }
 
   def initializeSlots(): Unit =
     slots.foreach(slots =>
@@ -313,8 +322,11 @@ class TileCampfireCook extends TileEntityInventory with Roaster with ITickable {
   }
 
   def fuelChanged(old: Int, nw: Int): Unit =
-    if (getCoalPieces != getCoalPieces(old) || slots.isDefined)
+    if (getCoalPieces != getCoalPieces(old))
       sendTileData(0, true, fuel)
+    else guiPlayers.foreach(player =>
+      sendTileDataTo(0, player, fuel)
+    )
 
   def hasCoal: Boolean =
     !getStackInSlot(0).isEmpty

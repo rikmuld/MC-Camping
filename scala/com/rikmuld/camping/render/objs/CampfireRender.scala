@@ -42,7 +42,7 @@ class CampfireCookRender extends TileEntitySpecialRenderer[TileCampfireCook] {
     GL11.glScalef(1.0F, -1F, -1F)
 
     tile.getEquipment.foreach(equipment => {
-      equipment.getModel.renderAll(1)
+      equipment.renderInWorld()
 
       for (i <- 0 until equipment.getMaxCookingSlot)
         equipment.renderFood(renderer, i, tile.getStackInSlot(i + 2))

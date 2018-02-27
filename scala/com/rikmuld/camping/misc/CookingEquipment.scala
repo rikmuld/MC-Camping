@@ -1,6 +1,7 @@
 package com.rikmuld.camping.misc
 
 import com.rikmuld.camping.CampingMod._
+import com.rikmuld.camping.Lib.TextureInfo
 import com.rikmuld.camping.objs.Definitions.{Kit, Parts}
 import com.rikmuld.camping.objs.Registry
 import com.rikmuld.camping.render.models.CookingEquipmentModels
@@ -10,6 +11,7 @@ import net.minecraft.client.gui.inventory.GuiContainer
 import net.minecraft.client.renderer.RenderItem
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType
 import net.minecraft.item.{Item, ItemStack}
+import net.minecraft.util.ResourceLocation
 import org.lwjgl.opengl.GL11
 
 import scala.collection.mutable
@@ -31,6 +33,9 @@ abstract class CookingEquipment(kit: Int, cookTime: Int, maxSlots: Int, model: M
 
   def getModel: ModularModal =
     model
+
+  def renderInWorld(): Unit =
+    model.renderAll()
 
   def registerRecipe(item: Item, result: ItemStack): Unit =
     registerRecipe(item, 0, result)
@@ -68,6 +73,15 @@ abstract class CookingEquipment(kit: Int, cookTime: Int, maxSlots: Int, model: M
 }
 
 object CookingEquipment {
+  final val TEXTURE_SPIT =
+    new ResourceLocation(TextureInfo.MODEL_SPIT)
+
+  final val TEXTURE_GRILL =
+    new ResourceLocation(TextureInfo.MODEL_GRILL)
+
+  final val TEXTURE_PAN =
+    new ResourceLocation(TextureInfo.MODEL_PAN)
+
   val kitRecipes: mutable.Map[Seq[ItemStack], CookingEquipment] =
     mutable.Map()
 
@@ -138,6 +152,10 @@ class Spit extends CookingEquipment(Kit.SPIT,
 class Grill extends CookingEquipment(Kit.GRILL,
   config.cookTimeGrill, 4, CookingEquipmentModels.GRILL) {
 
+  private val spitParts = Seq(
+    "pillar1", "pillar2", "pillar3", "pillar4", "line1", "line2"
+  )
+
   override def renderGUIBackground(gui: GuiContainer): Unit = {
     gui.drawTexturedModalRect(gui.getGuiLeft + 47, gui.getGuiTop + 39, 176, 115, 80, 63)
 
@@ -171,6 +189,14 @@ class Grill extends CookingEquipment(Kit.GRILL,
     case 2 => (68, 28)
     case 3 => (90, 28)
   }
+
+  override def renderInWorld(): Unit = {
+    getModel.bindTexture(CookingEquipment.TEXTURE_SPIT)
+    getModel.renderOnly(spitParts:_*)
+
+    getModel.bindTexture(CookingEquipment.TEXTURE_GRILL)
+    getModel.renderExcept(spitParts:_*)
+  }
 }
 
 class Pan extends CookingEquipment(Kit.PAN,
@@ -185,5 +211,13 @@ class Pan extends CookingEquipment(Kit.PAN,
     case 5 => (114, 31)
     case 6 => (66, 22)
     case 7 => (91, 22)
+  }
+
+  override def renderInWorld(): Unit = {
+    getModel.bindTexture(CookingEquipment.TEXTURE_PAN)
+    getModel.renderExcept("cable")
+
+    getModel.bindTexture(CookingEquipment.TEXTURE_GRILL)
+    getModel.renderOnly("cable")
   }
 }
