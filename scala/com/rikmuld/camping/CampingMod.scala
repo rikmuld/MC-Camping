@@ -197,8 +197,11 @@ object Lib {
 /*
 
   TODO rewrite
-  campfire models
+  campfire models textures
+  bounds structure system in core
+  core no registry with events
   tent
+  remove printing statements
   release
   put features in feature package
   rewrite all other parts

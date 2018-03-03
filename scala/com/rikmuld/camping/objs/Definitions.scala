@@ -203,40 +203,67 @@ object Definitions {
     final val STATE_ON = "lit"
   }
 
-  //
-  //  final val TENT = new ObjDefinition(
-  //    Tab(tab),
-  //    Name("tent"),
-  //    PropMaterial(Material.CLOTH),
-  //    Hardness(0.2f),
-  //    GuiTrigger(Guis.TENT),
-  //    ItemMetaData("black", "red", "green", "brown", "blue", "purple", "cyan", "gray_light", "gray_dark", "pink", "lime", "yellow", "blue_light", "magenta", "orange", "white"),
-  //    ItemBlockClass(classOf[TentItem])
-  //  )
-  //
-  //  object Tent {
-  //    final val BLACK = 0
-  //    final val RED = 1
-  //    final val GREEN = 2
-  //    final val BROWN = 3
-  //    final val BLUE = 4
-  //    final val PURPLE = 5
-  //    final val CYAN = 6
-  //    final val GRAY_LIGHT = 7
-  //    final val GRAY_DARK = 8
-  //    final val PINK = 9
-  //    final val LIME = 10
-  //    final val YELLOW = 11
-  //    final val BLUE_LIGHT = 12
-  //    final val MAGENTA = 13
-  //    final val ORANGE = 14
-  //    final val WHITE = 15
-  //  }
-  //
-  //  final val BOUNDS_TENT = new ObjDefinition(
-  //    Name("tent_bounds"),
-  //    PropMaterial(Material.CLOTH)
-  //  )
+  final val TENT_STATES = new States(
+    PropBool(Tent.STATE_ON),
+    PropDirection(DirectionType.Horizontal)
+  )
+
+  final val TENT = new ObjDefinition(
+    Tab(tab),
+    Name("tent"),
+    PropMaterial(Material.CLOTH),
+    Hardness(0.2f),
+    GuiTrigger(GuiInfo.TENT),
+    BlockStates(TENT_STATES),
+    NonCube,
+    Unstable,
+    ItemMetaData(
+      "black",
+      "red",
+      "green",
+      "brown",
+      "blue",
+      "purple",
+      "cyan",
+      "gray_light",
+      "gray_dark",
+      "pink",
+      "lime",
+      "yellow",
+      "blue_light",
+      "magenta",
+      "orange",
+      "white"
+    ),
+    BlockClass(classOf[Tent]),
+    TileEntityClass(classOf[TileTent])
+  )
+
+  object Tent {
+    final val STATE_ON = "on"
+
+    final val BLACK = 0
+    final val RED = 1
+    final val GREEN = 2
+    final val BROWN = 3
+    final val BLUE = 4
+    final val PURPLE = 5
+    final val CYAN = 6
+    final val GRAY_LIGHT = 7
+    final val GRAY_DARK = 8
+    final val PINK = 9
+    final val LIME = 10
+    final val YELLOW = 11
+    final val BLUE_LIGHT = 12
+    final val MAGENTA = 13
+    final val ORANGE = 14
+    final val WHITE = 15
+  }
+
+//    final val BOUNDS_TENT = new ObjDefinition(
+//      Name("tent_bounds"),
+//      PropMaterial(Material.CLOTH)
+//    )
 
   final val KNIFE = new ObjDefinition(
     Tab(tab),

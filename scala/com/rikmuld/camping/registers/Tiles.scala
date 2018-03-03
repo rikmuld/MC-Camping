@@ -13,6 +13,6 @@ object ModTiles {
       GameRegistry.registerTileEntity(classOf[TileCampfireCook], MOD_ID + "_tileCampfireCook")
       GameRegistry.registerTileEntity(classOf[TileCampfireWoodOn], MOD_ID + "_tileCampfireWoodOn")
       GameRegistry.registerTileEntity(classOf[TileCampfireWoodOff], MOD_ID + "_tileCampfireWoodOff")
-//      GameRegistry.registerTileEntity(classOf[TileTent], MOD_ID + "_tileTent")
+      GameRegistry.registerTileEntity(classOf[TileTent], MOD_ID + "_tileTent")
     }
   }

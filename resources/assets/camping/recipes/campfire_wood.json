@@ -13,7 +13,7 @@
     }
   },
   "result": {
-    "item": "camping:campfire_wood",
+    "item": "camping:campfire_wood_off",
     "data": 0,
     "count": 1
   }

@@ -29,6 +29,7 @@ object TentModel {
   final val TENT_MODEL = new ModularModal()
 
   TENT_MODEL.setTextureSize(128, 64)
+  TENT_MODEL.setScale(1)
 
   TENT_MODEL.addBox(CANVAS(0), 0, 0, 48, 1, 12, -8F, 23.8F, -15.2F, 0.835486F, 0F, 0F)
   TENT_MODEL.addBox(CANVAS(1), 0, 0, 48, 1, 12, -8F, 23.8F, 15.2F, 2.402461F, 0F, 0F)

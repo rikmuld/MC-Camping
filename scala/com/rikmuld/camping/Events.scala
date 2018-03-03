@@ -15,6 +15,7 @@ import com.rikmuld.corerm.gui.GuiHelper
 import com.rikmuld.corerm.utils.PlayerUtils
 import net.minecraft.client.Minecraft
 import net.minecraft.client.gui.GuiChat
+import net.minecraft.util.EnumFacing
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType
 import net.minecraftforge.fml.client.FMLClientHandler
 import net.minecraftforge.fml.common.eventhandler.Event
@@ -51,6 +52,9 @@ class EventsS {
 
   val UUIDSpeedCamping =
     new UUID(new Random(83746763).nextLong, new Random(28647556).nextLong)
+
+  var facing: EnumFacing =
+    EnumFacing.NORTH
 
   @SubscribeEvent
   def onBoneMealUsed(event: BonemealEvent): Unit =
@@ -159,6 +163,8 @@ class EventsS {
     val player = event.player
     val world = player.world
     val item = player.inventory.getCurrentItem
+
+    facing = player.getHorizontalFacing
 
     if (event.phase.equals(Phase.START)) {
       val trapTime = player.getEntityData.getInteger("isInTrap")

@@ -3,8 +3,8 @@ package com.rikmuld.camping.registers
 import com.rikmuld.camping.Lib._
 import com.rikmuld.camping.misc._
 import com.rikmuld.camping.registers.Objs._
-import com.rikmuld.camping.render.objs.{CampfireCookRender, TrapRender}
-import com.rikmuld.camping.tileentity.{TileCampfireCook, TileTrap}
+import com.rikmuld.camping.render.objs.{CampfireCookRender, TentRender, TrapRender}
+import com.rikmuld.camping.tileentity.{TileCampfireCook, TileTent, TileTrap}
 import com.rikmuld.corerm.old.BoundsStructure
 import net.minecraft.client.settings.KeyBinding
 import net.minecraftforge.fml.client.registry.ClientRegistry
@@ -15,7 +15,7 @@ object ModMisc {
   def preRegisterClient(): Unit = {
     ClientRegistry.bindTileEntitySpecialRenderer(classOf[TileTrap], new TrapRender)
     ClientRegistry.bindTileEntitySpecialRenderer(classOf[TileCampfireCook], new CampfireCookRender)
-    //ClientRegistry.bindTileEntitySpecialRenderer(classOf[TileTent], new TentRender)
+    ClientRegistry.bindTileEntitySpecialRenderer(classOf[TileTent], new TentRender)
   }
 
   @SideOnly(Side.CLIENT)

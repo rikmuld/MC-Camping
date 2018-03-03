@@ -17,9 +17,6 @@ object Trap {
 
   final val BOUNDS_CLOSED =
     new AxisAlignedBB(0.21875f, 0, 0.34375f, 0.78125f, 0.25f, 0.65f)
-
-  final val BOUNDS_NONE =
-    new AxisAlignedBB(0.5, 0, 0.5, 0.5, 0, 0.5)
 }
 
 class Trap(modId:String, info: ObjDefinition) extends BlockRM(modId, info) {
@@ -33,7 +30,7 @@ class Trap(modId:String, info: ObjDefinition) extends BlockRM(modId, info) {
                                 player: EntityPlayer, hand:EnumHand, side: EnumFacing,
                                 xHit: Float, yHit: Float, zHit: Float): Boolean = {
 
-    val tile = getTile(world, pos)
+    val tile = world.getTileEntity(pos).asInstanceOf[TileTrap]
 
     tile.lastPlayer = Some(player)
 
@@ -42,7 +39,4 @@ class Trap(modId:String, info: ObjDefinition) extends BlockRM(modId, info) {
       true
     } else super.onBlockActivated(world, pos, state, player, hand, side, xHit, yHit, zHit)
   }
-
-  def getTile(world: IBlockAccess, pos: BlockPos): TileTrap =
-    world.getTileEntity(pos).asInstanceOf[TileTrap]
 }

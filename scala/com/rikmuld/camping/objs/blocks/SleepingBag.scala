@@ -2,6 +2,7 @@ package com.rikmuld.camping.objs.blocks
 
 import java.util.Random
 
+import com.rikmuld.camping.CampingMod
 import com.rikmuld.camping.objs.Definitions.SleepingBag._
 import com.rikmuld.corerm.objs.ObjDefinition
 import com.rikmuld.corerm.objs.blocks._
@@ -34,14 +35,14 @@ class SleepingBag(modId:String, info: ObjDefinition) extends BlockRM(modId, info
     val facing = entity.getHorizontalFacing
     val headPos = pos.offset(facing)
 
-    if (canPlaceBlockAt(world, headPos)) {
-      world.setBlockState(headPos, getDefaultState)
+    world.setBlockState(headPos, getDefaultState)
 
-      setState(world, headPos, "facing", facing)
-      setState(world, headPos, STATE_IS_HEAD, true)
-    } else
-      world.destroyBlock(pos, true)
+    setState(world, headPos, "facing", facing)
+    setState(world, headPos, STATE_IS_HEAD, true)
   }
+
+  override def canPlaceBlockAt(world: World, pos: BlockPos): Boolean =
+    super.canPlaceBlockAt(world, pos) && super.canPlaceBlockAt(world, pos.offset(CampingMod.proxy.eventsS.facing)) //TODO test thoroughly, the facing in multiplayer
 
   override def breakBlock(world: World, pos: BlockPos, state: IBlockState): Unit = {
     val isHead = getBool(state, STATE_IS_HEAD)

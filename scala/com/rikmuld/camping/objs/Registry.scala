@@ -21,8 +21,6 @@ import net.minecraftforge.fml.common.registry.GameRegistry
 
 import scala.collection.JavaConversions._
 
-//TODO call post item and pre block registry, and put stuff in there which is now in other registries (such as tabs, armor material, recipes) [pre, pre, post]
-
 @EventBusSubscriber
 object Registry {
   var knife,
@@ -81,7 +79,9 @@ object Registry {
     lantern = objLantern._1
     lanternItem = objLantern._2
 
-    //    (tent, tentItem) = TENT.create(MOD_ID)
+    val objTent = TENT.create(MOD_ID)
+    tent = objTent._1
+    tentItem = objTent._2
 
     val logSeatObj = LOGSEAT.create(MOD_ID)
     logSeat = logSeatObj._1
@@ -105,7 +105,7 @@ object Registry {
       campfireWoodOn,
       campfireCook,
       lantern,
-//      tent,
+      tent,
       logSeat,
       light,
       sleepingBag,
@@ -147,7 +147,7 @@ object Registry {
       lanternItem,
       logSeatItem,
       trapItem,
-//      tentItem,
+      tentItem,
       sleepingBagItem,
       hempItem
     )
@@ -174,7 +174,7 @@ object Registry {
     lanternItem.registerRenders()
     logSeatItem.registerRenders()
     trapItem.registerRenders()
-//    tentItem.registerRenders()
+    tentItem.registerRenders()
     sleepingBagItem.registerRenders()
     hempItem.registerRenders()
   }
