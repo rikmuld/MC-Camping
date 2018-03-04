@@ -1,15 +1,15 @@
 package com.rikmuld.camping
 
-import java.util.ArrayList
-
 import com.rikmuld.camping.CampingMod._
-import com.rikmuld.camping.Lib.ConfigInfo._
+import com.rikmuld.camping.Library.ConfigInfo._
 import net.minecraft.client.Minecraft
 import net.minecraft.client.gui.GuiScreen
 import net.minecraftforge.common.config.{ConfigElement, Configuration}
 import net.minecraftforge.fml.client.IModGuiFactory
 import net.minecraftforge.fml.client.IModGuiFactory.RuntimeOptionCategoryElement
 import net.minecraftforge.fml.client.config.{GuiConfig, IConfigElement}
+
+import scala.collection.JavaConversions._
 
 class Config(val file: Configuration) {
   var useBears = true
@@ -29,10 +29,11 @@ class Config(val file: Configuration) {
   var alwaysCampingInv = true
   var welcomeMess = true
   var maxWoodFuel = 5000
-  
-  var elements: java.util.List[IConfigElement] = new ArrayList[IConfigElement];
 
-  def sync = {    
+  var elements: List[IConfigElement] =
+    _
+
+  def sync(): Unit = {
     campfireMaxFuel = getVar("Campfire Max Fuel", "Max fuel of a campfire in ticks.", CAT_CAMPFIRE, campfireMaxFuel).asInstanceOf[Integer]
     campfireCoalFuel = getVar("Coal Fuel", "Fuel worth of 1 coal pice in ticks.", CAT_CAMPFIRE, campfireCoalFuel).asInstanceOf[Integer]
     cookTimeSpit = getVar("Spit cook time", "Time in ticks to complete spit cook cycle.", CAT_CAMPFIRE, cookTimeSpit).asInstanceOf[Integer]
@@ -51,32 +52,48 @@ class Config(val file: Configuration) {
     welcomeMess = getVar("Welcome Message", "Print the welcome message", CAT_GENERAL, welcomeMess).asInstanceOf[Boolean]
     maxWoodFuel = getVar("Provisional Campfire Burn Time", "The burn time of a provisional campfire", CAT_CAMPFIRE, maxWoodFuel).asInstanceOf[Integer]
 
-    if (file.hasChanged) file.save
-    for (i <- 0 until file.getCategoryNames.size) elements.addAll(new ConfigElement(file.getCategory(file.getCategoryNames().toArray().apply(i).asInstanceOf[String])).getChildElements());
+    if (file.hasChanged)
+      file.save
+
+    elements = file.getCategoryNames.map(file.getCategory).flatMap(new ConfigElement(_).getChildElements).toList
   }
-  def getVar(name: String, desc: String, cat: String, curr: Any): Any = {
-    if (curr.isInstanceOf[Integer]) return file.getInt(name, cat, curr.asInstanceOf[Integer], 0, Integer.MAX_VALUE, desc)
-    else if (curr.isInstanceOf[Float]) return file.getFloat(name, cat, curr.asInstanceOf[Float], 0, Float.MaxValue, desc)
-    else if (curr.isInstanceOf[Boolean]) return file.getBoolean(name, cat, curr.asInstanceOf[Boolean], desc)
-    else if (curr.isInstanceOf[String]) return file.getString(name, cat, curr.asInstanceOf[String], desc)
+
+  def getVar(name: String, desc: String, cat: String, curr: Any): Any = curr match {
+    case int: Int =>
+      file.getInt(name, cat, int, 0, Integer.MAX_VALUE, desc)
+    case float: Float =>
+      file.getFloat(name, cat, float, 0, Float.MaxValue, desc)
+    case boolean: Boolean =>
+      file.getBoolean(name, cat, boolean, desc)
+    case string: String =>
+      file.getString(name, cat, string, desc)
   }
-  def getVar(name: String, desc: String, cat: String, curr: Any, min: Any, max: Any): Any = {
-    if (curr.isInstanceOf[Integer]) return file.getInt(name, cat, curr.asInstanceOf[Integer], min.asInstanceOf[Integer], max.asInstanceOf[Integer], desc)
-    else if (curr.isInstanceOf[Float]) return file.getFloat(name, cat, curr.asInstanceOf[Float], min.asInstanceOf[Float], max.asInstanceOf[Float], desc)
-    else if (curr.isInstanceOf[Boolean]) return file.getBoolean(name, cat, curr.asInstanceOf[Boolean], desc)
-    else if (curr.isInstanceOf[String]) return file.getString(name, cat, curr.asInstanceOf[String], desc)
+
+  def getVar(name: String, desc: String, cat: String, curr: Any, min: Float, max: Float): Any = curr match {
+    case int: Int =>
+      file.getInt(name, cat, int, min.toInt, max.toInt, desc)
+    case float: Float =>
+      file.getFloat(name, cat, float, min, max, desc)
   }
+
   def disableMess(){
     file.getCategory(CAT_GENERAL).get("Welcome Message").setValue(false)
-    file.save
+    file.save()
   }
 }
 
 class GuiFactory extends IModGuiFactory {
-  override def initialize(minecraftInstance: Minecraft) = {}
-  override def runtimeGuiCategories: java.util.Set[RuntimeOptionCategoryElement] = null
-  override def createConfigGui(parentScreen: GuiScreen): GuiScreen = new ConfigGUI(parentScreen)
-  override def hasConfigGui: Boolean = true
+  override def initialize(minecraftInstance: Minecraft): Unit =
+    Unit
+
+  override def runtimeGuiCategories: java.util.Set[RuntimeOptionCategoryElement] =
+    null
+
+  override def createConfigGui(parentScreen: GuiScreen): GuiScreen =
+    new ConfigGUI(parentScreen)
+
+  override def hasConfigGui: Boolean =
+    true
 }
 
-class ConfigGUI(parent: GuiScreen) extends GuiConfig(parent, config.elements, MOD_ID, false, false, "Camping Config!")
+class ConfigGUI(parent: GuiScreen) extends GuiConfig(parent, config.elements, MOD_ID, false, false, "Camping Config")

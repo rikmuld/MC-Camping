@@ -2,10 +2,10 @@ package com.rikmuld.camping.entity
 
 import com.google.common.base.Predicate
 import com.rikmuld.camping.CampingMod
-import com.rikmuld.camping.Lib._
+import com.rikmuld.camping.Library._
 import com.rikmuld.camping.objs.Definitions.PartsAnimal
-import com.rikmuld.camping.objs.Registry
-import com.rikmuld.camping.registers.Objs._
+import com.rikmuld.camping.registers.ObjRegistry
+import com.rikmuld.camping.registers.Registry._
 import com.rikmuld.camping.render.models.FoxModel
 import net.minecraft.client.renderer.entity.{RenderLiving, RenderManager}
 import net.minecraft.entity.ai._
@@ -63,14 +63,14 @@ class Fox(worldIn: World) extends EntityAnimal(worldIn) {
     var dropChance = rand.nextInt(3) + rand.nextInt(1 + loot)
     var drops: Int = 0
     while (drops < (dropChance)) {
-      entityDropItem(new ItemStack(Registry.animalParts, 1, PartsAnimal.FUR_WHITE), 0)
+      entityDropItem(new ItemStack(ObjRegistry.animalParts, 1, PartsAnimal.FUR_WHITE), 0)
       drops += 1
     }
     dropChance = rand.nextInt(3) + rand.nextInt(1 + loot)
     drops = 0
     while (drops < dropChance) {
-      if (isBurning) entityDropItem(new ItemStack(Registry.venisonCooked), 0)
-      else entityDropItem(new ItemStack(Registry.venisonRaw), 0)
+      if (isBurning) entityDropItem(new ItemStack(ObjRegistry.venisonCooked), 0)
+      else entityDropItem(new ItemStack(ObjRegistry.venisonRaw), 0)
       drops += 1
     }
   }

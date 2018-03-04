@@ -3,42 +3,36 @@ package com.rikmuld.camping
 import java.util.{Random, UUID}
 
 import com.rikmuld.camping.CampingMod._
-import com.rikmuld.camping.Lib._
+import com.rikmuld.camping.Library._
 import com.rikmuld.camping.inventory.camping.InventoryCamping
 import com.rikmuld.camping.inventory.gui.GuiMapHUD
 import com.rikmuld.camping.misc.{KeyData, MapData, NBTPlayer}
 import com.rikmuld.camping.objs.Definitions._
-import com.rikmuld.camping.objs.Registry
 import com.rikmuld.camping.objs.blocks.Hemp
+import com.rikmuld.camping.registers.{MiscRegistry, ObjRegistry}
 import com.rikmuld.camping.tileentity.{Roaster, TileTrap}
 import com.rikmuld.corerm.gui.GuiHelper
+import com.rikmuld.corerm.network.PacketSender
 import com.rikmuld.corerm.utils.PlayerUtils
 import net.minecraft.client.Minecraft
 import net.minecraft.client.gui.GuiChat
-import net.minecraft.util.EnumFacing
-import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType
-import net.minecraftforge.fml.client.FMLClientHandler
-import net.minecraftforge.fml.common.eventhandler.Event
-import net.minecraftforge.fml.common.gameevent.TickEvent.Phase
-//import com.rikmuld.camping.objs.blocks.{Hemp, Tent}
-//import com.rikmuld.camping.objs.misc.{MapData, NBTPlayer}
-//import com.rikmuld.camping.tileentity.{Roaster, TileTrap}
-import com.rikmuld.camping.registers.Objs
-import com.rikmuld.corerm.network.PacketSender
 import net.minecraft.client.gui.inventory.GuiInventory
 import net.minecraft.entity.SharedMonsterAttributes._
 import net.minecraft.entity.ai.attributes.AttributeModifier
 import net.minecraft.entity.player.{EntityPlayer, EntityPlayerMP}
 import net.minecraft.init.Items
 import net.minecraft.item.{ItemArmor, ItemStack}
+import net.minecraft.util.EnumFacing
 import net.minecraft.util.text.TextComponentString
+import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType
 import net.minecraftforge.client.event.{GuiOpenEvent, RenderGameOverlayEvent}
 import net.minecraftforge.event.entity.player.{BonemealEvent, PlayerDropsEvent}
+import net.minecraftforge.fml.client.FMLClientHandler
 import net.minecraftforge.fml.client.event.ConfigChangedEvent
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
+import net.minecraftforge.fml.common.eventhandler.{Event, SubscribeEvent}
 import net.minecraftforge.fml.common.gameevent.InputEvent.KeyInputEvent
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.{ItemCraftedEvent, PlayerLoggedInEvent, PlayerRespawnEvent}
-import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent
+import net.minecraftforge.fml.common.gameevent.TickEvent.{Phase, PlayerTickEvent}
 import net.minecraftforge.fml.relauncher.{Side, SideOnly}
 
 import scala.collection.JavaConversions._
@@ -58,10 +52,10 @@ class EventsS {
 
   @SubscribeEvent
   def onBoneMealUsed(event: BonemealEvent): Unit =
-    if (event.getBlock.getBlock == Registry.hemp) {
+    if (event.getBlock.getBlock == ObjRegistry.hemp) {
       val world = event.getWorld
       val pos = event.getPos
-      val hemp = Registry.hemp.asInstanceOf[Hemp]
+      val hemp = ObjRegistry.hemp.asInstanceOf[Hemp]
       val result =
         if (hemp.getInt(world, pos, Hemp.STATE_AGE) <= Hemp.STATE_AGE_READY) {
           hemp.asInstanceOf[Hemp].grow(world, pos)
@@ -119,11 +113,11 @@ class EventsS {
     val crafting = event.crafting
 
     val marshmallow =
-      crafting.isItemEqual(new ItemStack(Registry.parts, 1, Parts.MARSHMALLOW))
+      crafting.isItemEqual(new ItemStack(ObjRegistry.parts, 1, Parts.MARSHMALLOW))
 
     for(slot <- 0 until event.craftMatrix.getSizeInventory)
       event.craftMatrix.getStackInSlot(slot) match {
-        case stack if stack.getItem == Registry.knife =>
+        case stack if stack.getItem == ObjRegistry.knife =>
           stack.setCount(stack.getCount + 1)
           stack.damageItem(1, event.player)
 
@@ -133,7 +127,7 @@ class EventsS {
         case stack if stack.getItem == Items.POTIONITEM  && marshmallow =>
           event.craftMatrix.setInventorySlotContents(slot, new ItemStack(Items.GLASS_BOTTLE))
 
-        case stack if stack.getItem == Registry.backpack =>
+        case stack if stack.getItem == ObjRegistry.backpack =>
           crafting.setTagCompound(stack.getTagCompound)
 
         case _ =>
@@ -192,10 +186,10 @@ class EventsS {
           val pos = player.getPosition
 
           Vector(pos, pos.down, pos.up, pos.north, pos.south, pos.west, pos.east).find(pos => {
-            if(world.getBlockState(pos).getBlock == Registry.light)
+            if(world.getBlockState(pos).getBlock == ObjRegistry.light)
               true
             else if(world.isAirBlock(pos))
-              world.setBlockState(pos, Registry.light.getDefaultState)
+              world.setBlockState(pos, ObjRegistry.light.getDefaultState)
             else
               false
           })
@@ -241,7 +235,7 @@ class EventsS {
 
     val increase = event.player.getArmorInventoryList.count(_.getItem match {
       case item: ItemArmor =>
-        item.getArmorMaterial == Objs.fur
+        item.getArmorMaterial == ObjRegistry.fur
       case _ =>
         false
     })
@@ -270,11 +264,9 @@ class EventsC {
   @SubscribeEvent
   def onKeyInput(event: KeyInputEvent) {
     if (!FMLClientHandler.instance.isGUIOpen(classOf[GuiChat])) {
-      for (key <- KeyInfo.default.indices) {
-        if (Objs.keyOpenCamping.isPressed) {
-          keyPressedClient(KeyInfo.INVENTORY_KEY)
-          PacketSender.sendToServer(new KeyData(KeyInfo.INVENTORY_KEY))
-        }
+      if (MiscRegistry.keyOpenCamping.isPressed) {
+        keyPressedClient(KeyInfo.INVENTORY_KEY)
+        PacketSender.sendToServer(new KeyData(KeyInfo.INVENTORY_KEY))
       }
     }
   }

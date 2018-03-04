@@ -1,8 +1,8 @@
 package com.rikmuld.camping.advancements
 
 import com.google.gson.{JsonDeserializationContext, JsonObject}
-import com.rikmuld.camping.Lib.AdvancementInfo.DYE_BURNED
-import com.rikmuld.camping.Lib.NBTInfo
+import com.rikmuld.camping.Library.AdvancementInfo.DYE_BURNED
+import com.rikmuld.camping.Library.NBTInfo
 import com.rikmuld.corerm.advancements.triggers.TriggerSimple
 import net.minecraft.entity.player.EntityPlayerMP
 import net.minecraft.util.ResourceLocation

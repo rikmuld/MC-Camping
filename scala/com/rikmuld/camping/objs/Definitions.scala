@@ -1,9 +1,9 @@
 package com.rikmuld.camping.objs
 
-import com.rikmuld.camping.Lib._
+import com.rikmuld.camping.Library._
 import com.rikmuld.camping.objs.blocks._
 import com.rikmuld.camping.objs.items.{Kit, Marshmallow}
-import com.rikmuld.camping.registers.Objs._
+import com.rikmuld.camping.registers.ObjRegistry._
 import com.rikmuld.camping.tileentity._
 import com.rikmuld.corerm.objs.Properties.{Ticker, _}
 import com.rikmuld.corerm.objs.StateProperty.{DirectionType, PropBool, PropDirection, PropInt}

@@ -1,7 +1,7 @@
 package com.rikmuld.camping.advancements
 
 import com.google.gson.{JsonDeserializationContext, JsonObject}
-import com.rikmuld.camping.Lib.AdvancementInfo._
+import com.rikmuld.camping.Library.AdvancementInfo._
 import com.rikmuld.corerm.advancements.triggers.TriggerSimple
 import net.minecraft.entity.player.EntityPlayerMP
 import net.minecraft.util.math.BlockPos

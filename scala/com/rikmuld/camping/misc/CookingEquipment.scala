@@ -1,9 +1,9 @@
 package com.rikmuld.camping.misc
 
 import com.rikmuld.camping.CampingMod._
-import com.rikmuld.camping.Lib.TextureInfo
+import com.rikmuld.camping.Library.TextureInfo
 import com.rikmuld.camping.objs.Definitions.{Kit, Parts}
-import com.rikmuld.camping.objs.Registry
+import com.rikmuld.camping.registers.ObjRegistry
 import com.rikmuld.camping.render.models.CookingEquipmentModels
 import com.rikmuld.corerm.client.ModularModal
 import com.rikmuld.corerm.utils.StackUtils
@@ -51,7 +51,7 @@ abstract class CookingEquipment(kit: Int, cookTime: Int, maxSlots: Int, model: M
 
   def renderFood(render: RenderItem, slot: Int, food: ItemStack): Unit =
     if(slot < maxSlots && !food.isEmpty && !food.isItemEqual(
-      new ItemStack(Registry.parts, 1, Parts.ASH)
+      new ItemStack(ObjRegistry.parts, 1, Parts.ASH)
     ))
       doRenderFood(render, slot, food)
 
@@ -95,7 +95,7 @@ object CookingEquipment {
     kits.get(kit)
 
   def getEquipment(kit: ItemStack): Option[CookingEquipment] =
-    if(kit.isEmpty || kit.getItem != Registry.kit)
+    if(kit.isEmpty || kit.getItem != ObjRegistry.kit)
       None
     else
       getEquipment(kit.getItemDamage)

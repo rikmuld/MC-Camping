@@ -1,7 +1,7 @@
 package com.rikmuld.camping.objs.items
 
 import com.rikmuld.camping.misc.CookingEquipment
-import com.rikmuld.camping.registers.Objs._
+import com.rikmuld.camping.registers.ObjRegistry._
 import com.rikmuld.corerm.Library.TextInfo
 import com.rikmuld.corerm.objs.ObjDefinition
 import com.rikmuld.corerm.objs.items.ItemRM

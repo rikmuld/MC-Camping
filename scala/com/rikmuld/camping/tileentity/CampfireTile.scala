@@ -1,14 +1,14 @@
 package com.rikmuld.camping.tileentity
 
 import com.rikmuld.camping.CampingMod._
-import com.rikmuld.camping.Lib.AdvancementInfo
+import com.rikmuld.camping.Library.AdvancementInfo
 import com.rikmuld.camping.entity.Mountable
 import com.rikmuld.camping.inventory.SlotCooking
 import com.rikmuld.camping.misc.{CookingEquipment, ItemsData}
 import com.rikmuld.camping.objs.Definitions.CampfireCook._
 import com.rikmuld.camping.objs.Definitions.CampfireWood._
 import com.rikmuld.camping.objs.Definitions.Parts
-import com.rikmuld.camping.objs.Registry
+import com.rikmuld.camping.registers.ObjRegistry
 import com.rikmuld.camping.tileentity.TileCampfire._
 import com.rikmuld.corerm.advancements.TriggerHelper
 import com.rikmuld.corerm.network.PacketSender
@@ -35,7 +35,7 @@ object TileCampfire {
       yield new PotionEffect(Potion.getPotionById(i), 400, 0)
 
   def isAsh(stack: ItemStack): Boolean =
-    stack.getItem == Registry.parts &&
+    stack.getItem == ObjRegistry.parts &&
       stack.getItemDamage == Parts.ASH
 }
 
@@ -56,7 +56,7 @@ class TileCampfireWoodOn extends TileEntitySimple with TileEntityTicker with Roa
   }
 
   def getBlock: BlockSimple =
-    Registry.campfireWoodOn
+    ObjRegistry.campfireWoodOn
 
   override def shouldRefresh(world: World, pos: BlockPos, oldState: IBlockState, newState: IBlockState): Boolean =
     oldState.getBlock != newState.getBlock
@@ -79,7 +79,7 @@ class TileCampfireWoodOff extends TileEntitySimple with TileEntityTicker {
   }
 
   def getBlock: BlockSimple =
-    Registry.campfireWood
+    ObjRegistry.campfireWood
 
   override def shouldRefresh(world: World, pos: BlockPos, oldState: IBlockState, newState: IBlockState): Boolean =
     oldState.getBlock != newState.getBlock
@@ -87,11 +87,11 @@ class TileCampfireWoodOff extends TileEntitySimple with TileEntityTicker {
 
 trait Roaster {
   def canRoast(item: ItemStack): Boolean =
-    item.getItem == Registry.parts &&
+    item.getItem == ObjRegistry.parts &&
       item.getItemDamage == Parts.MARSHMALLOW_STICK
 
   protected def roastResult(item:ItemStack): ItemStack =
-    new ItemStack(Registry.marshmallow)
+    new ItemStack(ObjRegistry.marshmallow)
 
   def roastTime(item: ItemStack): Int =
     150
@@ -241,7 +241,7 @@ class TileCampfireCook extends TileEntityInventory with Roaster with ITickable {
 
   private def doCookFood(i: Int, food: ItemStack, equipment: CookingEquipment): Unit = {
     val result = equipment.getResult(food).getOrElse(
-      new ItemStack(Registry.parts, 1, Parts.ASH)
+      new ItemStack(ObjRegistry.parts, 1, Parts.ASH)
     )
 
     cookProgress(i) = 0
@@ -335,7 +335,7 @@ class TileCampfireCook extends TileEntityInventory with Roaster with ITickable {
     fuel > 0
 
   def getBlock: BlockSimple =
-    Registry.campfireCook
+    ObjRegistry.campfireCook
 
   override def update(): Unit =
     if (!world.isRemote) {

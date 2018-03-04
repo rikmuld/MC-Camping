@@ -3,12 +3,12 @@ package com.rikmuld.camping.tileentity
 import java.util.{Random, UUID}
 
 import com.rikmuld.camping.CampingMod._
-import com.rikmuld.camping.Lib.AdvancementInfo._
+import com.rikmuld.camping.Library.AdvancementInfo._
 import com.rikmuld.camping.misc.ItemsData
 import com.rikmuld.camping.objs.Definitions.Trap._
-import com.rikmuld.camping.objs.Registry
 import com.rikmuld.camping.objs.blocks.Trap
-import com.rikmuld.camping.registers.Objs
+import com.rikmuld.camping.registers.ObjRegistry
+import com.rikmuld.camping.registers.Registry._
 import com.rikmuld.corerm.advancements.TriggerHelper
 import com.rikmuld.corerm.network.PacketSender
 import com.rikmuld.corerm.tileentity.{TileEntityInventory, TileEntityTicker}
@@ -38,7 +38,7 @@ object TileTrap {
     Items.CHICKEN,
     Items.BEEF,
     Items.PORKCHOP,
-    Registry.venisonRaw,
+    ObjRegistry.venisonRaw,
     Items.MUTTON,
     Items.RABBIT,
     Items.FISH
@@ -158,7 +158,7 @@ class TileTrap extends TileEntityInventory with TileEntityTicker {
 
   private def applyEffects(entity: EntityLivingBase): Unit = {
     if(TileTrap.random.nextInt(50) == 0) {
-      val effect = new PotionEffect(Objs.bleeding, 200, 1)
+      val effect = new PotionEffect(bleeding, 200, 1)
 
       effect.getCurativeItems.clear()
       entity.addPotionEffect(effect)

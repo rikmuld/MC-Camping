@@ -1,15 +1,16 @@
-package com.rikmuld.camping.objs
+package com.rikmuld.camping.registers
 
 import com.rikmuld.camping.CampingMod._
 import com.rikmuld.camping.misc._
 import com.rikmuld.camping.objs.Definitions._
-import com.rikmuld.camping.registers.Objs._
 import com.rikmuld.corerm.objs.blocks.BlockSimple
 import com.rikmuld.corerm.objs.items.ItemSimple
+import com.rikmuld.corerm.old.BoundsStructure
 import net.minecraft.block.Block
 import net.minecraft.init.Blocks.IRON_BARS
 import net.minecraft.init.Items._
 import net.minecraft.init.SoundEvents
+import net.minecraft.item.ItemArmor.ArmorMaterial
 import net.minecraft.item.crafting.FurnaceRecipes
 import net.minecraft.item.{Item, ItemFood, ItemStack}
 import net.minecraftforge.client.event.ModelRegistryEvent
@@ -22,7 +23,21 @@ import net.minecraftforge.fml.common.registry.GameRegistry
 import scala.collection.JavaConversions._
 
 @EventBusSubscriber
-object Registry {
+object ObjRegistry {
+  var tab: TabCamping =
+    _
+
+  var fur: ArmorMaterial =
+    _
+
+  var spit,
+      grill,
+      pan: CookingEquipment =
+    _
+
+  var tentStructure: Array[BoundsStructure] =
+    _
+
   var knife,
       parts,
       marshmallow,
@@ -180,6 +195,11 @@ object Registry {
   }
 
   def preRegistry(): Unit = {
+    val xLine = Array(1, -1, 1, -1, 0, 1, -1, 0, 1, -1, 0, 1, -1, 0, 1, -1, 0)
+    val yLine = Array(0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1)
+    val zLine = Array(0, 0, 1, 1, 1, 2, 2, 2, 0, 0, 0, 1, 1, 1, 2, 2, 2)
+
+    tentStructure = BoundsStructure.regsisterStructure(xLine, yLine, zLine, true)
     tab = new TabCamping(MOD_ID)
     fur = EnumHelper.addArmorMaterial("FUR", "", 20, Array(2, 5, 4, 2), 20, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 0)
   }
@@ -193,19 +213,19 @@ object Registry {
 
     CookingEquipment.registerKitRecipe(spit,
       new ItemStack(STICK, 2),
-      new ItemStack(Registry.parts, 1, Parts.STICK_IRON)
+      new ItemStack(ObjRegistry.parts, 1, Parts.STICK_IRON)
     )
 
     CookingEquipment.registerKitRecipe(grill,
       new ItemStack(STICK, 4),
-      new ItemStack(Registry.parts, 2, Parts.STICK_IRON),
+      new ItemStack(ObjRegistry.parts, 2, Parts.STICK_IRON),
       new ItemStack(IRON_BARS)
     )
 
     CookingEquipment.registerKitRecipe(pan,
       new ItemStack(STICK, 3),
-      new ItemStack(Registry.parts, 1, Parts.STICK_IRON),
-      new ItemStack(Registry.parts, 1, Parts.PAN)
+      new ItemStack(ObjRegistry.parts, 1, Parts.STICK_IRON),
+      new ItemStack(ObjRegistry.parts, 1, Parts.PAN)
     )
 
     grill.registerRecipe(FISH, 0, new ItemStack(COOKED_FISH, 1, 0))

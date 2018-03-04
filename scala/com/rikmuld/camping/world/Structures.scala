@@ -3,7 +3,8 @@ package com.rikmuld.camping.world
 import java.util.Random
 
 import com.rikmuld.camping.CampingMod
-import com.rikmuld.camping.objs.{Definitions, Registry}
+import com.rikmuld.camping.objs.Definitions
+import com.rikmuld.camping.registers.ObjRegistry
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
 
@@ -19,9 +20,9 @@ class HempGen extends net.minecraft.world.gen.feature.WorldGenerator {
       if (world.isAirBlock(posNew)) {
         val age = random.nextInt(4)
 
-        if (Registry.hemp.canStay(world, posNew)) {
-          world.setBlockState(posNew, Registry.hemp.getDefaultState)
-          Registry.hemp.setState(world, posNew, Definitions.Hemp.STATE_AGE, age)
+        if (ObjRegistry.hemp.canStay(world, posNew)) {
+          world.setBlockState(posNew, ObjRegistry.hemp.getDefaultState)
+          ObjRegistry.hemp.setState(world, posNew, Definitions.Hemp.STATE_AGE, age)
         }
       }
     }

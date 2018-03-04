@@ -2,7 +2,7 @@ package com.rikmuld.camping.objs.blocks
 
 import com.rikmuld.camping.objs.Definitions.Lantern
 import com.rikmuld.camping.objs.Definitions.Lantern._
-import com.rikmuld.camping.objs.Registry
+import com.rikmuld.camping.registers.ObjRegistry
 import com.rikmuld.camping.tileentity.TileLantern
 import com.rikmuld.corerm.objs.ObjDefinition
 import com.rikmuld.corerm.objs.blocks.BlockRM
@@ -31,9 +31,9 @@ class Lantern(modId: String, info: ObjDefinition) extends BlockRM(modId, info) {
                         state: IBlockState, fortune: Int): java.util.List[ItemStack] =
     world.getTileEntity(pos).asInstanceOf[TileLantern].getBurnTime match {
       case time if time < 20 =>
-        List(new ItemStack(Registry.lantern, 1, Lantern.OFF))
+        List(new ItemStack(ObjRegistry.lantern, 1, Lantern.OFF))
       case time =>
-        val lantern = new ItemStack(Registry.lantern, 1, Lantern.ON)
+        val lantern = new ItemStack(ObjRegistry.lantern, 1, Lantern.ON)
         val tag = new NBTTagCompound()
 
         tag.setInteger("time", time / 20)

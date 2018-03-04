@@ -1,6 +1,6 @@
 package com.rikmuld.camping.misc
 
-import com.rikmuld.camping.objs.Registry
+import com.rikmuld.camping.registers.ObjRegistry
 import net.minecraft.creativetab.CreativeTabs
 import net.minecraft.item.ItemStack
 import net.minecraft.util.NonNullList
@@ -13,7 +13,7 @@ class TabCamping(name: String) extends CreativeTabs(name) {
     mutable.ListBuffer()
 
   override def getTabIconItem =
-    new ItemStack(Registry.knife)
+    new ItemStack(ObjRegistry.knife)
 
   def addToTab(stack: ItemStack): Unit =
     additionalItems.append(stack)

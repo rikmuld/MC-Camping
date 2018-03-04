@@ -2,9 +2,8 @@ package com.rikmuld.camping.misc
 
 import com.rikmuld.camping.CampingMod._
 import com.rikmuld.camping.EventsC
-import com.rikmuld.camping.Lib._
+import com.rikmuld.camping.Library._
 import com.rikmuld.camping.entity.Mountable
-import com.rikmuld.camping.inventory.gui.MapData
 import com.rikmuld.corerm.network.packets.PacketBasic
 import com.rikmuld.corerm.tileentity.TileEntityInventory
 import net.minecraft.entity.player.EntityPlayer
@@ -41,7 +40,7 @@ class MapData(var scale: Int, var centerX: Int, var centerZ: Int, var colours: A
 
   override def handlePacket(player: EntityPlayer, ctx: MessageContext): Unit = {
     proxy.getEventClient.asInstanceOf[EventsC].updateMap = true
-    proxy.getEventClient.asInstanceOf[EventsC].mapData = MapData(centerX, centerZ, scale, colours)
+    proxy.getEventClient.asInstanceOf[EventsC].mapData = com.rikmuld.camping.inventory.gui.MapData(centerX, centerZ, scale, colours)
   }
 }
 

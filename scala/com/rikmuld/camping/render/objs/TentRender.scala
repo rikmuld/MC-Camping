@@ -1,6 +1,6 @@
 package com.rikmuld.camping.render.objs
 
-import com.rikmuld.camping.Lib._
+import com.rikmuld.camping.Library._
 import com.rikmuld.camping.render.models.TentModel
 import com.rikmuld.camping.tileentity.TileTent
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer

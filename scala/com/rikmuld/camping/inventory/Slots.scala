@@ -1,7 +1,7 @@
 package com.rikmuld.camping.inventory
 
 import com.rikmuld.camping.misc.CookingEquipment
-import com.rikmuld.camping.objs.Registry
+import com.rikmuld.camping.registers.ObjRegistry
 import com.rikmuld.camping.tileentity.TileCampfireCook
 import com.rikmuld.corerm.gui._
 import com.rikmuld.corerm.gui.slots.{SlotChangingInventory, SlotDisable, SlotNot, SlotOnly}
@@ -80,7 +80,7 @@ class SlotBackpack(inv: IInventory, index: Int, x:Int, y:Int, active: Boolean) e
   if(!active) disable()
 
   override def getBanItems: Vector[Item] =
-    Vector(Registry.backpack)
+    Vector(ObjRegistry.backpack)
 }
 
 class SlotTabbedBackpack(index: Int, x:Int, y:Int, val tab: Int) extends

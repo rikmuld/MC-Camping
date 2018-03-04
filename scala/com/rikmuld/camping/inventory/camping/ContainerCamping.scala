@@ -1,9 +1,9 @@
 package com.rikmuld.camping.inventory.camping
 
-import com.rikmuld.camping.Lib.TextureInfo
+import com.rikmuld.camping.Library.TextureInfo
 import com.rikmuld.camping.inventory._
 import com.rikmuld.camping.inventory.camping.InventoryCamping._
-import com.rikmuld.camping.objs.Registry
+import com.rikmuld.camping.registers.ObjRegistry
 import com.rikmuld.corerm.gui.container.{ContainerSimple, ContainerTabbed}
 import com.rikmuld.corerm.inventory.InventoryItem
 import net.minecraft.entity.player.EntityPlayer
@@ -39,11 +39,11 @@ class ContainerCamping(player:EntityPlayer) extends ContainerSimple[InventoryCam
     "camping_inventory"
 
   override def addInventorySlots(): Unit = {
-    backpackSlot = new SlotItem(getIInventory, 0, 8, 35, Registry.backpack)
+    backpackSlot = new SlotItem(getIInventory, 0, 8, 35, ObjRegistry.backpack)
 
     addSlotToContainer(backpackSlot)
-    addSlotToContainer(new SlotItem(getIInventory, 1, 8, 53, Registry.knife))
-    addSlotToContainer(new SlotItem(getIInventory, 2, 196, 35, Item.getItemFromBlock(Registry.lantern)))
+    addSlotToContainer(new SlotItem(getIInventory, 1, 8, 53, ObjRegistry.knife))
+    addSlotToContainer(new SlotItem(getIInventory, 2, 196, 35, Item.getItemFromBlock(ObjRegistry.lantern)))
     addSlotToContainer(new SlotItem(getIInventory, 3, 196, 53, Items.FILLED_MAP))
 
     backpackSlots = for (row <- 0 until 3; collom <- 0 until 9)
@@ -104,9 +104,9 @@ class ContainerCamping(player:EntityPlayer) extends ContainerSimple[InventoryCam
 
   override def mergeToInventory(stack: ItemStack, original: ItemStack, index: Int): Boolean = {
     var success = stack.getItem match {
-      case item if item == Registry.backpack => mergeItemStack(stack, 0, 1, false)
-      case item if item == Registry.knife => mergeItemStack(stack, 1, 2, false)
-      case item if item == Item.getItemFromBlock(Registry.lantern) => mergeItemStack(stack, 2, 3, false)
+      case item if item == ObjRegistry.backpack => mergeItemStack(stack, 0, 1, false)
+      case item if item == ObjRegistry.knife => mergeItemStack(stack, 1, 2, false)
+      case item if item == Item.getItemFromBlock(ObjRegistry.lantern) => mergeItemStack(stack, 2, 3, false)
       case item if item == Items.FILLED_MAP => mergeItemStack(stack, 3, 4, false)
       case _ => false
     }

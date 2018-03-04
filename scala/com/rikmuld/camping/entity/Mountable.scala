@@ -1,7 +1,7 @@
 package com.rikmuld.camping.entity
 
 import com.rikmuld.camping.misc.PlayerExitLog
-import com.rikmuld.camping.objs.Registry
+import com.rikmuld.camping.registers.ObjRegistry
 import com.rikmuld.camping.tileentity.TileLogseat
 import com.rikmuld.corerm.network.PacketSender
 import net.minecraft.client.Minecraft
@@ -30,7 +30,7 @@ class Mountable(worldIn: World) extends Entity(worldIn) {
 
     if(pos!=null){
       if (
-        world.getBlockState(pos).getBlock != Registry.logSeat ||
+        world.getBlockState(pos).getBlock != ObjRegistry.logSeat ||
         world.getTileEntity(pos).asInstanceOf[TileLogseat].mountable != this
       ) setDead()//TODO put better in logseat code
       if (this.getPassengers.size() > 0 &&

@@ -3,10 +3,10 @@ package com.rikmuld.camping.objs.blocks
 import java.util.Random
 
 import com.rikmuld.camping.CampingMod.proxy
-import com.rikmuld.camping.Lib.AdvancementInfo
+import com.rikmuld.camping.Library.AdvancementInfo
 import com.rikmuld.camping.objs.Definitions.CampfireCook._
 import com.rikmuld.camping.objs.Definitions.CampfireWood._
-import com.rikmuld.camping.objs.Registry
+import com.rikmuld.camping.registers.ObjRegistry
 import com.rikmuld.corerm.advancements.TriggerHelper
 import com.rikmuld.corerm.objs.ObjDefinition
 import com.rikmuld.corerm.objs.blocks._
@@ -90,7 +90,7 @@ class CampfireWoodOff(modId:String, info: ObjDefinition) extends CampfireWood(mo
         setState(world, pos, STATE_LIGHT, light + 2)
       else
         world.setBlockState(pos,
-          Registry.campfireWoodOn.setState(Registry.campfireWoodOn.getDefaultState, STATE_LIGHT, 15)
+          ObjRegistry.campfireWoodOn.setState(ObjRegistry.campfireWoodOn.getDefaultState, STATE_LIGHT, 15)
         )
 
       true
@@ -103,7 +103,7 @@ class CampfireWoodOn(modId:String, info: ObjDefinition) extends CampfireWood(mod
   override def getPickBlock(state: IBlockState, target: RayTraceResult,
                             world: World, pos: BlockPos, player: EntityPlayer): ItemStack =
 
-    new ItemStack(Registry.campfireWood)
+    new ItemStack(ObjRegistry.campfireWood)
 
   @SideOnly(Side.CLIENT)
   override def randomDisplayTick(state: IBlockState, world: World, pos: BlockPos, random: Random): Unit =

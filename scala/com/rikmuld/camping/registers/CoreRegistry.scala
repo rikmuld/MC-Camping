@@ -1,39 +1,37 @@
-package com.rikmuld.camping
+package com.rikmuld.camping.registers
 
-import com.rikmuld.camping.Lib.GuiInfo._
+import com.rikmuld.camping.ConfigGUI
+import com.rikmuld.camping.Library.GuiInfo._
 import com.rikmuld.camping.advancements._
 import com.rikmuld.camping.inventory.camping.{ContainerCamping, GuiCamping}
 import com.rikmuld.camping.inventory.objs._
 import com.rikmuld.camping.misc._
+import com.rikmuld.corerm.advancements.TriggerRegistry
 import com.rikmuld.corerm.gui.{ContainerWrapper, ScreenWrapper}
 import com.rikmuld.corerm.network.PacketWrapper
-import com.rikmuld.corerm.registry.RMRegistryEvent
-import net.minecraftforge.fml.common.Mod.EventBusSubscriber
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
+import com.rikmuld.corerm.registry.RMRegistry
+import net.minecraftforge.fml.relauncher.Side
+import net.minecraftforge.registries.ForgeRegistry
 
-@EventBusSubscriber
-object CoreRegistry {
-
-  @SubscribeEvent
-  def registerScreens(event: RMRegistryEvent.Screens): Unit =
-    event.getRegistry.registerAll(
-      ScreenWrapper.create(event.getSide, classOf[PouchGui], POUCH),
-      ScreenWrapper.create(event.getSide, classOf[BackpackGui], BACKPACK),
-      ScreenWrapper.create(event.getSide, classOf[RucksackGui], RUCKSACK),
-      ScreenWrapper.create(event.getSide, classOf[KitGui], KIT),
-      ScreenWrapper.create(event.getSide, classOf[GuiCampfireCook], CAMPFIRE_COOK),
+object CoreRegistry extends RMRegistry {
+  override def registerScreens(registry: ForgeRegistry[ScreenWrapper], side: Side): Unit =
+    registry.registerAll(
+      ScreenWrapper.create(side, classOf[PouchGui], POUCH),
+      ScreenWrapper.create(side, classOf[BackpackGui], BACKPACK),
+      ScreenWrapper.create(side, classOf[RucksackGui], RUCKSACK),
+      ScreenWrapper.create(side, classOf[KitGui], KIT),
+      ScreenWrapper.create(side, classOf[GuiCampfireCook], CAMPFIRE_COOK),
 //      ScreenWrapper.create(event.getSide, classOf[GuiTent], TENT),
 //      ScreenWrapper.create(event.getSide, classOf[GuiTentChests], TENT_CHESTS),
 //      ScreenWrapper.create(event.getSide, classOf[GuiTentLanterns], TENT_LANTERNS),
 //      ScreenWrapper.create(event.getSide, classOf[GuiTentSleeping], TENT_SLEEP),
-      ScreenWrapper.create(event.getSide, classOf[GuiCamping], CAMPING),
-      ScreenWrapper.create(event.getSide, classOf[GuiTrap], TRAP),
-      ScreenWrapper.create(event.getSide, classOf[ConfigGUI], CONFIG)
+      ScreenWrapper.create(side, classOf[GuiCamping], CAMPING),
+      ScreenWrapper.create(side, classOf[GuiTrap], TRAP),
+      ScreenWrapper.create(side, classOf[ConfigGUI], CONFIG)
     )
 
-  @SubscribeEvent
-  def registerContainers(event: RMRegistryEvent.Containers): Unit =
-    event.getRegistry.registerAll(
+  override def registerContainers(registry: ForgeRegistry[ContainerWrapper]): Unit =
+    registry.registerAll(
       ContainerWrapper.create(classOf[PouchContainer], POUCH),
       ContainerWrapper.create(classOf[BackpackContainer], BACKPACK),
       ContainerWrapper.create(classOf[RucksackContainer], RUCKSACK),
@@ -45,9 +43,8 @@ object CoreRegistry {
       ContainerWrapper.create(classOf[ContainerTrap], TRAP)
     )
 
-  @SubscribeEvent
-  def registerPackets(event: RMRegistryEvent.Packets): Unit =
-    event.getRegistry.registerAll(
+  override def registerPackets(registry: ForgeRegistry[PacketWrapper]): Unit =
+    registry.registerAll(
       PacketWrapper.create(classOf[NBTPlayer], "nbtPlayer"),
       PacketWrapper.create(classOf[KeyData], "keyData"),
       PacketWrapper.create(classOf[ItemsData], "itemData"),
@@ -56,9 +53,8 @@ object CoreRegistry {
       PacketWrapper.create(classOf[MapData], "mapData")
     )
 
-  @SubscribeEvent
-  def registerTriggers(event: RMRegistryEvent.Advancements): Unit =
-    event.getRegistry.registerAll(
+  override def registerTriggers(registry: TriggerRegistry): Unit =
+    registry.registerAll(
       new Slept.Trigger,
       new CampfireMade.Trigger,
       new DyeBurned.Trigger,

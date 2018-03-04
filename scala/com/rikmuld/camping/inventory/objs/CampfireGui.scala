@@ -1,9 +1,9 @@
 package com.rikmuld.camping.inventory.objs
 
-import com.rikmuld.camping.Lib.{AdvancementInfo, TextureInfo}
+import com.rikmuld.camping.Library.{AdvancementInfo, TextureInfo}
 import com.rikmuld.camping.inventory.{SlotCooking, SlotItem, SlotItemMeta}
 import com.rikmuld.camping.objs.Definitions.Kit
-import com.rikmuld.camping.objs.Registry
+import com.rikmuld.camping.registers.ObjRegistry
 import com.rikmuld.camping.tileentity.TileCampfireCook
 import com.rikmuld.corerm.advancements.TriggerHelper
 import com.rikmuld.corerm.gui.container.ContainerSimple
@@ -65,7 +65,7 @@ class ContainerCampfireCook(player: EntityPlayer, tile: IInventory) extends Cont
     val thisPlayer = player
 
     addSlotToContainer(new SlotItem(tile, 0, 80, 84, Items.COAL))
-    addSlotToContainer(new SlotItemMeta(tile, 1, 150, 9, Registry.kit, Vector(Kit.SPIT, Kit.GRILL, Kit.PAN)) with SlotEquipment {
+    addSlotToContainer(new SlotItemMeta(tile, 1, 150, 9, ObjRegistry.kit, Vector(Kit.SPIT, Kit.GRILL, Kit.PAN)) with SlotEquipment {
       val player: EntityPlayer = thisPlayer
     })
 
@@ -82,7 +82,7 @@ class ContainerCampfireCook(player: EntityPlayer, tile: IInventory) extends Cont
   override def mergeToInventory(stack: ItemStack, original: ItemStack, index: Int): Boolean =
     if (stack.getItem == Items.COAL) {
       mergeItemStack(stack, 0, 1, false)
-    } else if (stack.getItem == Registry.kit && stack.getItemDamage != Kit.USELESS && stack.getItemDamage != Kit.EMPTY) {
+    } else if (stack.getItem == ObjRegistry.kit && stack.getItemDamage != Kit.USELESS && stack.getItemDamage != Kit.EMPTY) {
       mergeItemStack(stack, 1, 2, false)
     } else if(getIInventory.getEquipment.fold(false)(_.canCook(stack))) {
       mergeItemStack(stack, 2, 2 + getIInventory.getEquipment.get.getMaxCookingSlot, false)

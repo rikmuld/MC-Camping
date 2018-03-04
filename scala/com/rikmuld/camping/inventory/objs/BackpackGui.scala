@@ -1,9 +1,9 @@
 package com.rikmuld.camping.inventory.objs
 
-import com.rikmuld.camping.Lib._
+import com.rikmuld.camping.Library._
 import com.rikmuld.camping.inventory.SlotBackpack
 import com.rikmuld.camping.objs.Definitions.Backpack._
-import com.rikmuld.camping.objs.Registry
+import com.rikmuld.camping.registers.ObjRegistry
 import com.rikmuld.corerm.gui.container.ContainerItem
 import com.rikmuld.corerm.gui.gui.GuiContainerSimple
 import com.rikmuld.corerm.inventory.InventoryItem
@@ -34,7 +34,7 @@ abstract class BagGui(container: Container, metaData: Int, x: Int, y: Int, width
     new ResourceLocation(TextureInfo.GUI_BAG)
 
   override def getName: String =
-    new ItemStack(Registry.backpack, 1, metaData).getDisplayName
+    new ItemStack(ObjRegistry.backpack, 1, metaData).getDisplayName
 
   override def hasName: Boolean =
     true
