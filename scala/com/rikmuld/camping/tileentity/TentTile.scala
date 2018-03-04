@@ -1,7 +1,6 @@
 package com.rikmuld.camping.tileentity
 
 import com.rikmuld.corerm.objs.blocks.BlockSimple
-import com.rikmuld.corerm.old.Bounds
 import com.rikmuld.corerm.tileentity.TileEntitySimple
 import net.minecraft.block.state.IBlockState
 import net.minecraft.entity.player.EntityPlayer
@@ -12,12 +11,6 @@ import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
 
 object TileEntityTent {
-  var bounds: Array[Bounds] = Array(
-    new Bounds(-0.5F, 0, 0, 1.5F, 1.5F, 3),
-    new Bounds(-2, 0, -0.5F, 1, 1.5F, 1.5F),
-    new Bounds(-0.5F, 0, -2, 1.5F, 1.5F, 1),
-    new Bounds(0, 0, -0.5F, 3, 1.5F, 1.5F)
-  )
 
   //  var LANTERN: Int = 0
 //  var CHEST: Int = 1

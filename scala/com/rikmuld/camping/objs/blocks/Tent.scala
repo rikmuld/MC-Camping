@@ -1,63 +1,53 @@
 package com.rikmuld.camping.objs.blocks
 
-import com.rikmuld.camping.objs.Definitions.Tent
+import java.util
+
+import com.rikmuld.camping.CampingMod
+import com.rikmuld.camping.objs.Definitions.Tent._
+import com.rikmuld.camping.registers.ObjRegistry
+import com.rikmuld.camping.tileentity.TileTent
 import com.rikmuld.corerm.objs.ObjDefinition
-import com.rikmuld.corerm.objs.blocks.BlockRM
+import com.rikmuld.corerm.objs.blocks.bounds.{BlockBounds, BlockBoundsStructure, BoundsStructure}
 import net.minecraft.block.state.IBlockState
 import net.minecraft.entity.EntityLivingBase
 import net.minecraft.item.ItemStack
-import net.minecraft.util.math.BlockPos
+import net.minecraft.util.math.{AxisAlignedBB, BlockPos}
 import net.minecraft.world.{IBlockAccess, World}
 
-class Tent(modId:String, info:ObjDefinition) extends BlockRM(modId, info) {
-//  override def getCollisionBoundingBox(state:IBlockState, source:IBlockAccess, pos:BlockPos):AxisAlignedBB = {
-//    TileEntityTent.bounds(getFacing(state)).getBlockCollision
-//  }
-//  override def breakBlock(world: World, pos:BlockPos, state:IBlockState) {
-//    val tileFlag = Option((world, pos).tile)
-//    if (tileFlag.isDefined&&tileFlag.get.isInstanceOf[TileTent]) {
-//      var tile = tileFlag.get.asInstanceOf[TileTent]
-//      if(tile.structures!=null&&tile.structures(getFacing(state))!=null)tile.structures(getFacing(state)).destroyStructure(world, tile.tracker(getFacing(state)))
-//      if (!world.isRemote && !tile.dropped) {
-//        tile.dropped = true
-//        val stacks = new ArrayList[ItemStack]
-//        dropBlockAsItem(world, pos, state, 1)
-//        stacks.addAll(tile.getContends)
-//        val stack = new ItemStack(this, 1, tile.color)
-//        stacks.add(stack)
-//        WorldUtils.dropItemsInWorld(world, stacks, pos)
-//      }
-//      super.breakBlock(world, pos, state)
-//    }
-//  }
-//  override def canPlaceBlockAt(world: World, pos:BlockPos): Boolean = {
-//    val bd = (world, pos)
-//    ((bd.block == null) || bd.isReplaceable) && Objs.tentStructure(facingFlag).canBePlaced(world, new BoundsTracker(bd.x, bd.y, bd.z, TileEntityTent.bounds(facingFlag)))
-//  }
+import scala.collection.JavaConversions._
+
+object Tent {
+  val tentStructure: Seq[BoundsStructure] = BoundsStructure.createWithRotation (
+    new AxisAlignedBB(-0.5F, 0, 0, 1.5F, 1.5F, 3)
+  )
+}
+
+//TODO drop contents of tent as well once implemented
+class Tent(modId:String, info:ObjDefinition) extends BlockBoundsStructure(modId, info) {
+  def getBoundsBlock: BlockBounds =
+    ObjRegistry.tentBounds.asInstanceOf[BlockBounds]
+
+  def getStructure(state: Option[IBlockState]): BoundsStructure =
+    if(state.exists(_.getBlock == ObjRegistry.tent))
+      Tent.tentStructure(getFacing(state.get).getHorizontalIndex)
+    else
+      Tent.tentStructure(CampingMod.proxy.eventsS.facing.getHorizontalIndex)
 
   override def onBlockPlacedBy(world: World, pos:BlockPos, state:IBlockState, entity: EntityLivingBase, stack: ItemStack): Unit = {
-    val off = setState(state, Tent.STATE_ON, false)
+    val off = setState(state, STATE_ON, false)
+
     super.onBlockPlacedBy(world, pos, off, entity, stack)
   }
 
-//  override def quantityDropped(random: Random): Int = 0
-//  override def getBoundingBox(state:IBlockState, source:IBlockAccess, pos:BlockPos):AxisAlignedBB = {
-//    val tile = source.getTileEntity(pos).asInstanceOf[TileTent]
-//    TileEntityTent.bounds(getFacing(state)).getBlockBounds
-//  }
-//  override def dropIfCantStay(world: World, pos: BlockPos) {
-//    val tile = world.getTileEntity(pos).asInstanceOf[TileTent]
-//    if (Option(tile.structures).isDefined && !tile.structures(getFacing(world.getBlockState(pos))).hadSolidUnderGround(world, tile.tracker(getFacing(world.getBlockState(pos))))) {
-//      breakBlock(world, pos, world.getBlockState(pos))
-//    }
-//  }
-
   override def getLightValue(state:IBlockState, world: IBlockAccess, pos:BlockPos): Int =
-    if(getBool(state, Tent.STATE_ON))
+    if(getBool(state, STATE_ON))
       15
     else
       0
-//
+
+  override def getDrops(world: IBlockAccess, pos: BlockPos, state: IBlockState, fortune: Int): util.List[ItemStack] =
+    List(new ItemStack(ObjRegistry.tent, 1, world.getTileEntity(pos).asInstanceOf[TileTent].color))
+
 //  override def onBlockActivated(world: World, pos:BlockPos, state:IBlockState, player: EntityPlayer, hand:EnumHand, side: EnumFacing, xHit: Float, yHit: Float, zHit: Float): Boolean = {
 //    if (!world.isRemote) {
 //      val bd = (world, pos)

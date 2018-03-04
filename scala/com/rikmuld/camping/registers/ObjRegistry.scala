@@ -5,7 +5,6 @@ import com.rikmuld.camping.misc._
 import com.rikmuld.camping.objs.Definitions._
 import com.rikmuld.corerm.objs.blocks.BlockSimple
 import com.rikmuld.corerm.objs.items.ItemSimple
-import com.rikmuld.corerm.old.BoundsStructure
 import net.minecraft.block.Block
 import net.minecraft.init.Blocks.IRON_BARS
 import net.minecraft.init.Items._
@@ -33,9 +32,6 @@ object ObjRegistry {
   var spit,
       grill,
       pan: CookingEquipment =
-    _
-
-  var tentStructure: Array[BoundsStructure] =
     _
 
   var knife,
@@ -112,7 +108,7 @@ object ObjRegistry {
     trap = objTrap._1
     trapItem = objTrap._2
 
-//    tentBounds = BOUNDS_TENT.createBlock(MOD_ID)
+    tentBounds = BOUNDS_TENT.createBlock(MOD_ID)
 
     event.getRegistry.registerAll(
       hemp,
@@ -124,8 +120,8 @@ object ObjRegistry {
       logSeat,
       light,
       sleepingBag,
-      trap
-//      tentBounds
+      trap,
+      tentBounds
     )
   }
 
@@ -195,11 +191,6 @@ object ObjRegistry {
   }
 
   def preRegistry(): Unit = {
-    val xLine = Array(1, -1, 1, -1, 0, 1, -1, 0, 1, -1, 0, 1, -1, 0, 1, -1, 0)
-    val yLine = Array(0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1)
-    val zLine = Array(0, 0, 1, 1, 1, 2, 2, 2, 0, 0, 0, 1, 1, 1, 2, 2, 2)
-
-    tentStructure = BoundsStructure.regsisterStructure(xLine, yLine, zLine, true)
     tab = new TabCamping(MOD_ID)
     fur = EnumHelper.addArmorMaterial("FUR", "", 20, Array(2, 5, 4, 2), 20, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 0)
   }

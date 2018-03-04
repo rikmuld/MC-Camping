@@ -7,6 +7,7 @@ import com.rikmuld.camping.registers.ObjRegistry._
 import com.rikmuld.camping.tileentity._
 import com.rikmuld.corerm.objs.Properties.{Ticker, _}
 import com.rikmuld.corerm.objs.StateProperty.{DirectionType, PropBool, PropDirection, PropInt}
+import com.rikmuld.corerm.objs.blocks.bounds.BlockBounds
 import com.rikmuld.corerm.objs.{ObjDefinition, States}
 import net.minecraft.block.SoundType
 import net.minecraft.block.material.Material
@@ -260,10 +261,12 @@ object Definitions {
     final val WHITE = 15
   }
 
-//    final val BOUNDS_TENT = new ObjDefinition(
-//      Name("tent_bounds"),
-//      PropMaterial(Material.CLOTH)
-//    )
+  final val BOUNDS_TENT = BlockBounds.BOUNDS.update(
+    Name("tent_bounds"),
+    PropMaterial(Material.CLOTH),
+    NonCube,
+    Unstable
+  )
 
   final val KNIFE = new ObjDefinition(
     Tab(tab),
