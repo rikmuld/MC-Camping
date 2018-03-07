@@ -3,6 +3,7 @@ package com.rikmuld.camping.tileentity
 import com.rikmuld.camping.objs.Definitions.Lantern
 import com.rikmuld.camping.objs.Definitions.Lantern._
 import com.rikmuld.camping.objs.blocks.Lantern
+import com.rikmuld.camping.registers.ObjRegistry
 import com.rikmuld.corerm.tileentity.TileEntitySimple
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemStack
@@ -10,6 +11,30 @@ import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.ITickable
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
+
+object TileLantern {
+  def timeFromStack(stack: ItemStack): Int =
+    Option(stack.getTagCompound).fold(
+      if (stack.getItemDamage == Lantern.ON) 750
+      else 0
+    )(_.getInteger("time"))
+
+  def stackFromTime(time: Int, count: Int): ItemStack = {
+    val stack = new ItemStack(
+      ObjRegistry.lanternItem,
+      count,
+      if (time > 0) Lantern.ON else Lantern.OFF
+    )
+
+    if(time > 0) {
+      val compound = new NBTTagCompound()
+      compound.setInteger("time", time)
+      stack.setTagCompound(compound)
+    }
+
+    stack
+  }
+}
 
 class TileLantern extends TileEntitySimple with ITickable {
   private var burnTime: Int =
@@ -49,8 +74,5 @@ class TileLantern extends TileEntitySimple with ITickable {
       }
 
   override def init(stack: ItemStack, player: EntityPlayer, world: World, pos: BlockPos): Unit =
-    setBurnTime(Option(stack.getTagCompound).fold(
-      if (stack.getItemDamage == Lantern.ON) 750
-      else 0
-    )(_.getInteger("time")))
+    setBurnTime(TileLantern.timeFromStack(stack))
 }

@@ -21,10 +21,10 @@ object CoreRegistry extends RMRegistry {
       ScreenWrapper.create(side, classOf[RucksackGui], RUCKSACK),
       ScreenWrapper.create(side, classOf[KitGui], KIT),
       ScreenWrapper.create(side, classOf[GuiCampfireCook], CAMPFIRE_COOK),
-//      ScreenWrapper.create(event.getSide, classOf[GuiTent], TENT),
-//      ScreenWrapper.create(event.getSide, classOf[GuiTentChests], TENT_CHESTS),
-//      ScreenWrapper.create(event.getSide, classOf[GuiTentLanterns], TENT_LANTERNS),
-//      ScreenWrapper.create(event.getSide, classOf[GuiTentSleeping], TENT_SLEEP),
+      ScreenWrapper.create(side, classOf[GuiTent], TENT),
+      ScreenWrapper.create(side, classOf[GuiTentChests], TENT_CHESTS),
+      ScreenWrapper.create(side, classOf[GuiTentLanterns], TENT_LANTERNS),
+      ScreenWrapper.create(side, classOf[GuiTentSleeping], TENT_SLEEP),
       ScreenWrapper.create(side, classOf[GuiCamping], CAMPING),
       ScreenWrapper.create(side, classOf[GuiTrap], TRAP),
       ScreenWrapper.create(side, classOf[ConfigGUI], CONFIG)
@@ -37,8 +37,8 @@ object CoreRegistry extends RMRegistry {
       ContainerWrapper.create(classOf[RucksackContainer], RUCKSACK),
       ContainerWrapper.create(classOf[KitContainer], KIT),
       ContainerWrapper.create(classOf[ContainerCampfireCook], CAMPFIRE_COOK),
-//      ContainerWrapper.create(classOf[ContainerTentChests], TENT_CHESTS),
-//      ContainerWrapper.create(classOf[ContainerTentLanterns], TENT_LANTERNS),
+      ContainerWrapper.create(classOf[ContainerTentChests], TENT_CHESTS),
+      ContainerWrapper.create(classOf[ContainerTentLanterns], TENT_LANTERNS),
       ContainerWrapper.create(classOf[ContainerCamping], CAMPING),
       ContainerWrapper.create(classOf[ContainerTrap], TRAP)
     )
@@ -49,7 +49,7 @@ object CoreRegistry extends RMRegistry {
       PacketWrapper.create(classOf[KeyData], "keyData"),
       PacketWrapper.create(classOf[ItemsData], "itemData"),
       PacketWrapper.create(classOf[PlayerExitLog], "playerExitLog"),
-//      PacketWrapper.create(classOf[PlayerSleepInTent], "playerSleepInTent"),
+      PacketWrapper.create(classOf[PlayerSleepInTent], "playerSleepInTent"),
       PacketWrapper.create(classOf[MapData], "mapData")
     )
 

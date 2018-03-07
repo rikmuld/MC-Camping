@@ -47,12 +47,7 @@ object CampingMod {
 /*
 
   TODO rewrite
-  campfire models textures
-  bounds structure system in core
-  core no registry with events
-  tent
-  remove printing statements
-  release
+  rewrite tent stuff
   put features in feature package
   rewrite all other parts
   continue with stuff below

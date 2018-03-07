@@ -2,7 +2,10 @@ package com.rikmuld.camping.render.objs
 
 import com.rikmuld.camping.Library._
 import com.rikmuld.camping.render.models.TentModel
+import com.rikmuld.camping.tileentity.TileEntityTent._
 import com.rikmuld.camping.tileentity.TileTent
+import net.minecraft.client.Minecraft
+import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer
 import net.minecraft.util.ResourceLocation
 import org.lwjgl.opengl.{GL11, GL12}
@@ -42,26 +45,28 @@ class TentRender extends TileEntitySpecialRenderer[TileTent] {
     GL11.glPushMatrix()
     GL11.glEnable(GL12.GL_RESCALE_NORMAL)
     GL11.glScalef(1.0F, -1F, -1F)
-    GL11.glScalef(0.0625F, 0.0625F, 0.0625F)//TODO set as scaling of model itself
+    GL11.glScalef(0.0625F, 0.0625F, 0.0625F)
     GL11.glRotatef(tile.getFacing.rotateY.getHorizontalAngle, 0, 1, 0)
     bindTexture(new ResourceLocation(TextureInfo.MODEL_TENT_WHITE))
-    TentRender.setTentColor(tile.color)
+    TentRender.setTentColor(tile.getColor)
     TentRender.MODEL.renderOnly(TentModel.CANVAS:_*)
     GL11.glColor3f(1, 1, 1)
     TentRender.MODEL.renderOnly(TentModel.PEGS:_*)
-//    TentRender.MODEL.renderOnly(TentModel.getPartsFor(tile.chests, tile.beds > 0):_*)
+    TentRender.MODEL.renderOnly(TentModel.getPartsFor(tile.count(CHESTS), tile.count(BED) > 0):_*)
     GL11.glPopMatrix()
-//
-//    if (tile.lanterns > 0) {
-//      GL11.glTranslatef(0, -1.5f, .03f)
-//      val lanternStack = new ItemStack(Objs.lantern, 1, tile.lanternDamage)
-//      if ((tile.getRotation == 0) || (tile.getRotation == 2)) GL11.glRotatef(90, 0F, 1F, 0F)
-//      if ((tile.getRotation == 0) || (tile.getRotation == 1)) GL11.glTranslatef(-1, 1.2f, -.02f)
-//      if ((tile.getRotation == 2) || (tile.getRotation == 3)) GL11.glTranslatef(1, 1.2f, -.02F)
-//      GL11.glRotatef(180, 1, 0, 0)
-//      GL11.glScalef(0.4F, -0.4F, -0.4f)
-//      if (tile.getWorld.getClosestPlayer(x, y, z, -1, false) != null && lanternStack != null) renderer.renderItem(tile.getWorld.getClosestPlayer(x, y, z, -1, false), lanternStack, TransformType.NONE)
-//    }
+
+    if (tile.count(LANTERN) > 0) {
+      GL11.glTranslatef(0, -1.5f, .03f)
+      val lanternStack = tile.toStack(LANTERN)
+      val rotation = tile.getBlock.getFacing(tile.getWorld.getBlockState(tile.getPos)).getHorizontalIndex
+
+      if ((rotation == 0) || (rotation == 2)) GL11.glRotatef(90, 0F, 1F, 0F)
+      if ((rotation == 0) || (rotation == 1)) GL11.glTranslatef(-1, 1.2f, -.02f)
+      if ((rotation == 2) || (rotation == 3)) GL11.glTranslatef(1, 1.2f, -.02F)
+      GL11.glRotatef(180, 1, 0, 0)
+      GL11.glScalef(0.4F, -0.4F, -0.4f)
+      Minecraft.getMinecraft.getRenderItem.renderItem(lanternStack, TransformType.NONE)
+    }
     GL11.glPopMatrix()
   }
 }

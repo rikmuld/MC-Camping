@@ -1,145 +1,194 @@
 package com.rikmuld.camping.tileentity
 
+import com.rikmuld.camping.inventory.SlotState
+import com.rikmuld.camping.objs.Definitions
+import com.rikmuld.camping.objs.blocks.Tent
+import com.rikmuld.camping.registers.ObjRegistry
+import com.rikmuld.camping.tileentity.SeqUtils._
+import com.rikmuld.camping.tileentity.TileEntityTent._
 import com.rikmuld.corerm.objs.blocks.BlockSimple
-import com.rikmuld.corerm.tileentity.TileEntitySimple
+import com.rikmuld.corerm.tileentity.{TileEntityInventory, TileEntityTicker}
+import com.rikmuld.corerm.utils.WorldUtils
 import net.minecraft.block.state.IBlockState
 import net.minecraft.entity.player.EntityPlayer
-import net.minecraft.item.ItemStack
+import net.minecraft.init.Blocks
+import net.minecraft.item.{Item, ItemStack}
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.EnumFacing
-import net.minecraft.util.math.BlockPos
+import net.minecraft.util.math.{AxisAlignedBB, BlockPos}
 import net.minecraft.world.World
+import net.minecraftforge.fml.relauncher.{Side, SideOnly}
+
+import scala.collection.JavaConversions._
 
 object TileEntityTent {
+  final val CONFIGS = Vector(
+    Vector(0, 5, 0),
+    Vector(1, 4, 0),
+    Vector(1, 2, 1)
+  )
 
-  //  var LANTERN: Int = 0
-//  var CHEST: Int = 1
-//  var BEDS: Int = 2
+  final val ITEMS = Vector(
+    ObjRegistry.lantern,
+    Blocks.CHEST,
+    ObjRegistry.sleepingBag
+  ) map Item.getItemFromBlock
+
+  final val LANTERN = 0
+  final val CHESTS = 1
+  final val BED = 2
 }
 
-class TileTent extends TileEntitySimple {
+//TODO move
+object SeqUtils {
+  def merge[A, B, C](b: Seq[B])(f: (A, B) => C)(a: Seq[A]): Seq[C] =
+    merge(a, b)(f)
 
-//  final val COST_CHEST = 2
-//  final val COST_BED = 5
-//  final val COST_LANTERN = 1
-//  final val MAX_COST = 10
-//  final val MAX_CHESTS: Int = 5
-//  final val MAX_BEDS: Int = 1
-//  final val MAX_LANTERNS: Int = 1
-//  final val ALOWED_ITEMS = Array(Objs.lantern, Blocks.CHEST, Objs.sleepingBag)
+  def merge[A, B, C](a: Seq[A], b: Seq[B])(f: (A, B) => C): Seq[C] =
+    a zip b map(t => f(t._1, t._2))
 
-//  var slots: Array[Array[SlotState]] = _
-//  var structures: Array[BoundsStructure] = _
-//  var tracker = new Array[BoundsTracker](4)
-//  var isNew = true
-//  var dropped = false
-//  var needLightUpdate = true
-//  var occupied = false
-//  var chests: Int = _
-//  var beds: Int = _
-//  var lanterns: Int = _
-//  var contends: Int = _
-//  var oldTime: Int = _
-//  var updateTick: Int = _
-//  var slide: Int = _
-//  var chestTracker: Int = _
-//  var lanternTracker: Int = _
-//  var lanternDamage = 0
-//  var time: Int = -1
-//  var lanternUpdateTick = 3
-//  var maxSlide = 144
-  var color = 15
+  def allOne(all: Int => Boolean)(one: Int => Boolean)(v: Seq[Int]): Boolean =
+    (v forall all) && (v exists one)
+}
 
-//  def addBed(): Boolean = {
-//    if (((contends + COST_BED) <= MAX_COST) && (beds < MAX_BEDS)) {
-//      setContends(beds + 1, BEDS, true, 0)
-//      return true
-//    }
-//    false
-//  }
-//  def addChests(): Boolean = {
-//    if (((contends + COST_CHEST) <= MAX_COST) && (chests < MAX_CHESTS)) {
-//      setContends(chests + 1, CHEST, true, 0)
-//      return true
-//    }
-//    false
-//  }
+//TODO still old code from years ago, rewrite
+//TODO fix not scrollable
+//TODO content does not drop when breaking
+class TileTent extends TileEntityInventory with TileEntityTicker {
+  registerTicker(tickLight, 20)
 
-//  override def getName: String =
-//    "tent"
+  val contents: Array[Int] =
+    Array.ofDim(3)
 
-//  def addContends(stack: ItemStack): Boolean = {
-//    val id = Block.getBlockFromItem(stack.getItem())
-//    if (id == ALOWED_ITEMS(0)) return addLentern(stack)
-//    if (id == ALOWED_ITEMS(1)) return addChests
-//    if (id == ALOWED_ITEMS(2)) return addBed
-//    false
-//  }
-//  def addLentern(stack: ItemStack): Boolean = {
-//    if (((contends + COST_LANTERN) <= MAX_COST) && (lanterns < MAX_LANTERNS)) {
-//      time = if (stack.hasTagCompound()) stack.getTagCompound.getInteger("time") else -1
-//      lanternDamage = if (time > 0) BlockDefinitions.Lantern.ON else BlockDefinitions.Lantern.OFF
-//
-//      sendTileData(3, true, lanternDamage)
-//      setContends(lanterns + 1, LANTERN, true, 0)
-//      return true
-//    }
-//    false
-//  }
-//  def getContends(): ArrayList[ItemStack] = {
-//    val stacks = new ArrayList[ItemStack]()
-//    val lanternStack = new ItemStack(ALOWED_ITEMS(0), lanterns, if (time > 0) BlockDefinitions.Lantern.ON else BlockDefinitions.Lantern.OFF)
-//    if (time > 0) {
-//      lanternStack.setTagCompound(new NBTTagCompound())
-//      lanternStack.getTagCompound.setInteger("time", time)
-//    }
-//    if (lanterns > 0) stacks.add(lanternStack)
-//    if (chests > 0) stacks.add(new ItemStack(ALOWED_ITEMS(1), chests, 0))
-//    if (beds > 0) stacks.add(new ItemStack(ALOWED_ITEMS(2), beds, 0))
-//    stacks
-//  }
-//  def getContendsFor(block: Block): ItemStack = {
-//    if (block == Objs.lantern) {
-//      val lanternStack = new ItemStack(ALOWED_ITEMS(0), lanterns, if (time > 0) BlockDefinitions.Lantern.ON else BlockDefinitions.Lantern.OFF)
-//      if (time > 0) {
-//        lanternStack.setTagCompound(new NBTTagCompound())
-//        lanternStack.getTagCompound.setInteger("time", time)
-//      }
-//      return lanternStack
-//    }
-//    if (block == Blocks.CHEST) return new ItemStack(ALOWED_ITEMS(1), 1, 0)
-//    if (block == Objs.sleepingBag) return new ItemStack(ALOWED_ITEMS(2), 1, 0)
-//    null
-//  }
-//
-//  private def getExcesChestContends(): ArrayList[ItemStack] = {
-//    val list = new ArrayList[ItemStack]()
-//    for (i <- chests * 5 * 6 until 150 if !getStackInSlot(i + 1).isEmpty) {
-//      list.add(getStackInSlot(i + 1))
-//      setInventorySlotContents(i + 1, ItemStack.EMPTY)
-//    }
-//    list
-//  }
+  private var color: Int =
+    15
 
-//  @SideOnly(Side.CLIENT)
-//  override def getRenderBoundingBox(): AxisAlignedBB =
-//    TileEntity.INFINITE_EXTENT_AABB // get facing state and use it to get the bounds in array above
-//
-//  override def getSizeInventory(): Int = 151
-//  def initalize(): Unit = {
-//    if (!world.isRemote) {
-//      structures = Objs.tentStructure
-//
-//      for (i <- 0 until 4) {
-//        tracker(i) = new BoundsTracker(bd.x, bd.y, bd.z, bounds(i))
-//      }
-//
-//      isNew = false
-//    }
-//  }
+  private var light: Int =
+    0
+
+  private var occupied: Boolean =
+    false
+
+  private var slots: Option[Seq[Seq[SlotState]]] =
+    None
+
+  private var slide: Int =
+    0
+
+  def contentIdx(stack: ItemStack): Option[Int] =
+    Option(ITEMS.indexOf(stack.getItem)).find(_ >= 0)
+
+  def canAdd(stack: ItemStack): Boolean =
+    contentIdx(stack) exists canAdd
+
+  def canAdd(i: Int): Boolean = {
+    val configs = CONFIGS
+      .map(merge(contents)(_ - _))
+      .filter(allOne(_ >= 0)(_ > 0))
+
+    if(configs.nonEmpty)
+      configs.transpose.get(i).max > 0
+    else
+      false
+  }
+
+  def add(stack: ItemStack): Boolean =
+    contentIdx(stack) exists(add(_, Some(stack)))
+
+  def add(i: Int, action: Option[ItemStack]): Boolean =
+    if(canAdd(i)) {
+      update(i, _ + 1, action)
+      true
+    } else
+      false
+
+  def remove(stack: ItemStack): Unit =
+    contentIdx(stack) foreach remove
+
+  def remove(i: Int): Unit =
+    if(contents(i) > 0)
+      update(i, _ - 1, None)
+
+  def update(i: Int, f: Int => Int, action: Option[ItemStack]): Unit = {
+    val old = contents(i)
+    val result = f(old)
+
+    contents(i) = result
+
+    sendTileData(i, !world.isRemote, result)
+    tentChanged(i, old, result, action)
+  }
+
+  def count(i: Int): Int =
+    contents(i)
+
+  def toStacks: Seq[ItemStack] =
+    contents.indices map(toStack(_))
+
+  def toStack(i: Int, n: Option[Int] = None): ItemStack = (i, n.getOrElse(count(i))) match {
+    case (_, 0) =>
+      ItemStack.EMPTY
+    case (LANTERN, count) =>
+      TileLantern.stackFromTime(light, count)
+    case (_, count) =>
+      new ItemStack(ITEMS(i), count)
+  }
+
+  def tentChanged(id: Int, old: Int, nw: Int, action: Option[ItemStack]): Unit = id match {
+    case LANTERN =>
+      val light = action.fold(0)(TileLantern.timeFromStack)
+
+      if(action.isEmpty)
+        dropItem(id)
+
+      sendTileData(3, !world.isRemote, light)
+      setLight(light)
+    case _ if action.isEmpty =>
+      dropItem(id)
+    case _ =>
+  }
+
+  private def setLight(i: Int): Unit = {
+    if(!world.isRemote)
+      if (light > 0 && i == 0)
+        getBlock.setState(world, pos, Definitions.Tent.STATE_ON, false)
+      else if (light == 0 && i > 0)
+        getBlock.setState(world, pos, Definitions.Tent.STATE_ON, true)
+
+    light = Math.max(0, i)
+  }
+
+  def dropItem(i: Int): Unit =
+    if(world.isRemote)
+      sendTileData(4, false, i)
+    else
+      WorldUtils.dropItemInWorld(world, toStack(i, Some(1)), pos)
+
+  def getLight: Int =
+    light
+
+  def tickLight(): Unit = {
+    if (light > 0) {
+      setLight(light - 1)
+      sendTileData(3, true, light)
+    }
+  }
+
+  def getBlock: BlockSimple =
+    ObjRegistry.tent
+
+  override def getName: String =
+    "tent"
+
+  @SideOnly(Side.CLIENT)
+  override def getRenderBoundingBox: AxisAlignedBB =
+    ObjRegistry.tent.asInstanceOf[Tent].getStructure(Some(world.getBlockState(pos))).getBounds.bounds.offset(pos)
+
+  override def getSizeInventory: Int =
+    151
+
 //  def isOccupied = occupied
 //  def setOccupied(occupied:Boolean) = this.occupied = occupied
-//  def getRotation = if(bd.block.eq(Objs.tent)) bd.state.getValue(Tent.FACING).asInstanceOf[EnumFacing].getHorizontalIndex else 0
 //  def manageSlots() {
 //    if (slots != null) {
 //      if (chests > 2) {
@@ -160,181 +209,88 @@ class TileTent extends TileEntitySimple {
 //      }
 //    }
 //  }
-
+//
   def getFacing: EnumFacing =
     getBlock.getFacing(world.getBlockState(pos))
 
-  def getBlock: BlockSimple =
-    world.getBlockState(pos).getBlock.asInstanceOf[BlockSimple]
-
   override def readFromNBT(tag: NBTTagCompound): Unit = {
     super.readFromNBT(tag)
-//    contends = tag.getInteger("contends")
-//    beds = tag.getInteger("beds")
-//    lanterns = tag.getInteger("lanterns")
-//    chests = tag.getInteger("chests")
-//    lanternDamage = tag.getInteger("lanternDamage")
-//    time = tag.getInteger("time")
-    color = tag.getInteger("color")
-//    occupied = tag.getBoolean("occupied")
-  }
-//  def removeAll() {
-//    setContends(0, 0, true, 2)
-//    setContends(0, 1, true, 0)
-//    setContends(0, 2, true, 0)
-//  }
-//  def removeBed(): Boolean = {
-//    if (beds > 0) {
-//      setContends(beds - 1, BEDS, true, 1)
-//      WorldUtils.dropItemInWorld(world, getContendsFor(Objs.sleepingBag), bd.pos)
-//      return true
-//    }
-//    false
-//  }
-//  def removeChest(): Boolean = {
-//    if (chests > 0) {
-//      setContends(chests - 1, CHEST, true, 1)
-//      WorldUtils.dropItemInWorld(world, getContendsFor(Blocks.CHEST), bd.pos)
-//      return true
-//    }
-//    false
-//  }
-//  def removeLantern(): Boolean = {
-//    if (lanterns > 0) {
-//      setContends(lanterns - 1, LANTERN, true, 1)
-//      WorldUtils.dropItemInWorld(world, getContendsFor(Objs.lantern), bd.pos)
-//      return true
-//    }
-//    false
-//  }
-  def setColor(color: Int): Unit =
-    if (!world.isRemote) {
-      this.color = color
-      sendTileData(6, true, color)
-    }
 
-//  def setContends(contendNum: Int, contendId: Int, sendData: Boolean, drop: Int) {
-//    if (drop == 1) WorldUtils.dropItemInWorld(world, getContendsFor(ALOWED_ITEMS(contendId)), bd.pos)
-//    if (drop == 2) WorldUtils.dropItemsInWorld(world, getContends, bd.pos)
-//    if (sendData) sendTileData(1, !world.isRemote, contendNum, contendId, drop)
-//    if (contendId == LANTERN) lanterns = contendNum
-//    if (contendId == CHEST) chests = contendNum
-//    if (contendId == BEDS) beds = contendNum
-//    contends = (beds * COST_BED) + (chests * COST_CHEST) + (lanterns * COST_LANTERN)
-//    sendTileData(2, !world.isRemote, contends)
-//
-//    if(lanterns > 0 && time > 0) Objs.tent.asInstanceOf[Tent].setOn(getWorld, pos, true)
-//    else Objs.tent.asInstanceOf[Tent].setOn(getWorld, pos, false)
-//
-//    bd.update
-//    bd.updateRender
-//  }
+    setContents(tag.getIntArray("contents"))
+
+    color = tag.getInteger("color")
+    occupied = tag.getBoolean("occupied")
+  }
+
+  def setContents(nw: Array[Int]): Unit = {
+    for(i <- nw.indices)
+      contents(i) = nw(i)
+  }
+
+  def setColor(color: Int): Unit = {
+    if (!world.isRemote)
+      sendTileData(6, true, color)
+
+    this.color = color
+  }
+
+  def getColor: Int =
+    color
+
 //  def setSlideState(slideState: Int) {
 //    slide = slideState
 //    manageSlots()
 //    sendTileData(4, false, slideState)
 //  }
 //  def setSlots(slots: Array[Array[SlotState]]) = this.slots = slots
+
   override def setTileData(id: Int, data: Seq[Int]): Unit = {
     super.setTileData(id, data)
 
     id match {
+      case i if i < 3 =>
+        contents(i) = data.head
+      case 3 =>
+        setLight(data.head)
+      case 4 =>
+        dropItem(data.head)
+//    case 5 =>
+//      slide = data(0)
+//      manageSlots()
       case 6 =>
-        color = data.head
-      case _ =>
-      //    if (id == 1) setContends(data(0), data(1), false, data(2))
-      //    else if (id == 2) {
-      //      contends = data(0)
-      //    }
-      //    else if (id == 3) {
-      //      lanternDamage = data(0)
-      //    }
-      //    else if (id == 4) {
-      //      slide = data(0)
-      //      manageSlots()
-      //    } else if (id == 5) time = data(0)
+        setColor(data.head)
     }
   }
 
-//  def sleep(player: EntityPlayer) {
-//    if(!world.isRemote) {
-//      if (getRotation == 0) bd.south.block.asInstanceOf[TentBounds].sleep(bd.south, player)
-//      else if (getRotation == 1) bd.west.block.asInstanceOf[TentBounds].sleep(bd.west, player)
-//      else if (getRotation == 2) bd.north.block.asInstanceOf[TentBounds].sleep(bd.north, player)
-//      else if (getRotation == 3) bd.east.block.asInstanceOf[TentBounds].sleep(bd.east, player)
-//    } else {
-//      PacketSender.sendToServer(new PlayerSleepInTent(bd.x, bd.y, bd.z))
-//    }
-//  }
-//  def createStructure: Unit =
-//    if (!world.isRemote) {
-//      if (isNew)
-//        initalize()
-//
-//      structures(getRotation).createStructure(world, tracker(getRotation), Objs.tentBounds.getDefaultState.withProperty(TentBounds.FACING, bd.state.getValue(Tent.FACING)))
-//    }
-
-
-//  override def update() {
-//    if (!world.isRemote) {
-//      oldTime = time
-//      if (chestTracker != chests) {
-//        chestTracker = chests
-//        WorldUtils.dropItemsInWorld(world, getExcesChestContends, bd.pos)
-//      }
-//      if (lanternTracker != lanterns) {
-//        lanternTracker = lanterns
-//        if (lanterns == 0) {
-//          if (!getStackInSlot(0).isEmpty) {
-//            WorldUtils.dropItemInWorld(world, getStackInSlot(0), bd.pos)
-//          }
-//          setInventorySlotContents(0, ItemStack.EMPTY)
-//        }
-//      }
-//      if (isNew) initalize()
-//      updateTick += 1
-//      if ((updateTick > 10) && (time > 0)) {
-//        time -= 1
-//        updateTick = 0
-//      }
-//      if (time == 0) {
-//        time = -1
-//        lanternDamage = BlockDefinitions.Lantern.OFF
-//        Objs.tent.asInstanceOf[Tent].setOn(getWorld, pos, true)
-//        sendTileData(3, true, lanternDamage)
-//        bd.update
-//        bd.updateRender
-//      }
-//      if ((time <= 0) && (!getStackInSlot(0).isEmpty)) {
-//        decrStackSize(0, 1)
-//        time = 1500
-//        lanternDamage = BlockDefinitions.Lantern.ON
-//        sendTileData(3, true, lanternDamage)
-//        Objs.tent.asInstanceOf[Tent].setOn(getWorld, pos, true)
-//        bd.update
-//        bd.updateRender
-//      }
-//      if (time != oldTime) sendTileData(5, true, time)
-//    }
-//  }
+  //
+  //  def sleep(player: EntityPlayer) {
+  //    if(!world.isRemote) {
+  ////      if (getRotation == 0) bd.south.block.asInstanceOf[TentBounds].sleep(bd.south, player)
+  ////      else if (getRotation == 1) bd.west.block.asInstanceOf[TentBounds].sleep(bd.west, player)
+  ////      else if (getRotation == 2) bd.north.block.asInstanceOf[TentBounds].sleep(bd.north, player)
+  ////      else if (getRotation == 3) bd.east.block.asInstanceOf[TentBounds].sleep(bd.east, player)
+  //    } else {
+  ////      PacketSender.sendToServer(new PlayerSleepInTent(pos.getX, pos.getY, pos.getZ))
+  //    }
+  //  }
+  //
+  //
+  override def onChange(slot: Int): Unit =
+    super.onChange(slot)
+  //if equals glowstone slot, add lantern light
 
   override def shouldRefresh(world:World, pos:BlockPos, oldState:IBlockState, newState:IBlockState): Boolean =
     oldState.getBlock != newState.getBlock
 
   override def writeToNBT(tag: NBTTagCompound):NBTTagCompound = {
-//    tag.setInteger("contends", contends)
-//    tag.setBoolean("occupied", occupied)
-//    tag.setInteger("beds", beds)
-//    tag.setInteger("lanterns", lanterns)
-//    tag.setInteger("chests", chests)
-//    tag.setInteger("lanternDamage", lanternDamage)
-//    tag.setInteger("time", time)
+    tag.setBoolean("occupied", occupied)
+    tag.setIntArray("contents", contents)
     tag.setInteger("color", color)
+
     super.writeToNBT(tag)
   }
 
   override def init(stack: ItemStack, player: EntityPlayer, world: World, pos: BlockPos): Unit =
     if(!world.isRemote)
       setColor(stack.getItemDamage)
-  //create structure
 }

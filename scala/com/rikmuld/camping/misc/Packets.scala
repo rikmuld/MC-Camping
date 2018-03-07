@@ -67,21 +67,22 @@ class ItemsData(var slot: Int, var x: Int, var y: Int, var z: Int, var stack: It
   }
 }
 
-//class PlayerSleepInTent(var x: Int, var y: Int, var z: Int) extends PacketBasic {
-//  def this() = this(0, 0, 0)
-//
-//  override def handlePacket(player: EntityPlayer, ctx: MessageContext) = player.world.getTileEntity(new BlockPos(x, y, z)).asInstanceOf[TileTent].sleep(player)
-//  override def read(stream: PacketBuffer) {
-//    x = stream.readInt
-//    y = stream.readInt
-//    z = stream.readInt
-//  }
-//  override def write(stream: PacketBuffer) {
-//    stream.writeInt(x)
-//    stream.writeInt(y)
-//    stream.writeInt(z)
-//  }
-//}
+class PlayerSleepInTent(var x: Int, var y: Int, var z: Int) extends PacketBasic {
+  def this() = this(0, 0, 0)
+
+  override def handlePacket(player: EntityPlayer, ctx: MessageContext) =
+    Unit //player.world.getTileEntity(new BlockPos(x, y, z)).asInstanceOf[TileTent].sleep(player)
+  override def read(stream: PacketBuffer) {
+    x = stream.readInt
+    y = stream.readInt
+    z = stream.readInt
+  }
+  override def write(stream: PacketBuffer) {
+    stream.writeInt(x)
+    stream.writeInt(y)
+    stream.writeInt(z)
+  }
+}
 
 class PlayerExitLog(var x: Int, var y: Int, var z: Int) extends PacketBasic {
   def this() = this(0, 0, 0)
