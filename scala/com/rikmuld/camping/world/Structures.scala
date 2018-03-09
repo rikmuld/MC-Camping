@@ -3,8 +3,13 @@ package com.rikmuld.camping.world
 import java.util.Random
 
 import com.rikmuld.camping.CampingMod
+import com.rikmuld.camping.entity.{Camper, Campsite}
 import com.rikmuld.camping.objs.Definitions
+import com.rikmuld.camping.objs.blocks.Tent
 import com.rikmuld.camping.registers.ObjRegistry
+import com.rikmuld.camping.tileentity.TileTent
+import net.minecraft.init.Blocks
+import net.minecraft.item.ItemStack
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
 
@@ -32,29 +37,24 @@ class HempGen extends net.minecraft.world.gen.feature.WorldGenerator {
 
 class CampsiteGen extends net.minecraft.world.gen.feature.WorldGenerator {
   override def generate(world: World, random: Random, pos:BlockPos): Boolean = {
-//    var bd = (world, pos)
-//
-//    while (bd.up.block != Blocks.AIR || bd.up.up.block != Blocks.AIR) bd = bd.up
-//    bd = bd.up
-//
-//    if (!isValitSpawn(bd.west, 3, 2, 5)) return false
-//
-//    bd.setState(Objs.campfireWood.getDefaultState)
-//    bd.south.south.setState(Objs.tent.getDefaultState)
-//    bd.south.south.tile.asInstanceOf[TileTent].createStructure
-//    bd.south.south.tile.asInstanceOf[TileTent].setContends(1, TileEntityTent.BEDS, true, 0)
-//
-//    val camper = new Camper(world)
-//    camper.setPosition(bd.west.x, bd.west.y, bd.west.z)
-//    camper.setCampsite(Some(new Campsite(camper, bd.west.pos, bd.south.south.pos)))
-//    world.spawnEntity(camper)
-//
-//    true
+    var posNew = pos
+
+    while (world.getBlockState(posNew.up).getBlock != Blocks.AIR || world.getBlockState(posNew.up.up).getBlock != Blocks.AIR)
+      posNew = posNew.up
+
+
+    if (!Tent.tentStructure.head.canBePlaced(world, posNew)) return false
+
+    world.setBlockState(posNew, ObjRegistry.campfireWoodOn.getDefaultState)
+
+    world.setBlockState(posNew.south(2), ObjRegistry.tent.getDefaultState)
+    world.getTileEntity(posNew.south(2)).asInstanceOf[TileTent].add(new ItemStack(ObjRegistry.sleepingBag))
+
+    val camper = new Camper(world)
+    camper.setPosition(posNew.west.getX, posNew.west.getY, posNew.west.getZ)
+    camper.setCampsite(Some(new Campsite(camper, posNew.west, posNew.south.south)))
+    world.spawnEntity(camper)
+
     true
   }
-//  def isValitSpawn(world: World, pos: BlockPos, xLength: Int, yLength:Int, zLength: Int): Boolean = {
-//    for (x <- 0 until xLength; y <- 0 until yLength; z <- 0 until zLength; if (!(bd.nw(bd.relPos(x, y, z)).block == Blocks.AIR || bd.nw(bd.relPos(x, y, z)).isReplaceable)
-//        || !(bd.nw(bd.relPos(x, 0, z)).down.block == Blocks.GRASS || bd.nw(bd.relPos(x, 0, z)).down.block == Blocks.DIRT))) return false
-//    true
-//  }
 }

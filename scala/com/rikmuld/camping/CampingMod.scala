@@ -26,7 +26,7 @@ object CampingMod {
   @EventHandler
   def preInit(event: FMLPreInitializationEvent): Unit = {
     config = new Config(new Configuration(event.getSuggestedConfigurationFile))
-    config.sync
+    config.sync()
 
     proxy.registerEvents
 

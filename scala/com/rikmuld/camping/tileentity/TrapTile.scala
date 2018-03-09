@@ -11,7 +11,7 @@ import com.rikmuld.camping.registers.ObjRegistry
 import com.rikmuld.camping.registers.Registry._
 import com.rikmuld.corerm.advancements.TriggerHelper
 import com.rikmuld.corerm.network.PacketSender
-import com.rikmuld.corerm.tileentity.{TileEntityInventory, TileEntityTicker}
+import com.rikmuld.corerm.tileentity.TileEntityInventory
 import net.minecraft.block.state.IBlockState
 import net.minecraft.entity.SharedMonsterAttributes.MOVEMENT_SPEED
 import net.minecraft.entity.ai.attributes.AttributeModifier
@@ -22,6 +22,7 @@ import net.minecraft.entity.{EntityLiving, EntityLivingBase}
 import net.minecraft.init.Items
 import net.minecraft.item.ItemStack
 import net.minecraft.potion.PotionEffect
+import net.minecraft.util.ITickable
 import net.minecraft.util.math.{AxisAlignedBB, BlockPos}
 import net.minecraft.world.World
 
@@ -45,8 +46,9 @@ object TileTrap {
   )
 }
 
-class TileTrap extends TileEntityInventory with TileEntityTicker {
-  registerTicker(updateLureEntities, 50)
+class TileTrap extends TileEntityInventory with ITickable {
+  private var updateLureTimer =
+    0
 
   var trappedEntity: Option[EntityLivingBase] =
     None
@@ -125,23 +127,26 @@ class TileTrap extends TileEntityInventory with TileEntityTicker {
   def getLureEntities: Seq[EntityLiving] =
     world.getEntitiesWithinAABB(classOf[EntityLiving], getLureBounds)
 
-  override def update():Unit = {
-    super.update()
-
+  override def update():Unit =
     if (!world.isRemote) {
-      if (closeCooldown > 0) closeCooldown -= 1
+      updateLureTimer += 1
 
-      val entities = getCaptureEntities
+      if(updateLureTimer > 50)
+        updateLureEntities()
+
+      if (closeCooldown > 0)
+        closeCooldown -= 1
 
       if (getBlock.getBool(world, pos, STATE_OPEN))
-        tryCatch(entities)
+        tryCatch(getCaptureEntities)
       else
-        trappedEntity.foreach(entity => updateTrappedEntity(entity, entities))
+        trappedEntity.foreach(entity => updateTrappedEntity(entity, getCaptureEntities))
     }
-  }
 
-  def updateLureEntities(): Unit =
+  def updateLureEntities(): Unit = {
     lureEntities = getLureEntities
+    updateLureTimer = 0
+  }
 
   private def tryCatch(entities: Seq[EntityLivingBase]): Unit =
     if (entities.nonEmpty && closeCooldown == 0) {
