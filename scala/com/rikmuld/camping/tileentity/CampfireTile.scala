@@ -132,6 +132,7 @@ class TileCampfireCook extends TileEntityInventory with Roaster with ITickable {
   private var equipment: Option[CookingEquipment] =
     None
 
+  //TODO don't do slots stuff in tile, but container
   private var slots: Option[Seq[SlotCooking]] =
     None
 
@@ -264,7 +265,6 @@ class TileCampfireCook extends TileEntityInventory with Roaster with ITickable {
     }
   }
 
-  //TODO after cooking once and taking one becomes strange
   override def onChange(slot: Int): Unit =
     if (slot == 1) {
       (equipment, CookingEquipment.getEquipment(getStackInSlot(1))) match {

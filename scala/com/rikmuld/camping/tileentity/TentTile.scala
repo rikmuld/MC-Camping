@@ -1,11 +1,12 @@
 package com.rikmuld.camping.tileentity
 
-import com.rikmuld.camping.inventory.SlotState
+import com.rikmuld.camping.misc.PlayerSleepInTent
 import com.rikmuld.camping.objs.Definitions
 import com.rikmuld.camping.objs.blocks.Tent
 import com.rikmuld.camping.registers.ObjRegistry
-import com.rikmuld.camping.tileentity.SeqUtils._
 import com.rikmuld.camping.tileentity.TileEntityTent._
+import com.rikmuld.camping.{SeqUtils, Utils}
+import com.rikmuld.corerm.network.PacketSender
 import com.rikmuld.corerm.objs.blocks.BlockSimple
 import com.rikmuld.corerm.tileentity.{TileEntityInventory, TileEntityTicker}
 import com.rikmuld.corerm.utils.WorldUtils
@@ -39,21 +40,6 @@ object TileEntityTent {
   final val BED = 2
 }
 
-//TODO move
-object SeqUtils {
-  def merge[A, B, C](b: Seq[B])(f: (A, B) => C)(a: Seq[A]): Seq[C] =
-    merge(a, b)(f)
-
-  def merge[A, B, C](a: Seq[A], b: Seq[B])(f: (A, B) => C): Seq[C] =
-    a zip b map(t => f(t._1, t._2))
-
-  def allOne(all: Int => Boolean)(one: Int => Boolean)(v: Seq[Int]): Boolean =
-    (v forall all) && (v exists one)
-}
-
-//TODO still old code from years ago, rewrite
-//TODO fix not scrollable
-//TODO content does not drop when breaking
 class TileTent extends TileEntityInventory with TileEntityTicker {
   registerTicker(tickLight, 20)
 
@@ -69,12 +55,6 @@ class TileTent extends TileEntityInventory with TileEntityTicker {
   private var occupied: Boolean =
     false
 
-  private var slots: Option[Seq[Seq[SlotState]]] =
-    None
-
-  private var slide: Int =
-    0
-
   def contentIdx(stack: ItemStack): Option[Int] =
     Option(ITEMS.indexOf(stack.getItem)).find(_ >= 0)
 
@@ -83,8 +63,8 @@ class TileTent extends TileEntityInventory with TileEntityTicker {
 
   def canAdd(i: Int): Boolean = {
     val configs = CONFIGS
-      .map(merge(contents)(_ - _))
-      .filter(allOne(_ >= 0)(_ > 0))
+      .map(SeqUtils.merge(contents)(_ - _))
+      .filter(SeqUtils.allOne(_ >= 0)(_ > 0))
 
     if(configs.nonEmpty)
       configs.transpose.get(i).max > 0
@@ -116,7 +96,7 @@ class TileTent extends TileEntityInventory with TileEntityTicker {
     contents(i) = result
 
     sendTileData(i, !world.isRemote, result)
-    tentChanged(i, old, result, action)
+    tentChanged(i, action)
   }
 
   def count(i: Int): Int =
@@ -134,35 +114,49 @@ class TileTent extends TileEntityInventory with TileEntityTicker {
       new ItemStack(ITEMS(i), count)
   }
 
-  def tentChanged(id: Int, old: Int, nw: Int, action: Option[ItemStack]): Unit = id match {
+  def tentChanged(id: Int, action: Option[ItemStack]): Unit = action match {
+    case None =>
+      sendTileData(4, false, id)
+    case Some(stack) =>
+      contentAdded(id, stack)
+  }
+
+  def contentAdded(id: Int, stack: ItemStack): Unit = id match {
     case LANTERN =>
-      val light = action.fold(0)(TileLantern.timeFromStack)
+      val light = TileLantern.timeFromStack(stack)
 
-      if(action.isEmpty)
-        dropItem(id)
-
-      sendTileData(3, !world.isRemote, light)
+      sendTileData(3, true, light)
       setLight(light)
-    case _ if action.isEmpty =>
-      dropItem(id)
     case _ =>
   }
 
+  def contentRemoved(id: Int): Unit = id match {
+      case CHESTS =>
+        val chests = count(id)
+        val stacks = getInventory.slice(1 + 27 * chests, 1 + 27 * (chests + 1))
+
+        WorldUtils.dropItemsInWorld(world, stacks, pos)
+        WorldUtils.dropItemInWorld(world, toStack(id, Some(1)), pos)
+      case LANTERN =>
+        val stack =  TileLantern.stackFromTime(light, 1)
+
+        WorldUtils.dropItemInWorld(world, stack, pos)
+        sendTileData(3, true, 0)
+        setLight(0)
+      case BED =>
+        WorldUtils.dropItemInWorld(world, toStack(id, Some(1)), pos)
+  }
+
+
   private def setLight(i: Int): Unit = {
     if(!world.isRemote)
-      if (light > 0 && i == 0)
+      if (i == 0)
         getBlock.setState(world, pos, Definitions.Tent.STATE_ON, false)
       else if (light == 0 && i > 0)
         getBlock.setState(world, pos, Definitions.Tent.STATE_ON, true)
 
     light = Math.max(0, i)
   }
-
-  def dropItem(i: Int): Unit =
-    if(world.isRemote)
-      sendTileData(4, false, i)
-    else
-      WorldUtils.dropItemInWorld(world, toStack(i, Some(1)), pos)
 
   def getLight: Int =
     light
@@ -187,29 +181,12 @@ class TileTent extends TileEntityInventory with TileEntityTicker {
   override def getSizeInventory: Int =
     151
 
-//  def isOccupied = occupied
-//  def setOccupied(occupied:Boolean) = this.occupied = occupied
-//  def manageSlots() {
-//    if (slots != null) {
-//      if (chests > 2) {
-//        val scaledSlide = MathUtils.getScaledNumber(slide, 144, (5 * chests) - 11).toInt
-//        for (i <- 0 until (5 * chests); j <- 0 until 6) {
-//          slots(i)(j).setStateX(scaledSlide)
-//          if ((i < scaledSlide) || (i >= (scaledSlide + 11))) {
-//            slots(i)(j).disable
-//          } else {
-//            slots(i)(j).enable
-//          }
-//        }
-//      } else {
-//        for (i <- 0 until (5 * chests); j <- 0 until 6) {
-//          slots(i)(j).setStateX(0)
-//          slots(i)(j).enable()
-//        }
-//      }
-//    }
-//  }
-//
+  def isOccupied: Boolean =
+    occupied
+
+  def setOccupied(occupied:Boolean): Unit =
+    this.occupied = occupied
+
   def getFacing: EnumFacing =
     getBlock.getFacing(world.getBlockState(pos))
 
@@ -237,13 +214,6 @@ class TileTent extends TileEntityInventory with TileEntityTicker {
   def getColor: Int =
     color
 
-//  def setSlideState(slideState: Int) {
-//    slide = slideState
-//    manageSlots()
-//    sendTileData(4, false, slideState)
-//  }
-//  def setSlots(slots: Array[Array[SlotState]]) = this.slots = slots
-
   override def setTileData(id: Int, data: Seq[Int]): Unit = {
     super.setTileData(id, data)
 
@@ -253,31 +223,28 @@ class TileTent extends TileEntityInventory with TileEntityTicker {
       case 3 =>
         setLight(data.head)
       case 4 =>
-        dropItem(data.head)
-//    case 5 =>
-//      slide = data(0)
-//      manageSlots()
+        contentRemoved(data.head)
       case 6 =>
         setColor(data.head)
     }
   }
 
-  //
-  //  def sleep(player: EntityPlayer) {
-  //    if(!world.isRemote) {
-  ////      if (getRotation == 0) bd.south.block.asInstanceOf[TentBounds].sleep(bd.south, player)
-  ////      else if (getRotation == 1) bd.west.block.asInstanceOf[TentBounds].sleep(bd.west, player)
-  ////      else if (getRotation == 2) bd.north.block.asInstanceOf[TentBounds].sleep(bd.north, player)
-  ////      else if (getRotation == 3) bd.east.block.asInstanceOf[TentBounds].sleep(bd.east, player)
-  //    } else {
-  ////      PacketSender.sendToServer(new PlayerSleepInTent(pos.getX, pos.getY, pos.getZ))
-  //    }
-  //  }
-  //
-  //
-  override def onChange(slot: Int): Unit =
-    super.onChange(slot)
-  //if equals glowstone slot, add lantern light
+
+  def sleep(player: EntityPlayer): Unit =
+    if(!world.isRemote)
+      Utils.trySleep(isOccupied, setOccupied)(world, pos, player)
+    else
+      PacketSender.sendToServer(new PlayerSleepInTent(pos.getX, pos.getY, pos.getZ))
+
+
+  override def onChange(slot: Int): Unit = slot match {
+    case 0 =>
+      if(light < 10 && getStackInSlot(slot).getCount > 0) {
+        setLight(750)
+        decrStackSize(slot, 1)
+      }
+    case _ =>
+  }
 
   override def shouldRefresh(world:World, pos:BlockPos, oldState:IBlockState, newState:IBlockState): Boolean =
     oldState.getBlock != newState.getBlock

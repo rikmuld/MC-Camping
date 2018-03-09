@@ -4,6 +4,7 @@ import com.rikmuld.camping.CampingMod._
 import com.rikmuld.camping.EventsC
 import com.rikmuld.camping.Library._
 import com.rikmuld.camping.entity.Mountable
+import com.rikmuld.camping.tileentity.TileTent
 import com.rikmuld.corerm.network.packets.PacketBasic
 import com.rikmuld.corerm.tileentity.TileEntityInventory
 import net.minecraft.entity.player.EntityPlayer
@@ -71,7 +72,7 @@ class PlayerSleepInTent(var x: Int, var y: Int, var z: Int) extends PacketBasic 
   def this() = this(0, 0, 0)
 
   override def handlePacket(player: EntityPlayer, ctx: MessageContext) =
-    Unit //player.world.getTileEntity(new BlockPos(x, y, z)).asInstanceOf[TileTent].sleep(player)
+    player.world.getTileEntity(new BlockPos(x, y, z)).asInstanceOf[TileTent].sleep(player)
   override def read(stream: PacketBuffer) {
     x = stream.readInt
     y = stream.readInt

@@ -12,8 +12,8 @@ import com.rikmuld.corerm.objs.ObjDefinition
 import com.rikmuld.corerm.objs.blocks.bounds.{BlockBounds, BlockBoundsStructure, BoundsStructure}
 import com.rikmuld.corerm.utils.WorldUtils
 import net.minecraft.block.state.IBlockState
-import net.minecraft.entity.EntityLivingBase
 import net.minecraft.entity.player.EntityPlayer
+import net.minecraft.entity.{Entity, EntityLivingBase}
 import net.minecraft.init.Items
 import net.minecraft.item.ItemStack
 import net.minecraft.util.math.{AxisAlignedBB, BlockPos}
@@ -28,7 +28,6 @@ object Tent {
   )
 }
 
-//TODO drop contents of tent as well once implemented
 class Tent(modId:String, info:ObjDefinition) extends BlockBoundsStructure(modId, info) {
   def getBoundsBlock: BlockBounds =
     ObjRegistry.tentBounds.asInstanceOf[BlockBounds]
@@ -58,6 +57,22 @@ class Tent(modId:String, info:ObjDefinition) extends BlockBoundsStructure(modId,
       15
     else
       0
+
+  override def isBed(state:IBlockState, world:IBlockAccess, pos:BlockPos, player:Entity) =
+    true
+
+  override def setBedOccupied(world: IBlockAccess, pos:BlockPos, player:EntityPlayer, occupied: Boolean): Unit =
+    world match {
+      case world: World =>
+        world.getTileEntity(pos).asInstanceOf[TileTent].setOccupied(occupied)
+      case _ =>
+    }
+
+  override def getBedDirection(state:IBlockState, world:IBlockAccess, pos:BlockPos): EnumFacing =
+    getFacing(world, pos) // TODO reverse sleeping bag texture in tent and then get opposite here
+
+  override def isBedFoot(world:IBlockAccess, pos:BlockPos): Boolean =
+    false
 
   override def getDrops(world: IBlockAccess, pos: BlockPos, state: IBlockState, fortune: Int): util.List[ItemStack] =
     List(new ItemStack(ObjRegistry.tent, 1, world.getTileEntity(pos).asInstanceOf[TileTent].getColor))

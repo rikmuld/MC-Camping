@@ -12,7 +12,6 @@ import net.minecraft.inventory._
 import net.minecraft.item.{Item, ItemArmor, ItemStack}
 import net.minecraftforge.fml.relauncher.{Side, SideOnly}
 
-//TODO backpack items disappear if backpack is unused
 class ContainerCamping(player:EntityPlayer) extends ContainerSimple[InventoryCamping](player) with ContainerTabbed {
   var backpackSlots: Seq[SlotTabbedBackpack] =
     _

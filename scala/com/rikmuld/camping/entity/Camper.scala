@@ -4,6 +4,7 @@ import java.util.{ArrayList, Random}
 
 import com.rikmuld.camping.Library._
 import com.rikmuld.camping.objs.Definitions.Parts
+import com.rikmuld.camping.objs.blocks.Tent
 import com.rikmuld.camping.registers.ObjRegistry
 import com.rikmuld.corerm.advancements.TriggerHelper
 import net.minecraft.client.model.ModelBiped
@@ -204,12 +205,11 @@ object Campsite {
 }
 
 class Campsite(camper:Camper, center:BlockPos, tent:BlockPos) {
-  def update {
-    //TODO uncomment
-//    if(!(getWorld.getBlockState(tent).getBlock.isInstanceOf[Tent])) camper.setCampsite(None)
-//    else if(Math.sqrt(camper.getDistanceSqToCenter(center)) > 15 && !camper.getMoveHelper.isUpdating)camper.getMoveHelper.setMoveTo(center.getX, center.getY, center.getZ, .8)
+  def update(): Unit = {
+    if(!getWorld.getBlockState(tent).getBlock.isInstanceOf[Tent]) camper.setCampsite(None)
+    else if(Math.sqrt(camper.getDistanceSqToCenter(center)) > 15 && !camper.getMoveHelper.isUpdating)camper.getMoveHelper.setMoveTo(center.getX, center.getY, center.getZ, .8)
   }
-  def getWorld = camper.world
+  def getWorld: World = camper.world
   def toNBT(tag:NBTTagCompound):NBTTagCompound = {
     tag.setIntArray("center", Array(center.getX, center.getY, center.getZ))
     tag.setIntArray("tent", Array(tent.getX, tent.getY, tent.getZ))

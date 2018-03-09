@@ -3,7 +3,6 @@ package com.rikmuld.camping.render.models
 import com.rikmuld.camping.misc.CookingEquipment
 import com.rikmuld.corerm.client.ModularModal
 
-//TODO merge textures, put all textures here, and final vals with resources as wel, fix textures to new scaling size
 object CookingEquipmentModels {
   final val SPIT =
     new ModularModal()

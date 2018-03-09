@@ -2,23 +2,18 @@ package com.rikmuld.camping.objs.blocks
 
 import java.util.Random
 
-import com.rikmuld.camping.CampingMod
 import com.rikmuld.camping.objs.Definitions.SleepingBag._
+import com.rikmuld.camping.{CampingMod, Utils}
 import com.rikmuld.corerm.objs.ObjDefinition
 import com.rikmuld.corerm.objs.blocks._
 import com.rikmuld.corerm.utils.MathUtils
 import net.minecraft.block.state.IBlockState
 import net.minecraft.entity.player.EntityPlayer
-import net.minecraft.entity.player.EntityPlayer.SleepResult
 import net.minecraft.entity.{Entity, EntityLivingBase}
-import net.minecraft.init.Biomes
 import net.minecraft.item.ItemStack
 import net.minecraft.util.math.{AxisAlignedBB, BlockPos}
-import net.minecraft.util.text.TextComponentTranslation
 import net.minecraft.util.{EnumFacing, EnumHand}
 import net.minecraft.world.{IBlockAccess, World}
-
-import scala.collection.JavaConversions._
 
 object SleepingBag {
   final val BOUNDS =
@@ -64,47 +59,14 @@ class SleepingBag(modId:String, info: ObjDefinition) extends BlockRM(modId, info
                                 player: EntityPlayer, hand:EnumHand, side: EnumFacing,
                                 xHit: Float, yHit: Float, zHit: Float): Boolean =
     if(!world.isRemote)
-      trySleep(world,
+      Utils.trySleep(isOccupied(world, pos), setBedOccupied(world, pos, player, _))(world,
         if(getBool(state, STATE_IS_HEAD)) pos
         else pos.offset(getFacing(state)), player)
     else
       true
 
-  def trySleep(world: World, pos: BlockPos, player: EntityPlayer): Boolean = {
-    if(!world.provider.canRespawnHere || world.getBiomeForCoordsBody(pos) == Biomes.HELL) {
-      world.destroyBlock(pos, false)
-      world.newExplosion(null, pos.getX + 0.5, pos.getY + 0.5, pos.getZ + 0.5, 5, true, true)
-
-      return true
-    }
-
-    if (getBool(world.getBlockState(pos), STATE_IS_OCCUPIED) && getPlayerInBed(world, pos).isDefined) {
-      player.sendMessage(new TextComponentTranslation("tile.bed.occupied", new Object))
-
-      return true
-    }
-
-    setState(world, pos, STATE_IS_OCCUPIED, false)
-
-    player.trySleep(pos) match {
-      case SleepResult.OK =>
-        setState(world, pos, STATE_IS_OCCUPIED, true)
-      case SleepResult.NOT_POSSIBLE_NOW =>
-        player.sendMessage(new TextComponentTranslation("tile.bed.noSleep", new Object))
-      case SleepResult.NOT_SAFE =>
-        player.sendMessage(new TextComponentTranslation("tile.bed.noSafe", new Object))
-      case SleepResult.TOO_FAR_AWAY =>
-        player.sendMessage(new TextComponentTranslation("tile.bed.toFarAway", new Object))
-      case _ =>
-    }
-
-    true
-  }
-
-  def getPlayerInBed(world: World, pos: BlockPos): Option[EntityPlayer] =
-    world.playerEntities.find(player =>
-      player.isPlayerSleeping && player.getPosition.equals(pos)
-    )
+  private def isOccupied(world: World, pos: BlockPos): Boolean =
+    getBool(world.getBlockState(pos), STATE_IS_OCCUPIED)
 
   override def isBed(state:IBlockState, world:IBlockAccess, pos:BlockPos, player:Entity) =
     true

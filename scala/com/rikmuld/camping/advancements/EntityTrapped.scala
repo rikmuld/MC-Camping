@@ -24,7 +24,6 @@ object EntityTrapped {
     }
   }
 
-  //TODO uncomment when possible
   protected class Instance(entity: Option[EntityPredicate], isAnimal:Option[Boolean]) extends TriggerSimple.Instance[EntityLivingBase](ENTITY_TRAPPED) {
     def test(player: EntityPlayerMP, entityTrapped: EntityLivingBase): Boolean =
       entity.fold(true)(_.test(player, entityTrapped)) && isAnimal.fold(true)(isAnimal =>

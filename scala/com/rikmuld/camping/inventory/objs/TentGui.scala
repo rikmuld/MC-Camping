@@ -5,7 +5,7 @@ import com.rikmuld.camping.inventory.{SlotItem, SlotState}
 import com.rikmuld.camping.objs.Definitions
 import com.rikmuld.camping.registers.ObjRegistry
 import com.rikmuld.camping.tileentity.TileEntityTent._
-import com.rikmuld.camping.tileentity.TileTent
+import com.rikmuld.camping.tileentity.{TileEntityTent, TileTent}
 import com.rikmuld.corerm.gui.GuiHelper
 import com.rikmuld.corerm.gui.container.ContainerSimple
 import com.rikmuld.corerm.gui.gui.GuiContainerSimple
@@ -123,7 +123,7 @@ class GuiTentSleeping(player: EntityPlayer, tile: IInventory) extends GuiScreen 
   val sleep = I18n.translateToLocal("camping.tent.sleep")
 
   protected override def actionPerformed(button: GuiButton): Unit = button.id match {
-//    case 0 => tent.sleep(mc.player)
+    case 0 => tent.sleep(mc.player)
     case _ =>
   }
   def checkMc = if(Option(mc).isEmpty) mc = Minecraft.getMinecraft
@@ -218,23 +218,18 @@ class GuiTentChests(player: EntityPlayer, inv: IInventory) extends GuiContainerS
   val tent:TileTent =
     inv.asInstanceOf[TileTent]
 
-  var slideState: Int = 0 // tent.slide
-  var oldSLideState: Int = _
-  var xBegin: Int = -1
-  private var slideBegin: Int = _
-  var mouseMouse: Boolean = _
-
   var canClick: Boolean =
     false
 
   val getTexture: ResourceLocation =
     new ResourceLocation(TextureInfo.GUI_TENT_CONTENDS_2)
 
+  var slideState: Int =
+    0
+
   override def drawGUI(mouseX: Int, mouseY: Int): Unit = {
     super.drawGUI(mouseX, mouseY)
     drawTexturedModalRect(guiLeft + 39 + slideState, guiTop + 12, 234, if (tent.count(CHESTS) > 2) 12 else 0, 15, 12)
-
-    oldSLideState = slideState
 
     //add this one as a button
     if (isPointInRegion(15, 8, 20, 20, mouseX, mouseY)) {
@@ -244,35 +239,25 @@ class GuiTentChests(player: EntityPlayer, inv: IInventory) extends GuiContainerS
     } else canClick = false
 
     //do with mouse drag click function
-    if (isPointInRegion(39 + slideState, 12, 15, 12, mouseX, mouseY)) {
-      if (Mouse.isButtonDown(0) && canClick) mouseMouse = true
+    if (isPointInRegion(39, 12, 159, 12, mouseX, mouseY)) {
+      if (Mouse.isButtonDown(0) && tent.count(CHESTS) > 2)
+        setSlide(mouseX - guiLeft - 47)
     } else canClick = false
 
     //no longer needed then
-    if (!Mouse.isButtonDown(0)) {
+    if (!Mouse.isButtonDown(0))
       canClick = true
-      mouseMouse = false
-    }
+  }
 
-    //do with mouse drag click function
-    if (mouseMouse && (tent.count(CHESTS) > 2)) {
-      if (xBegin == -1) {
-        xBegin = mouseX
-        slideBegin = slideState
-      }
-      slideState = (slideBegin + mouseX) - xBegin
-      if (slideState < 0) slideState = 0
-      if (slideState > 144) slideState = 144
-    } else xBegin = -1
-
-    //do with mouse drag click function
-    if (slideState != oldSLideState) {
-//      tent.setSlideState(slideState)
-    }
+  def setSlide(slide: Int): Unit = {
+    slideState = Math.max(0, Math.min(slide, 144))
+    inventorySlots.asInstanceOf[ContainerTentChests].setSlider(slideState)
   }
 }
 
 class ContainerTentChests(player: EntityPlayer, tile: IInventory) extends ContainerSimple[TileTent](player) {
+  setSlider(0)
+
   override def playerInvY: Int =
     146
 
@@ -282,24 +267,45 @@ class ContainerTentChests(player: EntityPlayer, tile: IInventory) extends Contai
   val getID: String =
     tile.getName
 
-  override def addInventorySlots(): Unit = {
-    val slots: Array[Array[SlotState]] = Array.ofDim[SlotState](25, 6)
+  var slots: Seq[Seq[SlotState]] =
+    _
 
-    for (column <- 0 until 25; row <- 0 until 6) {
-      val slot = new SlotState(tile, row + (column * 6) + 1, 9 + (column * 18), 34 + (row * 18))
-      slot.disable()
+  override def addInventorySlots(): Unit =
+    slots =
+      for (column <- 0 until 25)
+        yield for(row <- 0 until 6)
+          yield {
+            val slot = new SlotState(tile, row + (column * 6) + 1, 9 + (column * 18), 34 + (row * 18))
+            slot.disable()
 
-      addSlotToContainer(slot)
-      slots(column)(row) = slot.asInstanceOf[SlotState]
-    }
-
-//    getIInventory.setSlots(slots)
-//    getIInventory.manageSlots()
-  }
+            addSlotToContainer(slot)
+            slot
+          }
 
   def initIInventory: TileTent =
     tile.asInstanceOf[TileTent]
 
   override def mergeToInventory(stack: ItemStack, original: ItemStack, index: Int): Boolean =
     mergeItemStack(stack, 0, getIInventory.count(CHESTS) * 5 * 6, false)
+
+  def setSlider(x: Int): Unit = {
+    val chests = getIInventory.count(TileEntityTent.CHESTS)
+
+    if (chests > 2) {
+      val scaledSlide = MathUtils.getScaledNumber(x, 144, (5 * chests) - 11).toInt
+      for (i <- 0 until (5 * chests); j <- 0 until 6) {
+        slots(i)(j).setStateX(scaledSlide)
+        if ((i < scaledSlide) || (i >= (scaledSlide + 11))) {
+          slots(i)(j).disable()
+        } else {
+          slots(i)(j).enable()
+        }
+      }
+    } else {
+      for (i <- 0 until (5 * chests); j <- 0 until 6) {
+        slots(i)(j).setStateX(0)
+        slots(i)(j).enable()
+      }
+    }
+  }
 }
