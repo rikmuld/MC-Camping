@@ -1,8 +1,9 @@
 package com.rikmuld.camping.registers
 
 import com.rikmuld.camping.CampingMod._
-import com.rikmuld.camping.misc._
-import com.rikmuld.camping.objs.Definitions._
+import com.rikmuld.camping.Definitions._
+import com.rikmuld.camping.features.blocks.campfire.cook.equipment.{CookingEquipment, EquipmentGrill, EquipmentPan, EquipmentSpit}
+import com.rikmuld.camping.general.tab.TabCamping
 import com.rikmuld.corerm.objs.blocks.BlockSimple
 import com.rikmuld.corerm.objs.items.ItemSimple
 import net.minecraft.block.Block
@@ -198,9 +199,9 @@ object ObjRegistry {
   def postRegistry(): Unit = {
     GameRegistry.addSmelting(new ItemStack(venisonRaw), new ItemStack(venisonCooked), 3)
 
-    grill = new Grill()
-    spit = new Spit()
-    pan = new Pan()
+    grill = new EquipmentGrill()
+    spit = new EquipmentSpit()
+    pan = new EquipmentPan()
 
     CookingEquipment.registerKitRecipe(spit,
       new ItemStack(STICK, 2),

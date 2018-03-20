@@ -2,7 +2,7 @@ package com.rikmuld.camping.advancements
 
 import com.google.gson.{JsonDeserializationContext, JsonObject}
 import com.rikmuld.camping.Library.AdvancementInfo.ENTITY_TRAPPED
-import com.rikmuld.camping.entity.Bear
+import com.rikmuld.camping.features.entities.bear.EntityBear
 import com.rikmuld.corerm.advancements.triggers.TriggerSimple
 import net.minecraft.advancements.critereon.EntityPredicate
 import net.minecraft.entity.EntityLivingBase
@@ -27,8 +27,8 @@ object EntityTrapped {
   protected class Instance(entity: Option[EntityPredicate], isAnimal:Option[Boolean]) extends TriggerSimple.Instance[EntityLivingBase](ENTITY_TRAPPED) {
     def test(player: EntityPlayerMP, entityTrapped: EntityLivingBase): Boolean =
       entity.fold(true)(_.test(player, entityTrapped)) && isAnimal.fold(true)(isAnimal =>
-        if(isAnimal) entityTrapped.isInstanceOf[EntityAnimal] && !entityTrapped.isInstanceOf[Bear]
-        else entityTrapped.isInstanceOf[EntityMob] || entityTrapped.isInstanceOf[Bear]
+        if(isAnimal) entityTrapped.isInstanceOf[EntityAnimal] && !entityTrapped.isInstanceOf[EntityBear]
+        else entityTrapped.isInstanceOf[EntityMob] || entityTrapped.isInstanceOf[EntityBear]
       )
   }
 }

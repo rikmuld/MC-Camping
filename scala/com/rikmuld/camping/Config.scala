@@ -11,6 +11,24 @@ import net.minecraftforge.fml.client.config.{GuiConfig, IConfigElement}
 
 import scala.collection.JavaConversions._
 
+object Config {
+  class GuiFactory extends IModGuiFactory {
+    override def initialize(minecraftInstance: Minecraft): Unit =
+      Unit
+
+    override def runtimeGuiCategories: java.util.Set[RuntimeOptionCategoryElement] =
+      null
+
+    override def createConfigGui(parentScreen: GuiScreen): GuiScreen =
+      new ConfigGUI(parentScreen)
+
+    override def hasConfigGui: Boolean =
+      true
+  }
+
+  class ConfigGUI(parent: GuiScreen) extends GuiConfig(parent, config.elements, MOD_ID, false, false, "Camping Config")
+}
+
 class Config(val file: Configuration) {
   var useBears = true
   var campfireMaxFuel = 20000
@@ -25,7 +43,7 @@ class Config(val file: Configuration) {
   var useFoxes = true
   var trapPlayer = true
   var worldGenCampsite = true
-  var campsiteRareness = 5
+  var campsiteRareness = 10
   var alwaysCampingInv = true
   var welcomeMess = true
   var maxWoodFuel = 5000
@@ -81,19 +99,3 @@ class Config(val file: Configuration) {
     file.save()
   }
 }
-
-class GuiFactory extends IModGuiFactory {
-  override def initialize(minecraftInstance: Minecraft): Unit =
-    Unit
-
-  override def runtimeGuiCategories: java.util.Set[RuntimeOptionCategoryElement] =
-    null
-
-  override def createConfigGui(parentScreen: GuiScreen): GuiScreen =
-    new ConfigGUI(parentScreen)
-
-  override def hasConfigGui: Boolean =
-    true
-}
-
-class ConfigGUI(parent: GuiScreen) extends GuiConfig(parent, config.elements, MOD_ID, false, false, "Camping Config")

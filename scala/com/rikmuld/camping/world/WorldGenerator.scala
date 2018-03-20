@@ -3,6 +3,7 @@ package com.rikmuld.camping.world
 import java.util.Random
 
 import com.rikmuld.camping.CampingMod._
+import com.rikmuld.camping.world.structures.{StructureCampsite, StructureHemp}
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
 import net.minecraft.world.biome.Biome.TempCategory
@@ -12,8 +13,8 @@ import net.minecraftforge.common.BiomeDictionary
 import net.minecraftforge.fml.common.IWorldGenerator
 
 class WorldGenerator extends IWorldGenerator {
-  val hemp = new HempGen
-  val camp = new CampsiteGen
+  val hemp = new StructureHemp
+  val camp = new StructureCampsite
 
   override def generate(random: Random, chunkX: Int, chunkZ: Int, world: World, chunkGenerator: IChunkGenerator, chunkProvider: IChunkProvider) {
     if (config.hasWorldGen) world.provider.getDimension match {
@@ -23,9 +24,14 @@ class WorldGenerator extends IWorldGenerator {
       case _ =>
     }
   }
-  private def generateEnd(world: World, random: Random, blockX: Int, blockZ: Int) {}
-  private def generateNether(world: World, random: Random, blockX: Int, blockZ: Int) {}
-  private def generateSurface(world: World, random: Random, blockX: Int, blockZ: Int) {
+
+  private def generateEnd(world: World, random: Random, blockX: Int, blockZ: Int): Unit =
+    Unit
+
+  private def generateNether(world: World, random: Random, blockX: Int, blockZ: Int): Unit =
+    Unit
+
+  private def generateSurface(world: World, random: Random, blockX: Int, blockZ: Int): Unit = {
     if (config.worldGenHemp) {
       hemp.generate(world, random, new BlockPos(blockX, 50, blockZ))
     }

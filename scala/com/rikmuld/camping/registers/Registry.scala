@@ -3,8 +3,10 @@ package com.rikmuld.camping.registers
 import com.rikmuld.camping.Library.EntityInfo._
 import com.rikmuld.camping.Library.PotionInfo
 import com.rikmuld.camping.Library.SoundInfo._
-import com.rikmuld.camping.entity.Bear
-import com.rikmuld.camping.misc.PotionBleeding
+import com.rikmuld.camping.features.blocks.trap.PotionBleeding
+import com.rikmuld.camping.features.entities.bear.EntityBear
+import com.rikmuld.camping.features.entities.camper.EntityCamper
+import com.rikmuld.camping.features.entities.fox.EntityFox
 import net.minecraft.entity.Entity
 import net.minecraft.entity.EntityList.EntityEggInfo
 import net.minecraft.init.Items
@@ -60,13 +62,13 @@ object Registry {
 
   @SubscribeEvent
   def register(event: RegistryEvent.Register[EntityEntry]) {
-    bear = new EntityEntry(classOf[Bear], BEAR).setRegistryName(BEAR)
-    fox = new EntityEntry(classOf[Bear], FOX).setRegistryName(FOX)
-    camper = new EntityEntry(classOf[Bear], CAMPER).setRegistryName(CAMPER)
+    bear = new EntityEntry(classOf[EntityBear], BEAR).setRegistryName(BEAR)
+    fox = new EntityEntry(classOf[EntityFox], FOX).setRegistryName(FOX)
+    camper = new EntityEntry(classOf[EntityCamper], CAMPER).setRegistryName(CAMPER)
 
     bear.setEgg(new EntityEggInfo(bear.getRegistryName, 0x583B2D, 0xE2B572))
-    fox.setEgg(new EntityEggInfo(fox.getRegistryName, 0x583B2D, 0xE2B572))
-    camper.setEgg(new EntityEggInfo(camper.getRegistryName, 0x583B2D, 0xE2B572))
+    fox.setEgg(new EntityEggInfo(fox.getRegistryName, 0xE0EEEE, 0x362819))
+    camper.setEgg(new EntityEggInfo(camper.getRegistryName, 0x747B51, 0x70471B))
 
     event.getRegistry.registerAll(
       bear,

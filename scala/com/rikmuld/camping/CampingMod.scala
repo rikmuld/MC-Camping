@@ -4,9 +4,9 @@ import com.rikmuld.camping.CampingMod._
 import com.rikmuld.camping.registers._
 import com.rikmuld.corerm.RMMod
 import net.minecraftforge.common.config.Configuration
+import net.minecraftforge.fml.common.Mod
 import net.minecraftforge.fml.common.Mod.EventHandler
 import net.minecraftforge.fml.common.event.{FMLInitializationEvent, FMLPostInitializationEvent, FMLPreInitializationEvent}
-import net.minecraftforge.fml.common.{Mod, SidedProxy}
 
 @Mod(modid = MOD_ID, name = MOD_NAME, version = MOD_VERSION, dependencies = MOD_DEPENDENCIES, modLanguage = MOD_LANUAGE)
 object CampingMod {
@@ -15,20 +15,14 @@ object CampingMod {
   final val MOD_VERSION = "2.4.0"
   final val MOD_LANUAGE = "scala"
   final val MOD_DEPENDENCIES = "required-after:forge@[v13.20.1.2386,);required-after:corerm@[1.3.0,)"
-  final val MOD_SERVER_PROXY = "com.rikmuld."+MOD_ID+".ProxyServer"
-  final val MOD_CLIENT_PROXY = "com.rikmuld."+MOD_ID+".ProxyClient"
   final val PACKET_CHANEL = MOD_ID
 
-  @SidedProxy(clientSide = MOD_CLIENT_PROXY, serverSide = MOD_SERVER_PROXY)
-  var proxy: ProxyServer = _
   var config: Config = _
 
   @EventHandler
   def preInit(event: FMLPreInitializationEvent): Unit = {
     config = new Config(new Configuration(event.getSuggestedConfigurationFile))
     config.sync()
-
-    proxy.registerEvents
 
     MiscRegistry.register(event)
   }
@@ -47,10 +41,10 @@ object CampingMod {
 /*
 
   TODO rewrite
-  rewrite tent stuff
   put features in feature package
   rewrite all other parts
   continue with stuff below
+  rename events server to events
 
   TODO improvements
   - make tent tabbed gui
@@ -68,7 +62,9 @@ object CampingMod {
   - update website, all recipes including spit stuff in cookbook
   - camping inv tab align to side
   -- release
+  - loclization add for some revise current (such as in tent gui)
   - extensive bug test and fix all github bugs left if any
+  - campfire cooking turn on off not burn immediatly
   -- release
 
   TODO new features

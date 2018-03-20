@@ -2,9 +2,14 @@ package com.rikmuld.camping.registers
 
 import com.rikmuld.camping.CampingMod.{MOD_ID, config}
 import com.rikmuld.camping.Library._
-import com.rikmuld.camping.entity._
-import com.rikmuld.camping.render.objs.{CampfireCookRender, TentRender, TrapRender}
-import com.rikmuld.camping.tileentity._
+import com.rikmuld.camping.features.blocks.campfire.cook.RendererCampfireCook
+import com.rikmuld.camping.features.blocks.campfire.wood
+import com.rikmuld.camping.features.blocks.tent.{RendererTent, TileEntityTent}
+import com.rikmuld.camping.features.blocks.trap.RendererTrap
+import com.rikmuld.camping.features.entities.bear.{EntityBear, RendererBear}
+import com.rikmuld.camping.features.entities.camper.{EntityCamper, RendererCamper}
+import com.rikmuld.camping.features.entities.fox.{EntityFox, RendererFox}
+import com.rikmuld.camping.features.inventory.TileEntityLight
 import com.rikmuld.camping.world.WorldGenerator
 import net.minecraft.client.renderer.entity.{Render, RenderManager}
 import net.minecraft.client.settings.KeyBinding
@@ -34,23 +39,23 @@ object MiscRegistry {
     registerSpawn(event)
 
   def register(event: FMLPreInitializationEvent): Unit =
-    if(event.getSide == Side.CLIENT)
+    if (event.getSide == Side.CLIENT)
       registerRenders(event)
 
   @SideOnly(Side.CLIENT)
   def registerRenders(event: FMLPreInitializationEvent): Unit = {
-    ClientRegistry.bindTileEntitySpecialRenderer(classOf[TileTrap], new TrapRender)
-    ClientRegistry.bindTileEntitySpecialRenderer(classOf[TileCampfireCook], new CampfireCookRender)
-    ClientRegistry.bindTileEntitySpecialRenderer(classOf[TileTent], new TentRender)
+    ClientRegistry.bindTileEntitySpecialRenderer(classOf[TileTrap], new RendererTrap)
+    ClientRegistry.bindTileEntitySpecialRenderer(classOf[wood.TileCampfireCook], new RendererCampfireCook)
+    ClientRegistry.bindTileEntitySpecialRenderer(classOf[TileEntityTent], new RendererTent)
 
-    RenderingRegistry.registerEntityRenderingHandler(classOf[Bear], new IRenderFactory[Bear] {
-      override def createRenderFor(manager: RenderManager): Render[_ >: Bear] = new BearRenderer(manager)
+    RenderingRegistry.registerEntityRenderingHandler(classOf[EntityBear], new IRenderFactory[EntityBear] {
+      override def createRenderFor(manager: RenderManager): Render[_ >: EntityBear] = new RendererBear(manager)
     })
-    RenderingRegistry.registerEntityRenderingHandler(classOf[Fox], new IRenderFactory[Fox] {
-      override def createRenderFor(manager: RenderManager): Render[_ >: Fox] = new FoxRenderer(manager)
+    RenderingRegistry.registerEntityRenderingHandler(classOf[EntityFox], new IRenderFactory[EntityFox] {
+      override def createRenderFor(manager: RenderManager): Render[_ >: EntityFox] = new RendererFox(manager)
     })
-    RenderingRegistry.registerEntityRenderingHandler(classOf[Camper], new IRenderFactory[Camper] {
-      override def createRenderFor(manager: RenderManager): Render[_ >: Camper] = new CamperRender(manager)
+    RenderingRegistry.registerEntityRenderingHandler(classOf[EntityCamper], new IRenderFactory[EntityCamper] {
+      override def createRenderFor(manager: RenderManager): Render[_ >: EntityCamper] = new RendererCamper(manager)
     })
   }
 
@@ -67,12 +72,12 @@ object MiscRegistry {
   def registerTileEntities(event: FMLInitializationEvent): Unit = {
     GameRegistry.registerTileEntity(classOf[TileLantern], MOD_ID + "_tileLantern")
     GameRegistry.registerTileEntity(classOf[TileLogseat], MOD_ID + "_tileLogseat")
-    GameRegistry.registerTileEntity(classOf[TileLight], MOD_ID + "_tileLight")
+    GameRegistry.registerTileEntity(classOf[TileEntityLight], MOD_ID + "_tileLight")
     GameRegistry.registerTileEntity(classOf[TileTrap], MOD_ID + "_tileTrap")
-    GameRegistry.registerTileEntity(classOf[TileCampfireCook], MOD_ID + "_tileCampfireCook")
+    GameRegistry.registerTileEntity(classOf[wood.TileCampfireCook], MOD_ID + "_tileCampfireCook")
     GameRegistry.registerTileEntity(classOf[TileCampfireWoodOn], MOD_ID + "_tileCampfireWoodOn")
-    GameRegistry.registerTileEntity(classOf[TileCampfireWoodOff], MOD_ID + "_tileCampfireWoodOff")
-    GameRegistry.registerTileEntity(classOf[TileTent], MOD_ID + "_tileTent")
+    GameRegistry.registerTileEntity(classOf[wood.TileCampfireWoodOff], MOD_ID + "_tileCampfireWoodOff")
+    GameRegistry.registerTileEntity(classOf[TileEntityTent], MOD_ID + "_tileTent")
   }
 
   def registerSpawn(event: FMLPostInitializationEvent): Unit = {
@@ -82,15 +87,15 @@ object MiscRegistry {
 
     if (config.useBears) {
       for (biome <- forests)
-        EntityRegistry.addSpawn(classOf[Bear], 3, 2, 3, EnumCreatureType.CREATURE, biome)
+        EntityRegistry.addSpawn(classOf[EntityBear], 3, 2, 3, EnumCreatureType.CREATURE, biome)
 
       for (biome <- rivers)
-        EntityRegistry.addSpawn(classOf[Bear], 4, 2, 4, EnumCreatureType.CREATURE, biome)
+        EntityRegistry.addSpawn(classOf[EntityBear], 4, 2, 4, EnumCreatureType.CREATURE, biome)
     }
 
     if (config.useFoxes)
       for (biome <- snow)
-        EntityRegistry.addSpawn(classOf[Fox], 5, 2, 4, EnumCreatureType.CREATURE, biome)
+        EntityRegistry.addSpawn(classOf[EntityFox], 5, 2, 4, EnumCreatureType.CREATURE, biome)
   }
 }
   
