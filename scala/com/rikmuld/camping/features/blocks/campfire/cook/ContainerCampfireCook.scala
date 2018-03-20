@@ -1,8 +1,8 @@
 package com.rikmuld.camping.features.blocks.campfire.cook
 
 import com.rikmuld.camping.Definitions.Kit
+import com.rikmuld.camping.common.inventory.{SlotItem, SlotItemMeta}
 import com.rikmuld.camping.features.blocks.campfire.cook.equipment.CookingEquipment
-import com.rikmuld.camping.inventory.{SlotItem, SlotItemMeta}
 import com.rikmuld.camping.registers.ObjRegistry
 import com.rikmuld.corerm.gui.container.ContainerSimple
 import com.rikmuld.corerm.utils.WorldUtils

@@ -5,8 +5,8 @@ import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformT
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer
 import org.lwjgl.opengl.{GL11, GL12}
 
-class RendererTrap extends TileEntitySpecialRenderer[TileTrap] {
-  override def render(tile: TileTrap, x: Double, y: Double, z: Double,
+class RendererTrap extends TileEntitySpecialRenderer[TileEntityTrap] {
+  override def render(tile: TileEntityTrap, x: Double, y: Double, z: Double,
                       partialTicks: Float, destroyStage: Int, alpha: Float): Unit = {
 
     val stack = tile.getStackInSlot(0)

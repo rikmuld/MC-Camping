@@ -3,7 +3,7 @@ package com.rikmuld.camping.registers
 import com.rikmuld.camping.CampingMod._
 import com.rikmuld.camping.Definitions._
 import com.rikmuld.camping.features.blocks.campfire.cook.equipment.{CookingEquipment, EquipmentGrill, EquipmentPan, EquipmentSpit}
-import com.rikmuld.camping.general.tab.TabCamping
+import com.rikmuld.camping.features.general.tab.TabCamping
 import com.rikmuld.corerm.objs.blocks.BlockSimple
 import com.rikmuld.corerm.objs.items.ItemSimple
 import net.minecraft.block.Block

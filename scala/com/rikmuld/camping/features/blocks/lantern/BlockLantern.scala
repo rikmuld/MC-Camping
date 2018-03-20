@@ -26,7 +26,7 @@ class BlockLantern(modId: String, info: ObjDefinition) extends BlockRM(modId, in
 
   override def getDrops(world: IBlockAccess, pos: BlockPos,
                         state: IBlockState, fortune: Int): java.util.List[ItemStack] =
-    world.getTileEntity(pos).asInstanceOf[TileLantern].getBurnTime match {
+    world.getTileEntity(pos).asInstanceOf[TileEntityLantern].getBurnTime match {
       case time if time < 20 =>
         List(new ItemStack(ObjRegistry.lantern, 1, Lantern.OFF))
       case time =>
@@ -78,8 +78,8 @@ class BlockLantern(modId: String, info: ObjDefinition) extends BlockRM(modId, in
     block.isInstanceOf[BlockFence] || block.isInstanceOf[BlockLeaves]
   }
 
-  def getTile(world: IBlockAccess, pos: BlockPos): TileLantern =
-    world.getTileEntity(pos).asInstanceOf[TileLantern]
+  def getTile(world: IBlockAccess, pos: BlockPos): TileEntityLantern =
+    world.getTileEntity(pos).asInstanceOf[TileEntityLantern]
 
   override def onBlockActivated(world: World, pos:BlockPos, state:IBlockState,
                                 player: EntityPlayer, hand:EnumHand, side: EnumFacing,

@@ -9,6 +9,7 @@ import com.rikmuld.camping.registers.ObjRegistry
 import com.rikmuld.camping.registers.Registry._
 import com.rikmuld.corerm.advancements.TriggerHelper
 import com.rikmuld.corerm.network.PacketSender
+import com.rikmuld.corerm.network.packets.PacketItemData
 import com.rikmuld.corerm.tileentity.TileEntityInventory
 import net.minecraft.block.state.IBlockState
 import net.minecraft.entity.SharedMonsterAttributes.MOVEMENT_SPEED
@@ -72,7 +73,7 @@ class TileEntityTrap extends TileEntityInventory with ITickable {
   override def onChange(slot: Int): Unit =
     if (!world.isRemote)
       PacketSender.sendToClient(
-        new ItemsData(0, pos.getX, pos.getY, pos.getZ, getStackInSlot(0))
+        new PacketItemData(0, pos.getX, pos.getY, pos.getZ, getStackInSlot(0))
       )
 
   override def getName: String =

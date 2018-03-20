@@ -37,7 +37,7 @@ class EntityMountable(worldIn: World) extends Entity(worldIn) {
         setDead()//TODO put better in logseat code
 
       if (this.getPassengers.size() > 0 && world.isRemote && Minecraft.getMinecraft.gameSettings.keyBindSneak.isPressed && Minecraft.getMinecraft.inGameHasFocus) {
-        PacketSender.sendToServer(new PlayerExitLog(pos.getX, pos.getY, pos.getZ))
+        PacketSender.sendToServer(new PacketExitLog(pos.getX, pos.getY, pos.getZ))
         this.getPassengers.get(0).dismountRidingEntity()
       }
     }

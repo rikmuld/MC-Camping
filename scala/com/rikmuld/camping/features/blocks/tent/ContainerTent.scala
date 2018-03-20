@@ -1,7 +1,7 @@
 package com.rikmuld.camping.features.blocks.tent
 
+import com.rikmuld.camping.common.inventory.{SlotItem, SlotState}
 import com.rikmuld.camping.features.blocks.tent.TileEntityTent._
-import com.rikmuld.camping.inventory.{SlotItem, SlotState}
 import com.rikmuld.corerm.gui.container.ContainerSimple
 import com.rikmuld.corerm.utils.MathUtils
 import net.minecraft.entity.player.EntityPlayer

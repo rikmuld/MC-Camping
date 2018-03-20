@@ -29,7 +29,7 @@ class BlockTrap(modId:String, info: ObjDefinition) extends BlockRM(modId, info) 
                                 player: EntityPlayer, hand:EnumHand, side: EnumFacing,
                                 xHit: Float, yHit: Float, zHit: Float): Boolean = {
 
-    val tile = world.getTileEntity(pos).asInstanceOf[TileTrap]
+    val tile = world.getTileEntity(pos).asInstanceOf[TileEntityTrap]
 
     tile.lastPlayer = Some(player)
 

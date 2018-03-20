@@ -1,14 +1,16 @@
 package com.rikmuld.camping.registers
 
+import com.rikmuld.camping.Config.ConfigGUI
 import com.rikmuld.camping.Library.GuiInfo._
-import com.rikmuld.camping.advancements._
 import com.rikmuld.camping.features.blocks.campfire.cook.{ContainerCampfireCook, GuiCampfireCook}
+import com.rikmuld.camping.features.blocks.logseat.PacketExitLog
 import com.rikmuld.camping.features.blocks.tent._
 import com.rikmuld.camping.features.blocks.trap.{ContainerTrap, GuiTrap}
-import com.rikmuld.camping.features.inventory.{ContainerCamping, GuiCamping}
+import com.rikmuld.camping.features.general.advancements._
+import com.rikmuld.camping.features.general.keys.PacketKeyData
+import com.rikmuld.camping.features.inventory_camping.{ContainerCamping, GuiCamping, PacketMapData, PacketNBTPlayer}
 import com.rikmuld.camping.features.items.bags._
 import com.rikmuld.camping.features.items.kit.{ContainerKit, GuiKit}
-import com.rikmuld.camping.general.keys.PacketKeyData
 import com.rikmuld.corerm.advancements.TriggerRegistry
 import com.rikmuld.corerm.gui.{ContainerWrapper, ScreenWrapper}
 import com.rikmuld.corerm.network.PacketWrapper
@@ -48,12 +50,11 @@ object CoreRegistry extends RMRegistry {
 
   override def registerPackets(registry: ForgeRegistry[PacketWrapper]): Unit =
     registry.registerAll(
-      PacketWrapper.create(classOf[NBTPlayer], "nbtPlayer"),
+      PacketWrapper.create(classOf[PacketNBTPlayer], "nbtPlayer"),
       PacketWrapper.create(classOf[PacketKeyData], "keyData"),
-      PacketWrapper.create(classOf[ItemsData], "itemData"),
-      PacketWrapper.create(classOf[PlayerExitLog], "playerExitLog"),
-      PacketWrapper.create(classOf[PlayerSleepInTent], "playerSleepInTent"),
-      PacketWrapper.create(classOf[MapData], "mapData")
+      PacketWrapper.create(classOf[PacketExitLog], "playerExitLog"),
+      PacketWrapper.create(classOf[PacketSleepInTent], "playerSleepInTent"),
+      PacketWrapper.create(classOf[PacketMapData], "mapData")
     )
 
   override def registerTriggers(registry: TriggerRegistry): Unit =

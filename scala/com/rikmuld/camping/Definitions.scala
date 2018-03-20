@@ -9,7 +9,7 @@ import com.rikmuld.camping.features.blocks.logseat.{BlockLogSeat, TileEntityLogS
 import com.rikmuld.camping.features.blocks.sleeping_bag.BlockSleepingBag
 import com.rikmuld.camping.features.blocks.tent.{BlockTent, TileEntityTent}
 import com.rikmuld.camping.features.blocks.trap.{BlockTrap, TileEntityTrap}
-import com.rikmuld.camping.features.inventory.TileEntityLight
+import com.rikmuld.camping.features.inventory_camping.TileEntityLight
 import com.rikmuld.camping.features.items.kit.ItemKit
 import com.rikmuld.camping.features.items.marshmallows.ItemMarshmallow
 import com.rikmuld.camping.registers.ObjRegistry._

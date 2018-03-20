@@ -12,8 +12,8 @@ class GuiCampfireCook(player: EntityPlayer, tile: IInventory)
   ySize =
     188
 
-  val fire: TileCampfireCook =
-    tile.asInstanceOf[TileCampfireCook]
+  val fire: TileEntityCampfireCook =
+    tile.asInstanceOf[TileEntityCampfireCook]
 
   val getTexture: ResourceLocation =
     new ResourceLocation(TextureInfo.GUI_CAMPFIRE_COOK)

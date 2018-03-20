@@ -2,15 +2,17 @@ package com.rikmuld.camping.registers
 
 import com.rikmuld.camping.CampingMod.{MOD_ID, config}
 import com.rikmuld.camping.Library._
-import com.rikmuld.camping.features.blocks.campfire.cook.RendererCampfireCook
-import com.rikmuld.camping.features.blocks.campfire.wood
+import com.rikmuld.camping.features.blocks.campfire.cook.{RendererCampfireCook, TileEntityCampfireCook}
+import com.rikmuld.camping.features.blocks.campfire.wood.{TileEntityCampfireWoodOff, TileEntityCampfireWoodOn}
+import com.rikmuld.camping.features.blocks.lantern.TileEntityLantern
+import com.rikmuld.camping.features.blocks.logseat.TileEntityLogSeat
 import com.rikmuld.camping.features.blocks.tent.{RendererTent, TileEntityTent}
-import com.rikmuld.camping.features.blocks.trap.RendererTrap
+import com.rikmuld.camping.features.blocks.trap.{RendererTrap, TileEntityTrap}
 import com.rikmuld.camping.features.entities.bear.{EntityBear, RendererBear}
 import com.rikmuld.camping.features.entities.camper.{EntityCamper, RendererCamper}
 import com.rikmuld.camping.features.entities.fox.{EntityFox, RendererFox}
-import com.rikmuld.camping.features.inventory.TileEntityLight
-import com.rikmuld.camping.world.WorldGenerator
+import com.rikmuld.camping.features.general.world.WorldGenerator
+import com.rikmuld.camping.features.inventory_camping.TileEntityLight
 import net.minecraft.client.renderer.entity.{Render, RenderManager}
 import net.minecraft.client.settings.KeyBinding
 import net.minecraft.entity.EnumCreatureType
@@ -44,8 +46,8 @@ object MiscRegistry {
 
   @SideOnly(Side.CLIENT)
   def registerRenders(event: FMLPreInitializationEvent): Unit = {
-    ClientRegistry.bindTileEntitySpecialRenderer(classOf[TileTrap], new RendererTrap)
-    ClientRegistry.bindTileEntitySpecialRenderer(classOf[wood.TileCampfireCook], new RendererCampfireCook)
+    ClientRegistry.bindTileEntitySpecialRenderer(classOf[TileEntityTrap], new RendererTrap)
+    ClientRegistry.bindTileEntitySpecialRenderer(classOf[TileEntityCampfireCook], new RendererCampfireCook)
     ClientRegistry.bindTileEntitySpecialRenderer(classOf[TileEntityTent], new RendererTent)
 
     RenderingRegistry.registerEntityRenderingHandler(classOf[EntityBear], new IRenderFactory[EntityBear] {
@@ -70,13 +72,13 @@ object MiscRegistry {
     GameRegistry.registerWorldGenerator(new WorldGenerator(), 9999)
 
   def registerTileEntities(event: FMLInitializationEvent): Unit = {
-    GameRegistry.registerTileEntity(classOf[TileLantern], MOD_ID + "_tileLantern")
-    GameRegistry.registerTileEntity(classOf[TileLogseat], MOD_ID + "_tileLogseat")
+    GameRegistry.registerTileEntity(classOf[TileEntityLantern], MOD_ID + "_tileLantern")
+    GameRegistry.registerTileEntity(classOf[TileEntityLogSeat], MOD_ID + "_tileLogseat")
     GameRegistry.registerTileEntity(classOf[TileEntityLight], MOD_ID + "_tileLight")
-    GameRegistry.registerTileEntity(classOf[TileTrap], MOD_ID + "_tileTrap")
-    GameRegistry.registerTileEntity(classOf[wood.TileCampfireCook], MOD_ID + "_tileCampfireCook")
-    GameRegistry.registerTileEntity(classOf[TileCampfireWoodOn], MOD_ID + "_tileCampfireWoodOn")
-    GameRegistry.registerTileEntity(classOf[wood.TileCampfireWoodOff], MOD_ID + "_tileCampfireWoodOff")
+    GameRegistry.registerTileEntity(classOf[TileEntityTrap], MOD_ID + "_tileTrap")
+    GameRegistry.registerTileEntity(classOf[TileEntityCampfireCook], MOD_ID + "_tileCampfireCook")
+    GameRegistry.registerTileEntity(classOf[TileEntityCampfireWoodOn], MOD_ID + "_tileCampfireWoodOn")
+    GameRegistry.registerTileEntity(classOf[TileEntityCampfireWoodOff], MOD_ID + "_tileCampfireWoodOff")
     GameRegistry.registerTileEntity(classOf[TileEntityTent], MOD_ID + "_tileTent")
   }
 

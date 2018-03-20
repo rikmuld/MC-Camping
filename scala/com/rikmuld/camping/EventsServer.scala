@@ -1,7 +1,6 @@
 package com.rikmuld.camping
 
 import com.rikmuld.camping.CampingMod._
-import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.util.EnumFacing
 import net.minecraftforge.fml.client.event.ConfigChangedEvent
 import net.minecraftforge.fml.common.Mod
@@ -24,6 +23,6 @@ object EventsServer {
       config.sync()
 
   //TODO test if this works as intended (before placing we are the in current players tick, so the can place should be in player tick so when this called should always be the facing of the player placing the block)
-  def getLastFacing(player: EntityPlayer): EnumFacing =
+  def getFacing: EnumFacing =
     facing
 }

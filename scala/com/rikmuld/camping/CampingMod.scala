@@ -8,16 +8,37 @@ import net.minecraftforge.fml.common.Mod
 import net.minecraftforge.fml.common.Mod.EventHandler
 import net.minecraftforge.fml.common.event.{FMLInitializationEvent, FMLPostInitializationEvent, FMLPreInitializationEvent}
 
-@Mod(modid = MOD_ID, name = MOD_NAME, version = MOD_VERSION, dependencies = MOD_DEPENDENCIES, modLanguage = MOD_LANUAGE)
+@Mod(modid = MOD_ID, name = MOD_NAME, version = MOD_VERSION, dependencies = MOD_DEPENDENCIES, modLanguage = MOD_LANGUAGE)
 object CampingMod {
-  final val MOD_ID = "camping"
-  final val MOD_NAME = "The Camping Mod 2"
-  final val MOD_VERSION = "2.4.0"
-  final val MOD_LANUAGE = "scala"
-  final val MOD_DEPENDENCIES = "required-after:forge@[v13.20.1.2386,);required-after:corerm@[1.3.0,)"
-  final val PACKET_CHANEL = MOD_ID
+  final val MOD_ID =
+    "camping"
 
-  var config: Config = _
+  final val MOD_NAME =
+    "The Camping Mod 2"
+
+  final val MOD_VERSION =
+    "2.4.1"
+
+  final val MOD_LANGUAGE =
+    "scala"
+
+  final val MOD_DEPENDENCIES =
+    "required-after:forge@[v13.20.1.2386,);required-after:corerm@[1.3.1,)"
+
+  final val PACKET_CHANEL =
+    MOD_ID
+
+  final val OBJ =
+    ObjRegistry
+
+  final val MISC =
+    MiscRegistry
+
+  final val MC =
+    Registry
+
+  var config: Config =
+    _
 
   @EventHandler
   def preInit(event: FMLPreInitializationEvent): Unit = {
@@ -41,10 +62,10 @@ object CampingMod {
 /*
 
   TODO rewrite
-  put features in feature package
-  rewrite all other parts
-  continue with stuff below
+  rewrite old code
   rename events server to events
+  fix warnings
+  access everything through CampingMod (i.e. OBJ, MISC, MC)
 
   TODO improvements
   - make tent tabbed gui

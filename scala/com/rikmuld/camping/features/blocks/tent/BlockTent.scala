@@ -2,8 +2,8 @@ package com.rikmuld.camping.features.blocks.tent
 
 import java.util
 
-import com.rikmuld.camping.CampingMod
 import com.rikmuld.camping.Definitions.Tent._
+import com.rikmuld.camping.EventsServer
 import com.rikmuld.camping.Library.AdvancementInfo
 import com.rikmuld.camping.registers.ObjRegistry
 import com.rikmuld.corerm.advancements.TriggerHelper
@@ -35,7 +35,7 @@ class BlockTent(modId:String, info:ObjDefinition) extends BlockBoundsStructure(m
     if(state.exists(_.getBlock == ObjRegistry.tent))
       BlockTent.tentStructure(getFacing(state.get).getHorizontalIndex)
     else
-      BlockTent.tentStructure(CampingMod.proxy.eventsS.facing.getHorizontalIndex)
+      BlockTent.tentStructure(EventsServer.getFacing.getHorizontalIndex)
 
   override def breakBlock(world: World, pos: BlockPos, state: IBlockState): Unit = {
     val tile = world.getTileEntity(pos).asInstanceOf[TileEntityTent]

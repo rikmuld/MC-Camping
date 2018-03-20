@@ -1,6 +1,6 @@
 package com.rikmuld.camping.features.items.bags
 
-import com.rikmuld.camping.inventory.SlotBackpack
+import com.rikmuld.camping.common.inventory.SlotBackpack
 import com.rikmuld.corerm.gui.container.ContainerItem
 import com.rikmuld.corerm.inventory.InventoryItem
 import net.minecraft.entity.player.EntityPlayer

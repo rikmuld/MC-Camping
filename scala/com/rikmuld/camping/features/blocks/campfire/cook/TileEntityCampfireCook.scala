@@ -7,6 +7,7 @@ import com.rikmuld.camping.features.blocks.campfire.Roaster
 import com.rikmuld.camping.features.blocks.campfire.cook.equipment.CookingEquipment
 import com.rikmuld.camping.registers.ObjRegistry
 import com.rikmuld.corerm.network.PacketSender
+import com.rikmuld.corerm.network.packets.PacketItemData
 import com.rikmuld.corerm.objs.blocks.BlockSimple
 import com.rikmuld.corerm.tileentity.TileEntityInventory
 import net.minecraft.block.state.IBlockState
@@ -150,7 +151,7 @@ class TileEntityCampfireCook extends TileEntityInventory with Roaster with ITick
     cookProgress(i) = 0
 
     setInventorySlotContents(i + 2, result)
-    PacketSender.sendToClient(new ItemsData(i + 2, pos.getX, pos.getY, pos.getZ, result.copy()))
+    PacketSender.sendToClient(new PacketItemData(i + 2, pos.getX, pos.getY, pos.getZ, result.copy()))
   }
 
   override def onChange(slot: Int): Unit =

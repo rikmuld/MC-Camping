@@ -93,7 +93,7 @@ class BlockLogSeat(modId:String, info: ObjDefinition) extends BlockRM(modId, inf
                                 xHit: Float, yHit: Float, zHit: Float): Boolean = {
 
     if (!player.isRiding)//TODO improve mountable/client server stuff
-      world.getTileEntity(pos).asInstanceOf[TileLogseat].mountable.tryAddPlayer(player)
+      world.getTileEntity(pos).asInstanceOf[TileEntityLogSeat].mountable.tryAddPlayer(player)
 
     true
   }

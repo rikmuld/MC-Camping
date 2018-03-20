@@ -2,8 +2,9 @@ package com.rikmuld.camping.features.blocks.sleeping_bag
 
 import java.util.Random
 
-import com.rikmuld.camping.CampingMod
 import com.rikmuld.camping.Definitions.SleepingBag._
+import com.rikmuld.camping.EventsServer
+import com.rikmuld.camping.utils.UtilsPlayer
 import com.rikmuld.corerm.objs.ObjDefinition
 import com.rikmuld.corerm.objs.blocks._
 import com.rikmuld.corerm.utils.MathUtils
@@ -37,7 +38,7 @@ class BlockSleepingBag(modId:String, info: ObjDefinition) extends BlockRM(modId,
   }
 
   override def canPlaceBlockAt(world: World, pos: BlockPos): Boolean =
-    super.canPlaceBlockAt(world, pos) && super.canPlaceBlockAt(world, pos.offset(CampingMod.proxy.eventsS.facing)) //TODO test thoroughly, the facing in multiplayer
+    super.canPlaceBlockAt(world, pos) && super.canPlaceBlockAt(world, pos.offset(EventsServer.getFacing)) //TODO test thoroughly, the facing in multiplayer
 
   override def breakBlock(world: World, pos: BlockPos, state: IBlockState): Unit = {
     val isHead = getBool(state, STATE_IS_HEAD)
@@ -59,7 +60,7 @@ class BlockSleepingBag(modId:String, info: ObjDefinition) extends BlockRM(modId,
                                 player: EntityPlayer, hand:EnumHand, side: EnumFacing,
                                 xHit: Float, yHit: Float, zHit: Float): Boolean =
     if(!world.isRemote)
-      Utils.trySleep(isOccupied(world, pos), setBedOccupied(world, pos, player, _))(world,
+      UtilsPlayer.trySleep(isOccupied(world, pos), setBedOccupied(world, pos, player, _))(world,
         if(getBool(state, STATE_IS_HEAD)) pos
         else pos.offset(getFacing(state)), player)
     else

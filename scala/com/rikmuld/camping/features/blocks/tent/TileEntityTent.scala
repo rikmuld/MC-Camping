@@ -4,6 +4,7 @@ import com.rikmuld.camping.Definitions
 import com.rikmuld.camping.features.blocks.lantern.TileEntityLantern
 import com.rikmuld.camping.features.blocks.tent.TileEntityTent._
 import com.rikmuld.camping.registers.ObjRegistry
+import com.rikmuld.camping.utils.{UtilsPlayer, UtilsSeq}
 import com.rikmuld.corerm.network.PacketSender
 import com.rikmuld.corerm.objs.blocks.BlockSimple
 import com.rikmuld.corerm.tileentity.{TileEntityInventory, TileEntityTicker}
@@ -64,8 +65,8 @@ class TileEntityTent extends TileEntityInventory with TileEntityTicker {
 
   def canAdd(i: Int): Boolean = {
     val configs = CONFIGS
-      .map(SeqUtils.merge(contents)(_ - _))
-      .filter(SeqUtils.allOne(_ >= 0)(_ > 0))
+      .map(UtilsSeq.merge(contents)(_ - _))
+      .filter(UtilsSeq.allOne(_ >= 0)(_ > 0))
 
     if (configs.nonEmpty)
       configs.transpose.get(i).max > 0
@@ -242,9 +243,9 @@ class TileEntityTent extends TileEntityInventory with TileEntityTicker {
 
   def sleep(player: EntityPlayer): Unit =
     if (!world.isRemote)
-      Utils.trySleep(isOccupied, setOccupied)(world, pos, player)
+      UtilsPlayer.trySleep(isOccupied, setOccupied)(world, pos, player)
     else
-      PacketSender.sendToServer(new PlayerSleepInTent(pos.getX, pos.getY, pos.getZ))
+      PacketSender.sendToServer(new PacketSleepInTent(pos.getX, pos.getY, pos.getZ))
 
 
   override def onChange(slot: Int): Unit = slot match {
