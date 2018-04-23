@@ -1,6 +1,6 @@
 package com.rikmuld.camping.features.blocks.logseat
 
-import com.rikmuld.camping.registers.ObjRegistry
+import com.rikmuld.camping.CampingMod
 import com.rikmuld.corerm.network.PacketSender
 import net.minecraft.client.Minecraft
 import net.minecraft.entity.Entity
@@ -33,7 +33,7 @@ class EntityMountable(worldIn: World) extends Entity(worldIn) {
     super.onUpdate()
 
     if(pos!=null){
-      if (world.getBlockState(pos).getBlock != ObjRegistry.logSeat)
+      if (world.getBlockState(pos).getBlock != CampingMod.OBJ.logSeat)
         setDead()//TODO put better in logseat code
 
       if (this.getPassengers.size() > 0 && world.isRemote && Minecraft.getMinecraft.gameSettings.keyBindSneak.isPressed && Minecraft.getMinecraft.inGameHasFocus) {

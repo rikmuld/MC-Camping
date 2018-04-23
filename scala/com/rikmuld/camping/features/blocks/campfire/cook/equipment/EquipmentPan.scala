@@ -4,7 +4,7 @@ import com.rikmuld.camping.CampingMod._
 import com.rikmuld.camping.Definitions.Kit
 
 class EquipmentPan extends CookingEquipment(Kit.PAN,
-  config.cookTimePan, 8, ModelCookingEquipment.PAN) {
+  CONFIG.cookTimePan, 8, ModelCookingEquipment.PAN) {
 
   override def getSlotPosition(slot: Int): (Int, Int) = slot match {
     case 0 => (25, 78)

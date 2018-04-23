@@ -3,8 +3,6 @@ package com.rikmuld.camping.features.entities.bear
 import com.rikmuld.camping.CampingMod
 import com.rikmuld.camping.Definitions.PartsAnimal
 import com.rikmuld.camping.features.entities.camper.EntityCamper
-import com.rikmuld.camping.registers.ObjRegistry
-import com.rikmuld.camping.registers.Registry._
 import net.minecraft.enchantment.EnchantmentHelper
 import net.minecraft.entity._
 import net.minecraft.entity.ai._
@@ -44,14 +42,14 @@ class EntityBear(worldIn: World) extends EntityAnimal(worldIn) {
     var dropChance = rand.nextInt(3) + rand.nextInt(1 + par2)
     var drops: Int = 0
     while (drops < (dropChance * 2)) {
-      entityDropItem(new ItemStack(ObjRegistry.animalParts, 1, PartsAnimal.FUR_BROWN), 0)
+      entityDropItem(new ItemStack(CampingMod.OBJ.animalParts, 1, PartsAnimal.FUR_BROWN), 0)
       drops += 1
     }
     dropChance = rand.nextInt(5) + 1 + rand.nextInt(1 + par2)
     drops = 0
     while (drops < dropChance) {
-      if (isBurning) entityDropItem(new ItemStack(ObjRegistry.venisonCooked), 0)
-      else entityDropItem(new ItemStack(ObjRegistry.venisonRaw), 0)
+      if (isBurning) entityDropItem(new ItemStack(CampingMod.OBJ.venisonCooked), 0)
+      else entityDropItem(new ItemStack(CampingMod.OBJ.venisonRaw), 0)
       drops += 1
     }
   }
@@ -61,7 +59,7 @@ class EntityBear(worldIn: World) extends EntityAnimal(worldIn) {
   override def isBreedingItem(stack: ItemStack): Boolean = stack.getItem() == Items.FISH
   override def onUpdate() {
     super.onUpdate()
-    if (!world.isRemote && ((world.getWorldInfo.getDifficulty.getDifficultyId() == 0) || !CampingMod.config.useBears)) setDead()
+    if (!world.isRemote && ((world.getWorldInfo.getDifficulty.getDifficultyId() == 0) || !CampingMod.CONFIG.useBears)) setDead()
   }
   override def attackEntityAsMob(entity: Entity): Boolean = {
     var f = this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue.toFloat
@@ -99,7 +97,7 @@ class EntityBear(worldIn: World) extends EntityAnimal(worldIn) {
     flag
   }
 
-  override def getAmbientSound:SoundEvent = bearAmb
-  override def getHurtSound(source: DamageSource):SoundEvent = bearAmb
-  override def getDeathSound:SoundEvent = bearDeath
+  override def getAmbientSound:SoundEvent = CampingMod.MC.bearAmb
+  override def getHurtSound(source: DamageSource):SoundEvent = CampingMod.MC.bearAmb
+  override def getDeathSound:SoundEvent = CampingMod.MC.bearDeath
 }

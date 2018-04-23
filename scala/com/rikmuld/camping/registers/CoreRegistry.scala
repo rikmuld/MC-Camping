@@ -1,12 +1,12 @@
 package com.rikmuld.camping.registers
 
-import com.rikmuld.camping.Config.ConfigGUI
 import com.rikmuld.camping.Library.GuiInfo._
 import com.rikmuld.camping.features.blocks.campfire.cook.{ContainerCampfireCook, GuiCampfireCook}
 import com.rikmuld.camping.features.blocks.logseat.PacketExitLog
 import com.rikmuld.camping.features.blocks.tent._
 import com.rikmuld.camping.features.blocks.trap.{ContainerTrap, GuiTrap}
 import com.rikmuld.camping.features.general.advancements._
+import com.rikmuld.camping.features.general.config.GuiConfig
 import com.rikmuld.camping.features.general.keys.PacketKeyData
 import com.rikmuld.camping.features.inventory_camping.{ContainerCamping, GuiCamping, PacketMapData, PacketNBTPlayer}
 import com.rikmuld.camping.features.items.bags._
@@ -32,7 +32,7 @@ object CoreRegistry extends RMRegistry {
       ScreenWrapper.create(side, classOf[GuiTentSleeping], TENT_SLEEP),
       ScreenWrapper.create(side, classOf[GuiCamping], CAMPING),
       ScreenWrapper.create(side, classOf[GuiTrap], TRAP),
-      ScreenWrapper.create(side, classOf[ConfigGUI], CONFIG)
+      ScreenWrapper.create(side, classOf[GuiConfig], CONFIG)
     )
 
   override def registerContainers(registry: ForgeRegistry[ContainerWrapper]): Unit =

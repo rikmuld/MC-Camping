@@ -21,20 +21,6 @@ object Library {
     final val MOUNTABLE = "mountable"
   }
 
-  object AchievementInfo {
-    final val KNIFE_GET = "knifeGet"
-    final val FULL_CAMPER = "fullCamper"
-    final val EXPLORER = "explorer"
-    final val WILD_MAN = "wildMan"
-    final val TENT_SLEEP = "backTBasic"
-    final val LUXURY_TENT = "luxury"
-    final val MARSHMELLOW = "roasting"
-    final val MAD_CAMPER = "madCamper"
-    final val CAMPFIRE_MASTERY = "campfire"
-    final val HUNTER = "hunter"
-    final val PROTECTOR = "protector"
-  }
-
   object NBTInfo {
     final val INV_CAMPING = "campInv"
     final val ACHIEVEMENTS = "camping:achievements"
@@ -90,7 +76,7 @@ object Library {
 
     final val GUI_CAMPINV_BACK = GUI_LOCATION + "camping_backpack.png"
     final val GUI_CAMPINV_TOOL = GUI_LOCATION + "camping_tool.png"
-    final val GUI_BAG = GUI_LOCATION + "backpack.png"
+    final val GUI_SIMPLE = GUI_LOCATION + "simple.png"
     final val GUI_KIT = GUI_LOCATION + "kit.png"
     final val GUI_CAMPINV = GUI_LOCATION + "campinv.png"
     final val GUI_CAMPINV_CRAFT = GUI_LOCATION + "campinv_craft.png"

@@ -1,9 +1,8 @@
 package com.rikmuld.camping.features.blocks.tent
 
-import com.rikmuld.camping.Definitions
 import com.rikmuld.camping.Library._
 import com.rikmuld.camping.features.blocks.tent.TileEntityTent._
-import com.rikmuld.camping.registers.ObjRegistry
+import com.rikmuld.camping.{CampingMod, Definitions}
 import com.rikmuld.corerm.gui.GuiHelper
 import com.rikmuld.corerm.gui.gui.GuiContainerSimple
 import com.rikmuld.corerm.utils.MathUtils
@@ -27,7 +26,7 @@ class GuiTent(player: EntityPlayer, tile: IInventory) extends GuiScreen {
   var tent = tile.asInstanceOf[TileEntityTent]
   var canClick: Array[Boolean] = Array(false, false, false)
   val bedName = "Bed"
-  val lanternName = new ItemStack(ObjRegistry.lantern, 1, Definitions.Lantern.ON).getDisplayName
+  val lanternName = new ItemStack(CampingMod.OBJ.lantern, 1, Definitions.Lantern.ON).getDisplayName
   val chestName = new ItemStack(Blocks.CHEST).getDisplayName
 
   val plural = I18n.translateToLocal("camping.tent.plural")

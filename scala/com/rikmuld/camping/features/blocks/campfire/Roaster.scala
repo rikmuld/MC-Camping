@@ -1,20 +1,20 @@
 package com.rikmuld.camping.features.blocks.campfire
 
+import com.rikmuld.camping.CampingMod
 import com.rikmuld.camping.Definitions.Parts
 import com.rikmuld.camping.Library.AdvancementInfo
 import com.rikmuld.camping.features.blocks.logseat.EntityMountable
-import com.rikmuld.camping.registers.ObjRegistry
 import com.rikmuld.corerm.advancements.TriggerHelper
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemStack
 
 trait Roaster {
   def canRoast(item: ItemStack): Boolean =
-    item.getItem == ObjRegistry.parts &&
+    item.getItem == CampingMod.OBJ.parts &&
       item.getItemDamage == Parts.MARSHMALLOW_STICK
 
   protected def roastResult(item:ItemStack): ItemStack =
-    new ItemStack(ObjRegistry.marshmallow)
+    new ItemStack(CampingMod.OBJ.marshmallow)
 
   def roastTime(item: ItemStack): Int =
     150

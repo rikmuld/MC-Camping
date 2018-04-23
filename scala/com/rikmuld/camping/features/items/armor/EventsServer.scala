@@ -2,7 +2,7 @@ package com.rikmuld.camping.features.items.armor
 
 import java.util.{Random, UUID}
 
-import com.rikmuld.camping.registers.ObjRegistry
+import com.rikmuld.camping.CampingMod
 import net.minecraft.entity.SharedMonsterAttributes.MOVEMENT_SPEED
 import net.minecraft.entity.ai.attributes.AttributeModifier
 import net.minecraft.item.ItemArmor
@@ -22,7 +22,7 @@ object EventsServer {
   def onPlayerTick(event: PlayerTickEvent): Unit = {
     val increase = event.player.getArmorInventoryList.count(_.getItem match {
       case item: ItemArmor =>
-        item.getArmorMaterial == ObjRegistry.fur
+        item.getArmorMaterial == CampingMod.OBJ.fur
       case _ =>
         false
     })

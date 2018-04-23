@@ -1,20 +1,25 @@
 package com.rikmuld.camping.features.items.bags
 
+import com.rikmuld.camping.CampingMod
 import com.rikmuld.camping.Definitions.Backpack._
 import com.rikmuld.camping.Library._
-import com.rikmuld.camping.registers.ObjRegistry
 import com.rikmuld.corerm.gui.gui.GuiContainerSimple
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.inventory.Container
 import net.minecraft.item.ItemStack
 import net.minecraft.util.ResourceLocation
 
+object GuiBag {
+  final val TEXTURE =
+    new ResourceLocation(TextureInfo.GUI_SIMPLE)
+}
+
 abstract class GuiBag(container: Container, metaData: Int, x: Int, y: Int, width: Int, height: Int) extends GuiContainerSimple(container) {
   val getTexture: ResourceLocation =
-    new ResourceLocation(TextureInfo.GUI_BAG)
+    GuiBag.TEXTURE
 
   override def getName: String =
-    new ItemStack(ObjRegistry.backpack, 1, metaData).getDisplayName
+    new ItemStack(CampingMod.OBJ.backpack, 1, metaData).getDisplayName
 
   override def hasName: Boolean =
     true

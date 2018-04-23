@@ -1,11 +1,10 @@
 package com.rikmuld.camping.features.inventory_camping
 
-import com.rikmuld.camping.Config.ConfigGUI
-import com.rikmuld.camping.Definitions
 import com.rikmuld.camping.Library._
+import com.rikmuld.camping.features.general.config.GuiConfig
 import com.rikmuld.camping.features.inventory_camping.GuiCamping._
 import com.rikmuld.camping.features.inventory_camping.InventoryCamping._
-import com.rikmuld.camping.registers.ObjRegistry
+import com.rikmuld.camping.{CampingMod, Definitions}
 import com.rikmuld.corerm.gui.gui.{GuiTabbed, Tab}
 import net.minecraft.client.gui.inventory.GuiInventory
 import net.minecraft.client.resources.I18n
@@ -33,8 +32,8 @@ class GuiCamping(var player: EntityPlayer) extends GuiTabbed(player, new Contain
 
   override def getTabs: Seq[Tab] = Seq(
     new Tab("Armor", 20, this, TAB_ARMOR, new ItemStack(Items.SKULL, 1, 3)),
-    new Tab("Backpack", 20, this, TAB_BACKPACK, new ItemStack(ObjRegistry.backpack)),
-    new Tab("Crafting", 20, this, TAB_CRAFTING, new ItemStack(ObjRegistry.knife)),
+    new Tab("Backpack", 20, this, TAB_BACKPACK, new ItemStack(CampingMod.OBJ.backpack)),
+    new Tab("Crafting", 20, this, TAB_CRAFTING, new ItemStack(CampingMod.OBJ.knife)),
     new Tab("Configuration", 20, this, TAB_CONFIG, 220, 0)
   )
 
@@ -49,7 +48,7 @@ class GuiCamping(var player: EntityPlayer) extends GuiTabbed(player, new Contain
 
   override def setTab(index: Int): Unit =
     if(index == TAB_CONFIG){
-      val gui =  new ConfigGUI(this)
+      val gui =  new GuiConfig(this)
 
       gui.setWorldAndResolution(mc, width, height)
       gui.initGui()
@@ -62,13 +61,13 @@ class GuiCamping(var player: EntityPlayer) extends GuiTabbed(player, new Contain
     setEnabled(TAB_CRAFTING, hasKnife)
 
     if (isPointInRegion(8, 35, 16, 16, mouseX, mouseY))
-      itemRender.renderItemIntoGUI(new ItemStack(ObjRegistry.backpack), guiLeft + 8, guiTop + 35)
+      itemRender.renderItemIntoGUI(new ItemStack(CampingMod.OBJ.backpack), guiLeft + 8, guiTop + 35)
 
     if (isPointInRegion(8, 53, 16, 16, mouseX, mouseY))
-      itemRender.renderItemIntoGUI(new ItemStack(ObjRegistry.knife), guiLeft + 8, guiTop + 53)
+      itemRender.renderItemIntoGUI(new ItemStack(CampingMod.OBJ.knife), guiLeft + 8, guiTop + 53)
 
     if (isPointInRegion(196, 35, 16, 16, mouseX, mouseY))
-      itemRender.renderItemIntoGUI(new ItemStack(ObjRegistry.lantern), guiLeft + 196, guiTop + 35)
+      itemRender.renderItemIntoGUI(new ItemStack(CampingMod.OBJ.lantern), guiLeft + 196, guiTop + 35)
 
     if (isPointInRegion(196, 53, 16, 16, mouseX, mouseY))
       itemRender.renderItemIntoGUI(new ItemStack(Items.FILLED_MAP), guiLeft + 196, guiTop + 53)

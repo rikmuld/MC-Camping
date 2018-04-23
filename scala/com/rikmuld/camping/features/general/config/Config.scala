@@ -1,33 +1,10 @@
-package com.rikmuld.camping
+package com.rikmuld.camping.features.general.config
 
-import com.rikmuld.camping.CampingMod._
 import com.rikmuld.camping.Library.ConfigInfo._
-import net.minecraft.client.Minecraft
-import net.minecraft.client.gui.GuiScreen
 import net.minecraftforge.common.config.{ConfigElement, Configuration}
-import net.minecraftforge.fml.client.IModGuiFactory
-import net.minecraftforge.fml.client.IModGuiFactory.RuntimeOptionCategoryElement
-import net.minecraftforge.fml.client.config.{GuiConfig, IConfigElement}
+import net.minecraftforge.fml.client.config.IConfigElement
 
 import scala.collection.JavaConversions._
-
-object Config {
-  class GuiFactory extends IModGuiFactory {
-    override def initialize(minecraftInstance: Minecraft): Unit =
-      Unit
-
-    override def runtimeGuiCategories: java.util.Set[RuntimeOptionCategoryElement] =
-      null
-
-    override def createConfigGui(parentScreen: GuiScreen): GuiScreen =
-      new ConfigGUI(parentScreen)
-
-    override def hasConfigGui: Boolean =
-      true
-  }
-
-  class ConfigGUI(parent: GuiScreen) extends GuiConfig(parent, config.elements, MOD_ID, false, false, "Camping Config")
-}
 
 class Config(val file: Configuration) {
   var useBears = true

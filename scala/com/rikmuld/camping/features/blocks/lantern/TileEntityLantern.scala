@@ -1,8 +1,8 @@
 package com.rikmuld.camping.features.blocks.lantern
 
+import com.rikmuld.camping.CampingMod
 import com.rikmuld.camping.Definitions.Lantern
 import com.rikmuld.camping.Definitions.Lantern._
-import com.rikmuld.camping.registers.ObjRegistry
 import com.rikmuld.corerm.tileentity.TileEntitySimple
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemStack
@@ -20,7 +20,7 @@ object TileEntityLantern {
 
   def stackFromTime(time: Int, count: Int): ItemStack = {
     val stack = new ItemStack(
-      ObjRegistry.lanternItem,
+      CampingMod.OBJ.lanternItem,
       count,
       if (time > 0) Lantern.ON else Lantern.OFF
     )

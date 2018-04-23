@@ -1,7 +1,7 @@
 package com.rikmuld.camping.features.items.parts
 
+import com.rikmuld.camping.CampingMod
 import com.rikmuld.camping.Definitions.Parts
-import com.rikmuld.camping.registers.ObjRegistry
 import net.minecraft.init.Items
 import net.minecraft.item.ItemStack
 import net.minecraftforge.fml.common.Mod
@@ -12,7 +12,7 @@ import net.minecraftforge.fml.common.gameevent.PlayerEvent.ItemCraftedEvent
 object EventsServer {
 
   final val MARSHMALLOWS =
-    new ItemStack(ObjRegistry.parts, 1, Parts.MARSHMALLOW)
+    new ItemStack(CampingMod.OBJ.parts, 1, Parts.MARSHMALLOW)
 
   @SubscribeEvent
   def onItemCrafted(event: ItemCraftedEvent): Unit =
@@ -24,7 +24,7 @@ object EventsServer {
             stack.setCount(stack.getCount + 1)
 
           case stack if stack.getItem == Items.POTIONITEM =>
-            event.craftMatrix.setInventorySlotContents(slot, new ItemStack(Items.GLASS_BOTTLE))
+            event.player.addItemStackToInventory(new ItemStack(Items.GLASS_BOTTLE, 1))
 
           case _ =>
         }

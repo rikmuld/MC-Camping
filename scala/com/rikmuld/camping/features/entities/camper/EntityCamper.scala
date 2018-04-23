@@ -2,10 +2,10 @@ package com.rikmuld.camping.features.entities.camper
 
 import java.util.{ArrayList, Random}
 
+import com.rikmuld.camping.CampingMod
 import com.rikmuld.camping.Definitions.Parts
 import com.rikmuld.camping.Library._
 import com.rikmuld.camping.features.entities.bear.EntityBear
-import com.rikmuld.camping.registers.ObjRegistry
 import com.rikmuld.corerm.advancements.TriggerHelper
 import net.minecraft.enchantment.EnchantmentHelper
 import net.minecraft.entity._
@@ -31,14 +31,14 @@ object EntityCamper {
 
   val recipeListRaw = new HashMap[Item, Tuple[Integer, Integer]]()
 
-  recipeListRaw(ObjRegistry.venisonCooked) = new Tuple(Integer.valueOf(-4), Integer.valueOf(1))
-  recipeListRaw(ObjRegistry.knife) = new Tuple(Integer.valueOf(1), Integer.valueOf(2))
-  recipeListRaw(ObjRegistry.backpack) = new Tuple(Integer.valueOf(1), Integer.valueOf(2))
-  recipeListRaw(ObjRegistry.furLeg) = new Tuple(Integer.valueOf(4), Integer.valueOf(6))
-  recipeListRaw(ObjRegistry.furHead) = new Tuple(Integer.valueOf(3), Integer.valueOf(5))
-  recipeListRaw(ObjRegistry.furChest) = new Tuple(Integer.valueOf(5), Integer.valueOf(8))
-  recipeListRaw(ObjRegistry.furBoot) = new Tuple(Integer.valueOf(2), Integer.valueOf(4))
-  recipeListRaw(ObjRegistry.parts) = new Tuple(Integer.valueOf(1), Integer.valueOf(2))
+  recipeListRaw(CampingMod.OBJ.venisonCooked) = new Tuple(Integer.valueOf(-4), Integer.valueOf(1))
+  recipeListRaw(CampingMod.OBJ.knife) = new Tuple(Integer.valueOf(1), Integer.valueOf(2))
+  recipeListRaw(CampingMod.OBJ.backpack) = new Tuple(Integer.valueOf(1), Integer.valueOf(2))
+  recipeListRaw(CampingMod.OBJ.furLeg) = new Tuple(Integer.valueOf(4), Integer.valueOf(6))
+  recipeListRaw(CampingMod.OBJ.furHead) = new Tuple(Integer.valueOf(3), Integer.valueOf(5))
+  recipeListRaw(CampingMod.OBJ.furChest) = new Tuple(Integer.valueOf(5), Integer.valueOf(8))
+  recipeListRaw(CampingMod.OBJ.furBoot) = new Tuple(Integer.valueOf(2), Integer.valueOf(4))
+  recipeListRaw(CampingMod.OBJ.parts) = new Tuple(Integer.valueOf(1), Integer.valueOf(2))
 }
 
 class EntityCamper(worldIn: World) extends EntityCreature(worldIn) with IMerchant with INpc {
@@ -148,18 +148,18 @@ class EntityCamper(worldIn: World) extends EntityCreature(worldIn) with IMerchan
   def setRecipeList: MerchantRecipeList = {
     recipeList = new MerchantRecipeList()
     if (getGender == 0) {
-      addBlacksmithItem(recipeList, ObjRegistry.furBoot, 0, rand, 0.4F)
-      addBlacksmithItem(recipeList, ObjRegistry.furChest, 0, rand, 0.3F)
-      addBlacksmithItem(recipeList, ObjRegistry.furHead, 0, rand, 0.4F)
-      addBlacksmithItem(recipeList, ObjRegistry.furLeg, 0, rand, 0.4F)
-      addBlacksmithItem(recipeList, ObjRegistry.knife, 0, rand, 0.6F)
-      addBlacksmithItem(recipeList, ObjRegistry.backpack, 0, rand, 0.5F)
+      addBlacksmithItem(recipeList, CampingMod.OBJ.furBoot, 0, rand, 0.4F)
+      addBlacksmithItem(recipeList, CampingMod.OBJ.furChest, 0, rand, 0.3F)
+      addBlacksmithItem(recipeList, CampingMod.OBJ.furHead, 0, rand, 0.4F)
+      addBlacksmithItem(recipeList, CampingMod.OBJ.furLeg, 0, rand, 0.4F)
+      addBlacksmithItem(recipeList, CampingMod.OBJ.knife, 0, rand, 0.6F)
+      addBlacksmithItem(recipeList, CampingMod.OBJ.backpack, 0, rand, 0.5F)
     } else {
-      addBlacksmithItem(recipeList, ObjRegistry.venisonCooked, 0, rand, 0.6F)
-      addBlacksmithItem(recipeList, ObjRegistry.parts, Parts.PAN, rand, 0.6F)
+      addBlacksmithItem(recipeList, CampingMod.OBJ.venisonCooked, 0, rand, 0.6F)
+      addBlacksmithItem(recipeList, CampingMod.OBJ.parts, Parts.PAN, rand, 0.6F)
     }
     if (recipeList.isEmpty()) {
-      addBlacksmithItem(recipeList, ObjRegistry.knife, 0, rand, 0.6F)
+      addBlacksmithItem(recipeList, CampingMod.OBJ.knife, 0, rand, 0.6F)
     }
     recipeList
   }

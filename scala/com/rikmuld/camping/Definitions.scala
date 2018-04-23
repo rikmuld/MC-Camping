@@ -1,5 +1,6 @@
 package com.rikmuld.camping
 
+import com.rikmuld.camping.CampingMod.OBJ.{fur, tab}
 import com.rikmuld.camping.Library._
 import com.rikmuld.camping.features.blocks.campfire.cook.{BlockCampfireCook, TileEntityCampfireCook}
 import com.rikmuld.camping.features.blocks.campfire.wood.{BlockCampfireWoodOff, BlockCampfireWoodOn, TileEntityCampfireWoodOff, TileEntityCampfireWoodOn}
@@ -12,7 +13,6 @@ import com.rikmuld.camping.features.blocks.trap.{BlockTrap, TileEntityTrap}
 import com.rikmuld.camping.features.inventory_camping.TileEntityLight
 import com.rikmuld.camping.features.items.kit.ItemKit
 import com.rikmuld.camping.features.items.marshmallows.ItemMarshmallow
-import com.rikmuld.camping.registers.ObjRegistry._
 import com.rikmuld.corerm.objs.Properties.{Ticker, _}
 import com.rikmuld.corerm.objs.StateProperty.{DirectionType, PropBool, PropDirection, PropInt}
 import com.rikmuld.corerm.objs.blocks.bounds.BlockBounds

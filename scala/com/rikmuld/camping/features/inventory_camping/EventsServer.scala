@@ -1,7 +1,7 @@
 package com.rikmuld.camping.features.inventory_camping
 
+import com.rikmuld.camping.CampingMod
 import com.rikmuld.camping.Library.NBTInfo
-import com.rikmuld.camping.registers.ObjRegistry
 import com.rikmuld.corerm.network.PacketSender
 import net.minecraft.entity.player.{EntityPlayer, EntityPlayerMP}
 import net.minecraft.item.ItemStack
@@ -70,10 +70,10 @@ object EventsServer {
         val pos = player.getPosition
 
         Vector(pos, pos.down, pos.up, pos.north, pos.south, pos.west, pos.east).find(pos => {
-          if(world.getBlockState(pos).getBlock == ObjRegistry.light)
+          if(world.getBlockState(pos).getBlock == CampingMod.OBJ.light)
             true
           else if(world.isAirBlock(pos))
-            world.setBlockState(pos, ObjRegistry.light.getDefaultState)
+            world.setBlockState(pos, CampingMod.OBJ.light.getDefaultState)
           else
             false
         })

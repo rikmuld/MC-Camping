@@ -1,10 +1,9 @@
 package com.rikmuld.camping.features.blocks.tent
 
-import com.rikmuld.camping.Definitions
 import com.rikmuld.camping.features.blocks.lantern.TileEntityLantern
 import com.rikmuld.camping.features.blocks.tent.TileEntityTent._
-import com.rikmuld.camping.registers.ObjRegistry
 import com.rikmuld.camping.utils.{UtilsPlayer, UtilsSeq}
+import com.rikmuld.camping.{CampingMod, Definitions}
 import com.rikmuld.corerm.network.PacketSender
 import com.rikmuld.corerm.objs.blocks.BlockSimple
 import com.rikmuld.corerm.tileentity.{TileEntityInventory, TileEntityTicker}
@@ -29,9 +28,9 @@ object TileEntityTent {
   )
 
   final val ITEMS = Vector(
-    ObjRegistry.lantern,
+    CampingMod.OBJ.lantern,
     Blocks.CHEST,
-    ObjRegistry.sleepingBag
+    CampingMod.OBJ.sleepingBag
   ) map Item.getItemFromBlock
 
   final val LANTERN = 0
@@ -180,14 +179,14 @@ class TileEntityTent extends TileEntityInventory with TileEntityTicker {
   }
 
   def getBlock: BlockSimple =
-    ObjRegistry.tent
+    CampingMod.OBJ.tent
 
   override def getName: String =
     "tent"
 
   @SideOnly(Side.CLIENT)
   override def getRenderBoundingBox: AxisAlignedBB =
-    ObjRegistry.tent.asInstanceOf[BlockTent].getStructure(Some(world.getBlockState(pos))).getBounds.bounds.offset(pos)
+    CampingMod.OBJ.tent.asInstanceOf[BlockTent].getStructure(Some(world.getBlockState(pos))).getBounds.bounds.offset(pos)
 
   override def getSizeInventory: Int =
     151

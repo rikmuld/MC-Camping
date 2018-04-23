@@ -1,5 +1,6 @@
 package com.rikmuld.camping.registers
 
+import com.rikmuld.camping.CampingMod
 import com.rikmuld.camping.Library.EntityInfo._
 import com.rikmuld.camping.Library.PotionInfo
 import com.rikmuld.camping.Library.SoundInfo._
@@ -85,7 +86,7 @@ object Registry {
     val stack = new ItemStack(Items.SPAWN_EGG, 1)
 
     ItemMonsterPlacer.applyEntityIdToItemStack(stack, entry.getRegistryName)
-    ObjRegistry.tab.addToTab(stack)
+    CampingMod.OBJ.tab.addToTab(stack)
 
     entry.setEgg(new EntityEggInfo(entry.getRegistryName, color1, color2))
     entry

@@ -1,7 +1,7 @@
 package com.rikmuld.camping.features.items.kit
 
+import com.rikmuld.camping.CampingMod
 import com.rikmuld.camping.features.blocks.campfire.cook.equipment.CookingEquipment
-import com.rikmuld.camping.registers.ObjRegistry._
 import com.rikmuld.corerm.Library.TextInfo
 import com.rikmuld.corerm.objs.ObjDefinition
 import com.rikmuld.corerm.objs.items.ItemRM
@@ -31,7 +31,7 @@ class ItemKit(modId:String, info:ObjDefinition) extends ItemRM(modId, info) {
 
   override def getSubItems(tab: CreativeTabs, list: NonNullList[ItemStack]): Unit =
     if(isInCreativeTab(tab)) {
-      val equipments = Seq(spit, grill, pan)
+      val equipments = Seq(CampingMod.OBJ.spit, CampingMod.OBJ.grill, CampingMod.OBJ.pan)
 
       for(i <- metadata.get.indices.dropRight(1)) {
         val stack = new ItemStack(this, 1, i)

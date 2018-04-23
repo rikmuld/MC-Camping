@@ -1,6 +1,6 @@
 package com.rikmuld.camping.features.inventory_camping
 
-import com.rikmuld.camping.CampingMod.config
+import com.rikmuld.camping.CampingMod.CONFIG
 import com.rikmuld.camping.Library.GuiInfo
 import com.rikmuld.camping.features.inventory_camping.GuiMap.MapData
 import com.rikmuld.corerm.gui.GuiHelper
@@ -50,7 +50,7 @@ object EventsClient {
 
   @SubscribeEvent
   def guiOpenClient(event: GuiOpenEvent) {
-    if(event.getGui.isInstanceOf[GuiInventory] && config.alwaysCampingInv){
+    if(event.getGui.isInstanceOf[GuiInventory] && CONFIG.alwaysCampingInv){
       if(Minecraft.getMinecraft.player.capabilities.isCreativeMode) return;
       event.setCanceled(true)
       GuiHelper.forceOpenGui(GuiInfo.CAMPING, Minecraft.getMinecraft.player)

@@ -2,10 +2,10 @@ package com.rikmuld.camping.features.blocks.campfire.wood
 
 import java.util.Random
 
+import com.rikmuld.camping.CampingMod
 import com.rikmuld.camping.Definitions.CampfireWood._
 import com.rikmuld.camping.Library.AdvancementInfo
 import com.rikmuld.camping.features.blocks.campfire.BlockCampfire
-import com.rikmuld.camping.registers.ObjRegistry
 import com.rikmuld.corerm.advancements.TriggerHelper
 import com.rikmuld.corerm.objs.ObjDefinition
 import net.minecraft.block.state.IBlockState
@@ -22,7 +22,7 @@ class BlockCampfireWoodOn(modId:String, info: ObjDefinition) extends BlockCampfi
   override def getPickBlock(state: IBlockState, target: RayTraceResult,
                             world: World, pos: BlockPos, player: EntityPlayer): ItemStack =
 
-    new ItemStack(ObjRegistry.campfireWood)
+    new ItemStack(CampingMod.OBJ.campfireWood)
 
   @SideOnly(Side.CLIENT)
   override def randomDisplayTick(state: IBlockState, world: World, pos: BlockPos, random: Random): Unit =

@@ -2,9 +2,9 @@ package com.rikmuld.camping.features.blocks.campfire.wood
 
 import java.util.Random
 
+import com.rikmuld.camping.CampingMod
 import com.rikmuld.camping.Definitions.CampfireWood._
 import com.rikmuld.camping.features.blocks.campfire.BlockCampfire
-import com.rikmuld.camping.registers.ObjRegistry
 import com.rikmuld.corerm.objs.ObjDefinition
 import net.minecraft.block.state.IBlockState
 import net.minecraft.entity.player.EntityPlayer
@@ -35,7 +35,7 @@ class BlockCampfireWoodOff(modId:String, info: ObjDefinition) extends BlockCampf
         setState(world, pos, STATE_LIGHT, light + 2)
       else
         world.setBlockState(pos,
-          ObjRegistry.campfireWoodOn.setState(ObjRegistry.campfireWoodOn.getDefaultState, STATE_LIGHT, 15)
+          CampingMod.OBJ.campfireWoodOn.setState(CampingMod.OBJ.campfireWoodOn.getDefaultState, STATE_LIGHT, 15)
         )
 
       true

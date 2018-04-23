@@ -3,8 +3,6 @@ package com.rikmuld.camping.features.entities.fox
 import com.google.common.base.Predicate
 import com.rikmuld.camping.CampingMod
 import com.rikmuld.camping.Definitions.PartsAnimal
-import com.rikmuld.camping.registers.ObjRegistry
-import com.rikmuld.camping.registers.Registry._
 import net.minecraft.entity.ai._
 import net.minecraft.entity.passive.{EntityAnimal, EntityChicken}
 import net.minecraft.entity.player.EntityPlayer
@@ -51,27 +49,27 @@ class EntityFox(worldIn: World) extends EntityAnimal(worldIn) {
   }
   override def onUpdate() {
     super.onUpdate()
-    if (!world.isRemote && !CampingMod.config.useFoxes) setDead()
+    if (!world.isRemote && !CampingMod.CONFIG.useFoxes) setDead()
   }
   override def attackEntityAsMob(entity: Entity): Boolean = entity.attackEntityFrom(DamageSource.causeMobDamage(this), 3.0F)
   override protected def dropFewItems(playerAttack: Boolean, loot: Int) {
     var dropChance = rand.nextInt(3) + rand.nextInt(1 + loot)
     var drops: Int = 0
     while (drops < (dropChance)) {
-      entityDropItem(new ItemStack(ObjRegistry.animalParts, 1, PartsAnimal.FUR_WHITE), 0)
+      entityDropItem(new ItemStack(CampingMod.OBJ.animalParts, 1, PartsAnimal.FUR_WHITE), 0)
       drops += 1
     }
     dropChance = rand.nextInt(3) + rand.nextInt(1 + loot)
     drops = 0
     while (drops < dropChance) {
-      if (isBurning) entityDropItem(new ItemStack(ObjRegistry.venisonCooked), 0)
-      else entityDropItem(new ItemStack(ObjRegistry.venisonRaw), 0)
+      if (isBurning) entityDropItem(new ItemStack(CampingMod.OBJ.venisonCooked), 0)
+      else entityDropItem(new ItemStack(CampingMod.OBJ.venisonRaw), 0)
       drops += 1
     }
   }
   override def createChild(entity: EntityAgeable): EntityAgeable = new EntityFox(this.world)
   override def isBreedingItem(stack: ItemStack): Boolean = stack.getItem() == Items.CHICKEN
-  override def getAmbientSound:SoundEvent = foxAmb
-  override def getHurtSound(source: DamageSource):SoundEvent = foxDeath
-  override def getDeathSound:SoundEvent = foxDeath
+  override def getAmbientSound:SoundEvent = CampingMod.MC.foxAmb
+  override def getHurtSound(source: DamageSource):SoundEvent = CampingMod.MC.foxDeath
+  override def getDeathSound:SoundEvent = CampingMod.MC.foxDeath
 }

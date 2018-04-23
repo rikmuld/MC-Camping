@@ -1,9 +1,9 @@
 package com.rikmuld.camping
 
 import com.rikmuld.camping.CampingMod._
+import com.rikmuld.camping.features.general.config.Config
 import com.rikmuld.camping.registers._
 import com.rikmuld.corerm.RMMod
-import net.minecraftforge.common.config.Configuration
 import net.minecraftforge.fml.common.Mod
 import net.minecraftforge.fml.common.Mod.EventHandler
 import net.minecraftforge.fml.common.event.{FMLInitializationEvent, FMLPostInitializationEvent, FMLPreInitializationEvent}
@@ -37,16 +37,12 @@ object CampingMod {
   final val MC =
     Registry
 
-  var config: Config =
-    _
+  final lazy val CONFIG: Config =
+    MISC.config
 
   @EventHandler
-  def preInit(event: FMLPreInitializationEvent): Unit = {
-    config = new Config(new Configuration(event.getSuggestedConfigurationFile))
-    config.sync()
-
+  def preInit(event: FMLPreInitializationEvent): Unit =
     MiscRegistry.register(event)
-  }
 
   @EventHandler
   def Init(event: FMLInitializationEvent): Unit = {
@@ -60,15 +56,9 @@ object CampingMod {
 }
 
 /*
-
-  TODO rewrite
-  rewrite old code
-  rename events server to events
-  fix warnings
-  access everything through CampingMod (i.e. OBJ, MISC, MC)
-
   TODO improvements
   - make tent tabbed gui
+  - TODO fixbug no tent item drop when destroy main block direcly
   -- release
   - campfire no gui for food, but put it on direcly, and take it off direcly
   - cmapfire no gui for coal, just put it in

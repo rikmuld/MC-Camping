@@ -1,11 +1,11 @@
 package com.rikmuld.camping.features.blocks.campfire.cook
 
+import com.rikmuld.camping.CampingMod
 import com.rikmuld.camping.CampingMod._
 import com.rikmuld.camping.Definitions.CampfireCook._
 import com.rikmuld.camping.Definitions.Parts
 import com.rikmuld.camping.features.blocks.campfire.Roaster
 import com.rikmuld.camping.features.blocks.campfire.cook.equipment.CookingEquipment
-import com.rikmuld.camping.registers.ObjRegistry
 import com.rikmuld.corerm.network.PacketSender
 import com.rikmuld.corerm.network.packets.PacketItemData
 import com.rikmuld.corerm.objs.blocks.BlockSimple
@@ -24,16 +24,16 @@ import scala.collection.mutable.ArrayBuffer
 
 object TileEntityCampfireCook {
   def isAsh(stack: ItemStack): Boolean =
-    stack.getItem == ObjRegistry.parts && stack.getItemDamage == Parts.ASH
+    stack.getItem == CampingMod.OBJ.parts && stack.getItemDamage == Parts.ASH
 }
 
 class TileEntityCampfireCook extends TileEntityInventory with Roaster with ITickable {
 
   final val MAX_FUEL =
-    config.campfireMaxFuel
+    CONFIG.campfireMaxFuel
 
   final val COAL_FUEL =
-    config.campfireCoalFuel
+    CONFIG.campfireCoalFuel
 
   private var fuel: Int =
     0
@@ -145,7 +145,7 @@ class TileEntityCampfireCook extends TileEntityInventory with Roaster with ITick
 
   private def doCookFood(i: Int, food: ItemStack, equipment: CookingEquipment): Unit = {
     val result = equipment.getResult(food).getOrElse(
-      new ItemStack(ObjRegistry.parts, 1, Parts.ASH)
+      new ItemStack(CampingMod.OBJ.parts, 1, Parts.ASH)
     )
 
     cookProgress(i) = 0
@@ -213,7 +213,7 @@ class TileEntityCampfireCook extends TileEntityInventory with Roaster with ITick
     fuel > 0
 
   def getBlock: BlockSimple =
-    ObjRegistry.campfireCook
+    CampingMod.OBJ.campfireCook
 
   override def update(): Unit =
     if (!world.isRemote) {

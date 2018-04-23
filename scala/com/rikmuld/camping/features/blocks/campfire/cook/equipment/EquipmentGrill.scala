@@ -9,7 +9,7 @@ import net.minecraft.item.ItemStack
 import org.lwjgl.opengl.GL11
 
 class EquipmentGrill extends CookingEquipment(Kit.GRILL,
-  config.cookTimeGrill, 4, ModelCookingEquipment.GRILL) {
+  CONFIG.cookTimeGrill, 4, ModelCookingEquipment.GRILL) {
 
   private val spitParts = Seq(
     "pillar1", "pillar2", "pillar3", "pillar4", "line1", "line2"

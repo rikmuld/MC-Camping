@@ -2,11 +2,10 @@ package com.rikmuld.camping.features.blocks.trap
 
 import java.util.{Random, UUID}
 
+import com.rikmuld.camping.CampingMod
 import com.rikmuld.camping.CampingMod._
 import com.rikmuld.camping.Definitions.Trap._
 import com.rikmuld.camping.Library.AdvancementInfo._
-import com.rikmuld.camping.registers.ObjRegistry
-import com.rikmuld.camping.registers.Registry._
 import com.rikmuld.corerm.advancements.TriggerHelper
 import com.rikmuld.corerm.network.PacketSender
 import com.rikmuld.corerm.network.packets.PacketItemData
@@ -38,7 +37,7 @@ object TileEntityTrap {
     Items.CHICKEN,
     Items.BEEF,
     Items.PORKCHOP,
-    ObjRegistry.venisonRaw,
+    CampingMod.OBJ.venisonRaw,
     Items.MUTTON,
     Items.RABBIT,
     Items.FISH
@@ -81,7 +80,7 @@ class TileEntityTrap extends TileEntityInventory with ITickable {
 
   def setTrapped(entity: Option[EntityLivingBase]): Unit = {
     trappedEntity =
-      if (entity.exists(!_.isInstanceOf[EntityPlayer] || config.trapPlayer))
+      if (entity.exists(!_.isInstanceOf[EntityPlayer] || CONFIG.trapPlayer))
         entity
       else
         None
@@ -162,7 +161,7 @@ class TileEntityTrap extends TileEntityInventory with ITickable {
 
   private def applyEffects(entity: EntityLivingBase): Unit = {
     if(TileEntityTrap.random.nextInt(50) == 0) {
-      val effect = new PotionEffect(bleeding, 200, 1)
+      val effect = new PotionEffect(CampingMod.MC.bleeding, 200, 1)
 
       effect.getCurativeItems.clear()
       entity.addPotionEffect(effect)

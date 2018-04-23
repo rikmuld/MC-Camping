@@ -1,6 +1,6 @@
 package com.rikmuld.camping.registers
 
-import com.rikmuld.camping.CampingMod.{MOD_ID, config}
+import com.rikmuld.camping.CampingMod.MOD_ID
 import com.rikmuld.camping.Library._
 import com.rikmuld.camping.features.blocks.campfire.cook.{RendererCampfireCook, TileEntityCampfireCook}
 import com.rikmuld.camping.features.blocks.campfire.wood.{TileEntityCampfireWoodOff, TileEntityCampfireWoodOn}
@@ -11,6 +11,7 @@ import com.rikmuld.camping.features.blocks.trap.{RendererTrap, TileEntityTrap}
 import com.rikmuld.camping.features.entities.bear.{EntityBear, RendererBear}
 import com.rikmuld.camping.features.entities.camper.{EntityCamper, RendererCamper}
 import com.rikmuld.camping.features.entities.fox.{EntityFox, RendererFox}
+import com.rikmuld.camping.features.general.config.Config
 import com.rikmuld.camping.features.general.world.WorldGenerator
 import com.rikmuld.camping.features.inventory_camping.TileEntityLight
 import net.minecraft.client.renderer.entity.{Render, RenderManager}
@@ -18,6 +19,7 @@ import net.minecraft.client.settings.KeyBinding
 import net.minecraft.entity.EnumCreatureType
 import net.minecraftforge.common.BiomeDictionary
 import net.minecraftforge.common.BiomeDictionary.Type
+import net.minecraftforge.common.config.Configuration
 import net.minecraftforge.fml.client.registry.{ClientRegistry, IRenderFactory, RenderingRegistry}
 import net.minecraftforge.fml.common.event.{FMLInitializationEvent, FMLPostInitializationEvent, FMLPreInitializationEvent}
 import net.minecraftforge.fml.common.registry.{EntityRegistry, GameRegistry}
@@ -27,6 +29,9 @@ import scala.collection.JavaConversions._
 
 object MiscRegistry {
   var keyOpenCamping: KeyBinding =
+    _
+
+  var config: Config =
     _
 
   def register(event: FMLInitializationEvent): Unit = {
@@ -40,9 +45,13 @@ object MiscRegistry {
   def register(event: FMLPostInitializationEvent): Unit =
     registerSpawn(event)
 
-  def register(event: FMLPreInitializationEvent): Unit =
+  def register(event: FMLPreInitializationEvent): Unit = {
+    config = new Config(new Configuration(event.getSuggestedConfigurationFile))
+    config.sync()
+
     if (event.getSide == Side.CLIENT)
       registerRenders(event)
+  }
 
   @SideOnly(Side.CLIENT)
   def registerRenders(event: FMLPreInitializationEvent): Unit = {

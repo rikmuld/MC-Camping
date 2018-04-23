@@ -10,7 +10,7 @@ import org.lwjgl.opengl.GL11
 
 
 class EquipmentSpit extends CookingEquipment(Kit.SPIT,
-  config.cookTimeSpit, 2, ModelCookingEquipment.SPIT) {
+  CONFIG.cookTimeSpit, 2, ModelCookingEquipment.SPIT) {
 
   override def renderGUIBackground(gui: GuiContainer): Unit =
     gui.drawTexturedModalRect(gui.getGuiLeft + 48, gui.getGuiTop + 26, 176, 44, 80, 68)

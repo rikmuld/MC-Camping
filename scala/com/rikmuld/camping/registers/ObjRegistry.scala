@@ -1,5 +1,6 @@
 package com.rikmuld.camping.registers
 
+import com.rikmuld.camping.CampingMod
 import com.rikmuld.camping.CampingMod._
 import com.rikmuld.camping.Definitions._
 import com.rikmuld.camping.features.blocks.campfire.cook.equipment.{CookingEquipment, EquipmentGrill, EquipmentPan, EquipmentSpit}
@@ -205,19 +206,19 @@ object ObjRegistry {
 
     CookingEquipment.registerKitRecipe(spit,
       new ItemStack(STICK, 2),
-      new ItemStack(ObjRegistry.parts, 1, Parts.STICK_IRON)
+      new ItemStack(CampingMod.OBJ.parts, 1, Parts.STICK_IRON)
     )
 
     CookingEquipment.registerKitRecipe(grill,
       new ItemStack(STICK, 4),
-      new ItemStack(ObjRegistry.parts, 2, Parts.STICK_IRON),
+      new ItemStack(CampingMod.OBJ.parts, 2, Parts.STICK_IRON),
       new ItemStack(IRON_BARS)
     )
 
     CookingEquipment.registerKitRecipe(pan,
       new ItemStack(STICK, 3),
-      new ItemStack(ObjRegistry.parts, 1, Parts.STICK_IRON),
-      new ItemStack(ObjRegistry.parts, 1, Parts.PAN)
+      new ItemStack(CampingMod.OBJ.parts, 1, Parts.STICK_IRON),
+      new ItemStack(CampingMod.OBJ.parts, 1, Parts.PAN)
     )
 
     grill.registerRecipe(FISH, 0, new ItemStack(COOKED_FISH, 1, 0))

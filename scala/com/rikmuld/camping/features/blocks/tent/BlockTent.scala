@@ -1,11 +1,10 @@
 package com.rikmuld.camping.features.blocks.tent
 
-import java.util
+import java.util.Random
 
 import com.rikmuld.camping.Definitions.Tent._
-import com.rikmuld.camping.EventsServer
 import com.rikmuld.camping.Library.AdvancementInfo
-import com.rikmuld.camping.registers.ObjRegistry
+import com.rikmuld.camping.{CampingMod, EventsServer}
 import com.rikmuld.corerm.advancements.TriggerHelper
 import com.rikmuld.corerm.objs.ObjDefinition
 import com.rikmuld.corerm.objs.blocks.bounds.{BlockBounds, BlockBoundsStructure, BoundsStructure}
@@ -19,8 +18,6 @@ import net.minecraft.util.math.{AxisAlignedBB, BlockPos}
 import net.minecraft.util.{EnumFacing, EnumHand}
 import net.minecraft.world.{IBlockAccess, World}
 
-import scala.collection.JavaConversions._
-
 object BlockTent {
   val tentStructure: Seq[BoundsStructure] = BoundsStructure.createWithRotation (
     new AxisAlignedBB(-0.5F, 0, 0, 1.5F, 1.5F, 3)
@@ -29,18 +26,20 @@ object BlockTent {
 
 class BlockTent(modId:String, info:ObjDefinition) extends BlockBoundsStructure(modId, info) {
   def getBoundsBlock: BlockBounds =
-    ObjRegistry.tentBounds.asInstanceOf[BlockBounds]
+    CampingMod.OBJ.tentBounds.asInstanceOf[BlockBounds]
 
   def getStructure(state: Option[IBlockState]): BoundsStructure =
-    if(state.exists(_.getBlock == ObjRegistry.tent))
+    if(state.exists(_.getBlock == CampingMod.OBJ.tent))
       BlockTent.tentStructure(getFacing(state.get).getHorizontalIndex)
     else
       BlockTent.tentStructure(EventsServer.getFacing.getHorizontalIndex)
 
   override def breakBlock(world: World, pos: BlockPos, state: IBlockState): Unit = {
     val tile = world.getTileEntity(pos).asInstanceOf[TileEntityTent]
+    val drop =  new ItemStack(CampingMod.OBJ.tent, 1, tile.getColor)
 
     WorldUtils.dropItemsInWorld(world, tile.toStacks, pos)
+    WorldUtils.dropItemInWorld(world, drop, pos)
 
     super.breakBlock(world, pos, state)
   }
@@ -73,8 +72,8 @@ class BlockTent(modId:String, info:ObjDefinition) extends BlockBoundsStructure(m
   override def isBedFoot(world:IBlockAccess, pos:BlockPos): Boolean =
     false
 
-  override def getDrops(world: IBlockAccess, pos: BlockPos, state: IBlockState, fortune: Int): util.List[ItemStack] =
-    List(new ItemStack(ObjRegistry.tent, 1, world.getTileEntity(pos).asInstanceOf[TileEntityTent].getColor))
+  override def quantityDropped(random: Random): Int =
+    0
 
   override def onBlockActivated(world: World, pos:BlockPos, state:IBlockState,
                                 player: EntityPlayer, hand: EnumHand, side: EnumFacing,

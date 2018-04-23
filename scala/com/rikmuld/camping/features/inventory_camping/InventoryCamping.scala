@@ -1,9 +1,9 @@
 package com.rikmuld.camping.features.inventory_camping
 
+import com.rikmuld.camping.CampingMod
 import com.rikmuld.camping.Definitions.Lantern
 import com.rikmuld.camping.Library.{AdvancementInfo, NBTInfo}
 import com.rikmuld.camping.features.inventory_camping.InventoryCamping._
-import com.rikmuld.camping.registers.ObjRegistry
 import com.rikmuld.corerm.advancements.TriggerHelper
 import com.rikmuld.corerm.inventory.{InventoryItem, InventoryPlayer}
 import com.rikmuld.corerm.utils.NBTUtils
@@ -56,7 +56,7 @@ object InventoryCamping {
         inventory.setInventorySlotContents(SLOT_LANTERN, lantern)
       } else
         inventory.setInventorySlotContents(SLOT_LANTERN,
-          new ItemStack(ObjRegistry.lantern, 1, Lantern.OFF)
+          new ItemStack(CampingMod.OBJ.lantern, 1, Lantern.OFF)
         )
 
       inventory.saveTag(player)
@@ -64,7 +64,7 @@ object InventoryCamping {
   }
 
   def getSlotsFor(stack: ItemStack): Seq[Int] =
-    if (stack.isEmpty || stack.getItem != ObjRegistry.backpack) Vector()
+    if (stack.isEmpty || stack.getItem != CampingMod.OBJ.backpack) Vector()
     else if (stack.getItemDamage == 0) POUCH
     else if (stack.getItemDamage == 1) BACKPACK
     else RUCKSACK

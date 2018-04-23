@@ -13,12 +13,12 @@ object EventsClient {
 
   @SubscribeEvent
   def onPlayerJoinWorld(event: PlayerLoggedInEvent){
-    if(config.welcomeMess){
+    if(CONFIG.welcomeMess){
       event.player.sendMessage(new TextComponentString("The Camping Iventory overides the normal inventory. To change this, " +
                                                                  "just press the configuration tab in the Camping Invenory; search for: " +
                                                                  "'primary inventory option'."))
 
-      config.disableMess()
+      CONFIG.disableMess()
     }
   }
 }

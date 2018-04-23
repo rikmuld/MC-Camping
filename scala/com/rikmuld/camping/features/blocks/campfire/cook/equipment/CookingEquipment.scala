@@ -1,8 +1,8 @@
 package com.rikmuld.camping.features.blocks.campfire.cook.equipment
 
+import com.rikmuld.camping.CampingMod
 import com.rikmuld.camping.Definitions.Parts
 import com.rikmuld.camping.Library.TextureInfo
-import com.rikmuld.camping.registers.ObjRegistry
 import com.rikmuld.corerm.client.ModularModal
 import com.rikmuld.corerm.utils.StackUtils
 import net.minecraft.client.gui.inventory.GuiContainer
@@ -47,7 +47,7 @@ abstract class CookingEquipment(kit: Int, cookTime: Int, maxSlots: Int, model: M
 
   def renderFood(render: RenderItem, slot: Int, food: ItemStack): Unit =
     if(slot < maxSlots && !food.isEmpty && !food.isItemEqual(
-      new ItemStack(ObjRegistry.parts, 1, Parts.ASH)
+      new ItemStack(CampingMod.OBJ.parts, 1, Parts.ASH)
     ))
       doRenderFood(render, slot, food)
 
@@ -91,7 +91,7 @@ object CookingEquipment {
     kits.get(kit)
 
   def getEquipment(kit: ItemStack): Option[CookingEquipment] =
-    if(kit.isEmpty || kit.getItem != ObjRegistry.kit)
+    if(kit.isEmpty || kit.getItem != CampingMod.OBJ.kit)
       None
     else
       getEquipment(kit.getItemDamage)

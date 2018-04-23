@@ -1,8 +1,8 @@
 package com.rikmuld.camping.features.blocks.campfire.wood
 
+import com.rikmuld.camping.CampingMod
 import com.rikmuld.camping.Definitions.CampfireWood._
 import com.rikmuld.camping.features.blocks.campfire.Roaster
-import com.rikmuld.camping.registers.ObjRegistry
 import com.rikmuld.corerm.objs.blocks.BlockSimple
 import com.rikmuld.corerm.tileentity.{TileEntitySimple, TileEntityTicker}
 import net.minecraft.block.state.IBlockState
@@ -37,7 +37,7 @@ class TileEntityCampfireWoodOn extends TileEntitySimple with TileEntityTicker wi
   }
 
   def getBlock: BlockSimple =
-    ObjRegistry.campfireWoodOn
+    CampingMod.OBJ.campfireWoodOn
 
   override def shouldRefresh(world: World, pos: BlockPos, oldState: IBlockState, newState: IBlockState): Boolean =
     oldState.getBlock != newState.getBlock
