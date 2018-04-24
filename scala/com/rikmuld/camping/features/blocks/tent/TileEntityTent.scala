@@ -56,6 +56,9 @@ class TileEntityTent extends TileEntityInventory with TileEntityTicker {
   private var firstLoad: Boolean =
     true
 
+  private var facing: Option[EnumFacing] =
+    None
+
   def contentIdx(stack: ItemStack): Option[Int] =
     Option(ITEMS.indexOf(stack.getItem)).find(_ >= 0)
 
@@ -198,7 +201,10 @@ class TileEntityTent extends TileEntityInventory with TileEntityTicker {
     this.occupied = occupied
 
   def getFacing: EnumFacing =
-    getBlock.getFacing(world.getBlockState(pos))
+    facing.getOrElse({
+      facing = Some(getBlock.getFacing(world.getBlockState(pos)))
+      facing.get
+    })
 
   override def readFromNBT(tag: NBTTagCompound): Unit = {
     super.readFromNBT(tag)
