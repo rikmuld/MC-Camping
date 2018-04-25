@@ -11,10 +11,9 @@ import net.minecraftforge.client.event.{GuiOpenEvent, RenderGameOverlayEvent}
 import net.minecraftforge.fml.client.FMLClientHandler
 import net.minecraftforge.fml.common.Mod
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
-import net.minecraftforge.fml.relauncher.{Side, SideOnly}
+import net.minecraftforge.fml.relauncher.Side
 
-@Mod.EventBusSubscriber
-@SideOnly(Side.CLIENT)
+@Mod.EventBusSubscriber(Array(Side.CLIENT))
 object EventsClient {
 
   var map: Option[GuiMap] =

@@ -5,10 +5,9 @@ import net.minecraft.util.text.TextComponentString
 import net.minecraftforge.fml.common.Mod
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent
-import net.minecraftforge.fml.relauncher.{Side, SideOnly}
+import net.minecraftforge.fml.relauncher.Side
 
-@Mod.EventBusSubscriber
-@SideOnly(Side.CLIENT)
+@Mod.EventBusSubscriber(Array(Side.CLIENT))
 object EventsClient {
 
   @SubscribeEvent

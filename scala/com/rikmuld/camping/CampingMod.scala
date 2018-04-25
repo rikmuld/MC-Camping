@@ -77,6 +77,8 @@ object CampingMod {
   - extensive bug test and fix all github bugs left if any
   - campfire cooking turn on off not burn immediatly
   -- release
+  - packets are not really suited to register with registries, advnacement triggers, however, are
+  - make sure other mods food cooks properly
 
   TODO new features
   - more food to roast (some ideas: sausage, bacon, egg on a stick, any meat/vegtable is stickable together for a nice ... what is it called again...)
