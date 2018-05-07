@@ -8,7 +8,6 @@ import com.rikmuld.camping.features.blocks.campfire.Roaster
 import com.rikmuld.camping.features.blocks.campfire.cook.equipment.CookingEquipment
 import com.rikmuld.corerm.network.PacketSender
 import com.rikmuld.corerm.network.packets.PacketItemData
-import com.rikmuld.corerm.objs.blocks.BlockSimple
 import com.rikmuld.corerm.tileentity.TileEntityInventory
 import net.minecraft.block.state.IBlockState
 import net.minecraft.entity.player.EntityPlayer
@@ -211,9 +210,6 @@ class TileEntityCampfireCook extends TileEntityInventory with Roaster with ITick
 
   def isOn: Boolean =
     fuel > 0
-
-  def getBlock: BlockSimple =
-    CampingMod.OBJ.campfireCook
 
   override def update(): Unit =
     if (!world.isRemote) {

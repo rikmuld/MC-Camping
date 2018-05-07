@@ -5,7 +5,6 @@ import com.rikmuld.camping.features.blocks.tent.TileEntityTent._
 import com.rikmuld.camping.utils.{UtilsPlayer, UtilsSeq}
 import com.rikmuld.camping.{CampingMod, Definitions}
 import com.rikmuld.corerm.network.PacketSender
-import com.rikmuld.corerm.objs.blocks.BlockSimple
 import com.rikmuld.corerm.tileentity.{TileEntityInventory, TileEntityTicker}
 import com.rikmuld.corerm.utils.WorldUtils
 import net.minecraft.block.state.IBlockState
@@ -180,9 +179,6 @@ class TileEntityTent extends TileEntityInventory with TileEntityTicker {
       sendTileData(3, true, light)
     }
   }
-
-  def getBlock: BlockSimple =
-    CampingMod.OBJ.tent
 
   override def getName: String =
     "tent"

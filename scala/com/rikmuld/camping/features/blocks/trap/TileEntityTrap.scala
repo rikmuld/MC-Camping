@@ -110,9 +110,6 @@ class TileEntityTrap extends TileEntityInventory with ITickable {
       setTrapped(None)
   }
 
-  def getBlock: BlockTrap =
-    world.getBlockState(pos).getBlock.asInstanceOf[BlockTrap]
-
   def getCaptureBounds: AxisAlignedBB =
     world.getBlockState(pos).getBoundingBox(world, pos).offset(pos)
 

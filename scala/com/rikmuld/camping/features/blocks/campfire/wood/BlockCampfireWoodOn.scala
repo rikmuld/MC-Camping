@@ -18,7 +18,6 @@ import net.minecraft.world.World
 import net.minecraftforge.fml.relauncher.{Side, SideOnly}
 
 class BlockCampfireWoodOn(modId:String, info: ObjDefinition) extends BlockCampfireWood(modId, info) {
-
   override def getPickBlock(state: IBlockState, target: RayTraceResult,
                             world: World, pos: BlockPos, player: EntityPlayer): ItemStack =
 
@@ -38,7 +37,7 @@ class BlockCampfireWoodOn(modId:String, info: ObjDefinition) extends BlockCampfi
         setState(world, pos, STATE_LIGHT, stack.getItemDamage)
         stack.setCount(stack.getCount - 1)
 
-        TriggerHelper.trigger(AdvancementInfo.DYE_BURNED, player, stack)
+        TriggerHelper.trigger(AdvancementInfo.DYE_BURNED, player, stack.getItemDamage)
 
         true
       } else false

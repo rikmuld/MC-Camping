@@ -1,9 +1,7 @@
 package com.rikmuld.camping.features.blocks.campfire.wood
 
-import com.rikmuld.camping.CampingMod
 import com.rikmuld.camping.Definitions.CampfireWood._
 import com.rikmuld.camping.features.blocks.campfire.Roaster
-import com.rikmuld.corerm.objs.blocks.BlockSimple
 import com.rikmuld.corerm.tileentity.{TileEntitySimple, TileEntityTicker}
 import net.minecraft.block.state.IBlockState
 import net.minecraft.entity.EntityLivingBase
@@ -24,7 +22,7 @@ class TileEntityCampfireWoodOn extends TileEntitySimple with TileEntityTicker wi
   registerTicker(updateEffects, 100)
 
   def getEntityBounds: AxisAlignedBB =
-    getBlock.getBoundingBox(world.getBlockState(pos), world, pos).offset(pos).grow(8)
+    world.getBlockState(pos).getBoundingBox(world, pos).offset(pos).grow(8)
 
   def updateEffects(): Unit = {
     val light = getBlock.getInt(world, pos, STATE_LIGHT)
@@ -35,9 +33,6 @@ class TileEntityCampfireWoodOn extends TileEntitySimple with TileEntityTicker wi
       )
     }
   }
-
-  def getBlock: BlockSimple =
-    CampingMod.OBJ.campfireWoodOn
 
   override def shouldRefresh(world: World, pos: BlockPos, oldState: IBlockState, newState: IBlockState): Boolean =
     oldState.getBlock != newState.getBlock
