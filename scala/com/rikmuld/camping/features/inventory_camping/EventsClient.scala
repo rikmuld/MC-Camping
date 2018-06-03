@@ -38,10 +38,9 @@ object EventsClient {
     map.foreach(map =>
       if (event.getType == ElementType.HOTBAR) {
         val mc = FMLClientHandler.instance().getClient
+        val inv = InventoryCamping.getInventory(mc.player)
 
-        InventoryCamping.refreshInventory(mc.player)
-
-        if (!InventoryCamping.getMap.isEmpty)
+        if (!inv(InventoryCamping.SLOT_MAP.toByte).isEmpty)
           map.drawMap(mc, event.getResolution.getScaledWidth, event.getResolution.getScaledHeight)
       }
     )

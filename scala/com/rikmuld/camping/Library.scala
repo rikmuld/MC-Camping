@@ -23,6 +23,7 @@ object Library {
 
   object NBTInfo {
     final val INV_CAMPING = "campInv"
+    final val LANTERN_TIME = "camping_lantern_time"
     final val ACHIEVEMENTS = "camping:achievements"
   }
 
