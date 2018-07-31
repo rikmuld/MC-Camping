@@ -25,7 +25,7 @@ import org.lwjgl.opengl.GL11
 class GuiTent(player: EntityPlayer, tile: IInventory) extends GuiScreen {
   var tent = tile.asInstanceOf[TileEntityTent]
   var canClick: Array[Boolean] = Array(false, false, false)
-  val bedName = "Bed"
+  val bedName = I18n.translateToLocal("item.camping:sleeping_bag.name")
   val lanternName = new ItemStack(CampingMod.OBJ.lantern, 1, Definitions.Lantern.ON).getDisplayName
   val chestName = new ItemStack(Blocks.CHEST).getDisplayName
 
