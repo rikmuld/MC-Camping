@@ -19,7 +19,7 @@ import net.minecraft.network.datasync.{DataParameter, DataSerializers, EntityDat
 import net.minecraft.pathfinding.PathNavigateGround
 import net.minecraft.util._
 import net.minecraft.util.math.{BlockPos, MathHelper}
-import net.minecraft.util.text.TextComponentString
+import net.minecraft.util.text.TextComponentTranslation
 import net.minecraft.village.{MerchantRecipe, MerchantRecipeList}
 import net.minecraft.world.World
 import net.minecraftforge.fml.relauncher.{Side, SideOnly}
@@ -163,7 +163,7 @@ class EntityCamper(worldIn: World) extends EntityCreature(worldIn) with IMerchan
     }
     recipeList
   }
-  override def getDisplayName = new TextComponentString("Camper")
+  override def getDisplayName = new TextComponentTranslation("entity.camper.name")
   def addBlacksmithItem(merchantRecipeList: MerchantRecipeList, item: Item, meta: Int, random: Random, par3: Float) {
     if (random.nextFloat() < par3) {
       val j = randomCount(item, random)
