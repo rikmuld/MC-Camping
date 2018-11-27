@@ -33,9 +33,9 @@ object UtilsPlayer {
       case SleepResult.NOT_POSSIBLE_NOW =>
         player.sendMessage(new TextComponentTranslation("tile.bed.noSleep", new Object))
       case SleepResult.NOT_SAFE =>
-        player.sendMessage(new TextComponentTranslation("tile.bed.noSafe", new Object))
+        player.sendMessage(new TextComponentTranslation("tile.bed.notSafe", new Object))
       case SleepResult.TOO_FAR_AWAY =>
-        player.sendMessage(new TextComponentTranslation("tile.bed.toFarAway", new Object))
+        player.sendMessage(new TextComponentTranslation("tile.bed.tooFarAway", new Object))
       case _ =>
     }
 
